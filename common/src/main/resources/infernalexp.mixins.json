@@ -12,6 +12,7 @@
     "EntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
+    "NetherBiomePresetMixin",
     "PiglinSpecificSensorMixin",
     "accessor.BlockBehaviourAccessor",
     "accessor.ButtonBlockAccessor",
