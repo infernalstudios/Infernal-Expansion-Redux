@@ -1,0 +1,12 @@
+{
+  "feature": "infernalexp:glowstone_spike",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

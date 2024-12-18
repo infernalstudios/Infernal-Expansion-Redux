@@ -42,6 +42,10 @@ public class ModPlacedFeatures {
 
         register(context, GLOWLIGHT_FIRE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWLIGHT_FIRE),
                 BiomeFilter.biome());
+
+        register(context, GLOWSTONE_SPIKE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWSTONE_SPIKE),
+                RarityFilter.onAverageOnceEvery(3),
+                BiomeFilter.biome());
     }
 
 
@@ -49,4 +53,6 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DULLTHORNS = create("dullthorns");
     public static final ResourceKey<PlacedFeature> LUMINOUS_FUNGUS = create("luminous_fungus");
     public static final ResourceKey<PlacedFeature> GLOWLIGHT_FIRE = create("glowlight_fire");
+
+    public static final ResourceKey<PlacedFeature> GLOWSTONE_SPIKE = create("glowstone_spike");
 }

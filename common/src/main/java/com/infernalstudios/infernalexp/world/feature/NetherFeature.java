@@ -1,14 +1,11 @@
 package com.infernalstudios.infernalexp.world.feature;
 
 import com.infernalstudios.infernalexp.IEConstants;
-import com.infernalstudios.infernalexp.module.ModBlocks;
-import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -31,11 +28,12 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
 
         List<BlockPos> positions = new ArrayList<>();
         for (int i = 0; i < level.getMaxBuildHeight(); i++) {
-            if (level.isEmptyBlock(pos.atY(i)) && this.isGround(level.getBlockState(pos.atY(i-1))))
+            if (level.isEmptyBlock(pos.atY(i)) && this.isValidPos(level, pos.atY(i)))
                 positions.add(pos.atY(i));
         }
         if (positions.isEmpty()) return false;
         Collections.shuffle(positions);
+        IEConstants.LOG.info(positions + "");
         pos = positions.get(0);
 
         boolean success = this.generate(pos, context);
@@ -48,7 +46,7 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
                             context.origin().east(context.random().nextIntBetweenInclusive(-5, 5))
                                     .north(context.random().nextIntBetweenInclusive(-5, 5)),
                             context.config());
-            if (level.hasChunk(contextnext.origin().getX() / 16, contextnext.origin().getY() / 16))
+            //if (level.hasChunk(contextnext.origin().getX() / 16, contextnext.origin().getY() / 16))
                 success |= this.place(contextnext);
         }
 
@@ -57,5 +55,5 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
 
     public abstract boolean generate(BlockPos pos, FeaturePlaceContext<F> context);
 
-    public abstract boolean isGround(BlockState state);
+    public abstract boolean isValidPos(LevelReader world, BlockPos pos);
 }

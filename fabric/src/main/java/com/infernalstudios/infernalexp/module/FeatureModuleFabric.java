@@ -33,5 +33,8 @@ public class FeatureModuleFabric {
 
         BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.IS_GLOWSTONE_CANYON),
                 GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.GLOWLIGHT_FIRE);
+
+        BiomeModifications.addFeature(BiomeSelectors.tag(ModTags.Biomes.IS_GLOWSTONE_CANYON),
+                GenerationStep.Decoration.UNDERGROUND_DECORATION, ModPlacedFeatures.GLOWSTONE_SPIKE);
     }
 }

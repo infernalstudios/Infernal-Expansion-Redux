@@ -8,6 +8,7 @@ import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureCo
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -37,7 +38,7 @@ public class NetherPlantFeature extends NetherFeature<SingleBlockFeatureConfig> 
     }
 
     @Override
-    public boolean isGround(BlockState state) {
-        return state.is(ModBlocks.SHIMMER_SAND.get());
+    public boolean isValidPos(LevelReader world, BlockPos pos) {
+        return world.getBlockState(pos.below()).is(ModBlocks.SHIMMER_SAND.get());
     }
 }

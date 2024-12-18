@@ -1,7 +1,9 @@
-// 1.20.1	2024-12-18T19:13:30.9479127	Infernal Expansion/World Gen
+// 1.20.1	2024-12-18T23:35:42.4681243	Infernal Expansion/World Gen
 d3bfc8fd9b5f9c8348471c215e2c7ca1d23ea58b data\infernalexp\worldgen\placed_feature\luminous_fungus.json
 2af2b9fbb541ad06afdc97ed0bf1a3e19fbf12f5 data\infernalexp\worldgen\configured_feature\luminous_fungus.json
+4bf4b3aea0af32b9e84c1e4188c3cf58bcba510c data\infernalexp\worldgen\configured_feature\glowstone_spike.json
 fd85e9758a2a11ab1093c38f9a0311db082b82b5 data\infernalexp\worldgen\placed_feature\dullthorns.json
+ae20172165e709b686bb2642ba86fd94d0430feb data\infernalexp\worldgen\placed_feature\glowstone_spike.json
 68f1388bc5b6aab8c3f6cfcdc15d5784d8ac4781 data\infernalexp\worldgen\placed_feature\glowlight_fire.json
 ff664f5aa90f194aa24514dcd4440f732cf76a08 data\infernalexp\worldgen\configured_feature\dullthorns.json
 f46e857e6144d7cb2420cffd570e18fee5d6868d data\infernalexp\worldgen\configured_feature\glowlight_fire.json
