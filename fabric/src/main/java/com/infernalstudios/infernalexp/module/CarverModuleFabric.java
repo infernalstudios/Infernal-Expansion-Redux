@@ -20,12 +20,5 @@ public class CarverModuleFabric {
             // Register carver
             Registry.register(BuiltInRegistries.CARVER, entry.getKey(), entry.getValue());
         }
-
-        registerPlacement();
-    }
-
-    private static void registerPlacement() {
-        BiomeModifications.addCarver(BiomeSelectors.tag(ModTags.Biomes.IS_GLOWSTONE_CANYON),
-                GenerationStep.Carving.AIR, ModConfiguredCarvers.GLOWSTONE_RAVINE);
     }
 }

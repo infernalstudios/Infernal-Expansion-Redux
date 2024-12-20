@@ -1,11 +1,15 @@
 {
-  "carvers": {},
+  "carvers": {
+    "air": [
+      "infernalexp:glowstone_ravine"
+    ]
+  },
   "downfall": 0.5,
   "effects": {
     "fog_color": -2916568,
     "mood_sound": {
       "block_search_extent": 8,
-      "offset": 2.0,
+      "offset": 2,
       "sound": "minecraft:ambient.cave",
       "tick_delay": 6000
     },
