@@ -9,6 +9,7 @@ public class InfernalExpansion implements ModInitializer {
     @Override
     public void onInitialize() {
         FeatureModuleFabric.registerFeatures();
+        CarverModuleFabric.registerCarvers();
 
         IECommon.init();
 

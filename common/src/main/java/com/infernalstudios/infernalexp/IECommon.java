@@ -19,6 +19,7 @@ public class IECommon {
 
         ModBiomes.load();
         ModFeatures.load();
+        ModCarvers.load();
     }
 
     public static ResourceLocation id(String name) {

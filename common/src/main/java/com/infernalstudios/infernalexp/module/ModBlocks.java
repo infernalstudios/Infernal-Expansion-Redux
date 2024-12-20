@@ -43,7 +43,8 @@ public class ModBlocks {
     public static final BlockDataHolder<?> SHIMMER_SAND = register("shimmer_sand", BlockDataHolder.of(() ->
                     new SandBlock(0xffffaa, BlockBehaviour.Properties.copy(Blocks.SAND)))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_SHOVEL, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, BlockTags.INFINIBURN_NETHER)
+            .withTags(BlockTags.MINEABLE_WITH_SHOVEL, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, BlockTags.INFINIBURN_NETHER,
+                    ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Shimmer Sand")
     );
 
@@ -73,7 +74,8 @@ public class ModBlocks {
     public static final BlockDataHolder<?> SHIMMER_STONE = register("shimmer_stone", BlockDataHolder.of(() ->
                     new Block(shimmerstone))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
+                    ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Shimmer Stone")
     );
 
@@ -99,7 +101,8 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> DIMSTONE = register("dimstone", BlockDataHolder.of(() ->
                     new Block(dimstone))
-            .withItem().withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withItem().withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
+                    ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Dimstone")
     );
 
@@ -127,7 +130,8 @@ public class ModBlocks {
     public static final BlockDataHolder<?> DULLSTONE = register("dullstone", BlockDataHolder.of(() ->
                     new Block(dullstone))
             .withModel(BlockDataHolder.Model.CUBE).withItem()
-            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
+                    ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Dullstone")
     );
 

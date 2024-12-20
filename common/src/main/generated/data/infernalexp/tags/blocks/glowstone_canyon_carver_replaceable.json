@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "infernalexp:shimmer_sand",
+    "infernalexp:shimmer_stone",
+    "infernalexp:dimstone",
+    "infernalexp:dullstone",
+    "#minecraft:nether_carver_replaceables"
+  ]
+}

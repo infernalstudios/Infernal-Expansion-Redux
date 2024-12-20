@@ -2,6 +2,10 @@
   "feature": "infernalexp:planted_quartz",
   "placement": [
     {
+      "type": "minecraft:rarity_filter",
+      "chance": 2
+    },
+    {
       "type": "minecraft:biome"
     }
   ]

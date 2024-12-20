@@ -48,9 +48,11 @@ public class ModPlacedFeatures {
                 BiomeFilter.biome());
 
         register(context, PLANTED_QUARTZ, configLookup.getOrThrow(ModConfiguredFeatures.PLANTED_QUARTZ),
+                RarityFilter.onAverageOnceEvery(2),
                 BiomeFilter.biome());
 
         register(context, BURIED_BONE, configLookup.getOrThrow(ModConfiguredFeatures.BURIED_BONE),
+                RarityFilter.onAverageOnceEvery(2),
                 BiomeFilter.biome());
     }
 

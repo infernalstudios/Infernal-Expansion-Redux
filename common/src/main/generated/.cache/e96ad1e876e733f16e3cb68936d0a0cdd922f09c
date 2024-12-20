@@ -1,11 +1,12 @@
-// 1.20.1	2024-12-19T13:22:12.7873263	Infernal Expansion/Tags for minecraft:block
+// 1.20.1	2024-12-20T14:33:24.2556006	Infernal Expansion/Tags for minecraft:block
 2efbe36e39ae02a7e5bd55fc197044f38ba03d54 data\minecraft\tags\blocks\mineable\hoe.json
 ba91a734fd8b64efccf48c79c84f12fddb4b001d data\minecraft\tags\blocks\mineable\axe.json
 a70d4f8e8f3d8761fd93953a955af726598dc091 data\minecraft\tags\blocks\piglin_repellents.json
 6ba51b6cf4613f78f855eabd27d51af9c6989452 data\minecraft\tags\blocks\slabs.json
 553384372d128711e4bf1dba497bd7f1e8dc0d91 data\minecraft\tags\blocks\walls.json
-b2938f8f6b0f89662c3b16547641f8483a5ba989 data\minecraft\tags\blocks\iron_ores.json
+e08a46cbfc659121099b18ffc1629c138cd5da0a data\infernalexp\tags\blocks\glowstone_canyon_carver_replaceable.json
 799231cc64a2059fcbdcfa0f3d0944419903d718 data\minecraft\tags\blocks\stairs.json
+b2938f8f6b0f89662c3b16547641f8483a5ba989 data\minecraft\tags\blocks\iron_ores.json
 7284575de017e3489918abfe77a8e63c0e95cfe8 data\minecraft\tags\blocks\fire.json
 a5b604eef2a744d7be1a37b8d93d93b6874d4147 data\minecraft\tags\blocks\campfires.json
 28abe02a37b5b69dcc177dd98647de164f7717d6 data\minecraft\tags\blocks\infiniburn_nether.json

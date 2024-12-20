@@ -5,6 +5,7 @@ import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
+import com.infernalstudios.infernalexp.world.carver.ModConfiguredCarvers;
 import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import com.infernalstudios.infernalexp.world.feature.ModPlacedFeatures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -23,6 +24,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -58,6 +60,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
     public void buildRegistry(RegistrySetBuilder builder) {
         builder.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
         builder.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
+        builder.add(Registries.CONFIGURED_CARVER, ModConfiguredCarvers::bootstrap);
     }
 
 
@@ -71,6 +74,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             entries.addAll(registries.lookupOrThrow(Registries.BIOME));
             entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_FEATURE));
             entries.addAll(registries.lookupOrThrow(Registries.PLACED_FEATURE));
+            entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_CARVER));
         }
 
         @Override
@@ -269,6 +273,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
             getOrCreateTagBuilder(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
                     .add(Blocks.GLOWSTONE);
+
+            getOrCreateTagBuilder(ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
+                    .forceAddTag(BlockTags.NETHER_CARVER_REPLACEABLES);
         }
     }
 

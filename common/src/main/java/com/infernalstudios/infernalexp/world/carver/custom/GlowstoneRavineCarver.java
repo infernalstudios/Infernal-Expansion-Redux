@@ -1,4 +1,4 @@
-package com.infernalstudios.infernalexp.world.carver;
+package com.infernalstudios.infernalexp.world.carver.custom;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -11,11 +11,14 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.function.Function;
 
 public class GlowstoneRavineCarver extends CanyonWorldCarver {
+    public static final WorldCarver<CanyonCarverConfiguration> INSTANCE = new GlowstoneRavineCarver(CanyonCarverConfiguration.CODEC);
+
     public GlowstoneRavineCarver(Codec<CanyonCarverConfiguration> codec) {
         super(codec);
     }
