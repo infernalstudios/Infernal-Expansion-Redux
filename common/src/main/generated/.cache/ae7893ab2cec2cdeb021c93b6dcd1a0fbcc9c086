@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-21T13:25:51.5340663	Infernal Expansion/Block Loot Tables
+// 1.20.1	2024-12-21T13:55:10.4957781	Infernal Expansion/Block Loot Tables
 19acaee5bf321bc5bc9d3872112a05e4e9c3a5be data\infernalexp\loot_tables\blocks\dullthorns.json
 ec92580f38aebc381ea0d1c54911624a1031c407 data\infernalexp\loot_tables\blocks\luminous_fungus.json
 8800e056cd20d93b4a98a7b5f6aee70f7c0f39e6 data\infernalexp\loot_tables\blocks\basalt_bricks_wall.json
@@ -20,8 +20,8 @@ b7399f60c821819256120bc4f9ed79e6504868e0 data\infernalexp\loot_tables\blocks\gli
 dcc1b2e2317068d5d98b1338803b280cc59f9f32 data\infernalexp\loot_tables\blocks\dullthorns_block.json
 292b36cfa64c6d649e004ac393e00d663b4868fb data\infernalexp\loot_tables\blocks\shroomlight_tear.json
 dc4780ca58e4b8da7940db383f9aafd739b3d54d data\infernalexp\loot_tables\blocks\buried_bone.json
-bd53cb8c9a65fa24b1be6ffaae83f2531f6db8b9 data\infernalexp\loot_tables\blocks\shimmer_stone.json
 19d08bff08411c653cbcdb64de614a846f516d3a data\infernalexp\loot_tables\blocks\planted_quartz.json
+bd53cb8c9a65fa24b1be6ffaae83f2531f6db8b9 data\infernalexp\loot_tables\blocks\shimmer_stone.json
 4a9102b33230595064d204187733456069e57b39 data\infernalexp\loot_tables\blocks\glowsilk_cocoon.json
 83664941eae0261a2c6bc769d01b8aa7855a7b5a data\infernalexp\loot_tables\blocks\shimmer_stone_bricks_slab.json
 26021a4f5bced9f680ba8ec7d6f1642b3a3884a1 data\infernalexp\loot_tables\blocks\shimmer_sand.json

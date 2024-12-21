@@ -1,10 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.world.feature.custom.DullthornsFeature;
-import com.infernalstudios.infernalexp.world.feature.custom.GlowstoneSpikeFeature;
-import com.infernalstudios.infernalexp.world.feature.custom.NetherPlantFeature;
-import com.infernalstudios.infernalexp.world.feature.custom.SupportedBlockFeature;
+import com.infernalstudios.infernalexp.world.feature.custom.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -41,6 +38,7 @@ public class ModFeatures {
     public static final Feature<?> NETHER_PLANT = register("nether_plant", NetherPlantFeature.INSTANCE);
 
     public static final Feature<?> GLOWSTONE_SPIKE = register("glowstone_spike", GlowstoneSpikeFeature.INSTANCE);
+    public static final Feature<?> DEATH_PIT = register("death_pit", DeathPitFeature.INSTANCE);
 
     public static final Feature<?> SUPPORTED_BLOCK = register("supported_block", SupportedBlockFeature.INSTANCE);
 }

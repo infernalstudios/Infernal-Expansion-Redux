@@ -19,6 +19,12 @@
       "replace_current_music": true,
       "sound": "minecraft:music.nether"
     },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.068093334
+    },
     "sky_color": 3197208,
     "water_color": 13408563,
     "water_fog_color": 10053120
@@ -31,7 +37,8 @@
     [],
     [],
     [
-      "infernalexp:glowstone_spike"
+      "infernalexp:glowstone_spike",
+      "infernalexp:death_pit"
     ],
     [],
     [
