@@ -2,7 +2,6 @@ package com.infernalstudios.infernalexp;
 
 import com.infernalstudios.infernalexp.module.*;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.biome.v1.NetherBiomes;
 
 public class InfernalExpansion implements ModInitializer {
     

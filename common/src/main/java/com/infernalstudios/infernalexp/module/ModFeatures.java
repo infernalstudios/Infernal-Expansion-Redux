@@ -4,11 +4,7 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.world.feature.custom.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;

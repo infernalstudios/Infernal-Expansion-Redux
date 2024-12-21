@@ -5,7 +5,6 @@ import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 

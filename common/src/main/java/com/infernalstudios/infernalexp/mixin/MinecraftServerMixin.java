@@ -1,13 +1,11 @@
 package com.infernalstudios.infernalexp.mixin;
 
-import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.mixin.accessor.NoiseGeneratorSettingsAccessor;
 import com.infernalstudios.infernalexp.world.surface.ModSurfaceRules;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.progress.ChunkProgressListener;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
@@ -19,9 +17,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {

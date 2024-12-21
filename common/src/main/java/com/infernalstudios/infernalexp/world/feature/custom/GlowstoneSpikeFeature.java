@@ -1,9 +1,7 @@
 package com.infernalstudios.infernalexp.world.feature.custom;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.world.feature.NetherFeature;
-import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;

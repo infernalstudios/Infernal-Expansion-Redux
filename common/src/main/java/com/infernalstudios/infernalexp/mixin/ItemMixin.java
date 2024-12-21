@@ -1,6 +1,5 @@
 package com.infernalstudios.infernalexp.mixin;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;

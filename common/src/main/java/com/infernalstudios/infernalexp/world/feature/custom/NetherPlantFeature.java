@@ -1,16 +1,13 @@
 package com.infernalstudios.infernalexp.world.feature.custom;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.world.feature.NetherFeature;
-import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 

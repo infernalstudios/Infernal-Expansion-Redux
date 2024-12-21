@@ -1,15 +1,12 @@
 package com.infernalstudios.infernalexp.world.feature;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.mixin.accessor.WorldGenRegionAccessor;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;

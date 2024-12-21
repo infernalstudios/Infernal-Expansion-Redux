@@ -4,7 +4,6 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.world.carver.custom.GlowstoneRavineCarver;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.levelgen.carver.CanyonCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 
 import java.util.HashMap;

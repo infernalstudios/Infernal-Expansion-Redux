@@ -1,8 +1,6 @@
 package com.infernalstudios.infernalexp.mixin;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModEffects;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

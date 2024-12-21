@@ -1,10 +1,7 @@
 package com.infernalstudios.infernalexp;
 
 import com.infernalstudios.infernalexp.module.*;
-import net.minecraft.data.worldgen.biome.NetherBiomes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.TheEndBiomeSource;
-import net.minecraft.world.level.levelgen.carver.CanyonWorldCarver;
 
 public class IECommon {
 
@@ -13,6 +10,7 @@ public class IECommon {
         ModItems.load();
 
         ModFireTypes.load();
+        ModParticles.load();
 
         ModEntityTypes.load();
         ModCreativeTabs.load();

@@ -1,13 +1,10 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.registration.FuelRegistry;
-import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -15,7 +12,6 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class EffectModuleFabric {
     public static void registerEffects() {

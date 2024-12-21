@@ -1,14 +1,10 @@
 package com.infernalstudios.infernalexp.module;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.registration.FuelRegistry;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
 
 import java.util.Map;
 
