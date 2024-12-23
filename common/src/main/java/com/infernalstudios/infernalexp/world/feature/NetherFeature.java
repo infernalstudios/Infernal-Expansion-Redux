@@ -43,8 +43,8 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
                             context.level(),
                             context.chunkGenerator(),
                             context.random(),
-                            context.origin().east(context.random().nextIntBetweenInclusive(-5, 5))
-                                    .north(context.random().nextIntBetweenInclusive(-5, 5)),
+                            context.origin().east(context.random().nextIntBetweenInclusive(-4, 4))
+                                    .north(context.random().nextIntBetweenInclusive(-4, 4)),
                             context.config());
             if (this.ensureCanWrite(level, contextnext.origin()))
                 success |= this.place(contextnext);

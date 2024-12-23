@@ -6,10 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
+import net.minecraft.world.level.levelgen.placement.*;
 
 import java.util.List;
 
@@ -36,7 +33,8 @@ public class ModPlacedFeatures {
         var configLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
         register(context, DULLTHORNS, configLookup.getOrThrow(ModConfiguredFeatures.DULLTHORNS),
-                BiomeFilter.biome());
+                BiomeFilter.biome(),
+                InSquarePlacement.spread());
 
         register(context, LUMINOUS_FUNGUS, configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),
                 BiomeFilter.biome());
@@ -44,13 +42,20 @@ public class ModPlacedFeatures {
         register(context, GLOWLIGHT_FIRE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWLIGHT_FIRE),
                 BiomeFilter.biome());
 
+    register(context, HANGING_BROWN_MUSHROOM, configLookup.getOrThrow(ModConfiguredFeatures.HANGING_BROWN_MUSHROOM),
+                RarityFilter.onAverageOnceEvery(5),
+                BiomeFilter.biome(),
+                InSquarePlacement.spread());
+
         register(context, GLOWSTONE_SPIKE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWSTONE_SPIKE),
-                RarityFilter.onAverageOnceEvery(3),
-                BiomeFilter.biome());
+                RarityFilter.onAverageOnceEvery(4),
+                BiomeFilter.biome(),
+                InSquarePlacement.spread());
 
         register(context, DEATH_PIT, configLookup.getOrThrow(ModConfiguredFeatures.DEATH_PIT),
                 RarityFilter.onAverageOnceEvery(3),
-                BiomeFilter.biome());
+                BiomeFilter.biome(),
+                InSquarePlacement.spread());
 
         register(context, PLANTED_QUARTZ, configLookup.getOrThrow(ModConfiguredFeatures.PLANTED_QUARTZ),
                 RarityFilter.onAverageOnceEvery(2),
@@ -66,6 +71,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DULLTHORNS = create("dullthorns");
     public static final ResourceKey<PlacedFeature> LUMINOUS_FUNGUS = create("luminous_fungus");
     public static final ResourceKey<PlacedFeature> GLOWLIGHT_FIRE = create("glowlight_fire");
+    public static final ResourceKey<PlacedFeature> HANGING_BROWN_MUSHROOM = create("hanging_brown_mushroom");
 
     public static final ResourceKey<PlacedFeature> GLOWSTONE_SPIKE = create("glowstone_spike");
     public static final ResourceKey<PlacedFeature> DEATH_PIT = create("death_pit");

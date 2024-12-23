@@ -3,6 +3,9 @@
   "placement": [
     {
       "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:in_square"
     }
   ]
 }

@@ -3,7 +3,7 @@ package com.infernalstudios.infernalexp.world.feature.custom;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.world.feature.NetherFeature;
-import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureConfig;
+import com.infernalstudios.infernalexp.world.feature.config.HangingMushroomFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -14,20 +14,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class DeathPitFeature extends NetherFeature<DullthornsFeatureConfig> {
-    public static final Feature<DullthornsFeatureConfig> INSTANCE = new DeathPitFeature(DullthornsFeatureConfig.CODEC);
+public class DeathPitFeature extends NetherFeature<HangingMushroomFeatureConfig> {
+    public static final Feature<HangingMushroomFeatureConfig> INSTANCE = new DeathPitFeature(HangingMushroomFeatureConfig.CODEC);
 
-    public DeathPitFeature(Codec<DullthornsFeatureConfig> codec) {
+    public DeathPitFeature(Codec<HangingMushroomFeatureConfig> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(BlockPos pos, FeaturePlaceContext<DullthornsFeatureConfig> context) {
-        DullthornsFeatureConfig config = context.config();
+    public boolean generate(BlockPos pos, FeaturePlaceContext<HangingMushroomFeatureConfig> context) {
+        HangingMushroomFeatureConfig config = context.config();
         WorldGenLevel level = context.level();
         RandomSource random = context.random();
 
-        int radius = random.nextInt(2) + 2;
+        int radius = config.radius().sample(random);
         int depth = config.size().sample(random);
         pos = pos.below(depth);
         if (pos.getY() <= level.getMinBuildHeight()) return false;

@@ -71,7 +71,7 @@ public class GlowstoneSpikeFeature extends NetherFeature<NoneFeatureConfiguratio
     @Override
     public boolean isValidPos(LevelReader world, BlockPos pos) {
         return !world.getBlockState(pos.below()).is(Blocks.BEDROCK)
-                && (!world.isEmptyBlock(pos.above()) || !world.isEmptyBlock(pos.below()));
+                && (world.getBlockState(pos.above()).is(ModBlocks.DULLSTONE.get()) || !world.isEmptyBlock(pos.below()));
     }
 
 

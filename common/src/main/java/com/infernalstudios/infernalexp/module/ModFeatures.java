@@ -32,6 +32,7 @@ public class ModFeatures {
 
     public static final Feature<?> DULLTHORNS = register("dullthorns", DullthornsFeature.INSTANCE);
     public static final Feature<?> NETHER_PLANT = register("nether_plant", NetherPlantFeature.INSTANCE);
+    public static final Feature<?> HANGING_MUSHROOM = register("hanging_mushroom", HangingMushroomFeature.INSTANCE);
 
     public static final Feature<?> GLOWSTONE_SPIKE = register("glowstone_spike", GlowstoneSpikeFeature.INSTANCE);
     public static final Feature<?> DEATH_PIT = register("death_pit", DeathPitFeature.INSTANCE);

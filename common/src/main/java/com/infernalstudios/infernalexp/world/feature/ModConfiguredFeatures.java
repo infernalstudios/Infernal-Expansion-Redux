@@ -4,14 +4,19 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.block.DullthornsBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureConfig;
+import com.infernalstudios.infernalexp.world.feature.config.HangingMushroomFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.custom.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.MushroomBlock;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -42,11 +47,18 @@ public class ModConfiguredFeatures {
         register(context, GLOWLIGHT_FIRE, NetherPlantFeature.INSTANCE,
                 new SingleBlockFeatureConfig(BlockStateProvider.simple(ModBlocks.GLOWLIGHT_FIRE.get()), true));
 
+        register(context, HANGING_BROWN_MUSHROOM, HangingMushroomFeature.INSTANCE,
+                new HangingMushroomFeatureConfig(UniformInt.of(3, 7),
+                        ConstantInt.of(4),
+                        BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState()),
+                        BlockStateProvider.simple(Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState().setValue(HugeMushroomBlock.UP, false))));
+
         register(context, GLOWSTONE_SPIKE, GlowstoneSpikeFeature.INSTANCE,
                 new NoneFeatureConfiguration());
 
         register(context, DEATH_PIT, DeathPitFeature.INSTANCE,
-                new DullthornsFeatureConfig(UniformInt.of(12, 30),
+                new HangingMushroomFeatureConfig(UniformInt.of(12, 30),
+                        UniformInt.of(2, 3),
                         BlockStateProvider.simple(Blocks.AIR.defaultBlockState()),
                         new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
                                 .add(ModBlocks.GLOWSILK_COCOON.get().defaultBlockState(), 1)
@@ -63,6 +75,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DULLTHORNS = create("dullthorns");
     public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_FUNGUS = create("luminous_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWLIGHT_FIRE = create("glowlight_fire");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> HANGING_BROWN_MUSHROOM = create("hanging_brown_mushroom");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWSTONE_SPIKE = create("glowstone_spike");
     public static final ResourceKey<ConfiguredFeature<?, ?>> DEATH_PIT = create("death_pit");

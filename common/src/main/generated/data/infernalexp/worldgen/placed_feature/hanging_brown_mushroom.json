@@ -1,9 +1,9 @@
 {
-  "feature": "infernalexp:glowstone_spike",
+  "feature": "infernalexp:hanging_brown_mushroom",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 4
+      "chance": 5
     },
     {
       "type": "minecraft:biome"
