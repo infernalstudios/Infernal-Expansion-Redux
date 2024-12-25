@@ -1,4 +1,4 @@
-// 1.20.1	2024-12-24T15:22:31.0837653	Infernal Expansion/Recipes
+// 1.20.1	2024-12-25T15:57:47.3326335	Infernal Expansion/Recipes
 34e6eddf67ae305ea442a393f4a87894957a9454 data\infernalexp\recipes\shimmer_stone_bricks_slab.json
 5427aad8af1e402a58520a086b9200ffff92b9cd data\infernalexp\recipes\quartz_glass_pane.json
 0aad4dc4ba04e712291847abd0bd7ba9153fa724 data\infernalexp\advancements\recipes\building_blocks\dimstone.json
@@ -38,8 +38,8 @@ e7d329851ccd013d38144b40bafb81b25fbcf89b data\infernalexp\advancements\recipes\m
 48dd3b3104331247983cd5bb15931ea991d333a7 data\infernalexp\advancements\recipes\building_blocks\basalt_bricks_slab.json
 d4cdf091bd23696123282e73324be7a04227cff0 data\infernalexp\advancements\recipes\building_blocks\polished_dullstone.json
 790dc8a200366ca18e0857195f9fe5fffc8811f5 data\infernalexp\advancements\recipes\redstone\dullstone_button.json
-f38171eac013e65cd26f3446b599501531d76389 data\infernalexp\recipes\crimson_fungus_cap.json
 0ed4245a245f501806b9ee07e1783b39032fc93f data\infernalexp\recipes\dimstone.json
+f38171eac013e65cd26f3446b599501531d76389 data\infernalexp\recipes\crimson_fungus_cap.json
 6811f2cd211aaec31e515ba8c9825262d1ab86b8 data\infernalexp\recipes\dullstone_pressure_plate.json
 8f6f85b19deebc1322d46c7a797602933b93a92b data\infernalexp\recipes\cobbled_basalt_stairs.json
 3c842a83af6d0ed87ea3b44704e51d030e7e5ade data\infernalexp\recipes\cobbled_basalt_slab.json

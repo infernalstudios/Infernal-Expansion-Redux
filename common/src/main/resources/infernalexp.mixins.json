@@ -10,6 +10,7 @@
     "BlockEntityTypeMixin",
     "BoneMealItemMixin",
     "EntityMixin",
+    "FeatureMixin",
     "GlowstoneFeatureMixin",
     "ItemMixin",
     "LivingEntityMixin",

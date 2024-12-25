@@ -22,8 +22,14 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+
+import java.util.List;
 
 public class ModConfiguredFeatures {
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
@@ -70,6 +76,9 @@ public class ModConfiguredFeatures {
 
         register(context, BURIED_BONE, SupportedBlockFeature.INSTANCE,
                 new SingleBlockFeatureConfig(BlockStateProvider.simple(ModBlocks.BURIED_BONE.get()), true));
+
+        register(context, BASALT_IRON_ORE, Feature.ORE,
+                new OreConfiguration(new BlockMatchTest(Blocks.BASALT), ModBlocks.BASALT_IRON_ORE.get().defaultBlockState(), 10));
     }
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> DULLTHORNS = create("dullthorns");
@@ -82,4 +91,6 @@ public class ModConfiguredFeatures {
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> PLANTED_QUARTZ = create("planted_quartz");
     public static final ResourceKey<ConfiguredFeature<?, ?>> BURIED_BONE = create("buried_bone");
+
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BASALT_IRON_ORE = create("basalt_iron_ore");
 }

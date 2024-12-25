@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 
@@ -66,6 +67,12 @@ public class ModPlacedFeatures {
         register(context, BURIED_BONE, configLookup.getOrThrow(ModConfiguredFeatures.BURIED_BONE),
                 RarityFilter.onAverageOnceEvery(2),
                 BiomeFilter.biome());
+
+        register(context, BASALT_IRON_ORE, configLookup.getOrThrow(ModConfiguredFeatures.BASALT_IRON_ORE),
+                InSquarePlacement.spread(),
+                CountPlacement.of(20),
+                HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(10), VerticalAnchor.belowTop(10)),
+                BiomeFilter.biome());
     }
 
 
@@ -80,4 +87,6 @@ public class ModPlacedFeatures {
 
     public static final ResourceKey<PlacedFeature> PLANTED_QUARTZ = create("planted_quartz");
     public static final ResourceKey<PlacedFeature> BURIED_BONE = create("buried_bone");
+
+    public static final ResourceKey<PlacedFeature> BASALT_IRON_ORE = create("basalt_iron_ore");
 }

@@ -28,5 +28,8 @@ public class FeatureModuleFabric {
 
         BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.SOUL_SAND_VALLEY),
                 GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.BURIED_BONE);
+
+        BiomeModifications.addFeature(BiomeSelectors.includeByKey(Biomes.BASALT_DELTAS),
+                GenerationStep.Decoration.TOP_LAYER_MODIFICATION, ModPlacedFeatures.BASALT_IRON_ORE);
     }
 }

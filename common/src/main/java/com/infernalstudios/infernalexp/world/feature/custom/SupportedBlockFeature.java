@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -46,6 +47,9 @@ public class SupportedBlockFeature extends NetherFeature<SingleBlockFeatureConfi
 
     @Override
     public boolean isValidPos(LevelReader world, BlockPos pos) {
-        return Direction.stream().anyMatch(d -> world.getBlockState(pos.relative(d)).isFaceSturdy(world, pos.relative(d), d.getOpposite()));
+        return Direction.stream().anyMatch(d -> {
+                BlockState state = world.getBlockState(pos.relative(d));
+                return state.isFaceSturdy(world, pos.relative(d), d.getOpposite()) && !state.is(Blocks.BEDROCK);
+        });
     }
 }

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:basalt_deltas",
+  "features": "infernalexp:basalt_iron_ore",
+  "step": "top_layer_modification"
+}

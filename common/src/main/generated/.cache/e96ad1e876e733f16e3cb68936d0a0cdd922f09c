@@ -1,10 +1,10 @@
-// 1.20.1	2024-12-24T15:22:31.0797755	Infernal Expansion/Tags for minecraft:block
+// 1.20.1	2024-12-25T15:57:47.3286433	Infernal Expansion/Tags for minecraft:block
 2efbe36e39ae02a7e5bd55fc197044f38ba03d54 data\minecraft\tags\blocks\mineable\hoe.json
 ba91a734fd8b64efccf48c79c84f12fddb4b001d data\minecraft\tags\blocks\mineable\axe.json
 a70d4f8e8f3d8761fd93953a955af726598dc091 data\minecraft\tags\blocks\piglin_repellents.json
 6ba51b6cf4613f78f855eabd27d51af9c6989452 data\minecraft\tags\blocks\slabs.json
-edac3f948ac65654c901e8dbd4c5d4f2bf75853c data\infernalexp\tags\blocks\glowstone_canyon_carver_replaceable.json
 553384372d128711e4bf1dba497bd7f1e8dc0d91 data\minecraft\tags\blocks\walls.json
+edac3f948ac65654c901e8dbd4c5d4f2bf75853c data\infernalexp\tags\blocks\glowstone_canyon_carver_replaceable.json
 799231cc64a2059fcbdcfa0f3d0944419903d718 data\minecraft\tags\blocks\stairs.json
 b2938f8f6b0f89662c3b16547641f8483a5ba989 data\minecraft\tags\blocks\iron_ores.json
 7284575de017e3489918abfe77a8e63c0e95cfe8 data\minecraft\tags\blocks\fire.json
@@ -13,8 +13,8 @@ a5b604eef2a744d7be1a37b8d93d93b6874d4147 data\minecraft\tags\blocks\campfires.js
 67a75c006eda37775d33e7f946245c288244c8ea data\minecraft\tags\blocks\climbable.json
 4deb1d78c072703ad975d6cc4fb27fca2953ac32 data\minecraft\tags\blocks\smelts_to_glass.json
 253b4a9ce7a727a1922161072cf2125cd2def1ce data\infernalexp\tags\blocks\shroomlight_tears_growable_on.json
-b2938f8f6b0f89662c3b16547641f8483a5ba989 data\minecraft\tags\blocks\needs_stone_tool.json
 9b18c6ff13ca7499173538449da1a162ae2ca948 data\minecraft\tags\blocks\needs_iron_tool.json
-3d6aca0a0b15f8cd8ef4d66537f7275dc5a16005 data\minecraft\tags\blocks\mineable\pickaxe.json
+b2938f8f6b0f89662c3b16547641f8483a5ba989 data\minecraft\tags\blocks\needs_stone_tool.json
+9d323237da9e98792508f649ce2bbec6f6141ac2 data\minecraft\tags\blocks\mineable\pickaxe.json
 3041732fd1f15269f25b4d9924519ebb18eef619 data\minecraft\tags\blocks\mineable\shovel.json
 96b420fc20f72ea42feca18c2d6585d966672dd9 data\infernalexp\tags\blocks\glowlight_fire_base_blocks.json
