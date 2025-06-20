@@ -1,5 +1,9 @@
 package com.infernalstudios.infernalexp.module;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.infernalstudios.infernalexp.IECommon;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -35,4 +39,15 @@ public class ModBiomes {
             // temp, humidity, continentalness, erosion, depth, weirdness and offset
             Climate.parameters(0.7f, -0.2f, 0, 0, 0, 0, 0)
     );
+
+    public static JsonElement toJson(Climate.Parameter value) {
+        double min = value.min();
+        double max = value.max();
+        if (min == max) return new JsonPrimitive(min);
+
+        JsonArray array = new JsonArray();
+        array.add(min);
+        array.add(max);
+        return array;
+    }
 }
