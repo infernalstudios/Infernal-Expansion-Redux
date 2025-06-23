@@ -41,8 +41,8 @@ public class ModBiomes {
     );
 
     public static JsonElement toJson(Climate.Parameter value) {
-        double min = value.min();
-        double max = value.max();
+        double min = Climate.unquantizeCoord(value.min());
+        double max = Climate.unquantizeCoord(value.max());
         if (min == max) return new JsonPrimitive(min);
 
         JsonArray array = new JsonArray();

@@ -3,6 +3,7 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.datagen.config.ConfiguredData;
 import com.infernalstudios.infernalexp.datagen.config.ConfiguredDataResourcePack;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;

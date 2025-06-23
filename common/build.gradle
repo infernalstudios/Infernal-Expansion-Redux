@@ -9,7 +9,7 @@ base {
 }
 minecraft {
     version(minecraft_version)
-    if(file("src/main/resources/${mod_id}.accesswidener").exists()){
+    if (file("src/main/resources/${mod_id}.accesswidener").exists()) {
         accessWideners(file("src/main/resources/${mod_id}.accesswidener"))
     }
 }
@@ -19,6 +19,7 @@ dependencies {
      implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     compileOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${fabric_geckolib_version}"
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
 }
 
 publishing {
