@@ -12,12 +12,6 @@ logoFile = "${mod_id}.png" #optional
 credits = "${credits}" #optional
 authors = "${mod_author}" #optional
 description = '''${description}''' #mandatory (Supports multiline text)
-[[dependencies.${mod_id}]]
-modId = "geckolib"
-mandatory = true
-versionRange = "${forge_geckolib_version_range}"
-ordering = "NONE"
-side = "BOTH"
 [[dependencies.${mod_id}]] #optional
 modId = "forge" #mandatory
 mandatory = true #mandatory

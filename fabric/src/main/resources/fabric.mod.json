@@ -30,7 +30,6 @@
         "${mod_id}.fabric.mixins.json"
     ],
     "depends": {
-        "geckolib": ">=${fabric_geckolib_version}",
         "fabricloader": ">=${fabric_loader_version}",
         "fabric-api": "*",
         "minecraft": "${minecraft_version}",
