@@ -1,20 +1,10 @@
 package com.infernalstudios.infernalexp.platform;
 
-import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.platform.services.IPlatformHelper;
 
-import java.util.ServiceLoader;
+import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
 
 public class Services {
-
-    public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-
-    public static <T> T load(Class<T> clazz) {
-
-        final T loadedService = ServiceLoader.load(clazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        IEConstants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
-        return loadedService;
-    }
+    public static IPlatformHelper PLATFORM;
+    public static RegistrationProvider.Factory REGISTRATION_FACTORY;
 }

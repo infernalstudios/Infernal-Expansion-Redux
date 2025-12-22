@@ -5,8 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.infernalstudios.infernalexp.module.ModBiomes;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.data.worldgen.DimensionTypes;
+import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -37,8 +36,7 @@ public class ConfiguredData {
     }
 
     public String apply(@Nullable String original) {
-        return gson.fromJson(this.provider.apply(gson.fromJson(original == null ? "" : original, JsonElement.class)),
-                JsonElement.class).toString();
+        return gson.fromJson(this.provider.apply(gson.fromJson(original == null ? "" : original, JsonElement.class)), JsonElement.class).toString();
     }
 
 
@@ -54,8 +52,7 @@ public class ConfiguredData {
 
 
     public static void register() {
-        register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> true,
-                Common::changeNetherBiomeSource);
+        register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"), Common::changeNetherBiomeSource);
     }
 
     private static class Common {
@@ -64,28 +61,23 @@ public class ConfiguredData {
         }
 
         public static String changeNetherBiomeSource(JsonElement json) {
-            if (json == null)
-                json = getJson("""
-                        { "type": "minecraft:the_nether", "generator": { "type": "minecraft:noise", "biome_source": { "biomes": [
-                          { "biome": "minecraft:nether_wastes", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:soul_sand_valley", "parameters": { "continentalness": 0, "depth": 0,
-                            "erosion": 0, "humidity": -0.5, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:crimson_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0, "temperature": 0.4, "weirdness": 0 } },
-                          { "biome": "minecraft:warped_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0.5, "offset": 0.375, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:basalt_deltas", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0.175, "temperature": -0.5, "weirdness": 0 } } ],
-                        "type": "minecraft:multi_noise" }, "settings": "minecraft:nether" } }""");
+            if (json == null) json = getJson("""
+                    { "type": "minecraft:the_nether", "generator": { "type": "minecraft:noise", "biome_source": { "biomes": [
+                      { "biome": "minecraft:nether_wastes", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:soul_sand_valley", "parameters": { "continentalness": 0, "depth": 0,
+                        "erosion": 0, "humidity": -0.5, "offset": 0, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:crimson_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0, "temperature": 0.4, "weirdness": 0 } },
+                      { "biome": "minecraft:warped_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0.5, "offset": 0.375, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:basalt_deltas", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0.175, "temperature": -0.5, "weirdness": 0 } } ],
+                    "type": "minecraft:multi_noise" }, "settings": "minecraft:nether" } }""");
 
-            if (json.getAsJsonObject().get("generator")
-                    .getAsJsonObject().get("biome_source")
-                    .getAsJsonObject().get("type")
-                    .getAsString().equals("minecraft:multi_noise")) {
+            if (json.getAsJsonObject().get("generator").getAsJsonObject().get("biome_source").getAsJsonObject().get("type").getAsString().equals("minecraft:multi_noise")) {
 
-                List<JsonElement> entries = json.getAsJsonObject().get("generator")
-                        .getAsJsonObject().get("biome_source").getAsJsonObject().get("biomes").getAsJsonArray().asList();
+                List<JsonElement> entries = json.getAsJsonObject().get("generator").getAsJsonObject().get("biome_source").getAsJsonObject().get("biomes").getAsJsonArray().asList();
 
                 for (Map.Entry<ResourceKey<Biome>, Climate.ParameterPoint> entry : ModBiomes.getBiomeRegistry().entrySet()) {
 

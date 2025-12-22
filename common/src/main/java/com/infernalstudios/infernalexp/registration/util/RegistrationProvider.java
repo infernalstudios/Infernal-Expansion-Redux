@@ -27,21 +27,21 @@ public interface RegistrationProvider<T> {
     /**
      * Gets a provider for specified {@code modId} and {@code resourceKey}. <br>
      * It is <i>recommended</i> to store the resulted provider in a {@code static final} field to
-     * the {@link Factory#INSTANCE factory} creating multiple providers for the same resource key and mod id.
+     * the factory, creating multiple providers for the same resource key and mod id.
      *
      * @param resourceKey the {@link ResourceKey} of the registry of the provider
      * @param modId       the mod id that the provider will register objects for
      * @param <T>         the type of the provider
      * @return the provider
      */
-    static <T> RegistrationProvider<T> get(ResourceKey<? extends Registry<T>> resourceKey, String modId) {
-        return Factory.INSTANCE.create(resourceKey, modId);
+    static <T> RegistrationProvider<T> get(ResourceKey<Registry<T>> resourceKey, String modId) {
+        return Services.REGISTRATION_FACTORY.create(resourceKey, modId);
     }
 
     /**
      * Gets a provider for specified {@code modId} and {@code registry}. <br>
      * It is <i>recommended</i> to store the resulted provider in a {@code static final} field to
-     * the {@link Factory#INSTANCE factory} creating multiple providers for the same resource key and mod id.
+     * the factory, creating multiple providers for the same resource key and mod id.
      *
      * @param registry the {@link Registry} of the provider
      * @param modId    the mod id that the provider will register objects for
@@ -49,7 +49,7 @@ public interface RegistrationProvider<T> {
      * @return the provider
      */
     static <T> RegistrationProvider<T> get(Registry<T> registry, String modId) {
-        return Factory.INSTANCE.create(registry, modId);
+        return Services.REGISTRATION_FACTORY.create(registry, modId);
     }
 
     /**
@@ -83,11 +83,6 @@ public interface RegistrationProvider<T> {
      * should exist per mod loader.
      */
     interface Factory {
-
-        /**
-         * The singleton instance of the {@link Factory}. This is different on each loader.
-         */
-        Factory INSTANCE = Services.load(Factory.class);
 
         /**
          * Creates a {@link RegistrationProvider}.

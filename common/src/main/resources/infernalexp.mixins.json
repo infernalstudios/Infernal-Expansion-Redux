@@ -2,7 +2,6 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.infernalstudios.infernalexp.mixin",
-  "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilMenuMixin",
@@ -36,8 +35,6 @@
   "client": [
     "client.EntityRendererDispatcherMixin",
     "client.ScreenEffectRendererMixin"
-  ],
-  "server": [
   ],
   "injectors": {
     "defaultRequire": 1

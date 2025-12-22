@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.mixin.accessor.NoiseGeneratorSettingsAccessor;
+import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.world.surface.ModSurfaceRules;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
@@ -24,6 +25,8 @@ public abstract class MinecraftServerMixin {
 
     @Inject(method = "createLevels", at = @At("TAIL"))
     private void IE_appendSurfaceRules(ChunkProgressListener holder, CallbackInfo ci) {
+        if (Services.PLATFORM.isModLoaded("terrablender")) return;
+
         if (this.getWorldData() == null)
             throw new NullPointerException("What! The server's world data is null.");
 

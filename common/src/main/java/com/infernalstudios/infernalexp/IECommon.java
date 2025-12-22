@@ -20,6 +20,7 @@ public class IECommon {
         ModFeatures.load();
         ModCarvers.load();
         ModParticleTypes.load();
+        ModSounds.load();
     }
 
     public static ResourceLocation makeID(String name) {

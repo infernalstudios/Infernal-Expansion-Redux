@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="./Infernal_Expansion_Logo.png" width="75%" alt="Infernal Expansion">
+	<img src="forge/src/main/resources/icon.png" width="75%" alt="Infernal Expansion">
 </h1>
 
 <div align="center">

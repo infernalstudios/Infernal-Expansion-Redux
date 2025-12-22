@@ -1,42 +1,42 @@
 {
     "schemaVersion": 1,
-    "id": "${mod_id}",
+    "id": "infernalexp",
     "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${description}",
+    "name": "Infernal Expansion",
+    "description": "Expanding the Nether beyond its official update with tons of new mobs & blocks, all while staying true to the Vanilla feel!",
     "authors": [
-        "${mod_author}"
+        "Lyof, Nekomaster, evanbones"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://infernalstudios.org/",
+        "sources": "https://github.com/infernalstudios/Infernal-Expansion/",
+        "issues": "https://github.com/infernalstudios/Infernal-Expansion/issues"
     },
-    "license": "${license}",
-    "icon": "${mod_id}.png",
+    "license": "AGPL-3.0",
+    "icon": "icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-          "com.infernalstudios.infernalexp.InfernalExpansion"
+          "com.infernalstudios.infernalexp.fabric.InfernalExpansion"
         ],
         "client": [
-          "com.infernalstudios.infernalexp.client.InfernalExpansionFabricClient"
+            "com.infernalstudios.infernalexp.fabric.client.InfernalExpansionFabricClient"
         ],
-      "fabric-datagen": [
-          "com.infernalstudios.infernalexp.datagen.IEDataGenerator"
-      ]
+        "terrablender": [
+            "com.infernalstudios.infernalexp.fabric.compat.FabricTerraBlenderCompat"
+        ],
+        "fabric-datagen": [
+            "com.infernalstudios.infernalexp.fabric.datagen.IEDataGenerator"
+        ]
     },
     "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
+        "infernalexp.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=${fabric_loader_version}",
-        "fabric-api": "*",
-        "minecraft": "${minecraft_version}",
-        "java": ">=17"
-    },
-    "suggests": {
-        "another-mod": "*"
+        "fabricloader": ">=0.15.10",
+        "minecraft": "~1.20.1",
+        "java": ">=17",
+        "fabric-api": "*"
     }
 }
   
