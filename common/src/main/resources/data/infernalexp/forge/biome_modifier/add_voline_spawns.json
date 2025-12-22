@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "minecraft:nether_wastes",
+  "spawners": {
+    "type": "infernalexp:voline",
+    "weight": 45,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}
