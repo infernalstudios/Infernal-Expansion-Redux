@@ -31,6 +31,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
 
 import java.util.List;
 import java.util.Map;
@@ -363,7 +366,20 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                         generator.createGlassBlocks(blockDataHolder.get(), blockDataHolder.getPaneBlock().get());
                     } else if (blockDataHolder.hasModel()) {
                         switch (blockDataHolder.getModel()) {
-                            case CUBE -> generator.createTrivialCube(blockDataHolder.get());
+                            case CUBE -> {
+                                if (blockDataHolder == ModBlocks.VOLATILE_GEYSER) {
+                                    ResourceLocation base = TextureMapping.getBlockTexture(blockDataHolder.get());
+                                    ResourceLocation side = new ResourceLocation(base.getNamespace(), base.getPath() + "_side");
+
+                                    TextureMapping mapping = new TextureMapping()
+                                            .put(TextureSlot.TOP, base)
+                                            .put(TextureSlot.SIDE, side);
+
+                                    generator.createTrivialBlock(blockDataHolder.get(), mapping, ModelTemplates.CUBE_TOP);
+                                } else {
+                                    generator.createTrivialCube(blockDataHolder.get());
+                                }
+                            }
                             case PILLAR -> {
                                 var pillar = generator.woodProvider(blockDataHolder.get());
                                 pillar.log(blockDataHolder.get());

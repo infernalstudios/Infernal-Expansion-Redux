@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_top",
   "textures": {
-    "all": "infernalexp:block/volatile_geyser"
+    "side": "infernalexp:block/volatile_geyser_side",
+    "top": "infernalexp:block/volatile_geyser"
   }
 }
