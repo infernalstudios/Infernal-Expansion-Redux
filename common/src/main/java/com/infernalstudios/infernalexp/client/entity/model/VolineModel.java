@@ -85,6 +85,8 @@ public class VolineModel<T extends VolineEntity> extends HierarchicalModel<T> {
         this.animate(entity.walkAnimationState, VolineAnimation.walk, ageInTicks);
         this.animate(entity.eatAnimationState, VolineAnimation.eating, ageInTicks);
         this.animate(entity.sleepAnimationState, VolineAnimation.sleeping, ageInTicks);
+        this.animate(entity.layDownAnimationState, VolineAnimation.lay_down, ageInTicks);
+        this.animate(entity.wakeUpAnimationState, VolineAnimation.wake_up, ageInTicks);
     }
 
     @Override
