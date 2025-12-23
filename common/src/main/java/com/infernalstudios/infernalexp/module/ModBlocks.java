@@ -346,8 +346,7 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> VOLATILE_GEYSER = register("volatile_geyser", BlockDataHolder.of(() ->
             new VolatileGeyserBlock(BlockBehaviour.Properties.copy(Blocks.STONE))))
-            .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
+            .withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Volatile Geyser");
-
 }

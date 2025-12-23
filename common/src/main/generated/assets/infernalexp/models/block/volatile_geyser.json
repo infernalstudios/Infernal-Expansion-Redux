@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_top",
-  "textures": {
-    "side": "infernalexp:block/volatile_geyser_side",
-    "top": "infernalexp:block/volatile_geyser"
-  }
-}

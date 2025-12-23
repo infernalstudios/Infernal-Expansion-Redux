@@ -207,7 +207,7 @@ public class VolineEntity extends Monster implements IBucketable {
     }
 
     public boolean wantsToEat(ItemStack stack) {
-        return !this.isSleeping() && (stack.is(Items.MAGMA_CREAM) || stack.is(Items.GOLD_NUGGET) || stack.is(Items.GOLD_INGOT));
+        return !this.isSleeping() && (stack.is(Items.MAGMA_CREAM));
     }
 
     public boolean isSeekingShelter() {

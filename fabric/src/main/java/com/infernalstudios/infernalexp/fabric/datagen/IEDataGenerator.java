@@ -367,18 +367,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     } else if (blockDataHolder.hasModel()) {
                         switch (blockDataHolder.getModel()) {
                             case CUBE -> {
-                                if (blockDataHolder == ModBlocks.VOLATILE_GEYSER) {
-                                    ResourceLocation base = TextureMapping.getBlockTexture(blockDataHolder.get());
-                                    ResourceLocation side = new ResourceLocation(base.getNamespace(), base.getPath() + "_side");
-
-                                    TextureMapping mapping = new TextureMapping()
-                                            .put(TextureSlot.TOP, base)
-                                            .put(TextureSlot.SIDE, side);
-
-                                    generator.createTrivialBlock(blockDataHolder.get(), mapping, ModelTemplates.CUBE_TOP);
-                                } else {
-                                    generator.createTrivialCube(blockDataHolder.get());
-                                }
+                                generator.createTrivialCube(blockDataHolder.get());
                             }
                             case PILLAR -> {
                                 var pillar = generator.woodProvider(blockDataHolder.get());
