@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.module;
 
+import com.infernalstudios.infernalexp.client.entity.render.GlowsquitoRenderer;
 import com.infernalstudios.infernalexp.client.entity.render.VolineRenderer;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,5 +23,6 @@ public class ModEntityRenderers {
 
     public static void load() {
         register(ModEntityTypes.VOLINE, VolineRenderer::new);
+        register(ModEntityTypes.GLOWSQUITO, GlowsquitoRenderer::new);
     }
 }

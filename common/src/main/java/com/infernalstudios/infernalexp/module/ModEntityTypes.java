@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,13 @@ public class ModEntityTypes {
                             .build())
             .attributes(VolineEntity::createAttributes)
             .withTranslation("Voline"));
+
+    public static final EntityTypeDataHolder<GlowsquitoEntity> GLOWSQUITO = register("glowsquito", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.of(GlowsquitoEntity::new, MobCategory.CREATURE)
+                            .sized(0.8f, 0.5f)
+                            .build())
+            .attributes(GlowsquitoEntity::createAttributes)
+            .withTranslation("Glowsquito"));
 
     public static void load() {}
 }

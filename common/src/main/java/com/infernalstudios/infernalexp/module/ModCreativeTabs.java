@@ -77,6 +77,8 @@ public class ModCreativeTabs {
         entries.accept(ModItems.VOLINE_BUCKET.get());
         entries.accept(ModItems.VOLINE_SPAWN_EGG.get());
 
+        entries.accept(ModItems.GLOWSQUITO_SPAWN_EGG.get());
+
     }).build());
 
     // Called in the mod initializer / constructor in order to make sure that items are registered

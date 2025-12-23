@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.module;
 
+import com.infernalstudios.infernalexp.client.entity.model.GlowsquitoModel;
 import com.infernalstudios.infernalexp.client.entity.model.VolineModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -21,5 +22,6 @@ public class ModModelLayers {
 
     public static void load() {
         register(VolineModel.LAYER_LOCATION, VolineModel::createBodyLayer);
+        register(GlowsquitoModel.LAYER_LOCATION, GlowsquitoModel::createBodyLayer);
     }
 }

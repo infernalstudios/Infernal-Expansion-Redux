@@ -82,6 +82,18 @@ public class ModItems {
             .withTranslation("Voline Spawn Egg")
     );
 
+    public static final ItemDataHolder<?> GLOWSQUITO_SPAWN_EGG = register("glowsquito_spawn_egg", ItemDataHolder.of(() ->
+                    new SpawnEggItem(
+                            ModEntityTypes.GLOWSQUITO.get(),
+                            0x383948,
+                            0xe5c092,
+                            new Item.Properties()
+                    ))
+            .withModel(SPAWN_EGG)
+            .withTranslation("Glowsquito Spawn Egg")
+    );
+
+
     public static final ItemDataHolder<?> GLOWSILK_STRING = register("glowsilk_string", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)

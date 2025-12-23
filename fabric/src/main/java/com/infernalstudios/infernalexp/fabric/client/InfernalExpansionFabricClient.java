@@ -3,6 +3,8 @@ package com.infernalstudios.infernalexp.fabric.client;
 import com.infernalstudios.infernalexp.client.IECommonClient;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
 import com.infernalstudios.infernalexp.client.particle.InfectionParticle;
+import com.infernalstudios.infernalexp.client.sound.GlowsquitoFlightSound;
+import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModModelLayers;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
@@ -10,9 +12,11 @@ import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +35,12 @@ public class InfernalExpansionFabricClient implements ClientModInitializer {
         registerLayerDefinitions();
         registerBlockRenderTypes();
         registerParticleProviders();
+
+        ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+            if (entity instanceof GlowsquitoEntity glowsquito) {
+                Minecraft.getInstance().getSoundManager().play(new GlowsquitoFlightSound(glowsquito));
+            }
+        });
     }
 
     private void registerLayerDefinitions() {
