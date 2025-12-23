@@ -1,4 +1,4 @@
-package com.infernalstudios.infernalexp.client.entity.model;
+package com.infernalstudios.infernalexp.client.entity.animation;
 
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;

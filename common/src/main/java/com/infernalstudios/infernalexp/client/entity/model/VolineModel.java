@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.client.entity.model;
 
 import com.infernalstudios.infernalexp.IEConstants;
+import com.infernalstudios.infernalexp.client.entity.animation.VolineAnimation;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

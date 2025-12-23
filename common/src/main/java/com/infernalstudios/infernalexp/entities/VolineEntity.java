@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -37,7 +36,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,7 +57,6 @@ public class VolineEntity extends Monster implements IBucketable {
     public final AnimationState layDownAnimationState = new AnimationState();
     public final AnimationState wakeUpAnimationState = new AnimationState();
 
-    private long walkStartTime = 0;
     private int shelterSeekTime = 0;
 
     public VolineEntity(EntityType<? extends Monster> type, Level level) {
@@ -85,7 +82,6 @@ public class VolineEntity extends Monster implements IBucketable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FindMagmaBlockGoal(this, 1.0D, 16));
-
         this.goalSelector.addGoal(1, new EatItemsGoal(this));
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.MAGMA_CREAM), false));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.2D, 1.5D, entity -> entity.isHolding(Items.SNOWBALL)));
@@ -104,18 +100,19 @@ public class VolineEntity extends Monster implements IBucketable {
     public void tick() {
         super.tick();
 
-        if (!this.level().isClientSide && this.isSeekingShelter()) {
-            this.shelterSeekTime++;
-            if (this.shelterSeekTime > 200) { // 10 seconds
-                this.startSleeping(this.blockPosition());
+        if (!this.level().isClientSide) {
+            // Server-side logic for shelter seeking
+            if (this.isSeekingShelter()) {
+                this.shelterSeekTime++;
+                if (this.shelterSeekTime > 200) { // 10 seconds
+                    this.startSleeping(this.blockPosition());
+                    this.shelterSeekTime = 0;
+                }
+            } else {
                 this.shelterSeekTime = 0;
             }
-        } else if (!this.level().isClientSide) {
-            this.shelterSeekTime = 0;
-        }
-
-        if (this.level().isClientSide()) {
-            // Handle Animation States
+        } else {
+            // Client-side Animation Logic
             if (this.isSleeping()) {
                 int timer = this.entityData.get(SLEEP_TIMER);
 
@@ -123,37 +120,19 @@ public class VolineEntity extends Monster implements IBucketable {
                     this.layDownAnimationState.startIfStopped(this.tickCount);
                     this.sleepAnimationState.stop();
                     this.wakeUpAnimationState.stop();
-
-                    float currentRot = this.getYRot();
-                    float targetRot = Math.round(currentRot / 90.0F) * 90.0F;
-                    float newRot = Mth.approachDegrees(currentRot, targetRot, 10.0F);
-
-                    this.setYRot(newRot);
-                    this.yBodyRot = newRot;
-                    this.yHeadRot = newRot;
-
-                    Vec3 currentPos = this.position();
-                    Vec3 targetPos = new Vec3(this.blockPosition().getX() + 0.5, currentPos.y, this.blockPosition().getZ() + 0.5);
-
-                    if (currentPos.distanceToSqr(targetPos) < 2.0) {
-                        Vec3 newPos = currentPos.lerp(targetPos, 0.2);
-                        this.setPos(newPos);
-                    }
-                }
-                else if (timer <= 20) {
+                } else if (timer <= 20) {
                     this.wakeUpAnimationState.startIfStopped(this.tickCount);
                     this.sleepAnimationState.stop();
                     this.layDownAnimationState.stop();
-                }
-                else {
+                } else {
                     this.sleepAnimationState.startIfStopped(this.tickCount);
                     this.layDownAnimationState.stop();
                     this.wakeUpAnimationState.stop();
                 }
-
                 this.idleAnimationState.stop();
                 this.walkAnimationState.stop();
                 this.eatAnimationState.stop();
+
             } else if (this.isEating()) {
                 this.eatAnimationState.startIfStopped(this.tickCount);
                 this.idleAnimationState.stop();
@@ -162,28 +141,15 @@ public class VolineEntity extends Monster implements IBucketable {
                 this.layDownAnimationState.stop();
                 this.wakeUpAnimationState.stop();
             } else {
-                // Moving & Idle Logic
+                // Movement logic
                 boolean isMoving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-
-                // If currently walking, check if we should wait for the animation loop to finish
-                if (this.walkAnimationState.isStarted() && !isMoving) {
-                    long elapsed = this.tickCount - this.walkStartTime;
-                    if (elapsed % 15 != 0) {
-                        isMoving = true;
-                    }
-                }
-
                 if (isMoving) {
-                    if (!this.walkAnimationState.isStarted()) {
-                        this.walkAnimationState.start(this.tickCount);
-                        this.walkStartTime = this.tickCount;
-                    }
+                    this.walkAnimationState.startIfStopped(this.tickCount);
                     this.idleAnimationState.stop();
                 } else {
                     this.idleAnimationState.startIfStopped(this.tickCount);
                     this.walkAnimationState.stop();
                 }
-
                 this.eatAnimationState.stop();
                 this.sleepAnimationState.stop();
                 this.layDownAnimationState.stop();
@@ -197,6 +163,7 @@ public class VolineEntity extends Monster implements IBucketable {
         if (MAGMA_CREAM_EATEN.equals(key)) {
             this.refreshDimensions();
         } else if (IS_SLEEPING.equals(key)) {
+            // Reset animations when sleeping state changes
             if (!this.isSleeping()) {
                 this.sleepAnimationState.stop();
                 this.layDownAnimationState.stop();
@@ -437,7 +404,7 @@ public class VolineEntity extends Monster implements IBucketable {
     public void aiStep() {
         super.aiStep();
         if (this.isSleeping()) {
-            // Lock rotation and movement
+            // Lock rotation and movement while sleeping
             this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
             this.yBodyRot = this.yBodyRotO;
             this.yHeadRot = this.yHeadRotO;
