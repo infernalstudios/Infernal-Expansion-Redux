@@ -2,6 +2,8 @@ package com.infernalstudios.infernalexp.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -13,9 +15,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class SupportedBlock extends Block {
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
@@ -28,14 +32,22 @@ public class SupportedBlock extends Block {
             Direction.WEST, Block.box(0, 3, 3, 10, 13, 13)
     );
 
-    public SupportedBlock(Properties properties) {
+    private final Supplier<Item> pickItem;
+
+    public SupportedBlock(Properties properties, Supplier<Item> pickItem) {
         super(properties);
+        this.pickItem = pickItem;
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.DOWN));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING);
+    }
+
+    @Override
+    public @NotNull ItemStack getCloneItemStack(@NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull BlockState state) {
+        return new ItemStack(this.pickItem.get());
     }
 
     @Override
@@ -46,8 +58,8 @@ public class SupportedBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState other, LevelAccessor world,
-                                  BlockPos pos, BlockPos otherPos) {
+    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState other, @NotNull LevelAccessor world,
+                                           @NotNull BlockPos pos, @NotNull BlockPos otherPos) {
         BlockState result = super.updateShape(state, direction, other, world, pos, otherPos);
         if (!result.is(this)) return result;
 
@@ -61,7 +73,7 @@ public class SupportedBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPES.get(state.getValue(FACING));
     }
 }

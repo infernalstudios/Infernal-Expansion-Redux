@@ -7,12 +7,14 @@ import com.infernalstudios.infernalexp.world.feature.config.DullthornsFeatureCon
 import com.infernalstudios.infernalexp.world.feature.config.HangingMushroomFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.infernalstudios.infernalexp.world.feature.custom.*;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,9 +23,12 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.ReplaceSphereConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.material.Fluids;
 
 public class ModConfiguredFeatures {
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
@@ -73,6 +78,15 @@ public class ModConfiguredFeatures {
 
         register(context, BASALT_IRON_ORE, Feature.ORE,
                 new OreConfiguration(new BlockMatchTest(Blocks.BASALT), ModBlocks.BASALT_IRON_ORE.get().defaultBlockState(), 10));
+
+        register(context, GSC_BLACKSTONE_BLOBS, Feature.REPLACE_BLOBS,
+                new ReplaceSphereConfiguration(ModBlocks.DULLSTONE.get().defaultBlockState(), Blocks.BLACKSTONE.defaultBlockState(), UniformInt.of(2, 3)));
+
+        register(context, GSC_SPRING_OPEN, Feature.SPRING,
+                new SpringConfiguration(Fluids.LAVA.defaultFluidState(), false, 4, 1, HolderSet.direct(Block::builtInRegistryHolder, Blocks.NETHERRACK, ModBlocks.DULLSTONE.get(), ModBlocks.DIMSTONE.get())));
+
+        register(context, GSC_SPRING_CLOSED, Feature.SPRING,
+                new SpringConfiguration(Fluids.LAVA.defaultFluidState(), false, 5, 0, HolderSet.direct(Block::builtInRegistryHolder, Blocks.NETHERRACK, ModBlocks.DULLSTONE.get(), ModBlocks.DIMSTONE.get())));
     }
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> DULLTHORNS = create("dullthorns");
@@ -87,4 +101,8 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> BURIED_BONE = create("buried_bone");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> BASALT_IRON_ORE = create("basalt_iron_ore");
+
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_BLACKSTONE_BLOBS = create("gsc_blackstone_blobs");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_OPEN = create("gsc_spring_open");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_CLOSED = create("gsc_spring_closed");
 }

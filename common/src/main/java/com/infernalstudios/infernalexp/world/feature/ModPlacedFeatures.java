@@ -45,7 +45,7 @@ public class ModPlacedFeatures {
                 RarityFilter.onAverageOnceEvery(2),
                 BiomeFilter.biome());
 
-    register(context, HANGING_BROWN_MUSHROOM, configLookup.getOrThrow(ModConfiguredFeatures.HANGING_BROWN_MUSHROOM),
+        register(context, HANGING_BROWN_MUSHROOM, configLookup.getOrThrow(ModConfiguredFeatures.HANGING_BROWN_MUSHROOM),
                 RarityFilter.onAverageOnceEvery(4),
                 BiomeFilter.biome(),
                 InSquarePlacement.spread());
@@ -73,9 +73,25 @@ public class ModPlacedFeatures {
                 CountPlacement.of(20),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(10), VerticalAnchor.belowTop(10)),
                 BiomeFilter.biome());
+
+        register(context, GSC_BLACKSTONE_BLOBS, configLookup.getOrThrow(ModConfiguredFeatures.GSC_BLACKSTONE_BLOBS),
+                CountPlacement.of(3),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(128)),
+                BiomeFilter.biome());
+
+        register(context, GSC_SPRING_OPEN, configLookup.getOrThrow(ModConfiguredFeatures.GSC_SPRING_OPEN),
+                CountPlacement.of(8),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(4), VerticalAnchor.absolute(124)),
+                BiomeFilter.biome());
+
+        register(context, GSC_SPRING_CLOSED, configLookup.getOrThrow(ModConfiguredFeatures.GSC_SPRING_CLOSED),
+                CountPlacement.of(16),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(118)),
+                BiomeFilter.biome());
     }
-
-
 
     public static final ResourceKey<PlacedFeature> DULLTHORNS = create("dullthorns");
     public static final ResourceKey<PlacedFeature> LUMINOUS_FUNGUS = create("luminous_fungus");
@@ -89,4 +105,8 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> BURIED_BONE = create("buried_bone");
 
     public static final ResourceKey<PlacedFeature> BASALT_IRON_ORE = create("basalt_iron_ore");
+
+    public static final ResourceKey<PlacedFeature> GSC_BLACKSTONE_BLOBS = create("gsc_blackstone_blobs");
+    public static final ResourceKey<PlacedFeature> GSC_SPRING_OPEN = create("gsc_spring_open");
+    public static final ResourceKey<PlacedFeature> GSC_SPRING_CLOSED = create("gsc_spring_closed");
 }

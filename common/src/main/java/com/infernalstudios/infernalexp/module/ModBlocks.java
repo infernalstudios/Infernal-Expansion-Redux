@@ -55,7 +55,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> GLIMMER_GRAVEL = register("glimmer_gravel", BlockDataHolder.of(() ->
-                    new GlimmerGravelBlock(BlockBehaviour.Properties.copy(Blocks.SAND)))
+                    new GlimmerGravelBlock(BlockBehaviour.Properties.copy(Blocks.GRAVEL)))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_SHOVEL, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
             .withTranslation("Glimmer Gravel")
@@ -197,7 +197,7 @@ public class ModBlocks {
 
     private static final BlockBehaviour.Properties dullthorns =
             BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(1.1f)
-                    .mapColor(MapColor.TERRACOTTA_BROWN).noCollission().noOcclusion();
+                    .mapColor(MapColor.TERRACOTTA_BROWN).noCollission().noOcclusion().sound(SoundType.AZALEA_LEAVES);
 
     private static final BlockBehaviour.Properties dullthornsBlock =
             BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(0.8f)
@@ -276,13 +276,13 @@ public class ModBlocks {
 
 
     public static final BlockDataHolder<?> PLANTED_QUARTZ = register("planted_quartz", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BLOCK).instabreak().noCollission()))
+                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BLOCK).instabreak().noCollission(), () -> Items.QUARTZ))
             .cutout().dropsOther(() -> Items.QUARTZ)
             .withTranslation("Planted Quartz")
     );
 
     public static final BlockDataHolder<?> BURIED_BONE = register("buried_bone", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).instabreak().noCollission()))
+                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).instabreak().noCollission(), () -> Items.BONE))
             .cutout().dropsOther(() -> Items.BONE)
             .withTranslation("Buried Bone")
     );
@@ -296,12 +296,12 @@ public class ModBlocks {
 
 
     public static final BlockDataHolder<?> BASALT_STAIRS = register("basalt_stairs", BlockDataHolder.of(() ->
-                    StairBlockAccessor.createStairBlock(Blocks.BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BASALT))))
+            StairBlockAccessor.createStairBlock(Blocks.BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BASALT))))
             .withItem().dropsSelf().withModel(BlockDataHolder.Model.STAIRS).withTags(BlockTags.STAIRS)
             .withTranslation("Basalt Stairs");
 
     public static final BlockDataHolder<?> BASALT_SLAB = register("basalt_slab", BlockDataHolder.of(() ->
-                    new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
+            new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
             .withItem().dropsSelf().withModel(BlockDataHolder.Model.SLAB).withTags(BlockTags.SLABS)
             .withTranslation("Basalt Slab");
 

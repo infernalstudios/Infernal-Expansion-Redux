@@ -3,8 +3,9 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
@@ -17,20 +18,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BoneMealItem.class)
 public class BoneMealItemMixin {
-    @Inject(method = "growCrop", at = @At("HEAD"), cancellable = true)
-    private static void growShroomlight(ItemStack stack, Level world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (world.getBlockState(pos).is(Blocks.SHROOMLIGHT) &&
-                world.getBlockState(world.getBiome(pos).is(Biomes.WARPED_FOREST) ? pos.above() : pos.below()).isAir()) {
-            stack.shrink(1);
-            if (world.random.nextBoolean() && !world.isClientSide()) {
-                BlockState tear = ModBlocks.SHROOMLIGHT_TEAR.get().defaultBlockState();
 
-                if (world.getBiome(pos).is(Biomes.WARPED_FOREST))
-                    world.setBlock(pos.above(), tear.setValue(ShroomlightTearBlock.UP, true), Block.UPDATE_ALL);
-                else
-                    world.setBlock(pos.below(), tear, Block.UPDATE_ALL);
+    @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
+    public void useOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+
+        if (world.getBlockState(pos).is(Blocks.SHROOMLIGHT)) {
+            BlockPos targetPos = world.getBiome(pos).is(Biomes.WARPED_FOREST) ? pos.above() : pos.below();
+
+            if (world.getBlockState(targetPos).isAir()) {
+                if (!world.isClientSide) {
+                    context.getItemInHand().shrink(1);
+                    world.levelEvent(1505, pos, 0);
+
+                    BlockState tear = ModBlocks.SHROOMLIGHT_TEAR.get().defaultBlockState();
+                    if (world.getBiome(pos).is(Biomes.WARPED_FOREST))
+                        world.setBlock(targetPos, tear.setValue(ShroomlightTearBlock.UP, true), Block.UPDATE_ALL);
+                    else
+                        world.setBlock(targetPos, tear, Block.UPDATE_ALL);
+                }
+                cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
             }
-            cir.setReturnValue(true);
         }
     }
 }
