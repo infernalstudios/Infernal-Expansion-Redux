@@ -46,7 +46,7 @@
 					"pivot": [0, 4, 0]
 				},
 				{
-					"name": "leftlegfront",
+					"name": "frontleftleg",
 					"parent": "legs",
 					"pivot": [3, 5, -3],
 					"cubes": [
@@ -54,7 +54,7 @@
 					]
 				},
 				{
-					"name": "leftlegback",
+					"name": "backleftleg",
 					"parent": "legs",
 					"pivot": [3, 4, 3],
 					"cubes": [
@@ -62,7 +62,7 @@
 					]
 				},
 				{
-					"name": "rightlegfront",
+					"name": "frontrightleg",
 					"parent": "legs",
 					"pivot": [-3, 5, -3],
 					"cubes": [
@@ -70,7 +70,7 @@
 					]
 				},
 				{
-					"name": "rightlegback",
+					"name": "backrightleg",
 					"parent": "legs",
 					"pivot": [-3, 4, 3],
 					"cubes": [
