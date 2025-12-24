@@ -4,9 +4,6 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.compat.TerraBlenderCompat;
 import com.infernalstudios.infernalexp.forge.client.InfernalExpansionForgeClient;
-import com.infernalstudios.infernalexp.forge.module.*;
-import com.infernalstudios.infernalexp.forge.platform.ForgePlatformHelper;
-import com.infernalstudios.infernalexp.forge.registration.ForgeRegistrationFactory;
 import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,20 +15,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(IEConstants.MOD_ID)
 public class InfernalExpansion {
     public InfernalExpansion() {
-        Services.PLATFORM = new ForgePlatformHelper();
-        Services.REGISTRATION_FACTORY = new ForgeRegistrationFactory(); // Example
-
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         IECommon.init();
-
-        modEventBus.register(BlockModuleForge.class);
-        modEventBus.register(ItemModuleForge.class);
-        modEventBus.register(FeatureModuleForge.class);
-        modEventBus.register(CarverModuleForge.class);
-        modEventBus.register(EntityTypeModuleForge.class);
-        modEventBus.register(EffectModuleForge.class);
-        modEventBus.register(SpawnPlacementModuleForge.class);
 
         modEventBus.addListener(this::commonSetup);
 

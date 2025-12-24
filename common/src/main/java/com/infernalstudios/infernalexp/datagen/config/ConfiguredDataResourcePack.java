@@ -6,6 +6,7 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.resources.IoSupplier;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -16,32 +17,32 @@ public class ConfiguredDataResourcePack implements PackResources {
     public static final ConfiguredDataResourcePack INSTANCE = new ConfiguredDataResourcePack();
 
     @Override
-    public @Nullable IoSupplier<InputStream> getRootResource(String... segments) {
+    public @Nullable IoSupplier<InputStream> getRootResource(String @NotNull ... segments) {
         return null;
     }
 
     @Override
-    public @Nullable IoSupplier<InputStream> getResource(PackType type, ResourceLocation id) {
+    public @Nullable IoSupplier<InputStream> getResource(@NotNull PackType type, @NotNull ResourceLocation id) {
         return null;
     }
 
     @Override
-    public void listResources(PackType type, String namespace, String prefix, ResourceOutput consumer) {
+    public void listResources(@NotNull PackType type, @NotNull String namespace, @NotNull String prefix, @NotNull ResourceOutput consumer) {
 
     }
 
     @Override
-    public Set<String> getNamespaces(PackType type) {
+    public @NotNull Set<String> getNamespaces(@NotNull PackType type) {
         return Set.of();
     }
 
     @Override
-    public @Nullable <T> T getMetadataSection(MetadataSectionSerializer<T> metaReader) throws IOException {
+    public @Nullable <T> T getMetadataSection(@NotNull MetadataSectionSerializer<T> metaReader) throws IOException {
         return null;
     }
 
     @Override
-    public String packId() {
+    public @NotNull String packId() {
         return IEConstants.MOD_ID + "_configured_data";
     }
 

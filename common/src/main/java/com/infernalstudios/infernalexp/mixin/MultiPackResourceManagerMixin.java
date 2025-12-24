@@ -5,12 +5,16 @@ import com.infernalstudios.infernalexp.datagen.config.ConfiguredData;
 import com.infernalstudios.infernalexp.datagen.config.ConfiguredDataResourcePack;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.Resource;
 import org.apache.commons.io.input.CharSequenceInputStream;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -21,13 +25,13 @@ import java.util.function.Predicate;
 
 @Mixin(MultiPackResourceManager.class)
 public class MultiPackResourceManagerMixin {
-
     @Unique
     private static Resource readAndApply(Optional<Resource> resource, ConfiguredData data) {
         IECommon.log("Applying configured data: " + data.target, 0);
 
         String result = "";
-        if (resource.isEmpty()) result = data.apply(null);
+        if (resource.isEmpty())
+            result = data.apply(null);
         else {
             try {
                 result = data.apply(new String(resource.get().open().readAllBytes()));
@@ -37,7 +41,8 @@ public class MultiPackResourceManagerMixin {
         }
 
         String finalResult = result;
-        return new Resource(ConfiguredDataResourcePack.INSTANCE, () -> new CharSequenceInputStream(finalResult, Charset.defaultCharset()));
+        return new Resource(ConfiguredDataResourcePack.INSTANCE,
+                () -> new CharSequenceInputStream(finalResult, Charset.defaultCharset()));
     }
 
     @Unique
@@ -46,8 +51,7 @@ public class MultiPackResourceManagerMixin {
         return readAndApply(Optional.of(resource), data);
     }
 
-    // dunno why the refmap for this one specific mixin is broken
-    @ModifyReturnValue(method = {"getResource", "method_14486", "m_213713_"}, remap = false, at = @At("RETURN"))
+    @ModifyReturnValue(method = "getResource", at = @At("RETURN"))
     public Optional<Resource> getConfiguredResource(Optional<Resource> original, ResourceLocation id) {
         ConfiguredData data = ConfiguredData.get(id);
         if (data == null || !data.enabled.get() || (original.isPresent() && original.get().source() instanceof ConfiguredDataResourcePack))
@@ -61,11 +65,14 @@ public class MultiPackResourceManagerMixin {
         ConfiguredData data = ConfiguredData.get(id);
         if (data == null || !data.enabled.get()) return original;
 
-        return original.stream().map(resource -> readAndApply(resource, data)).toList();
+        return original.stream()
+                .map(resource -> readAndApply(resource, data)).toList();
     }
 
     @ModifyReturnValue(method = "listResources", at = @At("RETURN"))
-    public Map<ResourceLocation, Resource> findConfiguredResources(Map<ResourceLocation, Resource> original, String startingPath, Predicate<ResourceLocation> allowedPathPredicate) {
+    public Map<ResourceLocation, Resource> findConfiguredResources(Map<ResourceLocation, Resource> original,
+                                                                   String startingPath, Predicate<ResourceLocation> allowedPathPredicate) {
+
         for (ConfiguredData data : ConfiguredData.INSTANCES) {
             if (data.enabled.get() && data.target.getPath().startsWith(startingPath + "/") && allowedPathPredicate.test(data.target)) {
                 if (!original.containsKey(data.target)) {
@@ -85,7 +92,9 @@ public class MultiPackResourceManagerMixin {
     }
 
     @ModifyReturnValue(method = "listResourceStacks", at = @At("RETURN"))
-    public Map<ResourceLocation, List<Resource>> findAllConfiguredResources(Map<ResourceLocation, List<Resource>> original, String startingPath, Predicate<ResourceLocation> allowedPathPredicate) {
+    public Map<ResourceLocation, List<Resource>> findAllConfiguredResources(Map<ResourceLocation, List<Resource>> original,
+                                                                            String startingPath, Predicate<ResourceLocation> allowedPathPredicate) {
+
         for (ConfiguredData data : ConfiguredData.INSTANCES) {
             if (data.enabled.get() && data.target.getPath().startsWith(startingPath) && allowedPathPredicate.test(data.target)) {
                 if (!original.containsKey(data.target)) {
@@ -99,8 +108,14 @@ public class MultiPackResourceManagerMixin {
             ConfiguredData data = ConfiguredData.get(id);
             if (data == null || !data.enabled.get()) continue;
 
-            original.replace(id, original.get(id).stream().map(resource -> readAndApply(resource, data)).toList());
+            original.replace(id, original.get(id).stream()
+                    .map(resource -> readAndApply(resource, data)).toList());
         }
         return original;
+    }
+
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void reloadConfigs(PackType type, List<PackResources> packs, CallbackInfo ci) {
+        //ReloadListener.INSTANCE.preload((ResourceManager) (Object) this);
     }
 }
