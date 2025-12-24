@@ -228,7 +228,6 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
 
     public void ate(ItemStack stack) {
         if (stack.is(Items.MAGMA_CREAM)) {
-            // Trigger Eating Animation
             this.triggerAnim("actionController", "eat");
             this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
 
