@@ -49,6 +49,9 @@ dependencies {
     modLocalRuntime "curse.maven:jei-238222:7253589"
     modApi("com.github.glitchfiend:TerraBlender-fabric:$rootProject.terrablender_version")
 
+    include(implementation("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}"))
+    annotationProcessor "io.github.llamalad7:mixinextras-fabric:${mixinextras_version}"
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 }

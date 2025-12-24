@@ -39,6 +39,11 @@ configurations {
 dependencies {
     forge "net.minecraftforge:forge:$rootProject.forge_version"
 
+    implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
+
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
+
     modLocalRuntime "curse.maven:jei-238222:7253590"
     modApi("com.github.glitchfiend:TerraBlender-forge:$rootProject.terrablender_version")
 

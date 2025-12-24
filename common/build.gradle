@@ -17,4 +17,7 @@ dependencies {
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     modCompileOnly "com.github.glitchfiend:TerraBlender-common:$rootProject.terrablender_version"
+
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
+    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
 }

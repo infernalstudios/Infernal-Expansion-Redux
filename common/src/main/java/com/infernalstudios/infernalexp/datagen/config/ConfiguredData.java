@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.infernalstudios.infernalexp.module.ModBiomes;
+import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -52,7 +53,7 @@ public class ConfiguredData {
 
 
     public static void register() {
-        register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> true,
+        register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"),
                 Common::changeNetherBiomeSource);
     }
 

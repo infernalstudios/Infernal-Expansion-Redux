@@ -51,7 +51,8 @@ public class MultiPackResourceManagerMixin {
         return readAndApply(Optional.of(resource), data);
     }
 
-    @ModifyReturnValue(method = "getResource", at = @At("RETURN"))
+    // thank you remapping, very cool
+    @ModifyReturnValue(method = {"getResource", "method_14486", "m_213713_"}, remap = false, at = @At("RETURN"))
     public Optional<Resource> getConfiguredResource(Optional<Resource> original, ResourceLocation id) {
         ConfiguredData data = ConfiguredData.get(id);
         if (data == null || !data.enabled.get() || (original.isPresent() && original.get().source() instanceof ConfiguredDataResourcePack))
