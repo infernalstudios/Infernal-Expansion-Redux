@@ -33,31 +33,27 @@ public class ModPlacedFeatures {
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         var configLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        register(context, DULLTHORNS, configLookup.getOrThrow(ModConfiguredFeatures.DULLTHORNS),
-                BiomeFilter.biome(),
-                InSquarePlacement.spread());
-
         register(context, LUMINOUS_FUNGUS, configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),
                 RarityFilter.onAverageOnceEvery(2),
-                BiomeFilter.biome());
+                InSquarePlacement.spread());
+
+        register(context, DULLTHORNS, configLookup.getOrThrow(ModConfiguredFeatures.DULLTHORNS),
+                InSquarePlacement.spread());
 
         register(context, GLOWLIGHT_FIRE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWLIGHT_FIRE),
                 RarityFilter.onAverageOnceEvery(2),
-                BiomeFilter.biome());
+                InSquarePlacement.spread());
 
         register(context, HANGING_BROWN_MUSHROOM, configLookup.getOrThrow(ModConfiguredFeatures.HANGING_BROWN_MUSHROOM),
                 RarityFilter.onAverageOnceEvery(4),
-                BiomeFilter.biome(),
                 InSquarePlacement.spread());
 
         register(context, GLOWSTONE_SPIKE, configLookup.getOrThrow(ModConfiguredFeatures.GLOWSTONE_SPIKE),
                 RarityFilter.onAverageOnceEvery(4),
-                BiomeFilter.biome(),
                 InSquarePlacement.spread());
 
         register(context, DEATH_PIT, configLookup.getOrThrow(ModConfiguredFeatures.DEATH_PIT),
                 RarityFilter.onAverageOnceEvery(3),
-                BiomeFilter.biome(),
                 InSquarePlacement.spread());
 
         register(context, PLANTED_QUARTZ, configLookup.getOrThrow(ModConfiguredFeatures.PLANTED_QUARTZ),

@@ -6,9 +6,6 @@
       "chance": 4
     },
     {
-      "type": "minecraft:biome"
-    },
-    {
       "type": "minecraft:in_square"
     }
   ]
