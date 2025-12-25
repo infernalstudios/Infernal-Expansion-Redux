@@ -93,7 +93,14 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FindMagmaBlockGoal(this, 1.0D, 16));
         this.goalSelector.addGoal(1, new EatItemsGoal(this));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.MAGMA_CREAM), false));
+
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.MAGMA_CREAM), false) {
+            @Override
+            public boolean canUse() {
+                return !VolineEntity.this.isSeekingShelter() && super.canUse();
+            }
+        });
+
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.2D, 1.5D, entity -> entity.isHolding(Items.SNOWBALL)));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Piglin.class, 8.0F, 1.0D, 1.2D, entity -> !entity.hasEffect(MobEffects.FIRE_RESISTANCE)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, true));
@@ -138,7 +145,6 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         super.tick();
 
         if (!this.level().isClientSide) {
-            // Server-side logic for shelter seeking
             if (this.isSeekingShelter()) {
                 this.shelterSeekTime++;
                 if (this.shelterSeekTime > 200) { // 10 seconds
@@ -155,8 +161,21 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         if (MAGMA_CREAM_EATEN.equals(key) || IS_GROWN.equals(key)) {
             this.refreshDimensions();
+            this.refreshSpeed();
         }
         super.onSyncedDataUpdated(key);
+    }
+
+    public void refreshSpeed() {
+        double baseSpeed = 0.4D;
+
+        if (this.isGrown()) {
+            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.16);
+        } else {
+            int eaten = this.entityData.get(MAGMA_CREAM_EATEN);
+            double newSpeed = baseSpeed - (eaten * 0.12D);
+            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
+        }
     }
 
     @Override
@@ -166,9 +185,9 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
 
     public float getSizeFactor() {
         if (this.isGrown()) {
-            return this.isSleeping() ? 1.6F : 1.75F;
+            return 1.0F;
         }
-        return 1.0F + (this.entityData.get(MAGMA_CREAM_EATEN) * 0.2F);
+        return 1.0F + (this.entityData.get(MAGMA_CREAM_EATEN) * 0.1F);
     }
 
     @Override
@@ -244,21 +263,24 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
 
     public void ate(ItemStack stack) {
         if (stack.is(Items.MAGMA_CREAM)) {
+            int eaten = this.entityData.get(MAGMA_CREAM_EATEN) + 1;
+            this.entityData.set(MAGMA_CREAM_EATEN, eaten);
 
             if (!this.isGrown()) {
-                int eaten = this.entityData.get(MAGMA_CREAM_EATEN) + 1;
-                this.entityData.set(MAGMA_CREAM_EATEN, eaten);
-
                 if (eaten >= 3) {
                     this.setGrown(true);
                     this.entityData.set(MAGMA_CREAM_EATEN, 0);
-                    this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, 1.0F, 1.0F); // Transformation sound
-                } else {
-                    this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 6000, eaten - 1, false, false));
+                    this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, 1.0F, 1.0F);
                 }
+
+                this.refreshDimensions();
+                this.refreshSpeed();
+
             } else {
-                this.setSeekingShelter(true);
-                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+                if (eaten >= 3) {
+                    this.setSeekingShelter(true);
+                    this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+                }
             }
 
             this.setPersistenceRequired();
@@ -396,6 +418,7 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         if (tag.contains("IsGrown")) {
             this.setGrown(tag.getBoolean("IsGrown"));
         }
+        this.refreshSpeed();
     }
 
     @Nullable
