@@ -16,6 +16,17 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> GLOWSQUITO_DEATH = register("entity.glowsquito.death");
     public static final RegistryObject<SoundEvent> GLOWSQUITO_LOOP = register("entity.glowsquito.loop");
 
+    public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_LOOP = register("ambient.glowstone_canyon.loop");
+    public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_ADDITIONS = register("ambient.glowstone_canyon.additions");
+    public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_MOOD = register("ambient.glowstone_canyon.mood");
+    public static final RegistryObject<SoundEvent> MUSIC_NETHER_GLOWSTONE_CANYON = register("music.nether.glowstone_canyon");
+
+    public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_BREAK = register("block.dullstone.break");
+    public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_STEP = register("block.dullstone.step");
+    public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_PLACE = register("block.dullstone.place");
+    public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_HIT = register("block.dullstone.hit");
+    public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_FALL = register("block.dullstone.fall");
+
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(IECommon.makeID(name)));
     }
