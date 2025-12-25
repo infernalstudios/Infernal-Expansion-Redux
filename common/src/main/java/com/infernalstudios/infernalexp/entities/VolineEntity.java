@@ -49,6 +49,25 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Objects;
 
 public class VolineEntity extends Monster implements IBucketable, GeoEntity {
+
+    // NBT Tags
+    private static final String TAG_MAGMA_CREAM_EATEN = "MagmaCreamEaten";
+    private static final String TAG_IS_SLEEPING = "IsSleeping";
+    private static final String TAG_FROM_BUCKET = "FromBucket";
+    private static final String TAG_SLEEP_TIMER = "SleepTimer";
+    private static final String TAG_IS_SEEKING_SHELTER = "IsSeekingShelter";
+    private static final String TAG_IS_GROWN = "IsGrown";
+
+    // Gameplay Constants
+    private static final int MAX_MAGMA_CREAM_EATEN = 3;
+    private static final int SLEEP_DURATION_TICKS = 1000;
+    private static final int SHELTER_SEEK_TIMEOUT = 200; // 10 seconds
+    private static final double BASE_MOVEMENT_SPEED = 0.4D;
+    private static final double GROWN_MOVEMENT_SPEED = 0.16D;
+    private static final double SPEED_REDUCTION_PER_CREAM = 0.12D;
+    private static final float SIZE_INCREMENT_PER_CREAM = 0.08F;
+
+    // Synched Data
     public static final EntityDataAccessor<Integer> MAGMA_CREAM_EATEN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
@@ -74,7 +93,7 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.ATTACK_DAMAGE, 1.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.4D);
+                .add(Attributes.MOVEMENT_SPEED, BASE_MOVEMENT_SPEED);
     }
 
     @Override
@@ -88,6 +107,57 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         this.entityData.define(IS_GROWN, false);
     }
 
+    public int getMagmaCreamEaten() {
+        return this.entityData.get(MAGMA_CREAM_EATEN);
+    }
+
+    public void setMagmaCreamEaten(int amount) {
+        this.entityData.set(MAGMA_CREAM_EATEN, amount);
+    }
+
+    public boolean isSleeping() {
+        return this.entityData.get(IS_SLEEPING);
+    }
+
+    public void setIsSleeping(boolean sleeping) {
+        this.entityData.set(IS_SLEEPING, sleeping);
+    }
+
+    @Override
+    public boolean isFromBucket() {
+        return this.entityData.get(FROM_BUCKET);
+    }
+
+    @Override
+    public void setFromBucket(boolean isFromBucket) {
+        this.entityData.set(FROM_BUCKET, isFromBucket);
+    }
+
+    public int getSleepTimer() {
+        return this.entityData.get(SLEEP_TIMER);
+    }
+
+    public void setSleepTimer(int timer) {
+        this.entityData.set(SLEEP_TIMER, timer);
+    }
+
+    public boolean isSeekingShelter() {
+        return this.entityData.get(IS_SEEKING_SHELTER);
+    }
+
+    public void setSeekingShelter(boolean seeking) {
+        this.entityData.set(IS_SEEKING_SHELTER, seeking);
+    }
+
+    public boolean isGrown() {
+        return this.entityData.get(IS_GROWN);
+    }
+
+    public void setGrown(boolean grown) {
+        this.entityData.set(IS_GROWN, grown);
+        this.refreshDimensions();
+    }
+
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -97,29 +167,46 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.MAGMA_CREAM), false) {
             @Override
             public boolean canUse() {
-                return !VolineEntity.this.isSeekingShelter() && super.canUse();
+                return !VolineEntity.this.isSeekingShelter() && !VolineEntity.this.isSleeping() && super.canUse();
             }
         });
 
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.2D, 1.5D, entity -> entity.isHolding(Items.SNOWBALL)));
         this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Piglin.class, 8.0F, 1.0D, 1.2D, entity -> !entity.hasEffect(MobEffects.FIRE_RESISTANCE)));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, true));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D) {
+            @Override
+            public boolean canUse() {
+                return !VolineEntity.this.isSleeping() && super.canUse();
+            }
+        });
+
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F) {
+            @Override
+            public boolean canUse() {
+                return !VolineEntity.this.isSleeping() && super.canUse();
+            }
+        });
+
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this) {
+            @Override
+            public boolean canUse() {
+                return !VolineEntity.this.isSleeping() && super.canUse();
+            }
+        });
+
         this.goalSelector.addGoal(8, new PanicGoal(this, getAttributeValue(Attributes.MOVEMENT_SPEED) * 2.0D));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true, entity -> entity.hasEffect(MobEffects.FIRE_RESISTANCE) && !entity.isHolding(Items.MAGMA_CREAM)));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Monster.class, true, entity -> entity.hasEffect(MobEffects.FIRE_RESISTANCE)));
     }
 
-    // GeckoLib Controllers
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "movementController", 5, event -> {
             if (this.isGrown() && this.isSleeping()) {
-                int timer = this.entityData.get(SLEEP_TIMER);
-                if (timer > 11960) {
+                if (this.getSleepTimer() > 960) {
                     return event.setAndContinue(FALLING_ASLEEP);
                 }
                 return event.setAndContinue(ASLEEP);
@@ -147,7 +234,7 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         if (!this.level().isClientSide) {
             if (this.isSeekingShelter()) {
                 this.shelterSeekTime++;
-                if (this.shelterSeekTime > 200) { // 10 seconds
+                if (this.shelterSeekTime > SHELTER_SEEK_TIMEOUT) {
                     this.startSleeping(this.blockPosition());
                     this.shelterSeekTime = 0;
                 }
@@ -167,15 +254,17 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
     }
 
     public void refreshSpeed() {
-        double baseSpeed = 0.4D;
-
-        if (this.isGrown()) {
-            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.16);
+        double newSpeed;
+        if (this.isSleeping()) {
+            newSpeed = 0.0D;
+        } else if (this.isGrown()) {
+            newSpeed = GROWN_MOVEMENT_SPEED;
         } else {
-            int eaten = this.entityData.get(MAGMA_CREAM_EATEN);
-            double newSpeed = baseSpeed - (eaten * 0.12D);
-            Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
+            int eaten = this.getMagmaCreamEaten();
+            newSpeed = BASE_MOVEMENT_SPEED - (eaten * SPEED_REDUCTION_PER_CREAM);
         }
+
+        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
     }
 
     @Override
@@ -187,7 +276,7 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         if (this.isGrown()) {
             return 1.0F;
         }
-        return 1.0F + (this.entityData.get(MAGMA_CREAM_EATEN) * 0.1F);
+        return 1.0F + (this.getMagmaCreamEaten() * SIZE_INCREMENT_PER_CREAM);
     }
 
     @Override
@@ -200,53 +289,31 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
         return !this.isSleeping() && (stack.is(Items.MAGMA_CREAM));
     }
 
-    public boolean isSeekingShelter() {
-        return this.entityData.get(IS_SEEKING_SHELTER);
-    }
-
-    public void setSeekingShelter(boolean seeking) {
-        this.entityData.set(IS_SEEKING_SHELTER, seeking);
-    }
-
-    public boolean isSleeping() {
-        return this.entityData.get(IS_SLEEPING);
-    }
-
-    public boolean isGrown() {
-        return this.entityData.get(IS_GROWN);
-    }
-
-    public void setGrown(boolean grown) {
-        this.entityData.set(IS_GROWN, grown);
-        this.refreshDimensions();
-    }
-
-    public void startSleeping(@NotNull BlockPos pos) {
-        this.setSeekingShelter(false);
-        this.entityData.set(IS_SLEEPING, true);
-        this.entityData.set(SLEEP_TIMER, 12000);
-
-        this.getNavigation().stop();
-        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.0D);
-
-        this.setPos(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+    private void lockToGrid() {
+        this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
 
         float snappedRot = Math.round(this.getYRot() / 90.0F) * 90.0F;
         this.setYRot(snappedRot);
         this.yBodyRot = snappedRot;
         this.yHeadRot = snappedRot;
+    }
 
-        this.yRotO = snappedRot;
-        this.yBodyRotO = snappedRot;
-        this.yHeadRotO = snappedRot;
+    public void startSleeping(@NotNull BlockPos pos) {
+        this.setSeekingShelter(false);
+        this.setIsSleeping(true);
+        this.setSleepTimer(SLEEP_DURATION_TICKS);
 
-        this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
+        this.getNavigation().stop();
+        this.refreshSpeed();
+
+        this.setPos(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+        this.lockToGrid();
     }
 
     private void wakeUp() {
-        this.entityData.set(IS_SLEEPING, false);
-        this.entityData.set(MAGMA_CREAM_EATEN, 0);
-        Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.4D);
+        this.setIsSleeping(false);
+        this.setMagmaCreamEaten(0);
+        this.refreshSpeed();
         this.removeEffect(MobEffects.MOVEMENT_SLOWDOWN);
     }
 
@@ -262,56 +329,63 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
     }
 
     public void ate(ItemStack stack) {
-        if (stack.is(Items.MAGMA_CREAM)) {
-            int eaten = this.entityData.get(MAGMA_CREAM_EATEN) + 1;
-            this.entityData.set(MAGMA_CREAM_EATEN, eaten);
+        if (!stack.is(Items.MAGMA_CREAM)) return;
 
+        int eaten = this.getMagmaCreamEaten() + 1;
+        this.setMagmaCreamEaten(eaten);
+
+        if (eaten >= MAX_MAGMA_CREAM_EATEN) {
             if (!this.isGrown()) {
-                if (eaten >= 3) {
-                    this.setGrown(true);
-                    this.entityData.set(MAGMA_CREAM_EATEN, 0);
-                    this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, 1.0F, 1.0F);
-                }
-
-                this.refreshDimensions();
-                this.refreshSpeed();
-
+                // Growth Logic
+                this.setGrown(true);
+                this.setMagmaCreamEaten(0);
+                this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, 1.0F, 1.0F);
             } else {
-                if (eaten >= 3) {
-                    this.setSeekingShelter(true);
-                    this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
-                }
+                // Already grown, now seeks shelter
+                this.setSeekingShelter(true);
+                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
             }
-
-            this.setPersistenceRequired();
-            this.setTarget(null);
         }
+
+        this.refreshDimensions();
+        this.refreshSpeed();
+        this.setPersistenceRequired();
+        this.setTarget(null);
     }
 
     @Override
-    public boolean isFromBucket() {
-        return this.entityData.get(FROM_BUCKET);
-    }
+    public void aiStep() {
+        super.aiStep();
+        if (this.isSleeping()) {
+            this.lockToGrid();
+            this.setXRot(this.xRotO); // Lock head pitch
 
-    @Override
-    public void setFromBucket(boolean isFromBucket) {
-        this.entityData.set(FROM_BUCKET, isFromBucket);
+            int timer = this.getSleepTimer();
+            if (timer > 0) {
+                this.setSleepTimer(timer - 1);
+                if (timer % 20 == 0) {
+                    this.refreshDimensions();
+                }
+            } else {
+                this.wakeUp();
+            }
+        }
     }
 
     @Override
     public void copyToStack(ItemStack stack) {
         IBucketable.copyToStack(this, stack);
         CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt("MagmaCreamEaten", this.entityData.get(MAGMA_CREAM_EATEN));
+        tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
         tag.putFloat("Size", this.getSizeFactor());
-        tag.putBoolean("IsGrown", this.isGrown());
+        tag.putBoolean(TAG_IS_GROWN, this.isGrown());
     }
 
     @Override
     public void copyFromAdditional(CompoundTag compound) {
         IBucketable.copyFromAdditional(this, compound);
-        if (compound.contains("MagmaCreamEaten")) {
-            this.entityData.set(MAGMA_CREAM_EATEN, compound.getInt("MagmaCreamEaten"));
+        if (compound.contains(TAG_MAGMA_CREAM_EATEN)) {
+            this.setMagmaCreamEaten(compound.getInt(TAG_MAGMA_CREAM_EATEN));
         }
     }
 
@@ -327,7 +401,11 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
 
     @Override
     protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        return IBucketable.tryBucketEntity(player, hand, this).orElse(super.mobInteract(player, hand));
+        if (!this.isGrown()) {
+            return IBucketable.tryBucketEntity(player, hand, this).orElse(super.mobInteract(player, hand));
+        }
+
+        return super.mobInteract(player, hand);
     }
 
     @Override
@@ -395,28 +473,29 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("MagmaCreamEaten", this.entityData.get(MAGMA_CREAM_EATEN));
-        tag.putBoolean("IsSleeping", this.entityData.get(IS_SLEEPING));
-        tag.putBoolean("FromBucket", this.isFromBucket());
-        tag.putInt("SleepTimer", this.entityData.get(SLEEP_TIMER));
-        tag.putBoolean("IsSeekingShelter", this.isSeekingShelter());
-        tag.putBoolean("IsGrown", this.isGrown());
+        tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
+        tag.putBoolean(TAG_IS_SLEEPING, this.isSleeping());
+        tag.putBoolean(TAG_FROM_BUCKET, this.isFromBucket());
+        tag.putInt(TAG_SLEEP_TIMER, this.getSleepTimer());
+        tag.putBoolean(TAG_IS_SEEKING_SHELTER, this.isSeekingShelter());
+        tag.putBoolean(TAG_IS_GROWN, this.isGrown());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.entityData.set(MAGMA_CREAM_EATEN, tag.getInt("MagmaCreamEaten"));
-        this.entityData.set(IS_SLEEPING, tag.getBoolean("IsSleeping"));
-        this.setFromBucket(tag.getBoolean("FromBucket"));
-        if (tag.contains("SleepTimer")) {
-            this.entityData.set(SLEEP_TIMER, tag.getInt("SleepTimer"));
+        this.setMagmaCreamEaten(tag.getInt(TAG_MAGMA_CREAM_EATEN));
+        this.setIsSleeping(tag.getBoolean(TAG_IS_SLEEPING));
+        this.setFromBucket(tag.getBoolean(TAG_FROM_BUCKET));
+
+        if (tag.contains(TAG_SLEEP_TIMER)) {
+            this.setSleepTimer(tag.getInt(TAG_SLEEP_TIMER));
         }
-        if (tag.contains("IsSeekingShelter")) {
-            this.setSeekingShelter(tag.getBoolean("IsSeekingShelter"));
+        if (tag.contains(TAG_IS_SEEKING_SHELTER)) {
+            this.setSeekingShelter(tag.getBoolean(TAG_IS_SEEKING_SHELTER));
         }
-        if (tag.contains("IsGrown")) {
-            this.setGrown(tag.getBoolean("IsGrown"));
+        if (tag.contains(TAG_IS_GROWN)) {
+            this.setGrown(tag.getBoolean(TAG_IS_GROWN));
         }
         this.refreshSpeed();
     }
@@ -424,43 +503,12 @@ public class VolineEntity extends Monster implements IBucketable, GeoEntity {
     @Nullable
     @Override
     public LivingEntity getControllingPassenger() {
-        if (this.entityData.get(IS_SLEEPING)) return null;
+        if (this.isSleeping()) return null;
         return this.getFirstPassenger() instanceof LivingEntity entity ? entity : null;
     }
 
     @Override
     public boolean canAttack(@NotNull LivingEntity target) {
         return !this.isSleeping() && super.canAttack(target);
-    }
-
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        if (this.isSleeping()) {
-            // Lock movement while sleeping
-            this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
-
-            float snappedRot = Math.round(this.getYRot() / 90.0F) * 90.0F;
-
-            this.setYRot(snappedRot);
-            this.yBodyRot = snappedRot;
-            this.yHeadRot = snappedRot;
-
-            this.yRotO = snappedRot;
-            this.yBodyRotO = snappedRot;
-            this.yHeadRotO = snappedRot;
-
-            this.setXRot(this.xRotO);
-
-            int timer = this.entityData.get(SLEEP_TIMER);
-            if (timer > 0) {
-                this.entityData.set(SLEEP_TIMER, timer - 1);
-                if (timer % 20 == 0) {
-                    this.refreshDimensions();
-                }
-            } else {
-                this.wakeUp();
-            }
-        }
     }
 }
