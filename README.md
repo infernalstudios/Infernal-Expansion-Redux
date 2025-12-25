@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="forge/src/main/resources/icon.png" width="75%" alt="Infernal Expansion">
+    <img src="forge/src/main/resources/icon.png" width="75%" alt="Infernal Expansion">
 </h1>
 
 <div align="center">
@@ -8,11 +8,11 @@
   </a>
 
   <a href="https://infernalstudios.org/infernalexpansion/curseforge">
-    <img alt="CurseForge Downloads" src="https://img.shields.io/badge/dynamic/json?color=orange&style=for-the-badge&label=CurseForge&query=%24.downloads.total&suffix=%20Downloads&url=https%3A%2F%2Fapi.cfwidget.com%2F395078">
+    <img alt="CurseForge Downloads" src="https://img.shields.io/curseforge/dt/395078?color=orange&style=for-the-badge&label=CurseForge">
   </a>
 
   <a href="https://infernalstudios.org/infernalexpansion/modrinth">
-    <img alt="Modrinth Downloads" src="https://img.shields.io/badge/dynamic/json?color=red&style=for-the-badge&label=Modrinth&query=%24.downloads&suffix=%20Downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FZrpxHZN4">
+    <img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/ZrpxHZN4?color=red&style=for-the-badge&label=Modrinth">
   </a>
 </div>
 <br>
