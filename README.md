@@ -22,6 +22,4 @@
 
 Currently, only a basic implementation of the Glowstone Canyon has been readded, alongside numerous building blocks and a handful of generation features in other biomes, but it works well!
 
-In the future, we want to readd almost all the mobs from previous versions of IE too. However, we're limited on programmers with the time and experience required to pull this off in a way that we'd find satisfying. If you're someone with those skills, please reach out to us on our Discord!
-
 If you find any bugs, let us know in the issue tracker!
