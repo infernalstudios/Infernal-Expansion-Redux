@@ -15,9 +15,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -40,6 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -349,6 +350,22 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
+    public @NotNull SoundSource getSoundSource() {
+        return SoundSource.HOSTILE;
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        if (level.getBlockState(pos.below()).is(Blocks.NETHER_WART_BLOCK) ||
+                level.getBlockState(pos.below()).is(Blocks.NETHERRACK) ||
+                level.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK) ||
+                level.getBlockState(pos.below()).is(Blocks.BLACKSTONE)) {
+            return 10.0F;
+        }
+        return 0.0F;
+    }
+
+    @Override
     protected void jumpFromGround() {
         if (!this.isSleeping()) {
             super.jumpFromGround();
@@ -368,7 +385,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
                 if (!this.isGrown()) {
                     this.setGrown(true);
                     this.setMagmaCreamEaten(0);
-                    this.playSound(SoundEvents.ZOMBIE_VILLAGER_CONVERTED, 1.0F, 1.0F);
                 } else {
                     this.setSeekingShelter(true);
                     this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
@@ -517,8 +533,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
             BlockPos pos,
             RandomSource random
     ) {
-        return level.getDifficulty() != Difficulty.PEACEFUL
-                && !level.getBlockState(pos.below()).is(Blocks.NETHER_WART_BLOCK);
+        return !level.getBlockState(pos.below()).is(Blocks.NETHER_WART_BLOCK);
     }
 
     @Override
@@ -560,6 +575,10 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
 
     @Override
     public boolean canAttack(@NotNull LivingEntity target) {
+        if (this.level().getDifficulty() == net.minecraft.world.Difficulty.PEACEFUL) {
+            return false;
+        }
+
         return !this.isSleeping() && super.canAttack(target);
     }
 }

@@ -50,35 +50,28 @@ public class EatItemsGoal extends Goal {
 
         if (this.eatAnimationTick > 0) {
             this.eatAnimationTick--;
-
             this.faceItemInstantly();
-
             if (this.eatAnimationTick % 4 == 0) {
                 this.mob.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
-
                 if (this.mob.level() instanceof ServerLevel serverLevel) {
                     ItemStack stack = this.mob.getItemInHand(InteractionHand.MAIN_HAND);
                     if (!stack.isEmpty()) {
                         double x = this.mob.getX() + this.mob.getLookAngle().x / 2.0D;
                         double y = this.mob.getY() + 0.5D;
                         double z = this.mob.getZ() + this.mob.getLookAngle().z / 2.0D;
-
                         serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack),
                                 x, y, z, 5, 0.1, 0.1, 0.1, 0.05);
                     }
                 }
             }
-
             if (this.eatAnimationTick == 0) {
                 ItemStack itemOnGround = this.targetItem.getItem();
                 this.mob.ate(itemOnGround.split(1));
-
                 if (itemOnGround.isEmpty()) {
                     this.targetItem.discard();
                 } else {
                     this.targetItem.setItem(itemOnGround);
                 }
-
                 this.stop();
             }
             return;
@@ -86,16 +79,22 @@ public class EatItemsGoal extends Goal {
 
         this.mob.getLookControl().setLookAt(this.targetItem, 30.0F, 30.0F);
 
-        this.pathRecalcTicks--;
-        if (this.pathRecalcTicks <= 0) {
-            this.pathRecalcTicks = 10;
-            this.mob.getNavigation().moveTo(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1.2D);
-        }
-
         double reachDistance = (this.mob.getBbWidth() / 2.0D) + 1.0D;
         double reachDistanceSqr = reachDistance * reachDistance;
+        double distanceToItemSqr = this.mob.distanceToSqr(this.targetItem);
 
-        if (this.mob.distanceToSqr(this.targetItem) < reachDistanceSqr) {
+        this.pathRecalcTicks--;
+
+        if (this.pathRecalcTicks <= 0 && distanceToItemSqr > reachDistanceSqr) {
+            this.pathRecalcTicks = 10;
+            if (distanceToItemSqr < 4.0D) {
+                this.mob.getMoveControl().setWantedPosition(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1.2D);
+            } else {
+                this.mob.getNavigation().moveTo(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1.2D);
+            }
+        }
+
+        if (distanceToItemSqr < reachDistanceSqr) {
             this.mob.playEatingAnimation();
             this.faceItemInstantly();
 
