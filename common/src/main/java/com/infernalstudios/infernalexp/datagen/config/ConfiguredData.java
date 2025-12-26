@@ -1,9 +1,6 @@
 package com.infernalstudios.infernalexp.datagen.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.infernalstudios.infernalexp.module.ModBiomes;
 import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.resources.ResourceKey;
@@ -55,28 +52,31 @@ public class ConfiguredData {
     public static void register() {
         register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"),
                 Common::changeNetherBiomeSource);
+
+        register(ResourceLocation.tryBuild("minecraft", "loot_tables/entities/magma_cube.json"), () -> true,
+                Common::addVolineMagmaCreamDrop);
     }
 
     private static class Common {
-        private static JsonElement getJson(String string) {
-            return gson.fromJson(string, JsonElement.class);
+        private static JsonElement getJson() {
+            return gson.fromJson("""
+                    { "type": "minecraft:the_nether", "generator": { "type": "minecraft:noise", "biome_source": { "biomes": [
+                      { "biome": "minecraft:nether_wastes", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:soul_sand_valley", "parameters": { "continentalness": 0, "depth": 0,
+                        "erosion": 0, "humidity": -0.5, "offset": 0, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:crimson_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0, "temperature": 0.4, "weirdness": 0 } },
+                      { "biome": "minecraft:warped_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0.5, "offset": 0.375, "temperature": 0, "weirdness": 0 } },
+                      { "biome": "minecraft:basalt_deltas", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
+                        "humidity": 0, "offset": 0.175, "temperature": -0.5, "weirdness": 0 } } ],
+                    "type": "minecraft:multi_noise" }, "settings": "minecraft:nether" } }""", JsonElement.class);
         }
 
         public static String changeNetherBiomeSource(JsonElement json) {
             if (json == null)
-                json = getJson("""
-                        { "type": "minecraft:the_nether", "generator": { "type": "minecraft:noise", "biome_source": { "biomes": [
-                          { "biome": "minecraft:nether_wastes", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:soul_sand_valley", "parameters": { "continentalness": 0, "depth": 0,
-                            "erosion": 0, "humidity": -0.5, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:crimson_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0, "temperature": 0.4, "weirdness": 0 } },
-                          { "biome": "minecraft:warped_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0.5, "offset": 0.375, "temperature": 0, "weirdness": 0 } },
-                          { "biome": "minecraft:basalt_deltas", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                            "humidity": 0, "offset": 0.175, "temperature": -0.5, "weirdness": 0 } } ],
-                        "type": "minecraft:multi_noise" }, "settings": "minecraft:nether" } }""");
+                json = getJson();
 
             if (json.getAsJsonObject().get("generator")
                     .getAsJsonObject().get("biome_source")
@@ -105,6 +105,41 @@ public class ConfiguredData {
             }
 
             return json.toString();
+        }
+
+        public static String addVolineMagmaCreamDrop(JsonElement json) {
+            if (json != null && json.isJsonObject()) {
+                JsonObject obj = json.getAsJsonObject();
+                JsonArray pools = obj.getAsJsonArray("pools");
+
+                if (pools != null) {
+                    JsonObject newPool = new JsonObject();
+                    newPool.addProperty("rolls", 1);
+
+                    JsonArray entries = new JsonArray();
+                    JsonObject entry = new JsonObject();
+                    entry.addProperty("type", "minecraft:item");
+                    entry.addProperty("name", "minecraft:magma_cream");
+                    entries.add(entry);
+                    newPool.add("entries", entries);
+
+                    JsonArray conditions = new JsonArray();
+                    JsonObject condition = new JsonObject();
+                    condition.addProperty("condition", "minecraft:entity_properties");
+
+                    condition.add("entity", new JsonPrimitive("killer"));
+
+                    JsonObject predicate = new JsonObject();
+                    predicate.addProperty("type", "infernalexp:voline");
+                    condition.add("predicate", predicate);
+
+                    conditions.add(condition);
+                    newPool.add("conditions", conditions);
+
+                    pools.add(newPool);
+                }
+            }
+            return json == null ? "" : json.toString();
         }
     }
 }

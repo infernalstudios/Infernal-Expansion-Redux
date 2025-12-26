@@ -27,7 +27,7 @@ public class ModEntityTypes {
 
     public static final EntityTypeDataHolder<VolineEntity> VOLINE = register("voline", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(VolineEntity::new, MobCategory.MONSTER)
-                            .sized(0.6F, 1.8F)
+                            .sized(0.6F, 0.75F)
                             .fireImmune()
                             .build())
             .attributes(VolineEntity::createAttributes)

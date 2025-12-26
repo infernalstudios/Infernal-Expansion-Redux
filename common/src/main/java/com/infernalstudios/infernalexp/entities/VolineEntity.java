@@ -149,6 +149,11 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
+    public boolean isPushedByFluid() {
+        return !this.isSleeping() && super.isPushedByFluid();
+    }
+
+    @Override
     public void setFromBucket(boolean isFromBucket) {
         this.entityData.set(FROM_BUCKET, isFromBucket);
     }
@@ -175,7 +180,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
 
     public void setGrown(boolean grown) {
         this.entityData.set(IS_GROWN, grown);
-        this.refreshDimensions();
     }
 
     @Override
@@ -269,7 +273,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     @Override
     public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
         if (MAGMA_CREAM_EATEN.equals(key) || IS_GROWN.equals(key)) {
-            this.refreshDimensions();
             this.refreshSpeed();
         }
         super.onSyncedDataUpdated(key);
@@ -289,22 +292,11 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(newSpeed);
     }
 
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return super.getDimensions(pose).scale(this.getSizeFactor());
-    }
-
     public float getSizeFactor() {
         if (this.isGrown()) {
             return 1.0F;
         }
         return 1.0F + (this.getMagmaCreamEaten() * SIZE_INCREMENT_PER_CREAM);
-    }
-
-    @Override
-    public void refreshDimensions() {
-        super.refreshDimensions();
-        this.setPos(this.getX(), this.getY(), this.getZ());
     }
 
     @Nullable
@@ -385,14 +377,15 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         }
         else if (stack.is(ItemTags.PIGLIN_LOVED)) {
             if (this.isGrown()) {
-                this.setInLove(null);
+                if (this.canFallInLove()) {
+                    this.setInLove(null);
+                }
                 this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
             } else {
                 this.playSound(SoundEvents.GENERIC_EAT, 0.5F, 1.2F);
             }
         }
 
-        this.refreshDimensions();
         this.refreshSpeed();
         this.setPersistenceRequired();
         this.setTarget(null);
@@ -416,9 +409,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
             int timer = this.getSleepTimer();
             if (timer > 0) {
                 this.setSleepTimer(timer - 1);
-                if (timer % 20 == 0) {
-                    this.refreshDimensions();
-                }
             } else {
                 this.wakeUp();
             }
@@ -508,11 +498,12 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
             ServerLevel serverLevel = (ServerLevel) this.level();
 
             serverLevel.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, this.getSoundSource(), 1.0F, 1.0F);
-            serverLevel.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY() + 0.5, this.getZ(), 15, 0.5, 0.5, 0.5, 0.1);
 
+            serverLevel.sendParticles(ParticleTypes.FLASH, this.getX(), this.getY() + 0.5, this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+            serverLevel.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY() + 0.5, this.getZ(), 15, 0.5, 0.5, 0.5, 0.1);
             serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 0.5, this.getZ(), 5, 0.3, 0.5, 0.3, 0.05);
 
-            if (this.level().getBlockState(pos).isAir()) {
+            if (this.level().getBlockState(pos).canBeReplaced()) {
                 this.level().setBlock(pos, ModBlocks.VOLATILE_GEYSER.get().defaultBlockState(), 3);
             }
             this.discard();

@@ -9,7 +9,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class FindShelterGoal extends MoveToBlockGoal {
     private final VolineEntity voline;
@@ -38,6 +41,13 @@ public class FindShelterGoal extends MoveToBlockGoal {
     protected boolean isValidTarget(LevelReader level, @NotNull BlockPos pos) {
         if (!level.getBlockState(pos).isSolidRender(level, pos)) return false;
         if (!level.getBlockState(pos.above()).isAir()) return false;
+
+        List<VolineEntity> list = this.voline.level().getEntitiesOfClass(VolineEntity.class, new AABB(pos.above()));
+        for (VolineEntity voline : list) {
+            if (voline.isSleeping()) {
+                return false;
+            }
+        }
 
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 

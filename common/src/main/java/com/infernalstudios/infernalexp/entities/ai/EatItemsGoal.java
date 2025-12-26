@@ -17,6 +17,7 @@ public class EatItemsGoal extends Goal {
     private final VolineEntity mob;
     private ItemEntity targetItem;
     private int eatAnimationTick;
+    private int pathRecalcTicks;
 
     public EatItemsGoal(VolineEntity mob) {
         this.mob = mob;
@@ -84,9 +85,17 @@ public class EatItemsGoal extends Goal {
         }
 
         this.mob.getLookControl().setLookAt(this.targetItem, 30.0F, 30.0F);
-        this.mob.getNavigation().moveTo(this.targetItem, 1.2D);
 
-        if (this.mob.distanceToSqr(this.targetItem) < 1.5D) {
+        this.pathRecalcTicks--;
+        if (this.pathRecalcTicks <= 0) {
+            this.pathRecalcTicks = 10;
+            this.mob.getNavigation().moveTo(this.targetItem.getX(), this.targetItem.getY(), this.targetItem.getZ(), 1.2D);
+        }
+
+        double reachDistance = (this.mob.getBbWidth() / 2.0D) + 1.0D;
+        double reachDistanceSqr = reachDistance * reachDistance;
+
+        if (this.mob.distanceToSqr(this.targetItem) < reachDistanceSqr) {
             this.mob.playEatingAnimation();
             this.faceItemInstantly();
 
@@ -95,6 +104,8 @@ public class EatItemsGoal extends Goal {
             this.mob.setItemInHand(InteractionHand.MAIN_HAND, visualStack);
 
             this.eatAnimationTick = this.mob.isGrown() ? 6 : 12;
+
+            this.mob.getNavigation().stop();
         }
     }
 
@@ -114,6 +125,7 @@ public class EatItemsGoal extends Goal {
     public void stop() {
         this.mob.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
         this.eatAnimationTick = 0;
+        this.pathRecalcTicks = 0;
         super.stop();
     }
 }
