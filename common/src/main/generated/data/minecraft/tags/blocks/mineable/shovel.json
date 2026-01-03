@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:shimmer_sand",
-    "infernalexp:shimmer_sheet",
-    "infernalexp:glimmer_gravel",
     "infernalexp:basalt_sand",
-    "infernalexp:basalt_sand_sheet"
+    "infernalexp:basalt_sand_sheet",
+    "infernalexp:glimmer_gravel",
+    "infernalexp:shimmer_sand",
+    "infernalexp:shimmer_sheet"
   ]
 }

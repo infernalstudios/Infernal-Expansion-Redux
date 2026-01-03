@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:shimmer_stone_bricks_slab",
+    "infernalexp:basalt_bricks_slab",
     "infernalexp:basalt_slab",
     "infernalexp:cobbled_basalt_slab",
-    "infernalexp:basalt_bricks_slab"
+    "infernalexp:shimmer_stone_bricks_slab"
   ]
 }

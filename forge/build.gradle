@@ -14,7 +14,6 @@ legacyForge {
     version = "${minecraft_version}-${forge_version}"
 
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-
     if (at.exists()) {
         accessTransformers.from(at)
     }
@@ -23,6 +22,7 @@ legacyForge {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
     }
+
     runs {
         client {
             client()
@@ -57,7 +57,7 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
 
     // TerraBlender
-    modImplementation("com.github.glitchfiend:TerraBlender-forge:$terrablender_version")
+    modImplementation "com.github.glitchfiend:TerraBlender-forge:$terrablender_version"
 
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")

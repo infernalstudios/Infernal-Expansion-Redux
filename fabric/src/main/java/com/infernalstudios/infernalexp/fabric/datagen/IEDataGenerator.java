@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -349,7 +350,10 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             for (Map.Entry<TagKey<Block>, List<BlockDataHolder<?>>> entry : BlockDataHolder.getBlockTags().entrySet()) {
                 FabricTagProvider<Block>.FabricTagBuilder tagBuilder = getOrCreateTagBuilder(entry.getKey());
 
-                entry.getValue().forEach(b -> tagBuilder.add(b.get()));
+                entry.getValue().stream()
+                        .map(BlockDataHolder::get)
+                        .sorted(Comparator.comparing(BuiltInRegistries.BLOCK::getKey))
+                        .forEach(tagBuilder::add);
             }
 
             getOrCreateTagBuilder(ModTags.Blocks.SHROOMLIGHT_TEARS_GROWABLE)

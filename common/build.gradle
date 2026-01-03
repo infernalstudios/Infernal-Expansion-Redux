@@ -18,7 +18,7 @@ dependencies {
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     compileOnly group: 'org.ow2.asm', name: 'asm-tree', version: '9.6'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
 
     compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}"
     compileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
@@ -39,5 +39,5 @@ configurations {
 
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
-    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+    commonResources tasks.named("processResources")
 }

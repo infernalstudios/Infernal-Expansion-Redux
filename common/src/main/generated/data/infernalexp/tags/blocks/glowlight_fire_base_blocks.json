@@ -1,17 +1,17 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:shimmer_sand",
+    "infernalexp:dimstone",
+    "infernalexp:dullstone",
     "infernalexp:glimmer_gravel",
+    "infernalexp:polished_dimstone",
+    "infernalexp:polished_dullstone",
+    "infernalexp:polished_glowstone",
+    "infernalexp:shimmer_sand",
     "infernalexp:shimmer_stone",
     "infernalexp:shimmer_stone_bricks",
     "infernalexp:shimmer_stone_bricks_slab",
     "infernalexp:shimmer_stone_bricks_stairs",
-    "infernalexp:polished_glowstone",
-    "infernalexp:dimstone",
-    "infernalexp:polished_dimstone",
-    "infernalexp:dullstone",
-    "infernalexp:polished_dullstone",
     "minecraft:glowstone"
   ]
 }
