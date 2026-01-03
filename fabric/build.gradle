@@ -1,86 +1,66 @@
 plugins {
-    id 'com.github.johnrengelman.shadow'
-}
-
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    runs {
-        datagen {
-            inherit client
-
-            name "Data Generation"
-
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project(":common").file("src/main/generated")}"
-            vmArg "-Dfabric-api.datagen.modid=infernalexp"
-
-            runDir "build/datagen"
-        }
-    }
-}
-
-repositories {
-    maven {
-        name = "Terraformers"
-        url = "https://maven.terraformersmc.com/"
-    }
-}
-
-sourceSets.main.resources.srcDirs += project(":common").file("src/main/generated")
-
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
-
-configurations {
-    common {
-        canBeResolved = true
-        canBeConsumed = false
-    }
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
-
-    shadowBundle {
-        canBeResolved = true
-        canBeConsumed = false
-    }
+    id 'multiloader-loader'
+    id 'fabric-loom'
 }
 
 dependencies {
-    modImplementation("net.fabricmc:fabric-loader:$fabric_loader_version")
-    modApi("net.fabricmc.fabric-api:fabric-api:$fabric_api_version")
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
 
-    modLocalRuntime("curse.maven:jei-238222:7253589")
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
-    modRuntimeOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+    // EMI
+    modImplementation "dev.emi:emi-fabric:${emi_version}"
 
+    // Cloth Config
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
     modImplementation "com.terraformersmc:modmenu:${mod_menu_version}"
 
-    modApi("com.github.glitchfiend:TerraBlender-fabric:$terrablender_version")
-    modApi("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+    // TerraBlender
+    modImplementation("com.github.glitchfiend:TerraBlender-fabric:$terrablender_version")
 
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+    // GeckoLib
+    modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":common")
 }
 
-processResources {
-    inputs.property 'version', project.version
-
-    filesMatching('fabric.mod.json') {
-        expand version: project.version
+loom {
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
     }
-}
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+        datagen {
+            client()
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
 
-shadowJar {
-    configurations = [project.configurations.shadowBundle]
-    archiveClassifier = 'dev-shadow'
-}
+            vmArg "-Dfabric-api.datagen.output-dir=${project(":common").file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.strict-validation=true"
 
-remapJar {
-    injectAccessWidener = true
-    inputFile.set shadowJar.archiveFile
+            ideConfigGenerated(true)
+            runDir("build/datagen")
+        }
+    }
 }

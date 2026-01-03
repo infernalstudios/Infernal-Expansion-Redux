@@ -1,76 +1,66 @@
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+mixin {
+    add(sourceSets.main, "${mod_id}.refmap.json")
 
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+    config("${mod_id}.mixins.json")
+    config("${mod_id}.forge.mixins.json")
+}
 
-        mixinConfig "infernalexp.mixins.json"
-        mixinConfig "infernalexp.forge.mixins.json"
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
+
+    validateAccessTransformers = true
+
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers = at
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
     }
 }
 
-sourceSets.main.resources.srcDirs += project(":common").file("src/main/generated")
-
-architectury {
-    platformSetupLoomIde()
-    forge()
-}
-
-configurations {
-    common {
-        canBeResolved = true
-        canBeConsumed = false
-    }
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
-
-    shadowBundle {
-        canBeResolved = true
-        canBeConsumed = false
-    }
-}
+sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-    forge "net.minecraftforge:forge:$forge_version"
+    // EMI
+    modImplementation "dev.emi:emi-forge:${emi_version}"
 
-    implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
+    // Cloth Config
+    modImplementation "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
 
-    compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
+    // GeckoLib
+    modImplementation "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
 
-    modCompileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
-    modRuntimeOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
+    // TerraBlender
+    modImplementation("com.github.glitchfiend:TerraBlender-forge:$terrablender_version")
 
-    implementation("com.eliotlash.mclib:mclib:20")
-    forgeRuntimeLibrary("com.eliotlash.mclib:mclib:20")
-    modApi("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-
-    modLocalRuntime("curse.maven:jei-238222:7253590")
-    modApi("com.github.glitchfiend:TerraBlender-forge:$terrablender_version")
-
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
-    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+    compileOnly project(":common")
+    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 }
 
-processResources {
-    inputs.property 'version', project.version
-
-    filesMatching('META-INF/mods.toml') {
-        expand version: project.version
-    }
-}
-
-shadowJar {
-    configurations = [project.configurations.shadowBundle]
-    archiveClassifier = 'dev-shadow'
-}
-
-remapJar {
-    inputFile.set shadowJar.archiveFile
+jar {
+    finalizedBy('reobfJar')
+    manifest.attributes([
+            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+    ])
 }
