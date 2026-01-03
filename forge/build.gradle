@@ -43,7 +43,9 @@ legacyForge {
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
 dependencies {
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.0"))
+    compileOnly 'org.jetbrains:annotations:26.0.2-1'
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
 
     // EMI
     modImplementation "dev.emi:emi-forge:${emi_version}"
