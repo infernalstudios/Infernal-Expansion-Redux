@@ -1,19 +1,19 @@
 {
     "schemaVersion": 1,
-    "id": "infernalexp",
+    "id": "${mod_id}",
     "version": "${version}",
-    "name": "Infernal Expansion",
-    "description": "Expanding the Nether beyond its official update with tons of new mobs & blocks, all while staying true to the Vanilla feel!",
+    "name": "${mod_name}",
+    "description": "${description}",
     "authors": [
-        "Lyof, Nekomaster, evanbones"
+        "${mod_author}"
     ],
     "contact": {
         "homepage": "https://infernalstudios.org/",
         "sources": "https://github.com/infernalstudios/Infernal-Expansion-Redux/",
         "issues": "https://github.com/infernalstudios/Infernal-Expansion-Redux/issues"
     },
-    "license": "AGPL-3.0",
-    "icon": "icon.png",
+    "license": "${license}",
+    "icon": "${mod_id}.png",
     "environment": "*",
     "entrypoints": {
         "main": [
@@ -33,14 +33,14 @@
         ]
     },
     "mixins": [
-        "infernalexp.mixins.json"
+        "${mod_id}.mixins.json"
     ],
     "depends": {
-        "geckolib": ">=4.4.7",
-        "fabricloader": ">=0.15.10",
-        "minecraft": "~1.20.1",
+        "fabricloader": ">=0.14",
+        "fabric": "*",
+        "minecraft": "${minecraft_version}",
         "java": ">=17",
-        "fabric-api": "*"
+        "geckolib": ">=4.4.7"
     },
     "suggests": {
         "cloth-config": "*"

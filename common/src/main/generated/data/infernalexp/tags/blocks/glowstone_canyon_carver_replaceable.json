@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:shimmer_sand",
-    "infernalexp:shimmer_stone",
     "infernalexp:dimstone",
-    "infernalexp:dullstone"
+    "infernalexp:dullstone",
+    "infernalexp:shimmer_sand",
+    "infernalexp:shimmer_stone"
   ]
 }

@@ -1,23 +1,51 @@
-architectury {
-    common rootProject.enabled_platforms.split(',')
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/infernalexp.accesswidener")
+legacyForge {
+    mcpVersion = minecraft_version
+    accessTransformers.from file("src/main/resources/META-INF/accesstransformer.cfg")
 
-    mixin {
-        defaultRefmapName = "infernalexp.refmap.json"
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/generated'
+        }
     }
 }
 
 dependencies {
-    // We depend on Fabric Loader here to use the Fabric @Environment annotations, which get remapped to the correct annotations on each platform.
-    // Do NOT use other classes from Fabric Loader.
-    modImplementation "net.fabricmc:fabric-loader:$fabric_loader_version"
-
+    compileOnly 'org.jetbrains:annotations:26.0.2-1'
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'org.ow2.asm', name: 'asm-tree', version: '9.6'
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
 
-    modCompileOnly "com.github.glitchfiend:TerraBlender-common:$terrablender_version"
-    modCompileOnly "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
-    modApi "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
+    compileOnly "com.github.glitchfiend:TerraBlender-common:$terrablender_version"
+    compileOnly "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources tasks.named("processResources")
 }
