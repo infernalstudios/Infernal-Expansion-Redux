@@ -13,12 +13,12 @@ mixin {
 legacyForge {
     version = "${minecraft_version}-${forge_version}"
 
-    validateAccessTransformers = true
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
-        accessTransformers = at
+        accessTransformers.from(at)
     }
+
     parchment {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
