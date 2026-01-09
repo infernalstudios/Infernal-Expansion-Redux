@@ -1,0 +1,16 @@
+{
+  "multipart": [
+    { "when": { "north": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin" } },
+    { "when": { "north": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside" } },
+    { "when": { "east": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin", "y": 90, "uvlock": true } },
+    { "when": { "east": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside", "y": 90, "uvlock": true } },
+    { "when": { "south": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin", "y": 180, "uvlock": true } },
+    { "when": { "south": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside", "y": 180, "uvlock": true } },
+    { "when": { "west": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin", "y": 270, "uvlock": true } },
+    { "when": { "west": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside", "y": 270, "uvlock": true } },
+    { "when": { "up": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin", "x": 270, "uvlock": true } },
+    { "when": { "up": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside", "x": 270, "uvlock": true } },
+    { "when": { "down": true }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_skin", "x": 90, "uvlock": true } },
+    { "when": { "down": false }, "apply": { "model": "infernalexp:block/luminous_mushroom_block_face_inside", "x": 90, "uvlock": true } }
+  ]
+}

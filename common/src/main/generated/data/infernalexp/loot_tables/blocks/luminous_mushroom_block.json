@@ -16,7 +16,7 @@
               "function": "minecraft:explosion_decay"
             }
           ],
-          "name": "infernalexp:luminous_fungus"
+          "name": "infernalexp:luminous_mushroom_block"
         }
       ],
       "rolls": 1.0

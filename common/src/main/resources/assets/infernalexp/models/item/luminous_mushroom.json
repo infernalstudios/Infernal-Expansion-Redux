@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "infernalexp:block/luminous_fungus_lit"
+    "layer0": "infernalexp:block/luminous_mushroom_lit"
   }
 }

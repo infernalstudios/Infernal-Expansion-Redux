@@ -1,0 +1,11 @@
+{
+  "feature": "infernalexp:huge_luminous_mushroom",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:replaceable"
+      }
+    }
+  ]
+}

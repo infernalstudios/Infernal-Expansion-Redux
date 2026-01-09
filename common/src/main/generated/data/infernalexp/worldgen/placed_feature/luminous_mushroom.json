@@ -1,9 +1,9 @@
 {
-  "feature": "infernalexp:death_pit",
+  "feature": "infernalexp:luminous_mushroom",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 3
+      "type": "minecraft:count",
+      "count": 5
     },
     {
       "type": "minecraft:in_square"

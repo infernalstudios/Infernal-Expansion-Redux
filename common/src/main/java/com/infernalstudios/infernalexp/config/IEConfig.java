@@ -16,6 +16,9 @@ public class IEConfig {
         @ConfigEntry.Gui.CollapsibleObject
         public Voline voline = new Voline();
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public Miscellaneous miscellaneous = new Miscellaneous();
+
         public static class Geyser {
             @ConfigEntry.Gui.Tooltip
             public int geyserSteamHeight = 8;
@@ -33,6 +36,11 @@ public class IEConfig {
 
             @ConfigEntry.Gui.Tooltip
             public int volineMagmaCreamAmount = 3;
+        }
+
+        public static class Miscellaneous {
+            @ConfigEntry.Gui.Tooltip
+            public double LuminousMushroomActivateDistance = 4.0D;
         }
     }
 }

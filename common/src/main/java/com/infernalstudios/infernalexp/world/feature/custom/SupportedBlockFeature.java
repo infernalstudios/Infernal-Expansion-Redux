@@ -1,6 +1,6 @@
 package com.infernalstudios.infernalexp.world.feature.custom;
 
-import com.infernalstudios.infernalexp.block.LuminousFungusBlock;
+import com.infernalstudios.infernalexp.block.LuminousMushroomBlock;
 import com.infernalstudios.infernalexp.block.SupportedBlock;
 import com.infernalstudios.infernalexp.world.feature.NetherFeature;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
@@ -34,9 +34,9 @@ public class SupportedBlockFeature extends NetherFeature<SingleBlockFeatureConfi
 
         BlockState state = context.config().block().getState(random, pos);
         if (state.hasProperty(SupportedBlock.FACING)) state = state.setValue(SupportedBlock.FACING, dir);
-        if (state.hasProperty(LuminousFungusBlock.FLOOR)) {
+        if (state.hasProperty(LuminousMushroomBlock.FLOOR)) {
             if (dir.getAxis() == Direction.Axis.Y)
-                state = state.setValue(LuminousFungusBlock.FLOOR, dir == Direction.DOWN);
+                state = state.setValue(LuminousMushroomBlock.FLOOR, dir == Direction.DOWN);
             else return true;
         }
 
@@ -48,8 +48,8 @@ public class SupportedBlockFeature extends NetherFeature<SingleBlockFeatureConfi
     @Override
     public boolean isValidPos(LevelReader world, BlockPos pos) {
         return Direction.stream().anyMatch(d -> {
-                BlockState state = world.getBlockState(pos.relative(d));
-                return state.isFaceSturdy(world, pos.relative(d), d.getOpposite()) && !state.is(Blocks.BEDROCK);
+            BlockState state = world.getBlockState(pos.relative(d));
+            return state.isFaceSturdy(world, pos.relative(d), d.getOpposite()) && !state.is(Blocks.BEDROCK);
         });
     }
 }

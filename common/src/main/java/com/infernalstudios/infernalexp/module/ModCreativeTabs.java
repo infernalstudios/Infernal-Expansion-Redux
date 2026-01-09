@@ -39,8 +39,9 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.GLOWSILK_COCOON.get());
         entries.accept(ModItems.GLOWSILK_STRING.get());
 
-        entries.accept(ModBlocks.LUMINOUS_FUNGUS.get());
-        entries.accept(ModBlocks.LUMINOUS_FUNGUS_CAP.get());
+        entries.accept(ModBlocks.LUMINOUS_MUSHROOM.get());
+        entries.accept(ModBlocks.LUMINOUS_MUSHROOM_BLOCK.get());
+
         entries.accept(ModBlocks.CRIMSON_FUNGUS_CAP.get());
         entries.accept(ModBlocks.WARPED_FUNGUS_CAP.get());
 

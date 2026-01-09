@@ -1,8 +1,14 @@
 package com.infernalstudios.infernalexp.block;
 
+import com.infernalstudios.infernalexp.block.entity.LuminousMushroomBlockEntity;
 import com.infernalstudios.infernalexp.block.parent.NetherPlantBlock;
+import com.infernalstudios.infernalexp.module.ModBlockEntityTypes;
+import com.infernalstudios.infernalexp.module.ModBlocks;
+import com.infernalstudios.infernalexp.module.ModTags;
+import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,21 +20,28 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class LuminousFungusBlock extends NetherPlantBlock {
+public class LuminousMushroomBlock extends NetherPlantBlock implements EntityBlock, BonemealableBlock {
     public static final BooleanProperty LIT = BooleanProperty.create("is_lit");
     public static final BooleanProperty FLOOR = BooleanProperty.create("is_floor");
 
     public static final VoxelShape BOX = Block.box(4, 0, 4, 12, 8, 12);
     public static final VoxelShape BOX_REVERSED = Block.box(4, 6, 4, 12, 16, 12);
 
-    public LuminousFungusBlock(Properties properties) {
+    public LuminousMushroomBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, false).setValue(FLOOR, true));
     }
@@ -71,13 +84,53 @@ public class LuminousFungusBlock extends NetherPlantBlock {
         super.entityInside(state, world, pos, entity);
         if (!state.getValue(LIT) && entity instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0));
-            world.setBlock(pos, state.setValue(LIT, true), 3);
         }
     }
 
+    @Nullable
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel world, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        super.randomTick(state, world, pos, random);
-        if (state.getValue(LIT)) world.setBlock(pos, state.setValue(LIT, false), 3);
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return new LuminousMushroomBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
+        if (!world.isClientSide()) {
+            return createTickerHelper(type, ModBlockEntityTypes.LUMINOUS_MUSHROOM.get(), LuminousMushroomBlockEntity::tick);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> correctType, BlockEntityTicker<? super E> ticker) {
+        return type == correctType ? (BlockEntityTicker<A>) ticker : null;
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, boolean isClient) {
+        BlockState groundState = level.getBlockState(pos.below());
+        return groundState.is(ModBlocks.SHIMMER_SAND.get()) || groundState.is(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS);
+    }
+
+    @Override
+    public boolean isBonemealSuccess(@NotNull Level level, @NotNull RandomSource random, @NotNull BlockPos pos, @NotNull BlockState state) {
+        return (double) random.nextFloat() < 0.4D;
+    }
+
+    @Override
+    public void performBonemeal(@NotNull ServerLevel level, @NotNull RandomSource random, @NotNull BlockPos pos, @NotNull BlockState state) {
+        // Updated to use HUGE_LUMINOUS_MUSHROOM
+        ConfiguredFeature<?, ?> feature = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
+                .getOrThrow(ModConfiguredFeatures.HUGE_LUMINOUS_MUSHROOM);
+
+        if (state.getValue(FLOOR)) {
+            level.removeBlock(pos, false);
+
+            if (!feature.place(level, level.getChunkSource().getGenerator(), random, pos)) {
+                level.setBlock(pos, state, 3);
+            }
+        }
     }
 }
