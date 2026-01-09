@@ -1,8 +1,8 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
@@ -15,28 +15,41 @@ public class RandomFlyGoal extends Goal {
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
+    @Override
     public boolean canUse() {
-        MoveControl movementcontroller = this.parentEntity.getMoveControl();
-        if (!movementcontroller.hasWanted()) {
-            return true;
-        } else {
-            double d0 = movementcontroller.getWantedX() - this.parentEntity.getX();
-            double d1 = movementcontroller.getWantedY() - this.parentEntity.getY();
-            double d2 = movementcontroller.getWantedZ() - this.parentEntity.getZ();
-            double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-            return d3 < 1.0D || d3 > 3600.0D;
-        }
+        return parentEntity.getNavigation().isDone();
     }
 
+    @Override
     public boolean canContinueToUse() {
-        return false;
+        return parentEntity.getNavigation().isInProgress();
     }
 
+    @Override
     public void start() {
         RandomSource random = this.parentEntity.getRandom();
-        double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-        this.parentEntity.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
+        for (int i = 0; i < 10; i++) {
+            BlockPos randomPos = this.parentEntity.blockPosition().offset(
+                    random.nextInt(20) - 10,
+                    random.nextInt(20) - 10,
+                    random.nextInt(20) - 10
+            );
+
+            if (this.parentEntity.blockPosition().distSqr(randomPos) < 16.0D) {
+                continue;
+            }
+
+            if (this.parentEntity.level().isEmptyBlock(randomPos)) {
+                // Check if the move was successful (path found) before returning
+                if (this.parentEntity.getNavigation().moveTo(
+                        randomPos.getX() + 0.5D,
+                        randomPos.getY() + 0.5D,
+                        randomPos.getZ() + 0.5D,
+                        1.0D
+                )) {
+                    return;
+                }
+            }
+        }
     }
 }
