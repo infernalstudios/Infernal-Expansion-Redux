@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "luminous_fungus",
+  "ingredients": [
+    {
+      "item": "infernalexp:luminous_fungus_cap"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "infernalexp:luminous_fungus"
+  }
+}

@@ -39,8 +39,27 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.GLOWSILK_COCOON.get());
         entries.accept(ModItems.GLOWSILK_STRING.get());
 
-        entries.accept(ModBlocks.LUMINOUS_MUSHROOM.get());
-        entries.accept(ModBlocks.LUMINOUS_MUSHROOM_BLOCK.get());
+        entries.accept(ModBlocks.LUMINOUS_FUNGUS.get());
+
+        entries.accept(ModBlocks.LUMINOUS_FUNGUS_CAP.get());
+        entries.accept(ModBlocks.CRIMSON_FUNGUS_CAP.get());
+        entries.accept(ModBlocks.WARPED_FUNGUS_CAP.get());
+
+        entries.accept(ModBlocks.LUMINOUS_STEM.get());
+        entries.accept(ModBlocks.STRIPPED_LUMINOUS_STEM.get());
+        entries.accept(ModBlocks.LUMINOUS_HYPHAE.get());
+        entries.accept(ModBlocks.STRIPPED_LUMINOUS_HYPHAE.get());
+
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getStairs().get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getSlab().get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getFence().get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getFenceGate().get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getButton().get());
+        entries.accept(ModBlocks.LUMINOUS_PLANKS.getPressurePlate().get());
+
+        entries.accept(ModBlocks.LUMINOUS_DOOR.get());
+        entries.accept(ModBlocks.LUMINOUS_TRAPDOOR.get());
 
         entries.accept(ModBlocks.CRIMSON_FUNGUS_CAP.get());
         entries.accept(ModBlocks.WARPED_FUNGUS_CAP.get());

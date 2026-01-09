@@ -12,7 +12,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.HugeFungusConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DULLTHORNS = create("dullthorns");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_MUSHROOM = create("luminous_mushroom");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINOUS_FUNGUS = create("luminous_fungus");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWLIGHT_FIRE = create("glowlight_fire");
     public static final ResourceKey<ConfiguredFeature<?, ?>> HANGING_BROWN_MUSHROOM = create("hanging_brown_mushroom");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWSTONE_SPIKE = create("glowstone_spike");
@@ -44,7 +44,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_BLACKSTONE_BLOBS = create("gsc_blackstone_blobs");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_OPEN = create("gsc_spring_open");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_CLOSED = create("gsc_spring_closed");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LUMINOUS_MUSHROOM = create("huge_luminous_mushroom");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LUMINOUS_FUNGUS = create("huge_luminous_fungus");
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, IECommon.makeID(name));
@@ -61,9 +61,9 @@ public class ModConfiguredFeatures {
                         BlockStateProvider.simple(ModBlocks.DULLTHORNS.get()),
                         BlockStateProvider.simple(ModBlocks.DULLTHORNS.get().defaultBlockState().setValue(DullthornsBlock.TIP, true))));
 
-        register(context, LUMINOUS_MUSHROOM, Feature.RANDOM_PATCH,
+        register(context, LUMINOUS_FUNGUS, Feature.RANDOM_PATCH,
                 FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
-                        new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.LUMINOUS_MUSHROOM.get())),
+                        new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.LUMINOUS_FUNGUS.get())),
                         List.of(ModBlocks.SHIMMER_SAND.get())));
 
         register(context, GLOWLIGHT_FIRE, NetherPlantFeature.INSTANCE,
@@ -105,10 +105,14 @@ public class ModConfiguredFeatures {
         register(context, GSC_SPRING_CLOSED, Feature.SPRING,
                 new SpringConfiguration(Fluids.LAVA.defaultFluidState(), false, 5, 0, HolderSet.direct(Block::builtInRegistryHolder, Blocks.NETHERRACK, ModBlocks.DULLSTONE.get(), ModBlocks.DIMSTONE.get())));
 
-        register(context, HUGE_LUMINOUS_MUSHROOM, Feature.HUGE_BROWN_MUSHROOM,
-                new HugeMushroomFeatureConfiguration(
-                        BlockStateProvider.simple(ModBlocks.LUMINOUS_MUSHROOM_BLOCK.get().defaultBlockState().setValue(HugeMushroomBlock.UP, true).setValue(HugeMushroomBlock.DOWN, false)),
-                        BlockStateProvider.simple(Blocks.MUSHROOM_STEM.defaultBlockState().setValue(HugeMushroomBlock.UP, false).setValue(HugeMushroomBlock.DOWN, false)),
-                        3));
+        register(context, HUGE_LUMINOUS_FUNGUS, Feature.HUGE_FUNGUS,
+                new HugeFungusConfiguration(
+                        ModBlocks.SHIMMER_SAND.get().defaultBlockState(),
+                        ModBlocks.LUMINOUS_STEM.get().defaultBlockState(),
+                        ModBlocks.LUMINOUS_FUNGUS_CAP.get().defaultBlockState(),
+                        Blocks.SHROOMLIGHT.defaultBlockState(),
+                        BlockPredicate.replaceable(),
+                        true
+                ));
     }
 }

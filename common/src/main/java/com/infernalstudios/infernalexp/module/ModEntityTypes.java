@@ -34,7 +34,7 @@ public class ModEntityTypes {
             .withTranslation("Voline"));
 
     public static final EntityTypeDataHolder<GlowsquitoEntity> GLOWSQUITO = register("glowsquito", EntityTypeDataHolder.of(() ->
-                    EntityTypeDataHolder.Builder.of(GlowsquitoEntity::new, MobCategory.CREATURE)
+                    EntityTypeDataHolder.Builder.of(GlowsquitoEntity::new, MobCategory.MONSTER)
                             .sized(0.8f, 0.5f)
                             .build())
             .attributes(GlowsquitoEntity::createAttributes)

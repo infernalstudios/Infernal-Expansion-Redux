@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:shimmer_sand"
+    "infernalexp:glimmer_gravel",
+    "infernalexp:shimmer_sand",
+    "infernalexp:shimmer_sheet",
+    "infernalexp:shimmer_stone"
   ]
 }

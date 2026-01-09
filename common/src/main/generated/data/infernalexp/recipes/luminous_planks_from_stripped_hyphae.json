@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "luminous_planks",
+  "ingredients": [
+    {
+      "item": "infernalexp:stripped_luminous_hyphae"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "infernalexp:luminous_planks"
+  }
+}

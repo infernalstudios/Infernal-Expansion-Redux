@@ -10,7 +10,6 @@ import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import com.infernalstudios.infernalexp.world.carver.ModConfiguredCarvers;
 import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import com.infernalstudios.infernalexp.world.feature.ModPlacedFeatures;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -33,23 +32,15 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static com.infernalstudios.infernalexp.IEConstants.MOD_ID;
-import static net.minecraft.data.recipes.RecipeProvider.has;
 
 public class IEDataGenerator implements DataGeneratorEntrypoint {
     @Override
@@ -102,7 +93,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         }
 
         private static void offerTilesRecipe(Consumer<FinishedRecipe> exporter, ItemLike result, int count,
-                                            ItemLike a, ItemLike b) {
+                                             ItemLike a, ItemLike b) {
             ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, count)
                     .pattern("AB")
                     .pattern("BA")
@@ -115,7 +106,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         }
 
         private static void offer2x2Recipe(Consumer<FinishedRecipe> exporter, ItemLike to, int count,
-                                            ItemLike from) {
+                                           ItemLike from) {
             ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, to, count)
                     .pattern("##")
                     .pattern("##")
@@ -199,7 +190,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             offer3x3Recipe(exporter, ModBlocks.CRIMSON_FUNGUS_CAP.get(), 1, Items.CRIMSON_FUNGUS);
             offerUnpackRecipe(exporter, Items.CRIMSON_FUNGUS, 9, ModBlocks.CRIMSON_FUNGUS_CAP.get());
             offer3x3Recipe(exporter, ModBlocks.WARPED_FUNGUS_CAP.get(), 1, Items.WARPED_FUNGUS);
-            offerUnpackRecipe(exporter, Items.WARPED_FUNGUS,9,  ModBlocks.WARPED_FUNGUS_CAP.get());
+            offerUnpackRecipe(exporter, Items.WARPED_FUNGUS, 9, ModBlocks.WARPED_FUNGUS_CAP.get());
 
             oreSmelting(exporter, List.of(ModBlocks.BASALT_IRON_ORE.get()), RecipeCategory.MISC, Items.IRON_ORE,
                     5, 200, "basalt_iron_ore");
@@ -209,7 +200,47 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             offer3x3Recipe(exporter, Blocks.SHROOMLIGHT, 1, ModBlocks.SHROOMLIGHT_TEAR.get());
 
             offer2x2Recipe(exporter, ModBlocks.GLOWSILK_COCOON.get(), 1, ModItems.GLOWSILK_STRING.get());
-            offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(),4,  ModBlocks.GLOWSILK_COCOON.get());
+            offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(), 4, ModBlocks.GLOWSILK_COCOON.get());
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMINOUS_PLANKS.get(), 4)
+                    .requires(ModBlocks.LUMINOUS_STEM.get())
+                    .unlockedBy(getHasName(ModBlocks.LUMINOUS_STEM.get()), has(ModBlocks.LUMINOUS_STEM.get()))
+                    .group("luminous_planks")
+                    .save(exporter, IECommon.makeID("luminous_planks_from_stem"));
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMINOUS_PLANKS.get(), 4)
+                    .requires(ModBlocks.STRIPPED_LUMINOUS_STEM.get())
+                    .unlockedBy(getHasName(ModBlocks.STRIPPED_LUMINOUS_STEM.get()), has(ModBlocks.STRIPPED_LUMINOUS_STEM.get()))
+                    .group("luminous_planks")
+                    .save(exporter, IECommon.makeID("luminous_planks_from_stripped_stem"));
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMINOUS_PLANKS.get(), 4)
+                    .requires(ModBlocks.LUMINOUS_HYPHAE.get())
+                    .unlockedBy(getHasName(ModBlocks.LUMINOUS_HYPHAE.get()), has(ModBlocks.LUMINOUS_HYPHAE.get()))
+                    .group("luminous_planks")
+                    .save(exporter, IECommon.makeID("luminous_planks_from_hyphae"));
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMINOUS_PLANKS.get(), 4)
+                    .requires(ModBlocks.STRIPPED_LUMINOUS_HYPHAE.get())
+                    .unlockedBy(getHasName(ModBlocks.STRIPPED_LUMINOUS_HYPHAE.get()), has(ModBlocks.STRIPPED_LUMINOUS_HYPHAE.get()))
+                    .group("luminous_planks")
+                    .save(exporter, IECommon.makeID("luminous_planks_from_stripped_hyphae"));
+
+            offer2x2Recipe(exporter, ModBlocks.LUMINOUS_HYPHAE.get(), 3, ModBlocks.LUMINOUS_STEM.get());
+            offer2x2Recipe(exporter, ModBlocks.STRIPPED_LUMINOUS_HYPHAE.get(), 3, ModBlocks.STRIPPED_LUMINOUS_STEM.get());
+
+            doorBuilder(ModBlocks.LUMINOUS_DOOR.get(), Ingredient.of(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .group("luminous_door")
+                    .unlockedBy(getHasName(ModBlocks.LUMINOUS_PLANKS.get()), has(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .save(exporter, IECommon.makeID("luminous_door"));
+
+            trapdoorBuilder(ModBlocks.LUMINOUS_TRAPDOOR.get(), Ingredient.of(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .group("luminous_trapdoor")
+                    .unlockedBy(getHasName(ModBlocks.LUMINOUS_PLANKS.get()), has(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .save(exporter, IECommon.makeID("luminous_trapdoor"));
+
+            offer3x3Recipe(exporter, ModBlocks.LUMINOUS_FUNGUS_CAP.get(), 1, ModBlocks.LUMINOUS_FUNGUS.get());
+            offerUnpackRecipe(exporter, ModBlocks.LUMINOUS_FUNGUS.get(), 9, ModBlocks.LUMINOUS_FUNGUS_CAP.get());
         }
     }
 
@@ -455,8 +486,13 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                                 var pillar = generator.woodProvider(blockDataHolder.get());
                                 pillar.log(blockDataHolder.get());
                             }
+                            case WOOD -> {
+                                var pillar = generator.woodProvider(blockDataHolder.get());
+                                pillar.wood(blockDataHolder.get());
+                            }
                             case ROTATABLE -> generator.createRotatedVariantBlock(blockDataHolder.get());
-                            case CROSS -> generator.createCrossBlockWithDefaultItem(blockDataHolder.get(), BlockModelGenerators.TintState.NOT_TINTED);
+                            case CROSS ->
+                                    generator.createCrossBlockWithDefaultItem(blockDataHolder.get(), BlockModelGenerators.TintState.NOT_TINTED);
                             case DOOR -> generator.createDoor(blockDataHolder.get());
                             case TRAPDOOR -> generator.createTrapdoor(blockDataHolder.get());
                         }

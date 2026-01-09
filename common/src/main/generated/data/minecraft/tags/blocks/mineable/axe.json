@@ -4,6 +4,18 @@
     "infernalexp:dullthorns",
     "infernalexp:dullthorns_block",
     "infernalexp:glowlight_campfire",
-    "infernalexp:luminous_mushroom_block"
+    "infernalexp:luminous_door",
+    "infernalexp:luminous_hyphae",
+    "infernalexp:luminous_planks",
+    "infernalexp:luminous_planks_button",
+    "infernalexp:luminous_planks_fence",
+    "infernalexp:luminous_planks_fence_gate",
+    "infernalexp:luminous_planks_pressure_plate",
+    "infernalexp:luminous_planks_slab",
+    "infernalexp:luminous_planks_stairs",
+    "infernalexp:luminous_stem",
+    "infernalexp:luminous_trapdoor",
+    "infernalexp:stripped_luminous_hyphae",
+    "infernalexp:stripped_luminous_stem"
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:huge_fungus",
+  "config": {
+    "decor_state": {
+      "Name": "minecraft:shroomlight"
+    },
+    "hat_state": {
+      "Name": "infernalexp:luminous_fungus_cap"
+    },
+    "planted": true,
+    "replaceable_blocks": {
+      "type": "minecraft:replaceable"
+    },
+    "stem_state": {
+      "Name": "infernalexp:luminous_stem",
+      "Properties": {
+        "axis": "y"
+      }
+    },
+    "valid_base_block": {
+      "Name": "infernalexp:shimmer_sand"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IEConstants;
-import com.infernalstudios.infernalexp.block.entity.LuminousMushroomBlockEntity;
+import com.infernalstudios.infernalexp.block.entity.LuminousFungusBlockEntity;
 import com.infernalstudios.infernalexp.block.entity.VolatileGeyserBlockEntity;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
@@ -19,10 +19,10 @@ public class ModBlockEntityTypes {
                     ModBlocks.VOLATILE_GEYSER.get()
             ));
 
-    public static final RegistryObject<BlockEntityType<LuminousMushroomBlockEntity>> LUMINOUS_MUSHROOM = BLOCK_ENTITY_TYPES.register("luminous_mushroom",
+    public static final RegistryObject<BlockEntityType<LuminousFungusBlockEntity>> LUMINOUS_FUNGUS = BLOCK_ENTITY_TYPES.register("luminous_fungus",
             () -> Services.PLATFORM.createBlockEntityType(
-                    LuminousMushroomBlockEntity::new,
-                    ModBlocks.LUMINOUS_MUSHROOM.get()
+                    LuminousFungusBlockEntity::new,
+                    ModBlocks.LUMINOUS_FUNGUS.get()
             ));
 
     public static void load() {}

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "infernalexp:luminous_planks",
+    "infernalexp:luminous_planks_button",
+    "infernalexp:luminous_planks_fence",
+    "infernalexp:luminous_planks_fence_gate",
+    "infernalexp:luminous_planks_pressure_plate",
+    "infernalexp:luminous_planks_slab",
+    "infernalexp:luminous_planks_stairs"
+  ]
+}

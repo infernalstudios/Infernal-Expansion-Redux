@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "is_lit=true,is_floor=true": {
+      "model": "infernalexp:block/luminous_fungus_lit"
+    },
+    "is_lit=false,is_floor=true": {
+      "model": "infernalexp:block/luminous_fungus"
+    },
+    "is_lit=true,is_floor=false": {
+      "model": "infernalexp:block/luminous_fungus_lit",
+      "x": 180
+    },
+    "is_lit=false,is_floor=false": {
+      "model": "infernalexp:block/luminous_fungus",
+      "x": 180
+    }
+  }
+}

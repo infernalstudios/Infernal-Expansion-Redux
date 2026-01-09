@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "infernalexp:block/luminous_planks_slab"
+    },
+    "type=double": {
+      "model": "infernalexp:block/luminous_planks"
+    },
+    "type=top": {
+      "model": "infernalexp:block/luminous_planks_slab_top"
+    }
+  }
+}

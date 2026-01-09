@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> DULLTHORNS = create("dullthorns");
-    public static final ResourceKey<PlacedFeature> LUMINOUS_MUSHROOM = create("luminous_mushroom");
+    public static final ResourceKey<PlacedFeature> LUMINOUS_FUNGUS = create("luminous_fungus");
     public static final ResourceKey<PlacedFeature> GLOWLIGHT_FIRE = create("glowlight_fire");
     public static final ResourceKey<PlacedFeature> HANGING_BROWN_MUSHROOM = create("hanging_brown_mushroom");
     public static final ResourceKey<PlacedFeature> GLOWSTONE_SPIKE = create("glowstone_spike");
@@ -26,7 +26,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> GSC_BLACKSTONE_BLOBS = create("gsc_blackstone_blobs");
     public static final ResourceKey<PlacedFeature> GSC_SPRING_OPEN = create("gsc_spring_open");
     public static final ResourceKey<PlacedFeature> GSC_SPRING_CLOSED = create("gsc_spring_closed");
-    public static final ResourceKey<PlacedFeature> HUGE_LUMINOUS_MUSHROOM = create("huge_luminous_mushroom");
+    public static final ResourceKey<PlacedFeature> HUGE_LUMINOUS_FUNGUS = create("huge_luminous_fungus");
 
     public static ResourceKey<PlacedFeature> create(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, IECommon.makeID(name));
@@ -49,8 +49,8 @@ public class ModPlacedFeatures {
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         var configLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        register(context, LUMINOUS_MUSHROOM,
-                configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_MUSHROOM),
+        register(context, LUMINOUS_FUNGUS,
+                configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),
                 CountPlacement.of(5),
                 InSquarePlacement.spread(),
                 PlacementUtils.FULL_RANGE,
@@ -122,7 +122,7 @@ public class ModPlacedFeatures {
                 HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(118)),
                 BiomeFilter.biome());
 
-        register(context, HUGE_LUMINOUS_MUSHROOM, configLookup.getOrThrow(ModConfiguredFeatures.HUGE_LUMINOUS_MUSHROOM),
+        register(context, HUGE_LUMINOUS_FUNGUS, configLookup.getOrThrow(ModConfiguredFeatures.HUGE_LUMINOUS_FUNGUS),
                 BlockPredicateFilter.forPredicate(BlockPredicate.replaceable()));
     }
 }

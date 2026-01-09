@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 public class ModBlocks {
     public static final BlockSetType dullstoneSet = new BlockSetType("dullstone");
+    public static final BlockSetType luminousSet = new BlockSetType("luminous");
     private static final Map<ResourceLocation, BlockDataHolder<?>> BLOCK_REGISTRY = new HashMap<>();
 
     public static final BlockDataHolder<?> SHIMMER_SAND = register("shimmer_sand", BlockDataHolder.of(() ->
@@ -38,13 +40,15 @@ public class ModBlocks {
     );
     public static final BlockDataHolder<?> SHIMMER_SHEET = register("shimmer_sheet", BlockDataHolder.of(() ->
                     new LayerBlock(BlockBehaviour.Properties.copy(Blocks.SAND)))
-            .withItem().withTags(BlockTags.MINEABLE_WITH_SHOVEL)
+            .withItem().withTags(BlockTags.MINEABLE_WITH_SHOVEL,
+                    BlockTags.MUSHROOM_GROW_BLOCK)
             .withTranslation("Shimmer Sheet")
     );
     public static final BlockDataHolder<?> GLIMMER_GRAVEL = register("glimmer_gravel", BlockDataHolder.of(() ->
                     new GlimmerGravelBlock(ModBlockProperties.GLIMMER_GRAVEL))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_SHOVEL, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withTags(BlockTags.MINEABLE_WITH_SHOVEL, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
+                    BlockTags.MUSHROOM_GROW_BLOCK)
             .withTranslation("Glimmer Gravel")
     );
     public static final BlockDataHolder<?> GLOWLIGHT_GLASS = register("glowlight_glass", BlockDataHolder.of(() ->
@@ -55,7 +59,8 @@ public class ModBlocks {
     public static final BlockDataHolder<?> SHIMMER_STONE = register("shimmer_stone", BlockDataHolder.of(() ->
                     new Block(ModBlockProperties.SHIMMERSTONE))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
+                    BlockTags.MUSHROOM_GROW_BLOCK, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Shimmer Stone")
     );
     public static final BlockDataHolder<?> SHIMMER_STONE_BRICKS = register("shimmer_stone_bricks", BlockDataHolder.of(() ->
@@ -113,18 +118,11 @@ public class ModBlocks {
             .withTranslation("Glowsilk Cocoon")
     );
 
-    public static final BlockDataHolder<?> LUMINOUS_MUSHROOM = register("luminous_mushroom", BlockDataHolder.of(() ->
-                    new LuminousMushroomBlock(BlockBehaviour.Properties.copy(Blocks.RED_MUSHROOM).mapColor(DyeColor.YELLOW)
-                            .lightLevel(a -> a.getValue(LuminousMushroomBlock.LIT) ? 15 : 0).randomTicks()))
+    public static final BlockDataHolder<?> LUMINOUS_FUNGUS = register("luminous_fungus", BlockDataHolder.of(() ->
+                    new LuminousFungusBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_FUNGUS).mapColor(DyeColor.YELLOW)
+                            .lightLevel(a -> a.getValue(LuminousFungusBlock.LIT) ? 15 : 0).randomTicks()))
             .cutout().withItem().dropsSelf()
-            .withTranslation("Luminous Mushroom")
-    );
-
-    public static final BlockDataHolder<?> LUMINOUS_MUSHROOM_BLOCK = register("luminous_mushroom_block", BlockDataHolder.of(() ->
-                    new HugeMushroomBlock(BlockBehaviour.Properties.copy(Blocks.RED_MUSHROOM_BLOCK).mapColor(DyeColor.YELLOW)
-                            .lightLevel(a -> 8)))
-            .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_AXE)
-            .withTranslation("Luminous Mushroom Block")
+            .withTranslation("Luminous Fungus")
     );
 
     public static final BlockDataHolder<?> CRIMSON_FUNGUS_CAP = register("crimson_fungus_cap", BlockDataHolder.of(() ->
@@ -254,6 +252,65 @@ public class ModBlocks {
             .withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Volatile Geyser");
+
+    public static final BlockDataHolder<?> STRIPPED_LUMINOUS_STEM = register("stripped_luminous_stem", BlockDataHolder.of(() ->
+                    new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
+            .withModel(BlockDataHolder.Model.WOOD).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
+            .withTranslation("Stripped Luminous Stem")
+    );
+
+    public static final BlockDataHolder<?> STRIPPED_LUMINOUS_HYPHAE = register("stripped_luminous_hyphae", BlockDataHolder.of(() ->
+                    new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
+            .withModel(BlockDataHolder.Model.WOOD).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
+            .withTranslation("Stripped Luminous Hyphae")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_STEM = register("luminous_stem", BlockDataHolder.of(() ->
+                    new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
+            .withStripping(STRIPPED_LUMINOUS_STEM.get())
+            .withModel(BlockDataHolder.Model.WOOD).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
+            .withTranslation("Luminous Stem")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_HYPHAE = register("luminous_hyphae", BlockDataHolder.of(() ->
+                    new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
+            .withStripping(STRIPPED_LUMINOUS_HYPHAE.get())
+            .withModel(BlockDataHolder.Model.WOOD).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
+            .withTranslation("Luminous Hyphae")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_PLANKS = register("luminous_planks", BlockDataHolder.of(() ->
+                    new Block(ModBlockProperties.LUMINOUS_PLANKS))
+            .withStairs().withSlab()
+            .withFence().withFenceGate(WoodType.CRIMSON)
+            .withButton(luminousSet, 30, true)
+            .withPressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, luminousSet)
+            .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
+            .withTranslation("Luminous Planks")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_DOOR = register("luminous_door", BlockDataHolder.of(() ->
+            DoorBlockAccessor.createDoorBlock(ModBlockProperties.LUMINOUS_PLANKS, luminousSet)))
+            .cutout().withModel(BlockDataHolder.Model.DOOR).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.DOORS)
+            .withTranslation("Luminous Door");
+
+    public static final BlockDataHolder<?> LUMINOUS_TRAPDOOR = register("luminous_trapdoor", BlockDataHolder.of(() ->
+            TrapDoorBlockAccessor.createTrapDoorBlock(ModBlockProperties.LUMINOUS_PLANKS, luminousSet)))
+            .cutout().withModel(BlockDataHolder.Model.TRAPDOOR).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.TRAPDOORS)
+            .withTranslation("Luminous Trapdoor");
+
+    public static final BlockDataHolder<?> LUMINOUS_FUNGUS_CAP = register("luminous_fungus_cap", BlockDataHolder.of(() ->
+                    new FungusCapBlock(ModBlockProperties.LUMINOUS_FUNGUS_CAP))
+            .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE)
+            .withTranslation("Luminous Fungus Cap")
+    );
 
     public static BlockDataHolder<?> register(String name, BlockDataHolder<?> blockDataHolder) {
         ResourceLocation id = IECommon.makeID(name);

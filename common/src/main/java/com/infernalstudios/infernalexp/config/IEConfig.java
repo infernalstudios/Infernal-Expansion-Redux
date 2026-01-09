@@ -40,7 +40,7 @@ public class IEConfig {
 
         public static class Miscellaneous {
             @ConfigEntry.Gui.Tooltip
-            public double LuminousMushroomActivateDistance = 4.0D;
+            public double LuminousFungusActivateDistance = 4.0D;
         }
     }
 }

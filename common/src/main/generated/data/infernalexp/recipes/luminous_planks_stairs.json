@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "luminous_planks_stairs",
+  "key": {
+    "#": {
+      "item": "infernalexp:luminous_planks"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "item": "infernalexp:luminous_planks_stairs"
+  },
+  "show_notification": true
+}

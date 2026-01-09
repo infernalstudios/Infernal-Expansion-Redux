@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "luminous_hyphae",
+  "key": {
+    "#": {
+      "item": "infernalexp:luminous_stem"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "item": "infernalexp:luminous_hyphae"
+  },
+  "show_notification": true
+}

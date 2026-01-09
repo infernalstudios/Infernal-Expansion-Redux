@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "luminous_door",
+  "key": {
+    "#": {
+      "item": "infernalexp:luminous_planks"
+    }
+  },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "item": "infernalexp:luminous_door"
+  },
+  "show_notification": true
+}
