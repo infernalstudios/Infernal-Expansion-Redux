@@ -12,9 +12,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,7 +20,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -36,18 +37,23 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.EnumSet;
 
-public class GlowsquitoEntity extends Animal implements FlyingAnimal {
+public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
     private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModBlocks.SHROOMLIGHT_TEAR.get().asItem()); // temp ingredient
-
-    // Animation States
-    public final AnimationState idleAnimationState = new AnimationState();
-    public final AnimationState flyAnimationState = new AnimationState();
-    public final AnimationState eatAnimationState = new AnimationState();
-
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModBlocks.SHROOMLIGHT_TEAR.get().asItem());
+    // Animations
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private static final RawAnimation EAT = RawAnimation.begin().thenLoop("eat");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private SuckGlowstoneGoal eatGlowstoneGoal;
     private int hogTimer;
 
@@ -85,6 +91,28 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal {
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
     }
+
+    // --- Geckolib Implementation ---
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, event -> {
+            if (this.hogTimer > 0) {
+                return event.setAndContinue(EAT);
+            }
+            if (!this.onGround() || event.isMoving()) {
+                return event.setAndContinue(FLY);
+            }
+            return event.setAndContinue(IDLE);
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
+    }
+
+    // -------------------------------
 
     @Override
     protected @NotNull PathNavigation createNavigation(@NotNull Level worldIn) {
@@ -136,7 +164,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal {
         } else {
             super.travel(pTravelVector);
         }
-        this.calculateEntityAnimation( false);
     }
 
     @Override
@@ -152,26 +179,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal {
     @Override
     public void tick() {
         super.tick();
-
-        if (this.level().isClientSide) {
-            if (this.hogTimer > 0) {
-                this.eatAnimationState.startIfStopped(this.tickCount);
-                this.idleAnimationState.stop();
-                this.flyAnimationState.stop();
-            } else {
-                this.eatAnimationState.stop();
-
-                boolean isMoving = !this.onGround() || this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
-
-                if (isMoving) {
-                    this.flyAnimationState.startIfStopped(this.tickCount);
-                    this.idleAnimationState.stop();
-                } else {
-                    this.idleAnimationState.startIfStopped(this.tickCount);
-                    this.flyAnimationState.stop();
-                }
-            }
-        }
+        // Vanilla animation logic removed in favor of registerControllers
     }
 
     @Override
