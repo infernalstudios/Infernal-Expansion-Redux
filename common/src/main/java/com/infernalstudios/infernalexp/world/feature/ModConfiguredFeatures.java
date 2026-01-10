@@ -109,7 +109,7 @@ public class ModConfiguredFeatures {
                 new HugeFungusConfiguration(
                         ModBlocks.SHIMMER_SAND.get().defaultBlockState(),
                         ModBlocks.LUMINOUS_STEM.get().defaultBlockState(),
-                        ModBlocks.LUMINOUS_FUNGUS_CAP.get().defaultBlockState(),
+                        ModBlocks.LUMINOUS_WART_BLOCK.get().defaultBlockState(),
                         Blocks.SHROOMLIGHT.defaultBlockState(),
                         BlockPredicate.replaceable(),
                         true

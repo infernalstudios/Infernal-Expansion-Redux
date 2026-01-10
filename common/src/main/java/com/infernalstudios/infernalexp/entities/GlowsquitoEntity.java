@@ -257,9 +257,19 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         public void tick() {
             if (this.parentEntity.getTarget() == null && !this.parentEntity.isEating()) {
                 Vec3 vector3d = this.parentEntity.getDeltaMovement();
-                this.parentEntity.setYRot(-((float) Mth.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI));
-                this.parentEntity.yBodyRot = this.parentEntity.getYRot();
+                if (vector3d.horizontalDistanceSqr() > 0.003D) {
+                    float targetYaw = -((float) Mth.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI);
+                    this.parentEntity.setYRot(this.rotlerp(this.parentEntity.getYRot(), targetYaw, 10.0F));
+                    this.parentEntity.yBodyRot = this.parentEntity.getYRot();
+                }
             }
+        }
+
+        private float rotlerp(float current, float target, float maxChange) {
+            float f = Mth.wrapDegrees(target - current);
+            if (f > maxChange) f = maxChange;
+            if (f < -maxChange) f = -maxChange;
+            return current + f;
         }
     }
 
@@ -272,22 +282,30 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         }
 
         public void tick() {
-            if (this.operation == MoveControl.Operation.MOVE_TO) {
-                Vec3 vector3d = new Vec3(this.wantedX - this.parentEntity.getX(), this.wantedY - this.parentEntity.getY(), this.wantedZ - this.parentEntity.getZ());
-                double d0 = vector3d.length();
+            if (this.parentEntity.isEating()) {
+                return;
+            }
 
-                if (d0 < 0.3D) {
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 wanted = new Vec3(this.wantedX - this.parentEntity.getX(), this.wantedY - this.parentEntity.getY(), this.wantedZ - this.parentEntity.getZ());
+                double dist = wanted.length();
+
+                if (dist < 0.3D) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().scale(0.5D));
                 } else {
-                    this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
+                    this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add(wanted.scale(this.speedModifier * 0.05D / dist)));
+
                     if (this.parentEntity.getTarget() == null) {
-                        Vec3 delta = this.parentEntity.getDeltaMovement();
-                        this.parentEntity.setYRot(-((float) Mth.atan2(delta.x, delta.z)) * (180F / (float) Math.PI));
+                        if (wanted.horizontalDistanceSqr() > 0.001D) {
+                            float targetYaw = -((float) Mth.atan2(wanted.x, wanted.z)) * (180F / (float) Math.PI);
+                            this.parentEntity.setYRot(this.rotlerp(this.parentEntity.getYRot(), targetYaw, 20.0F));
+                        }
                     } else {
                         double d2 = this.parentEntity.getTarget().getX() - this.parentEntity.getX();
                         double d3 = this.parentEntity.getTarget().getZ() - this.parentEntity.getZ();
-                        this.parentEntity.setYRot(-((float) Mth.atan2(d2, d3)) * (180F / (float) Math.PI));
+                        float targetYaw = -((float) Mth.atan2(d2, d3)) * (180F / (float) Math.PI);
+                        this.parentEntity.setYRot(this.rotlerp(this.parentEntity.getYRot(), targetYaw, 20.0F));
                     }
                     this.parentEntity.yBodyRot = this.parentEntity.getYRot();
                 }

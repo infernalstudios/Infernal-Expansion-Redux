@@ -40,6 +40,7 @@ public class ModCreativeTabs {
         entries.accept(ModItems.GLOWSILK_STRING.get());
 
         entries.accept(ModBlocks.LUMINOUS_FUNGUS.get());
+        entries.accept(ModBlocks.LUMINOUS_WART_BLOCK.get());
 
         entries.accept(ModBlocks.LUMINOUS_FUNGUS_CAP.get());
         entries.accept(ModBlocks.CRIMSON_FUNGUS_CAP.get());
@@ -60,9 +61,6 @@ public class ModCreativeTabs {
 
         entries.accept(ModBlocks.LUMINOUS_DOOR.get());
         entries.accept(ModBlocks.LUMINOUS_TRAPDOOR.get());
-
-        entries.accept(ModBlocks.CRIMSON_FUNGUS_CAP.get());
-        entries.accept(ModBlocks.WARPED_FUNGUS_CAP.get());
 
         entries.accept(ModBlocks.SHROOMLIGHT_TEAR.get());
 

@@ -36,7 +36,7 @@ public class BlockDataHolder<T extends Block> {
     private Model model;
     private String defaultTranslation;
     private final Map<Block, FlammabilityRegistry.Entry> FLAMMABILITIES = new HashMap<>();
-    private Block strippingResult;
+    private Supplier<? extends Block> strippingResult;
     private int fuelDuration;
     private final Map<Model, BlockDataHolder<?>> BLOCKSETS = new HashMap<>();
     private Supplier<ItemLike> drop;
@@ -78,6 +78,15 @@ public class BlockDataHolder<T extends Block> {
      * @param stripResult the block to set it to when it gets stripped
      */
     public BlockDataHolder<?> withStripping(Block stripResult) {
+        this.strippingResult = () -> stripResult;
+        return this;
+    }
+
+    /**
+     * Adds the ability to strip this block with an axe (Supplier version)
+     * @param stripResult the supplier of the block to set it to when it gets stripped
+     */
+    public BlockDataHolder<?> withStripping(Supplier<? extends Block> stripResult) {
         this.strippingResult = stripResult;
         return this;
     }
@@ -87,7 +96,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public Block getStrippingResult() {
-        return this.strippingResult;
+        return this.strippingResult != null ? this.strippingResult.get() : null;
     }
 
     /**

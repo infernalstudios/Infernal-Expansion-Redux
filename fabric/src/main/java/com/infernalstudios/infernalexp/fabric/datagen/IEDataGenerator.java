@@ -487,8 +487,16 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                                 pillar.log(blockDataHolder.get());
                             }
                             case WOOD -> {
-                                var pillar = generator.woodProvider(blockDataHolder.get());
-                                pillar.wood(blockDataHolder.get());
+                                Block block = blockDataHolder.get();
+                                String name = BuiltInRegistries.BLOCK.getKey(block).getPath();
+
+                                if (name.contains("hyphae")) {
+                                    Block stem = BuiltInRegistries.BLOCK.get(IECommon.makeID(name.replace("hyphae", "stem")));
+                                    generator.woodProvider(stem).wood(block);
+                                } else {
+                                    var pillar = generator.woodProvider(block);
+                                    pillar.wood(block);
+                                }
                             }
                             case ROTATABLE -> generator.createRotatedVariantBlock(blockDataHolder.get());
                             case CROSS ->

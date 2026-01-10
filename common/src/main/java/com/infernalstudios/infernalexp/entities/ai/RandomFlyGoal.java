@@ -4,6 +4,7 @@ import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.pathfinder.Path;
 
 import java.util.EnumSet;
 
@@ -40,13 +41,9 @@ public class RandomFlyGoal extends Goal {
             }
 
             if (this.parentEntity.level().isEmptyBlock(randomPos)) {
-                // Check if the move was successful (path found) before returning
-                if (this.parentEntity.getNavigation().moveTo(
-                        randomPos.getX() + 0.5D,
-                        randomPos.getY() + 0.5D,
-                        randomPos.getZ() + 0.5D,
-                        1.0D
-                )) {
+                Path path = this.parentEntity.getNavigation().createPath(randomPos, 1);
+                if (path != null && path.canReach()) {
+                    this.parentEntity.getNavigation().moveTo(path, 1.0D);
                     return;
                 }
             }

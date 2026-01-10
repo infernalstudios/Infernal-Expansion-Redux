@@ -5,15 +5,20 @@ import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 public class SuckGlowstoneGoal extends Goal {
     private final GlowsquitoEntity mob;
@@ -22,6 +27,8 @@ public class SuckGlowstoneGoal extends Goal {
     private int timeoutCounter;
     private BlockPos targetPos = BlockPos.ZERO;
     private Direction targetFace = Direction.NORTH;
+
+    private Vec3 latchPos = Vec3.ZERO;
 
     private long nextUseTime;
 
@@ -35,15 +42,9 @@ public class SuckGlowstoneGoal extends Goal {
     public boolean canUse() {
         if (this.level.getGameTime() < this.nextUseTime) return false;
         if (this.mob.isAggressive() || this.mob.getTarget() != null) return false;
-
         if (this.mob.getRandom().nextInt(50) != 0) return false;
 
-        BlockPos pos = this.findGlowstoneOrDimstone();
-        if (pos != null) {
-            this.targetPos = pos;
-            return true;
-        }
-        return false;
+        return this.findGlowstoneOrDimstone();
     }
 
     @Override
@@ -51,7 +52,8 @@ public class SuckGlowstoneGoal extends Goal {
         if (this.timeoutCounter > 400 && !this.mob.isEating()) return false;
         if (this.targetPos == null || !isValidTarget(this.level.getBlockState(this.targetPos))) return false;
 
-        if (!this.level.isEmptyBlock(this.targetPos.relative(this.targetFace))) return false;
+        BlockPos latchBlockPos = this.targetPos.relative(this.targetFace);
+        if (!this.level.isEmptyBlock(latchBlockPos)) return false;
 
         return !this.mob.isAggressive();
     }
@@ -60,6 +62,15 @@ public class SuckGlowstoneGoal extends Goal {
     public void start() {
         this.eatAnimationTick = 0;
         this.timeoutCounter = 0;
+
+        double offset = 1.15D;
+
+        this.latchPos = new Vec3(
+                this.targetPos.getX() + 0.5D + (this.targetFace.getStepX() * offset),
+                this.targetPos.getY() + 0.5D + (this.targetFace.getStepY() * offset),
+                this.targetPos.getZ() + 0.5D + (this.targetFace.getStepZ() * offset)
+        );
+
         this.moveToTarget();
     }
 
@@ -76,31 +87,54 @@ public class SuckGlowstoneGoal extends Goal {
     public void tick() {
         this.timeoutCounter++;
 
-        double destX = this.targetPos.getX() + 0.5D + this.targetFace.getStepX();
-        double destY = this.targetPos.getY() + 0.5D + this.targetFace.getStepY();
-        double destZ = this.targetPos.getZ() + 0.5D + this.targetFace.getStepZ();
+        double distSqr = this.mob.distanceToSqr(this.latchPos);
 
-        double distSqr = this.mob.distanceToSqr(destX, destY, destZ);
+        if (distSqr < 2.0D && !this.mob.isEating()) {
+            this.mob.setEating(true);
+            this.mob.getNavigation().stop();
+        }
 
         if (this.mob.isEating()) {
-            this.mob.setPos(destX, destY, destZ);
+            if (distSqr > 0.05D) {
+                Vec3 moveVec = this.latchPos.subtract(this.mob.position());
+                if (moveVec.lengthSqr() > 0.0001) {
+                    moveVec = moveVec.normalize().scale(0.2D);
+                }
+                this.mob.setDeltaMovement(moveVec);
+
+                this.mob.getLookControl().setLookAt(this.latchPos.x, this.latchPos.y, this.latchPos.z, 30.0F, 30.0F);
+                return;
+            }
+
+            this.mob.setPos(this.latchPos.x, this.latchPos.y, this.latchPos.z);
             this.mob.setDeltaMovement(Vec3.ZERO);
-            this.faceTargetInstantly();
+
+            float targetYaw = this.targetFace.getOpposite().toYRot();
+            this.mob.setYRot(targetYaw);
+            this.mob.setYHeadRot(targetYaw);
+            this.mob.setYBodyRot(targetYaw);
+            this.mob.setXRot(0.0F);
+
+            if (this.eatAnimationTick == 0) {
+                this.eatAnimationTick = this.adjustedTickDelay(80);
+            }
 
             this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
 
             if (this.eatAnimationTick == 1) {
                 if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                     BlockState currentState = this.level.getBlockState(targetPos);
+                    BlockState newState = null;
 
                     if (currentState.is(Blocks.GLOWSTONE)) {
-                        this.level.levelEvent(2001, targetPos, Block.getId(currentState));
-                        this.level.setBlock(targetPos, ModBlocks.DIMSTONE.get().defaultBlockState(), 3);
-                        this.mob.ate();
-                        this.nextUseTime = this.level.getGameTime() + 400L;
+                        newState = ModBlocks.DIMSTONE.get().defaultBlockState();
                     } else if (currentState.is(ModBlocks.DIMSTONE.get())) {
+                        newState = ModBlocks.DULLSTONE.get().defaultBlockState();
+                    }
+
+                    if (newState != null) {
                         this.level.levelEvent(2001, targetPos, Block.getId(currentState));
-                        this.level.setBlock(targetPos, ModBlocks.DULLSTONE.get().defaultBlockState(), 3);
+                        this.level.setBlock(targetPos, newState, 3);
                         this.mob.ate();
                         this.nextUseTime = this.level.getGameTime() + 400L;
                     }
@@ -111,72 +145,79 @@ public class SuckGlowstoneGoal extends Goal {
             return;
         }
 
-        if (distSqr < 2.25D) {
-            this.mob.getNavigation().stop();
-            this.faceTargetInstantly();
+        this.mob.getLookControl().setLookAt(this.latchPos.x, this.latchPos.y, this.latchPos.z, 30.0F, 30.0F);
 
-            Vec3 moveVec = new Vec3(destX - this.mob.getX(), destY - this.mob.getY(), destZ - this.mob.getZ());
-            Vec3 normVec = moveVec.normalize().scale(0.1D);
-            this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(normVec));
-
-            if (distSqr < 0.1D) {
-                this.mob.setEating(true);
-                this.eatAnimationTick = this.adjustedTickDelay(80);
-                this.mob.setDeltaMovement(Vec3.ZERO);
-                this.mob.setPos(destX, destY, destZ);
-            }
-        } else {
-            this.mob.setEating(false);
-            if (this.timeoutCounter % 10 == 0 || this.mob.getNavigation().isDone()) {
-                this.moveToTarget();
-            }
+        if (this.timeoutCounter % 10 == 0) {
+            this.moveToTarget();
         }
     }
 
-    private void faceTargetInstantly() {
-        float targetYaw = this.targetFace.getOpposite().toYRot();
-        this.mob.setYRot(targetYaw);
-        this.mob.setYHeadRot(targetYaw);
-        this.mob.setYBodyRot(targetYaw);
-    }
-
     private void moveToTarget() {
-        double destX = targetPos.getX() + 0.5D + targetFace.getStepX();
-        double destY = targetPos.getY() + 0.5D + targetFace.getStepY();
-        double destZ = targetPos.getZ() + 0.5D + targetFace.getStepZ();
-        this.mob.getNavigation().moveTo(destX, destY, destZ, 1.0D);
+        this.mob.getNavigation().moveTo(this.latchPos.x, this.latchPos.y, this.latchPos.z, 1.0D);
     }
 
     private boolean isValidTarget(BlockState state) {
         return state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get());
     }
 
-    private BlockPos findGlowstoneOrDimstone() {
+    private boolean findGlowstoneOrDimstone() {
         BlockPos mobPos = this.mob.blockPosition();
-        BlockPos bestPos = null;
-        double bestDist = Double.MAX_VALUE;
+
+        List<Candidate> candidates = new ArrayList<>();
+        int maxCandidates = 3;
 
         for (BlockPos pos : BlockPos.betweenClosed(mobPos.offset(-10, -5, -10), mobPos.offset(10, 5, 10))) {
             if (isValidTarget(this.level.getBlockState(pos))) {
-                double dist = this.mob.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
 
-                if (dist < bestDist) {
-                    for (Direction dir : Direction.Plane.HORIZONTAL) {
-                        BlockPos sidePos = pos.relative(dir);
+                for (Direction dir : Direction.Plane.HORIZONTAL) {
+                    BlockPos sidePos = pos.relative(dir);
 
-                        if (this.level.isEmptyBlock(sidePos)) {
-                            Path path = this.mob.getNavigation().createPath(sidePos, 1);
-                            if (path != null && path.canReach()) {
-                                bestPos = pos.immutable();
-                                bestDist = dist;
-                                this.targetFace = dir;
+                    if (this.level.isEmptyBlock(sidePos)) {
+
+                        AABB checkBox = new AABB(sidePos).inflate(0.5);
+                        List<GlowsquitoEntity> others = this.level.getEntitiesOfClass(GlowsquitoEntity.class, checkBox);
+                        if (!others.isEmpty()) {
+                            continue;
+                        }
+
+                        Vec3 eyePos = this.mob.getEyePosition(1.0f);
+                        Vec3 targetFaceCenter = new Vec3(
+                                pos.getX() + 0.5 + dir.getStepX() * 0.49,
+                                pos.getY() + 0.5 + dir.getStepY() * 0.49,
+                                pos.getZ() + 0.5 + dir.getStepZ() * 0.49
+                        );
+
+                        BlockHitResult hit = this.level.clip(new ClipContext(
+                                eyePos,
+                                targetFaceCenter,
+                                ClipContext.Block.COLLIDER,
+                                ClipContext.Fluid.NONE,
+                                this.mob
+                        ));
+
+                        if (hit.getType() != HitResult.Type.MISS && hit.getBlockPos().equals(pos) && hit.getDirection() == dir) {
+                            double dist = this.mob.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                            candidates.add(new Candidate(pos.immutable(), dir, dist));
+
+                            if (candidates.size() >= maxCandidates) {
                                 break;
                             }
                         }
                     }
                 }
             }
+            if (candidates.size() == maxCandidates) break;
         }
-        return bestPos;
+
+        if (!candidates.isEmpty()) {
+            Candidate chosen = candidates.get(this.mob.getRandom().nextInt(candidates.size()));
+            this.targetPos = chosen.pos;
+            this.targetFace = chosen.face;
+            return true;
+        }
+
+        return false;
     }
+
+    private record Candidate(BlockPos pos, Direction face, double dist) {}
 }
