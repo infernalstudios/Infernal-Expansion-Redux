@@ -1,0 +1,8 @@
+{
+  "match": {
+    "effects": {
+      "infernalexp:luminous": {}
+    }
+  },
+  "luminance": 15
+}

@@ -6,10 +6,12 @@
   "plugin": "com.infernalstudios.infernalexp.mixin.InfernalExpansionMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractArrowMixin",
     "AnvilMenuMixin",
     "BaseFireBlockMixin",
     "BlockEntityTypeMixin",
     "BoneMealItemMixin",
+    "ClientboundSetEntityMotionPacketMixin",
     "EntityMixin",
     "FeatureMixin",
     "GlowstoneFeatureMixin",
@@ -36,6 +38,7 @@
     "registry.FireBlockMixin"
   ],
   "client": [
+    "accessor.ItemPropertiesAccessor",
     "client.EntityRendererDispatcherMixin",
     "client.ScreenEffectRendererMixin"
   ],
