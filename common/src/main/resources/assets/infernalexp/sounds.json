@@ -401,6 +401,15 @@
       "infernalexp:block/dullstone/step3"
     ]
   },
+  "record.flush": {
+    "sounds": [
+      {
+        "name": "infernalexp:record/flush",
+        "stream": true,
+        "volume": 2
+      }
+    ]
+  },
   "block.dullstone.hit": {
     "sounds": [
       "infernalexp:block/dullstone/step1",
