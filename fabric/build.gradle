@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 dependencies {
@@ -61,5 +62,33 @@ loom {
             ideConfigGenerated(true)
             runDir("build/datagen")
         }
+    }
+}
+
+publishMods {
+    file = tasks.named("remapJar").flatMap { it.archiveFile }
+    changelog = rootProject.file("CHANGELOG.md").text
+    type = STABLE
+    displayName = "${mod_name} Fabric ${minecraft_version} - ${project.version}"
+    modLoaders.add("fabric")
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        projectId = "1407992"
+        minecraftVersions.add("1.20.1")
+
+        requires { slug = "geckolib" }
+        optional { slug = "lambdynamiclights" }
+        optional { slug = "cloth-config" }
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = ""
+        minecraftVersions.add("1.20.1")
+
+        requires { slug = "geckolib" }
+        optional { slug = "lambdynamiclights" }
+        optional { slug = "cloth-config" }
     }
 }

@@ -1,0 +1,14 @@
+Additions:
+* Re-added and reworked the Glowsquito.
+  * Glowsquitos will now drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
+  * New animations and textures for the Glowsquito.
+* Added huge Luminous Fungus trees, obtained by bonemealing Luminous Fungus.
+* Added a new Luminous wood set, crafted from Luminous Stems.
+* Re-added the Luminous effect.
+  * Luminous will now give entities dynamic lighting effects when LambDynamicLights is installed.
+* Luminous Fungus can now be placed in flower pots.
+
+Fixes:
+* Missing sounds for bonemealing Shroomlight.
+* Missing sounds for placing Quartz and Bones.
+* Volatile Geyser model not working with mods like Hold My Items.
