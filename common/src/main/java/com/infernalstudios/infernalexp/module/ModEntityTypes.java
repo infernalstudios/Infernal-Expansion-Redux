@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.entities.GlowsilkArrowEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
@@ -39,6 +40,17 @@ public class ModEntityTypes {
                             .build())
             .attributes(GlowsquitoEntity::createAttributes)
             .withTranslation("Glowsquito"));
+
+    public static final EntityTypeDataHolder<GlowsilkArrowEntity> GLOWSILK_ARROW = register("glowsilk_arrow", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.<GlowsilkArrowEntity>of(
+                                    GlowsilkArrowEntity::new,
+                                    MobCategory.MISC
+                            )
+                            .sized(0.5F, 0.5F)
+                            .clientTrackingRange(4)
+                            .updateInterval(20)
+                            .build())
+            .withTranslation("Glowsilk Arrow"));
 
     public static void load() {}
 }
