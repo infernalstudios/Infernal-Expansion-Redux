@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -70,6 +71,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
+        this.setNoGravity(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -170,6 +172,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     @Override
     public void ate() {
         this.playSound(ModSounds.GLOWSQUITO_HURT.get(), 1.0F, 1.0F); // TODO: sucking sound
+        this.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 1200, 0));
     }
 
     @Override
