@@ -312,6 +312,14 @@
 						}
 					}
 				},
+				"Body": {
+					"rotation": {
+						"0.0": { "vector": [0, 0, 0] },
+						"0.25": { "vector": [0, 0, 5], "lerp_mode": "catmullrom" },
+						"0.75": { "vector": [0, 0, -5], "lerp_mode": "catmullrom" },
+						"1.0": { "vector": [0, 0, 0] }
+					}
+				},
 				"Butt": {
 					"rotation": {
 						"0.0": {

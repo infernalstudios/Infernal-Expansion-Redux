@@ -120,8 +120,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
             return PlayState.STOP;
         }));
 
-        controllers.add(new AnimationController<>(this, "ground_idle_controller", 0, event -> event.setAndContinue(IDLE)));
-
         controllers.add(new AnimationController<>(this, "action_controller", 0, event -> {
             if (this.isEating()) {
                 return event.setAndContinue(DRINKING);
