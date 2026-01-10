@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.fabric.module;
 
+import com.infernalstudios.infernalexp.module.ModBiomes;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.module.ModFeatures;
 import com.infernalstudios.infernalexp.world.feature.ModPlacedFeatures;
@@ -45,6 +46,14 @@ public class FeatureModuleFabric {
                 45,
                 1,
                 3
+        );
+        BiomeModifications.addSpawn(
+                BiomeSelectors.includeByKey(ModBiomes.GLOWSTONE_CANYON),
+                MobCategory.MONSTER,
+                ModEntityTypes.GLOWSQUITO.get(),
+                3,
+                1,
+                5
         );
     }
 }

@@ -3,8 +3,8 @@
   "biomes": "infernalexp:glowstone_canyon",
   "spawners": {
     "type": "infernalexp:glowsquito",
-    "weight": 50,
+    "weight": 3,
     "minCount": 1,
-    "maxCount": 3
+    "maxCount": 5
   }
 }

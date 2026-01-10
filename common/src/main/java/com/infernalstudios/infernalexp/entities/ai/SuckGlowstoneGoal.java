@@ -4,7 +4,6 @@ import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -126,8 +125,7 @@ public class SuckGlowstoneGoal extends Goal {
                 this.mob.setDeltaMovement(Vec3.ZERO);
                 this.mob.setPos(destX, destY, destZ);
             }
-        }
-        else {
+        } else {
             this.mob.setEating(false);
             if (this.timeoutCounter % 10 == 0 || this.mob.getNavigation().isDone()) {
                 this.moveToTarget();
@@ -136,10 +134,7 @@ public class SuckGlowstoneGoal extends Goal {
     }
 
     private void faceTargetInstantly() {
-        double d0 = this.targetPos.getX() + 0.5D - this.mob.getX();
-        double d2 = this.targetPos.getZ() + 0.5D - this.mob.getZ();
-        float targetYaw = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-
+        float targetYaw = this.targetFace.getOpposite().toYRot();
         this.mob.setYRot(targetYaw);
         this.mob.setYHeadRot(targetYaw);
         this.mob.setYBodyRot(targetYaw);
