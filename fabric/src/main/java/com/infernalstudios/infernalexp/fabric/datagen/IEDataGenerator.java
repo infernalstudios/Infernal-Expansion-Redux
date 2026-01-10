@@ -20,6 +20,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -438,6 +441,10 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                             add(blockDataHolder.get(), createDoorTable(blockDataHolder.get()));
                             continue;
                         }
+                        case FLOWER_POT -> {
+                            add(blockDataHolder.get(), createPotFlowerItemTable(((FlowerPotBlock) blockDataHolder.get()).getContent()));
+                            continue;
+                        }
                     }
                 }
 
@@ -503,6 +510,15 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                                     generator.createCrossBlockWithDefaultItem(blockDataHolder.get(), BlockModelGenerators.TintState.NOT_TINTED);
                             case DOOR -> generator.createDoor(blockDataHolder.get());
                             case TRAPDOOR -> generator.createTrapdoor(blockDataHolder.get());
+                            case FLOWER_POT -> {
+                                // Manual model generation using FLOWER_POT_CROSS template
+                                Block potted = blockDataHolder.get();
+                                if (potted instanceof FlowerPotBlock pot) {
+                                    TextureMapping textureMapping = TextureMapping.plant(pot.getContent());
+                                    ResourceLocation modelLocation = ModelTemplates.FLOWER_POT_CROSS.create(potted, textureMapping, generator.modelOutput);
+                                    generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(potted, modelLocation));
+                                }
+                            }
                         }
                     }
                 } else {

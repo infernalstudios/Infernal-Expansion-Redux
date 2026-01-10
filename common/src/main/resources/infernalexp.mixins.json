@@ -21,6 +21,7 @@
     "accessor.BlockBehaviourAccessor",
     "accessor.ButtonBlockAccessor",
     "accessor.DoorBlockAccessor",
+    "accessor.FlowerPotBlockAccessor",
     "accessor.IronBarsBlockAccessor",
     "accessor.NoiseGeneratorSettingsAccessor",
     "accessor.PressurePlateBlockAccessor",

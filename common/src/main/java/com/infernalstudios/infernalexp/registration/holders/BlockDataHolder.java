@@ -403,7 +403,8 @@ public class BlockDataHolder<T extends Block> {
         BUTTON("button", "Button"),
         PRESSURE_PLATE("pressure_plate", "Pressure Plate"),
         FENCE("fence", "Fence"),
-        FENCE_GATE("fence_gate", "Fence Gate");
+        FENCE_GATE("fence_gate", "Fence Gate"),
+        FLOWER_POT("flower_pot", "Flower Pot");
 
         private final String suffix;
         private final String lang;

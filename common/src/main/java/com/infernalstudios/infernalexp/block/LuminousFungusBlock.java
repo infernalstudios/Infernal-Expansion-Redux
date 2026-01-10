@@ -4,6 +4,7 @@ import com.infernalstudios.infernalexp.block.entity.LuminousFungusBlockEntity;
 import com.infernalstudios.infernalexp.block.parent.NetherPlantBlock;
 import com.infernalstudios.infernalexp.module.ModBlockEntityTypes;
 import com.infernalstudios.infernalexp.module.ModBlocks;
+import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -82,8 +82,8 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, world, pos, entity);
-        if (!state.getValue(LIT) && entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0));
+        if (entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200, 0));
         }
     }
 

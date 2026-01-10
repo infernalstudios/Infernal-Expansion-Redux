@@ -3,8 +3,6 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.UseOnContext;
@@ -40,18 +38,7 @@ public class BoneMealItemMixin {
                     else
                         world.setBlock(targetPos, tear, Block.UPDATE_ALL);
 
-                    if (world instanceof ServerLevel serverLevel) {
-
-                        double spawnX = targetPos.getX() + 0.5D;
-                        double spawnZ = targetPos.getZ() + 0.5D;
-                        double spawnY = targetPos.getY() + 0.1D;
-
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                                spawnX, spawnY, spawnZ,
-                                15,
-                                0.25D, 0.25D, 0.25D,
-                                0.05D);
-                    }
+                    world.levelEvent(1505, pos, 0);
                 }
                 cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
             }

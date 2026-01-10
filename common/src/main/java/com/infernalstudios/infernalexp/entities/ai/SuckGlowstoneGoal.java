@@ -166,7 +166,7 @@ public class SuckGlowstoneGoal extends Goal {
         List<Candidate> candidates = new ArrayList<>();
         int maxCandidates = 3;
 
-        for (BlockPos pos : BlockPos.betweenClosed(mobPos.offset(-10, -5, -10), mobPos.offset(10, 5, 10))) {
+        for (BlockPos pos : BlockPos.betweenClosed(mobPos.offset(-6, -5, -6), mobPos.offset(6, 5, 6))) {
             if (isValidTarget(this.level.getBlockState(pos))) {
 
                 for (Direction dir : Direction.Plane.HORIZONTAL) {
