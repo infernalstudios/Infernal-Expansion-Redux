@@ -294,6 +294,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 if (dist < 0.3D) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().scale(0.5D));
+                    this.parentEntity.getNavigation().stop();
                 } else {
                     this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().add(wanted.scale(this.speedModifier * 0.05D / dist)));
 
