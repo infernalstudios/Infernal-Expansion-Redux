@@ -34,6 +34,7 @@ public class InfernalExpansionFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         IECommonClient.init();
+        IECommonClient.initItemProperties();
         registerEntityRenderers();
         registerBlockEntityRenderers();
         registerLayerDefinitions();

@@ -138,13 +138,6 @@ public class ModBlocks {
             .withTranslation("Luminous Fungus")
     );
 
-    public static final BlockDataHolder<?> POTTED_LUMINOUS_FUNGUS = register("potted_luminous_fungus", BlockDataHolder.of(() ->
-                    new FlowerPotBlock(ModBlocks.LUMINOUS_FUNGUS.get(), BlockBehaviour.Properties.copy(Blocks.POTTED_CRIMSON_FUNGUS)))
-            .withModel(BlockDataHolder.Model.FLOWER_POT)
-            .cutout()
-            .withTranslation("Potted Luminous Fungus")
-    );
-
     public static final BlockDataHolder<?> LUMINOUS_FUNGUS_CAP = register("luminous_fungus_cap", BlockDataHolder.of(() ->
                     new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE)

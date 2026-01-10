@@ -1,6 +1,8 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.effect.InfectionEffect;
+import com.infernalstudios.infernalexp.effect.LuminousEffect;
 import com.infernalstudios.infernalexp.effect.StatusEffect;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModEffects {
-    /** Map of all Effect Resource Locations to their Suppliers. */
     private static final Map<ResourceLocation, MobEffectDataHolder<?>> EFFECT_REGISTRY = new HashMap<>();
 
     public static MobEffectDataHolder<?> register(String name, MobEffectDataHolder<?> effect) {
@@ -24,7 +25,6 @@ public class ModEffects {
         return EFFECT_REGISTRY;
     }
 
-    // Called in the mod initializer / constructor in order to make sure that items are registered
     public static void load() {}
 
     public static final MobEffectDataHolder<?> WARPED = register("warped", MobEffectDataHolder.of(() ->
@@ -33,10 +33,10 @@ public class ModEffects {
             .withPotion(() -> Items.WARPED_FUNGUS);
 
     public static final MobEffectDataHolder<?> INFECTION = register("infection", MobEffectDataHolder.of(() ->
-            new StatusEffect(MobEffectCategory.HARMFUL, 12918043)))
+            new InfectionEffect(MobEffectCategory.HARMFUL, 12918043)))
             .withTranslation("Infection");
 
     public static final MobEffectDataHolder<?> LUMINOUS = register("luminous", MobEffectDataHolder.of(() ->
-            new StatusEffect(MobEffectCategory.NEUTRAL, 16777086)))
+            new LuminousEffect(MobEffectCategory.NEUTRAL, 16777086)))
             .withTranslation("Luminous");
 }

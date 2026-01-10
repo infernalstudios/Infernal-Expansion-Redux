@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.client;
 
 import com.infernalstudios.infernalexp.module.ModEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
+import com.infernalstudios.infernalexp.module.ModItemProperties;
 import com.infernalstudios.infernalexp.module.ModModelLayers;
 
 public class IECommonClient {
@@ -9,5 +10,9 @@ public class IECommonClient {
         ModEntityRenderers.load();
         ModBlockEntityRenderers.load();
         ModModelLayers.load();
+    }
+
+    public static void initItemProperties() {
+        ModItemProperties.init();
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -41,10 +40,6 @@ public class EntityTypeModuleForge {
         EntityTypeDataHolder<T> typedHolder = (EntityTypeDataHolder<T>) holder;
 
         AttributeSupplier.Builder builder = typedHolder.getAttributesSupplier().get();
-
-        builder.add(ForgeMod.SWIM_SPEED.get())
-                .add(ForgeMod.NAMETAG_DISTANCE.get())
-                .add(ForgeMod.ENTITY_GRAVITY.get());
 
         event.put(typedHolder.get(), builder.build());
     }

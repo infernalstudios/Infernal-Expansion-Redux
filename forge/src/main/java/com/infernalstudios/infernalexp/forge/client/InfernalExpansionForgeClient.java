@@ -3,7 +3,10 @@ package com.infernalstudios.infernalexp.forge.client;
 import com.infernalstudios.infernalexp.client.IECommonClient;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
 import com.infernalstudios.infernalexp.client.particle.InfectionParticle;
-import com.infernalstudios.infernalexp.module.*;
+import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
+import com.infernalstudios.infernalexp.module.ModEntityRenderers;
+import com.infernalstudios.infernalexp.module.ModModelLayers;
+import com.infernalstudios.infernalexp.module.ModParticleTypes;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
@@ -42,6 +45,8 @@ public class InfernalExpansionForgeClient {
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
+        event.enqueueWork(IECommonClient::initItemProperties);
+
         for (BlockDataHolder<?> block : BlockDataHolder.getCutoutBlocks()) {
             ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
         }
@@ -62,7 +67,6 @@ public class InfernalExpansionForgeClient {
         event.registerSpriteSet(ModParticleTypes.INFECTION, InfectionParticle.Factory::new);
     }
 
-    // Helper methods to capture wildcard generics
     @SuppressWarnings("unchecked")
     private static <T extends Entity> void registerEntityRendererHelper(EntityRenderersEvent.RegisterRenderers event, EntityTypeDataHolder<?> typeHolder, EntityRendererProvider<?> provider) {
         event.registerEntityRenderer((EntityType<T>) typeHolder.get(), (EntityRendererProvider<T>) provider);
