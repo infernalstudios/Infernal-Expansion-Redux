@@ -3,6 +3,10 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.UseOnContext;
@@ -38,7 +42,13 @@ public class BoneMealItemMixin {
                     else
                         world.setBlock(targetPos, tear, Block.UPDATE_ALL);
 
-                    world.levelEvent(1505, pos, 0);
+                    world.playSound(null, targetPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                    if (world instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D,
+                                15, 0.25D, 0.25D, 0.25D, 0.05D);
+                    }
                 }
                 cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
             }
