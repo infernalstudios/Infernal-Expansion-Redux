@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class FungusCapBlock extends Block {
     public FungusCapBlock(Properties properties) {
@@ -14,7 +15,7 @@ public class FungusCapBlock extends Block {
     }
 
     @Override
-    public void fallOn(Level world, BlockState state, BlockPos pos, Entity entity, float distance) {
+    public void fallOn(@NotNull Level world, @NotNull BlockState state, @NotNull BlockPos pos, Entity entity, float distance) {
         if (entity.isSuppressingBounce())
             super.fallOn(world, state, pos, entity, distance);
         else
@@ -22,7 +23,7 @@ public class FungusCapBlock extends Block {
     }
 
     @Override
-    public void updateEntityAfterFallOn(BlockGetter world, Entity entity) {
+    public void updateEntityAfterFallOn(@NotNull BlockGetter world, Entity entity) {
         if (entity.isSuppressingBounce())
             super.updateEntityAfterFallOn(world, entity);
         else

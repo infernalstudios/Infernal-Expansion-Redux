@@ -83,7 +83,7 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
     public void entityInside(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, world, pos, entity);
         if (entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200, 0));
+            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100, 0));
         }
     }
 

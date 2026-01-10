@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ShroomlightTearBlock extends Block {
@@ -37,20 +38,20 @@ public class ShroomlightTearBlock extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return state.getValue(UP) ? BOX_REVERSED : BOX;
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader world, @NotNull BlockPos pos) {
         BlockPos blockPos = state.getValue(UP) ? pos.below() : pos.above();
         BlockState support = world.getBlockState(blockPos);
         return support.is(this.growableOn);
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState other, LevelAccessor world,
-                                  BlockPos pos, BlockPos otherPos) {
+    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState other, @NotNull LevelAccessor world,
+                                           @NotNull BlockPos pos, @NotNull BlockPos otherPos) {
         BlockState result = super.updateShape(state, direction, other, world, pos, otherPos);
         if (!result.is(this)) return result;
 
