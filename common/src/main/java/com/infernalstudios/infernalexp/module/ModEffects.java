@@ -38,5 +38,6 @@ public class ModEffects {
 
     public static final MobEffectDataHolder<?> LUMINOUS = register("luminous", MobEffectDataHolder.of(() ->
             new LuminousEffect(MobEffectCategory.NEUTRAL, 16777086)))
-            .withTranslation("Luminous");
+            .withTranslation("Luminous")
+            .withPotion(() -> ModBlocks.LUMINOUS_FUNGUS.get().asItem());
 }
