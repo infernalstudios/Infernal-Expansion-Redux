@@ -68,7 +68,9 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new GlowsquitoEntity.MoveHelperController(this);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
         this.setNoGravity(true);
@@ -80,11 +82,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
                 .add(Attributes.FLYING_SPEED, 0.6D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
-    }
-
-    @Override
-    public double getMeleeAttackRangeSqr(LivingEntity entity) {
-        return this.getBbWidth() * 1.0F * this.getBbWidth() * 1.0F + entity.getBbWidth();
     }
 
     @Override

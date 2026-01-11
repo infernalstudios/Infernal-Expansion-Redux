@@ -64,6 +64,11 @@ public class SuckGlowstoneGoal extends Goal {
         this.eatAnimationTick = 0;
         this.timeoutCounter = 0;
 
+        if (this.targetPos == null || !isValidTarget(this.level.getBlockState(this.targetPos))) {
+            this.stop();
+            return;
+        }
+
         double offset = 1.15D;
 
         this.latchPos = new Vec3(
@@ -196,7 +201,10 @@ public class SuckGlowstoneGoal extends Goal {
                                 this.mob
                         ));
 
-                        if (hit.getType() != HitResult.Type.MISS && hit.getBlockPos().equals(pos) && hit.getDirection() == dir) {
+                        if (hit.getType() == HitResult.Type.BLOCK &&
+                                hit.getBlockPos().equals(pos) &&
+                                hit.getDirection() == dir) {
+
                             double dist = this.mob.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
                             candidates.add(new Candidate(pos.immutable(), dir, dist));
 
