@@ -69,8 +69,8 @@ public class EntityBucketItem extends BucketItem {
     private void spawn(ServerLevel world, ItemStack stack, BlockPos pos) {
         var entity = this.entityTypeSupplier.get().spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
         if (entity instanceof IBucketable bucketable) {
-            bucketable.setFromBucket(true);
-            bucketable.copyFromAdditional(stack.getOrCreateTag());
+            bucketable.infernalexp$setFromBucket(true);
+            bucketable.infernalexp$copyFromAdditional(stack.getOrCreateTag());
         }
     }
 }

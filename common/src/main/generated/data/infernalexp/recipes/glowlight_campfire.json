@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "infernalexp:glowcoal"
+    },
+    "L": {
+      "tag": "minecraft:logs_that_burn"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SAS",
+    "LLL"
+  ],
+  "result": {
+    "item": "infernalexp:glowlight_campfire"
+  },
+  "show_notification": true
+}

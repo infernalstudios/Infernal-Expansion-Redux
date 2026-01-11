@@ -56,7 +56,6 @@ import java.util.Objects;
 
 public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntity {
 
-    // NBT Tags
     private static final String TAG_MAGMA_CREAM_EATEN = "MagmaCreamEaten";
     private static final String TAG_IS_SLEEPING = "IsSleeping";
     private static final String TAG_FROM_BUCKET = "FromBucket";
@@ -64,7 +63,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     private static final String TAG_IS_SEEKING_SHELTER = "IsSeekingShelter";
     private static final String TAG_IS_GROWN = "IsGrown";
 
-    // Gameplay Constants
     private static final int SLEEP_DURATION_TICKS = 1000;
     private static final int SHELTER_SEEK_TIMEOUT_TICKS = 100;
     private static final double BASE_MOVEMENT_SPEED = 0.4D;
@@ -72,7 +70,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     private static final double SPEED_REDUCTION_PER_CREAM = 0.08D;
     private static final float SIZE_INCREMENT_PER_CREAM = 0.08F;
 
-    // Synched Data
     public static final EntityDataAccessor<Integer> MAGMA_CREAM_EATEN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
@@ -83,7 +80,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int shelterSeekTime = 0;
 
-    // Animations
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation EAT = RawAnimation.begin().thenPlay("eat");
@@ -126,12 +122,12 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
-    public boolean isFromBucket() {
+    public boolean infernalexp$isFromBucket() {
         return this.entityData.get(FROM_BUCKET);
     }
 
     @Override
-    public void setFromBucket(boolean isFromBucket) {
+    public void infernalexp$setFromBucket(boolean isFromBucket) {
         this.entityData.set(FROM_BUCKET, isFromBucket);
     }
 
@@ -425,8 +421,8 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
-    public void copyToStack(ItemStack stack) {
-        IBucketable.copyToStack(this, stack);
+    public void infernalexp$copyToStack(ItemStack stack) {
+        IBucketable.copyDataToStack(this, stack);
         CompoundTag tag = stack.getOrCreateTag();
         tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
         tag.putFloat("Size", this.getSizeFactor());
@@ -434,20 +430,20 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
-    public void copyFromAdditional(CompoundTag compound) {
-        IBucketable.copyFromAdditional(this, compound);
+    public void infernalexp$copyFromAdditional(CompoundTag compound) {
+        IBucketable.copyDataFromAdditional(this, compound);
         if (compound.contains(TAG_MAGMA_CREAM_EATEN)) {
             this.setMagmaCreamEaten(compound.getInt(TAG_MAGMA_CREAM_EATEN));
         }
     }
 
     @Override
-    public ItemStack getBucketItem() {
+    public ItemStack infernalexp$getBucketItem() {
         return new ItemStack(ModItems.VOLINE_BUCKET.get());
     }
 
     @Override
-    public SoundEvent getBucketedSound() {
+    public SoundEvent infernalexp$getBucketedSound() {
         return SoundEvents.BUCKET_FILL_LAVA;
     }
 
@@ -525,7 +521,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         super.addAdditionalSaveData(tag);
         tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
         tag.putBoolean(TAG_IS_SLEEPING, this.isSleeping());
-        tag.putBoolean(TAG_FROM_BUCKET, this.isFromBucket());
+        tag.putBoolean(TAG_FROM_BUCKET, this.infernalexp$isFromBucket());
         tag.putInt(TAG_SLEEP_TIMER, this.getSleepTimer());
         tag.putBoolean(TAG_IS_SEEKING_SHELTER, this.isSeekingShelter());
         tag.putBoolean(TAG_IS_GROWN, this.isGrown());
@@ -536,7 +532,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         super.readAdditionalSaveData(tag);
         this.setMagmaCreamEaten(tag.getInt(TAG_MAGMA_CREAM_EATEN));
         this.setSleeping(tag.getBoolean(TAG_IS_SLEEPING));
-        this.setFromBucket(tag.getBoolean(TAG_FROM_BUCKET));
+        this.infernalexp$setFromBucket(tag.getBoolean(TAG_FROM_BUCKET));
 
         if (tag.contains(TAG_SLEEP_TIMER)) {
             this.setSleepTimer(tag.getInt(TAG_SLEEP_TIMER));

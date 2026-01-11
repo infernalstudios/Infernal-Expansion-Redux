@@ -27,6 +27,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -252,6 +253,33 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
             offer3x3Recipe(exporter, ModBlocks.LUMINOUS_FUNGUS_CAP.get(), 1, ModBlocks.LUMINOUS_FUNGUS.get());
             offerUnpackRecipe(exporter, ModBlocks.LUMINOUS_FUNGUS.get(), 9, ModBlocks.LUMINOUS_FUNGUS_CAP.get());
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_TORCH.get(), 4)
+                    .pattern("A")
+                    .pattern("B")
+                    .define('A', ModItems.GLOWCOAL.get())
+                    .define('B', Items.STICK)
+                    .unlockedBy("has_glowcoal", has(ModItems.GLOWCOAL.get()))
+                    .save(exporter, IECommon.makeID("glowlight_torch"));
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_CAMPFIRE.get())
+                    .pattern(" S ")
+                    .pattern("SAS")
+                    .pattern("LLL")
+                    .define('S', Items.STICK)
+                    .define('A', ModItems.GLOWCOAL.get())
+                    .define('L', ItemTags.LOGS_THAT_BURN)
+                    .unlockedBy("has_glowcoal", has(ModItems.GLOWCOAL.get()))
+                    .save(exporter, IECommon.makeID("glowlight_campfire"));
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_LANTERN.get())
+                    .pattern("AAA")
+                    .pattern("ABA")
+                    .pattern("AAA")
+                    .define('A', Items.IRON_NUGGET)
+                    .define('B', ModItems.GLOWLIGHT_TORCH.get())
+                    .unlockedBy("has_glowlight_torch", has(ModItems.GLOWLIGHT_TORCH.get()))
+                    .save(exporter, IECommon.makeID("glowlight_lantern"));
         }
     }
 

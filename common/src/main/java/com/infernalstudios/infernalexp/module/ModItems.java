@@ -11,6 +11,7 @@ import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
@@ -32,16 +33,41 @@ public class ModItems {
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Infernal Expansion")
     );
+
     public static final ItemDataHolder<?> DULLROCKS = register("dullrocks", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Dullrocks")
     );
+
     public static final ItemDataHolder<?> GLOWLIGHT_TORCH = register("glowlight_torch", ItemDataHolder.of(() ->
                     new StandingAndWallBlockItem(ModBlocks.GLOWLIGHT_TORCH.get(), ModBlocks.GLOWLIGHT_WALL_TORCH.get(),
                             new Item.Properties(), Direction.DOWN))
             .withModel(ModelTemplates.FLAT_ITEM)
     );
+
+    public static final ItemDataHolder<?> MAGMA_CUBE_BUCKET = register("magma_cube_bucket", ItemDataHolder.of(() ->
+                    new EntityBucketItem(
+                            () -> EntityType.MAGMA_CUBE,
+                            Fluids.LAVA,
+                            () -> SoundEvents.MAGMA_CUBE_SQUISH,
+                            new Item.Properties().stacksTo(1)
+                    ))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Magma Cube Bucket")
+    );
+
+    public static final ItemDataHolder<?> STRIDER_BUCKET = register("strider_bucket", ItemDataHolder.of(() ->
+                    new EntityBucketItem(
+                            () -> EntityType.STRIDER,
+                            Fluids.LAVA,
+                            () -> SoundEvents.BUCKET_EMPTY_LAVA,
+                            new Item.Properties().stacksTo(1)
+                    ))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Strider Bucket")
+    );
+
     public static final ItemDataHolder<?> VOLINE_BUCKET = register("voline_bucket", ItemDataHolder.of(() ->
                     new EntityBucketItem(
                             ModEntityTypes.VOLINE::get,
@@ -52,6 +78,7 @@ public class ModItems {
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Voline Bucket")
     );
+
     public static final ItemDataHolder<?> VOLINE_SPAWN_EGG = register("voline_spawn_egg", ItemDataHolder.of(() ->
                     new SpawnEggItem(
                             ModEntityTypes.VOLINE.get(),
@@ -62,6 +89,7 @@ public class ModItems {
             .withModel(SPAWN_EGG)
             .withTranslation("Voline Spawn Egg")
     );
+
     public static final ItemDataHolder<?> GLOWSILK_MOTH_SPAWN_EGG = register("glowsilk_moth_spawn_egg", ItemDataHolder.of(() ->
                     new SpawnEggItem(
                             ModEntityTypes.GLOWSILK_MOTH.get(),
@@ -72,6 +100,7 @@ public class ModItems {
             .withModel(SPAWN_EGG)
             .withTranslation("Glowsilk Moth Spawn Egg")
     );
+
     public static final ItemDataHolder<?> GLOWSQUITO_SPAWN_EGG = register("glowsquito_spawn_egg", ItemDataHolder.of(() ->
                     new SpawnEggItem(
                             ModEntityTypes.GLOWSQUITO.get(),
@@ -82,11 +111,13 @@ public class ModItems {
             .withModel(SPAWN_EGG)
             .withTranslation("Glowsquito Spawn Egg")
     );
+
     public static final ItemDataHolder<?> GLOWSILK_STRING = register("glowsilk_string", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Glowsilk String")
     );
+
     public static final ItemDataHolder<?> GLOWSILK_BOW = register("glowsilk_bow", ItemDataHolder.of(() ->
                     new GlowsilkBowItem(new Item.Properties().durability(384)))
             .withTranslation("Glowsilk Bow")
@@ -119,7 +150,6 @@ public class ModItems {
         return ITEM_REGISTRY;
     }
 
-    // Called in the mod initializer / constructor in order to make sure that items are registered
     public static void load() {
     }
 }

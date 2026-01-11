@@ -16,19 +16,19 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public interface IBucketable {
-    boolean isFromBucket();
+    boolean infernalexp$isFromBucket();
 
-    void setFromBucket(boolean isFromBucket);
+    void infernalexp$setFromBucket(boolean isFromBucket);
 
-    void copyToStack(ItemStack stack);
+    void infernalexp$copyToStack(ItemStack stack);
 
-    void copyFromAdditional(CompoundTag compound);
+    void infernalexp$copyFromAdditional(CompoundTag compound);
 
-    ItemStack getBucketItem();
+    ItemStack infernalexp$getBucketItem();
 
-    SoundEvent getBucketedSound();
+    SoundEvent infernalexp$getBucketedSound();
 
-    static void copyToStack(Mob entity, ItemStack stack) {
+    static void copyDataToStack(Mob entity, ItemStack stack) {
         CompoundTag compound = stack.getOrCreateTag();
         if (entity.hasCustomName()) {
             stack.setHoverName(entity.getCustomName());
@@ -57,7 +57,7 @@ public interface IBucketable {
         compound.putFloat("Health", entity.getHealth());
     }
 
-    static void copyFromAdditional(Mob entity, CompoundTag compound) {
+    static void copyDataFromAdditional(Mob entity, CompoundTag compound) {
         if (compound.contains("NoAI")) {
             entity.setNoAi(compound.getBoolean("NoAI"));
         }
@@ -86,10 +86,10 @@ public interface IBucketable {
     static <T extends LivingEntity & IBucketable> Optional<InteractionResult> tryBucketEntity(Player player, InteractionHand hand, T entity) {
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem.getItem() == Items.LAVA_BUCKET && entity.isAlive()) {
-            entity.playSound(entity.getBucketedSound(), 1.0F, 1.0F);
+            entity.playSound(entity.infernalexp$getBucketedSound(), 1.0F, 1.0F);
 
-            ItemStack bucketItem = entity.getBucketItem();
-            entity.copyToStack(bucketItem);
+            ItemStack bucketItem = entity.infernalexp$getBucketItem();
+            entity.infernalexp$copyToStack(bucketItem);
 
             ItemStack resultStack = ItemUtils.createFilledResult(heldItem, player, bucketItem, false);
             player.setItemInHand(hand, resultStack);
