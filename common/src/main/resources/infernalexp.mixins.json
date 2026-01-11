@@ -21,6 +21,7 @@
     "MinecraftServerMixin",
     "MultiPackResourceManagerMixin",
     "PiglinSpecificSensorMixin",
+    "RuinedPortalStructureMixin",
     "StriderMixin",
     "accessor.BlockBehaviourAccessor",
     "accessor.ButtonBlockAccessor",

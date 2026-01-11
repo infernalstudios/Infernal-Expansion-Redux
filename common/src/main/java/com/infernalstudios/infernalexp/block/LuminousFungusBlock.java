@@ -11,6 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -83,7 +85,13 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
     public void entityInside(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, world, pos, entity);
         if (entity instanceof LivingEntity living) {
+            boolean hadEffect = living.hasEffect(ModEffects.LUMINOUS.get());
             living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100, 0));
+
+            if (!hadEffect && !world.isClientSide) {
+                world.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME,
+                        SoundSource.BLOCKS, 1.0F, 1.0F);
+            }
         }
     }
 

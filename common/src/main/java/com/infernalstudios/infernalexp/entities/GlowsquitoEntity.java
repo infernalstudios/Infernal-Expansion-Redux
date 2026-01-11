@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.entities;
 
+import com.infernalstudios.infernalexp.entities.ai.AvoidCampfiresGoal;
 import com.infernalstudios.infernalexp.entities.ai.RandomFlyGoal;
 import com.infernalstudios.infernalexp.entities.ai.SuckGlowstoneGoal;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -88,13 +89,13 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(8, new GlowsquitoEntity.LookAroundGoal(this));
-
-        this.goalSelector.addGoal(1, new SuckGlowstoneGoal(this));
+        this.goalSelector.addGoal(1, new AvoidCampfiresGoal(this, 8.0D, 1.2D));
 
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8d));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 0.8d, TEMPTATION_ITEMS, false));
-        this.goalSelector.addGoal(4, new RandomFlyGoal(this));
+        this.goalSelector.addGoal(3, new SuckGlowstoneGoal(this));
+        this.goalSelector.addGoal(4, new TemptGoal(this, 0.8d, TEMPTATION_ITEMS, false));
+        this.goalSelector.addGoal(5, new RandomFlyGoal(this));
+        this.goalSelector.addGoal(8, new LookAroundGoal(this));
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true,

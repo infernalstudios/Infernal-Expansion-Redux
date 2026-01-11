@@ -95,8 +95,10 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.VOLATILE_GEYSER.get());
 
         entries.accept(ModItems.VOLINE_BUCKET.get());
-        entries.accept(ModItems.VOLINE_SPAWN_EGG.get());
+        entries.accept(ModItems.STRIDER_BUCKET.get());
+        entries.accept(ModItems.MAGMA_CUBE_BUCKET.get());
 
+        entries.accept(ModItems.VOLINE_SPAWN_EGG.get());
         entries.accept(ModItems.GLOWSQUITO_SPAWN_EGG.get());
         entries.accept(ModItems.GLOWSILK_MOTH_SPAWN_EGG.get());
 

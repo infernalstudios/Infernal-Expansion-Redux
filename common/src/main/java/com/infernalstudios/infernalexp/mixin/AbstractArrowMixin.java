@@ -68,13 +68,12 @@ public abstract class AbstractArrowMixin implements AbstractArrowEntityAccess {
     @Inject(method = "onHitEntity", at = @At("TAIL"))
     private void infernalexp$onHitEntity(EntityHitResult result, CallbackInfo ci) {
         if (result.getEntity() instanceof LivingEntity livingEntity) {
-            // Apply Infection if arrow has it
+
             if (this.infernalexp$getInfection()) {
-                livingEntity.addEffect(new MobEffectInstance(ModEffects.INFECTION.get(), 600)); // 30 seconds
+                livingEntity.addEffect(new MobEffectInstance(ModEffects.INFECTION.get(), 600));
             }
-            // Apply Luminous if arrow has it
             if (this.infernalexp$getLuminous() || this.infernalexp$getGlow()) {
-                livingEntity.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600)); // 30 seconds
+                livingEntity.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600));
             }
         }
     }

@@ -268,7 +268,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .pattern("LLL")
                     .define('S', Items.STICK)
                     .define('A', ModItems.GLOWCOAL.get())
-                    .define('L', ItemTags.LOGS_THAT_BURN)
+                    .define('L', ItemTags.LOGS)
                     .unlockedBy("has_glowcoal", has(ModItems.GLOWCOAL.get()))
                     .save(exporter, IECommon.makeID("glowlight_campfire"));
 

@@ -4,6 +4,8 @@ import com.infernalstudios.infernalexp.block.parent.NetherPlantBlock;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +25,12 @@ public class DullthornsBlock extends NetherPlantBlock {
     public static void applyEffect(Entity entity) {
         if (entity instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200, 0));
+
+            if (!entity.level().isClientSide) {
+                entity.level().playSound(null, entity.blockPosition(),
+                        SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS,
+                        1.0F, 1.0F);
+            }
         }
         entity.hurt(entity.damageSources().cactus(), 1.0F);
     }
