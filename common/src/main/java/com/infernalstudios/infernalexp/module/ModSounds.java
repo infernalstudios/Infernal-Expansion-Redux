@@ -23,6 +23,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_MOOD = register("ambient.glowstone_canyon.mood");
     public static final RegistryObject<SoundEvent> MUSIC_NETHER_GLOWSTONE_CANYON = register("music.nether.glowstone_canyon");
 
+    public static final RegistryObject<SoundEvent> RECORD_FLUSH = register("record.flush");
+
     public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_BREAK = register("block.dullstone.break");
     public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_STEP = register("block.dullstone.step");
     public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_PLACE = register("block.dullstone.place");

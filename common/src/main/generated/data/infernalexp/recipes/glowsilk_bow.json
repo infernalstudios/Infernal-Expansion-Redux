@@ -10,9 +10,9 @@
     }
   },
   "pattern": [
-    " #/",
-    "# /",
-    " #/"
+    " /#",
+    "/ #",
+    " /#"
   ],
   "result": {
     "item": "infernalexp:glowsilk_bow"

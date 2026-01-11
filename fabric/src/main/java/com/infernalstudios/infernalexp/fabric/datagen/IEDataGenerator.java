@@ -163,11 +163,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             }
 
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GLOWSILK_BOW.get())
-                    .pattern(" #/")
-                    .pattern("# /")
-                    .pattern(" #/")
+                    .pattern(" /#")
+                    .pattern("/ #")
+                    .pattern(" /#")
+                    .define('#',ModItems.GLOWSILK_STRING.get())
                     .define('/', Items.STICK)
-                    .define('#', ModItems.GLOWSILK_STRING.get())
                     .unlockedBy("has_glowsilk_string", has(ModItems.GLOWSILK_STRING.get()))
                     .save(exporter, IECommon.makeID(getName(ModItems.GLOWSILK_BOW.get())));
 

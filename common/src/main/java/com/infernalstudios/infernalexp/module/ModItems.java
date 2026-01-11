@@ -3,13 +3,16 @@ package com.infernalstudios.infernalexp.module;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.items.EntityBucketItem;
 import com.infernalstudios.infernalexp.items.GlowsilkBowItem;
+import com.infernalstudios.infernalexp.items.MusicDiscItem;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.material.Fluids;
@@ -77,6 +80,13 @@ public class ModItems {
     public static final ItemDataHolder<?> GLOWSILK_BOW = register("glowsilk_bow", ItemDataHolder.of(() ->
                     new GlowsilkBowItem(new Item.Properties().durability(384)))
             .withTranslation("Glowsilk Bow")
+    );
+
+    public static final ItemDataHolder<?> MUSIC_DISC_FLUSH = register("music_disc_flush", ItemDataHolder.of(() ->
+                    new MusicDiscItem(14, ModSounds.RECORD_FLUSH.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2440))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Music Disc")
+            .withTags(ItemTags.MUSIC_DISCS)
     );
 
     public static ItemDataHolder<?> register(String name, ItemDataHolder<?> itemDataHolder) {
