@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.entities.GlowsilkArrowEntity;
+import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
@@ -51,6 +52,13 @@ public class ModEntityTypes {
                             .updateInterval(20)
                             .build())
             .withTranslation("Glowsilk Arrow"));
+
+    public static final EntityTypeDataHolder<GlowsilkMothEntity> GLOWSILK_MOTH = register("glowsilk_moth", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.of(GlowsilkMothEntity::new, MobCategory.AMBIENT)
+                            .sized(0.5F, 1.0F)
+                            .build())
+            .attributes(GlowsilkMothEntity::createAttributes)
+            .withTranslation("Glowsilk Moth"));
 
     public static void load() {}
 }

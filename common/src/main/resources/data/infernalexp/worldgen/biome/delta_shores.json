@@ -66,9 +66,21 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
+  "spawn_costs": {
+    "infernalexp:glowsilk_moth": {
+      "energy_budget": 1.0,
+      "charge": 0.4
+    }
+  },
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "infernalexp:glowsilk_moth",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
+      }
+    ],
     "axolotls": [],
     "creature": [
       {

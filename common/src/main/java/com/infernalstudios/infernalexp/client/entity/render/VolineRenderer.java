@@ -14,9 +14,7 @@ public class VolineRenderer extends GeoEntityRenderer<VolineEntity> {
 
     public VolineRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new VolineModel());
-
         this.addRenderLayer(new AutoGlowingGeoLayer<>(this));
-
         this.shadowRadius = 0.7F;
     }
 

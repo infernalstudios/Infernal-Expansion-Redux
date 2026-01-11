@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.forge.module;
 
+import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
@@ -24,6 +25,13 @@ public class SpawnPlacementModuleForge {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GlowsquitoEntity::checkGlowsquitoSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+
+        event.register(ModEntityTypes.GLOWSILK_MOTH.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GlowsilkMothEntity::checkGlowsilkMothSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
     }

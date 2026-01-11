@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.fabric.module;
 
-import com.infernalstudios.infernalexp.entities.GlowsquitoEntity; // Don't forget this import!
+import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
+import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -17,5 +18,10 @@ public class SpawnPlacementModuleFabric {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GlowsquitoEntity::checkGlowsquitoSpawnRules);
+
+        SpawnPlacements.register(ModEntityTypes.GLOWSILK_MOTH.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GlowsilkMothEntity::checkGlowsilkMothSpawnRules);
     }
 }

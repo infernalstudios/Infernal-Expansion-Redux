@@ -99,6 +99,8 @@ public class ModCreativeTabs {
         entries.accept(ModItems.VOLINE_SPAWN_EGG.get());
 
         entries.accept(ModItems.GLOWSQUITO_SPAWN_EGG.get());
+        entries.accept(ModItems.GLOWSILK_MOTH_SPAWN_EGG.get());
+
         entries.accept(ModItems.MUSIC_DISC_FLUSH.get());
 
     }).build());

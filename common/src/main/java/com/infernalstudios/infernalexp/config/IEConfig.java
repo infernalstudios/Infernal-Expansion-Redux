@@ -38,9 +38,17 @@ public class IEConfig {
             public int volineMagmaCreamAmount = 3;
         }
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public MobInteractions mobInteractions = new MobInteractions();
+
         public static class Miscellaneous {
             @ConfigEntry.Gui.Tooltip
-            public double LuminousFungusActivateDistance = 4.0D;
+            public double luminousFungusActivateDistance = 4.0D;
+        }
+
+        public static class MobInteractions {
+            @ConfigEntry.Gui.Tooltip
+            public static double glowsilkSpeed = 1.0D;
         }
     }
 }

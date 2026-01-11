@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.client.entity.render.GlowsilkArrowRenderer;
+import com.infernalstudios.infernalexp.client.entity.render.GlowsilkMothRenderer;
 import com.infernalstudios.infernalexp.client.entity.render.GlowsquitoRenderer;
 import com.infernalstudios.infernalexp.client.entity.render.VolineRenderer;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
@@ -26,5 +27,6 @@ public class ModEntityRenderers {
         register(ModEntityTypes.VOLINE, VolineRenderer::new);
         register(ModEntityTypes.GLOWSQUITO, GlowsquitoRenderer::new);
         register(ModEntityTypes.GLOWSILK_ARROW, GlowsilkArrowRenderer::new);
+        register(ModEntityTypes.GLOWSILK_MOTH, GlowsilkMothRenderer::new);
     }
 }

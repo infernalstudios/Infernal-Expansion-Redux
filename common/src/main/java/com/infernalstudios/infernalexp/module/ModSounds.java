@@ -18,6 +18,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> GLOWSQUITO_DEATH = register("entity.glowsquito.death");
     public static final RegistryObject<SoundEvent> GLOWSQUITO_LOOP = register("entity.glowsquito.loop");
 
+    public static final RegistryObject<SoundEvent> GLOWSILK_MOTH_AMBIENT = register("entity.glowsilk_moth.ambient");
+    public static final RegistryObject<SoundEvent> GLOWSILK_MOTH_HURT = register("entity.glowsilk_moth.hurt");
+    public static final RegistryObject<SoundEvent> GLOWSILK_MOTH_DEATH = register("entity.glowsilk_moth.death");
+
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_LOOP = register("ambient.glowstone_canyon.loop");
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_ADDITIONS = register("ambient.glowstone_canyon.additions");
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_MOOD = register("ambient.glowstone_canyon.mood");

@@ -25,7 +25,7 @@ public class LuminousFungusBlockEntity extends BlockEntity {
             return;
         }
 
-        double distance = IECommon.getConfig().common.miscellaneous.LuminousFungusActivateDistance;
+        double distance = IECommon.getConfig().common.miscellaneous.luminousFungusActivateDistance;
         AABB area = new AABB(pos).inflate(distance);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, area);
 

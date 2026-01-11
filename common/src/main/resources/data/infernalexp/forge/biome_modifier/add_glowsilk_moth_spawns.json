@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:basalt_deltas"
+  ],
+  "spawners": {
+    "type": "infernalexp:glowsilk_moth",
+    "weight": 1,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}
