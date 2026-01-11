@@ -62,10 +62,8 @@ public class ModConfiguredFeatures {
                         BlockStateProvider.simple(ModBlocks.DULLTHORNS.get()),
                         BlockStateProvider.simple(ModBlocks.DULLTHORNS.get().defaultBlockState().setValue(DullthornsBlock.TIP, true))));
 
-        register(context, LUMINOUS_FUNGUS, Feature.RANDOM_PATCH,
-                FeatureUtils.simplePatchConfiguration(Feature.SIMPLE_BLOCK,
-                        new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.LUMINOUS_FUNGUS.get())),
-                        List.of(ModBlocks.SHIMMER_SAND.get())));
+        register(context, LUMINOUS_FUNGUS, SupportedBlockFeature.INSTANCE,
+                new SingleBlockFeatureConfig(BlockStateProvider.simple(ModBlocks.LUMINOUS_FUNGUS.get()), true));
 
         register(context, GLOWLIGHT_FIRE, NetherPlantFeature.INSTANCE,
                 new SingleBlockFeatureConfig(BlockStateProvider.simple(ModBlocks.GLOWLIGHT_FIRE.get()), true));

@@ -83,6 +83,11 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     }
 
     @Override
+    public double getMeleeAttackRangeSqr(LivingEntity entity) {
+        return this.getBbWidth() * 1.0F * this.getBbWidth() * 1.0F + entity.getBbWidth();
+    }
+
+    @Override
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true));

@@ -50,13 +50,11 @@ public class ModPlacedFeatures {
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         var configLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        register(context, LUMINOUS_FUNGUS,
-                configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),
-                CountPlacement.of(5),
+        register(context, LUMINOUS_FUNGUS, configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),
+                RarityFilter.onAverageOnceEvery(2),
                 InSquarePlacement.spread(),
                 PlacementUtils.FULL_RANGE,
-                BiomeFilter.biome()
-        );
+                BiomeFilter.biome());
 
         register(context, DULLTHORNS, configLookup.getOrThrow(ModConfiguredFeatures.DULLTHORNS),
                 InSquarePlacement.spread(),

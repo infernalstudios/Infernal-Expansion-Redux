@@ -2,14 +2,17 @@ package com.infernalstudios.infernalexp.world.feature.custom;
 
 import com.infernalstudios.infernalexp.block.LuminousFungusBlock;
 import com.infernalstudios.infernalexp.block.SupportedBlock;
+import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.world.feature.NetherFeature;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderSet;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -49,7 +52,7 @@ public class SupportedBlockFeature extends NetherFeature<SingleBlockFeatureConfi
     public boolean isValidPos(LevelReader world, BlockPos pos) {
         return Direction.stream().anyMatch(d -> {
             BlockState state = world.getBlockState(pos.relative(d));
-            return state.isFaceSturdy(world, pos.relative(d), d.getOpposite()) && !state.is(Blocks.BEDROCK);
+            return state.isFaceSturdy(world, pos.relative(d), d.getOpposite()) && !state.is(Blocks.BEDROCK) && !state.is(ModBlocks.GLIMMER_GRAVEL.get());
         });
     }
 }

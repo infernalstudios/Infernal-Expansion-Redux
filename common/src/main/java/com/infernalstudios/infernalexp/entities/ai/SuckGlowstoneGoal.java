@@ -40,6 +40,7 @@ public class SuckGlowstoneGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return false;
         if (this.level.getGameTime() < this.nextUseTime) return false;
         if (this.mob.isAggressive() || this.mob.getTarget() != null) return false;
         if (this.mob.getRandom().nextInt(50) != 0) return false;

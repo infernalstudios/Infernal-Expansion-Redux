@@ -33,7 +33,6 @@ public class ModSurfaceRules {
     ));
 
     private static final SurfaceRules.RuleSource DELTA_SHORES = SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.DELTA_SHORES), SurfaceRules.sequence(
-            SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, CaveSurface.CEILING), BASILT),
             SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, CaveSurface.FLOOR), SurfaceRules.sequence(
                     SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.PATCH, -0.012, 1.7976931348623157E308),
                             SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(30), 0),
