@@ -18,6 +18,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -26,6 +27,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import java.util.EnumSet;
 
@@ -38,6 +40,10 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
         super(type, worldIn);
         this.setNoGravity(true);
         this.moveControl = new GlowsilkMothMoveControl(this);
+
+        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -223,13 +229,16 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
                 );
 
                 if (this.moth.level().isEmptyBlock(potentialPos)) {
-                    randomPos = potentialPos;
-                    break;
+                    BlockPathTypes nodeType = WalkNodeEvaluator.getBlockPathTypeStatic(this.moth.level(), potentialPos.mutable());
+                    if (nodeType != BlockPathTypes.LAVA && nodeType != BlockPathTypes.DAMAGE_FIRE) {
+                        randomPos = potentialPos;
+                        break;
+                    }
                 }
             }
 
             if (randomPos != null) {
-                this.moth.getMoveControl().setWantedPosition(randomPos.getX() + 0.5D, randomPos.getY() + 0.5D, randomPos.getZ() + 0.5D, 1.0D);
+                this.moth.getNavigation().moveTo(randomPos.getX() + 0.5D, randomPos.getY() + 0.5D, randomPos.getZ() + 0.5D, 1.0D);
             }
         }
     }

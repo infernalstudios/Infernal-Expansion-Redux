@@ -69,13 +69,10 @@ public class SuckGlowstoneGoal extends Goal {
             return;
         }
 
-        double offset = 1.15D;
-
         this.latchPos = new Vec3(
-                this.targetPos.getX() + 0.5D + (this.targetFace.getStepX() * offset),
-                this.targetPos.getY() + 0.5D + (this.targetFace.getStepY() * offset),
-                this.targetPos.getZ() + 0.5D + (this.targetFace.getStepZ() * offset)
-        );
+                this.targetPos.getX() + 0.5D + this.targetFace.getStepX(),
+                this.targetPos.getY() + 0.5D + this.targetFace.getStepY(),
+                this.targetPos.getZ() + 0.5D + this.targetFace.getStepZ());
 
         this.moveToTarget();
     }

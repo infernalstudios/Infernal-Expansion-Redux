@@ -97,8 +97,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.goalSelector.addGoal(4, new RandomFlyGoal(this));
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true,
-                (entity) -> entity.hasEffect(ModEffects.LUMINOUS.get())));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true,
+                (entity) -> entity.hasEffect(ModEffects.LUMINOUS.get()) && !(entity instanceof GlowsquitoEntity)));
     }
 
     @Override
