@@ -77,18 +77,10 @@ public class ModBlockProperties {
             .strength(0.95F, 4.2F)
             .sound(SoundType.SAND);
 
-    public static final BlockBehaviour.Properties BASILT = BlockBehaviour.Properties.copy(Blocks.SAND)
-            .mapColor(MapColor.COLOR_GRAY)
-            .strength(0.5F)
-            .sound(SoundType.SAND);
-
     public static final BlockBehaviour.Properties LUMINOUS_STEM = BlockBehaviour.Properties.copy(Blocks.CRIMSON_STEM)
             .mapColor(MapColor.COLOR_YELLOW);
 
     public static final BlockBehaviour.Properties LUMINOUS_PLANKS = BlockBehaviour.Properties.copy(Blocks.CRIMSON_PLANKS)
-            .mapColor(MapColor.COLOR_YELLOW);
-
-    public static final BlockBehaviour.Properties LUMINOUS_FUNGUS_CAP = BlockBehaviour.Properties.copy(Blocks.NETHER_WART_BLOCK)
             .mapColor(MapColor.COLOR_YELLOW);
 
 }

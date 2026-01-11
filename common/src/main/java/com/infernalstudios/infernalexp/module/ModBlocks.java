@@ -139,7 +139,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> LUMINOUS_FUNGUS_CAP = register("luminous_fungus_cap", BlockDataHolder.of(() ->
-                    new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
+                    new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK).mapColor(DyeColor.YELLOW)))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Luminous Fungus Cap")
     );
@@ -354,13 +354,6 @@ public class ModBlocks {
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Luminous Wart Block")
-    );
-
-    public static final BlockDataHolder<?> BASILT = register("basilt", BlockDataHolder.of(() ->
-                    new SandBlock(0x222222, ModBlockProperties.BASILT))
-            .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_SHOVEL)
-            .withTranslation("Basilt")
     );
 
     public static BlockDataHolder<?> register(String name, BlockDataHolder<?> blockDataHolder) {
