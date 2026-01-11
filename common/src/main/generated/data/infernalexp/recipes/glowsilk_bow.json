@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "infernalexp:glowsilk_string"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " #/",
+    "# /",
+    " #/"
+  ],
+  "result": {
+    "item": "infernalexp:glowsilk_bow"
+  },
+  "show_notification": true
+}

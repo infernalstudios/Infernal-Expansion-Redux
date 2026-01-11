@@ -21,7 +21,6 @@ public class GlowsilkArrowEntity extends Arrow {
         super(level, shooter);
         if (this instanceof AbstractArrowEntityAccess access) {
             access.infernalexp$setGlow(true);
-            access.infernalexp$setLuminous(true);
         }
     }
 

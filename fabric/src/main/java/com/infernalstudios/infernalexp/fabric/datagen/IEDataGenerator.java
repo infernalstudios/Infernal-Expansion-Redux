@@ -162,6 +162,14 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                 }
             }
 
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GLOWSILK_BOW.get())
+                    .pattern(" #/")
+                    .pattern("# /")
+                    .pattern(" #/")
+                    .define('/', Items.STICK)
+                    .define('#', ModItems.GLOWSILK_STRING.get())
+                    .unlockedBy("has_glowsilk_string", has(ModItems.GLOWSILK_STRING.get()))
+                    .save(exporter, IECommon.makeID(getName(ModItems.GLOWSILK_BOW.get())));
 
             ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SHIMMER_SHEET.get(), 6)
                     .pattern("###")
