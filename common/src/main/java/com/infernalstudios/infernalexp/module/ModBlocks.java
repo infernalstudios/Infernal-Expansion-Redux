@@ -299,6 +299,7 @@ public class ModBlocks {
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withTranslation("Stripped Luminous Stem")
     );
+
     public static final BlockDataHolder<?> LUMINOUS_STEM = register("luminous_stem", BlockDataHolder.of(() ->
                     new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
             .withStripping(STRIPPED_LUMINOUS_STEM::get)
@@ -306,12 +307,14 @@ public class ModBlocks {
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withTranslation("Luminous Stem")
     );
+
     public static final BlockDataHolder<?> STRIPPED_LUMINOUS_HYPHAE = register("stripped_luminous_hyphae", BlockDataHolder.of(() ->
                     new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
             .withModel(BlockDataHolder.Model.WOOD).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withTranslation("Stripped Luminous Hyphae")
     );
+
     public static final BlockDataHolder<?> LUMINOUS_HYPHAE = register("luminous_hyphae", BlockDataHolder.of(() ->
                     new RotatedPillarBlock(ModBlockProperties.LUMINOUS_STEM))
             .withStripping(STRIPPED_LUMINOUS_HYPHAE::get)
@@ -319,6 +322,7 @@ public class ModBlocks {
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS)
             .withTranslation("Luminous Hyphae")
     );
+
     public static final BlockDataHolder<?> LUMINOUS_PLANKS = register("luminous_planks", BlockDataHolder.of(() ->
                     new Block(ModBlockProperties.LUMINOUS_PLANKS))
             .withStairs().withSlab()
@@ -329,6 +333,7 @@ public class ModBlocks {
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
             .withTranslation("Luminous Planks")
     );
+
     public static final BlockDataHolder<?> LUMINOUS_TRAPDOOR = register("luminous_trapdoor", BlockDataHolder.of(() ->
             TrapDoorBlockAccessor.createTrapDoorBlock(
                     BlockBehaviour.Properties.copy(LUMINOUS_PLANKS.get()).noOcclusion(),
@@ -337,16 +342,25 @@ public class ModBlocks {
             .cutout().withModel(BlockDataHolder.Model.TRAPDOOR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.TRAPDOORS)
             .withTranslation("Luminous Trapdoor");
+
     public static final BlockDataHolder<?> LUMINOUS_DOOR = register("luminous_door", BlockDataHolder.of(() ->
             DoorBlockAccessor.createDoorBlock(ModBlockProperties.LUMINOUS_PLANKS, luminousSet)))
             .cutout().withModel(BlockDataHolder.Model.DOOR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.DOORS)
             .withTranslation("Luminous Door");
+
     public static final BlockDataHolder<?> LUMINOUS_WART_BLOCK = register("luminous_wart_block", BlockDataHolder.of(() ->
                     new Block(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Luminous Wart Block")
+    );
+
+    public static final BlockDataHolder<?> SILT = register("silt", BlockDataHolder.of(() ->
+                    new SandBlock(0x222222, ModBlockProperties.SILT))
+            .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_SHOVEL)
+            .withTranslation("Silt")
     );
 
     public static BlockDataHolder<?> register(String name, BlockDataHolder<?> blockDataHolder) {

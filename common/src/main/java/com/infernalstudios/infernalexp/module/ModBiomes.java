@@ -2,10 +2,8 @@ package com.infernalstudios.infernalexp.module;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.infernalstudios.infernalexp.IECommon;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -31,13 +29,14 @@ public class ModBiomes {
         return BIOME_REGISTRY;
     }
 
-    // Called in the mod initializer / constructor in order to make sure that items are registered
     public static void load() {}
 
-
     public static final ResourceKey<Biome> GLOWSTONE_CANYON = register("glowstone_canyon",
-            // temp, humidity, continentalness, erosion, depth, weirdness and offset
             Climate.parameters(0.7f, -0.2f, 0, 0, 0, 0, 0)
+    );
+
+    public static final ResourceKey<Biome> DELTA_SHORES = register("delta_shores",
+            Climate.parameters(-0.4F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.195F)
     );
 
     public static JsonElement toJson(Climate.Parameter value) {

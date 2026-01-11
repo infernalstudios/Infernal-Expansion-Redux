@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:glowstone_canyon"
+    "infernalexp:glowstone_canyon",
+    "infernalexp:delta_shores"
   ]
 }

@@ -27,6 +27,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> GSC_SPRING_OPEN = create("gsc_spring_open");
     public static final ResourceKey<PlacedFeature> GSC_SPRING_CLOSED = create("gsc_spring_closed");
     public static final ResourceKey<PlacedFeature> HUGE_LUMINOUS_FUNGUS = create("huge_luminous_fungus");
+    public static final ResourceKey<PlacedFeature> ORE_BASALT_IRON_SHORES = create("ore_basalt_iron_shores");
 
     public static ResourceKey<PlacedFeature> create(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, IECommon.makeID(name));
@@ -102,6 +103,12 @@ public class ModPlacedFeatures {
                 InSquarePlacement.spread(),
                 CountPlacement.of(20),
                 HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(10), VerticalAnchor.belowTop(10)),
+                BiomeFilter.biome());
+
+        register(context, ORE_BASALT_IRON_SHORES, configLookup.getOrThrow(ModConfiguredFeatures.ORE_BASALT_IRON_SHORES),
+                CountPlacement.of(256),
+                InSquarePlacement.spread(),
+                HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(192)),
                 BiomeFilter.biome());
 
         register(context, GSC_BLACKSTONE_BLOBS, configLookup.getOrThrow(ModConfiguredFeatures.GSC_BLACKSTONE_BLOBS),

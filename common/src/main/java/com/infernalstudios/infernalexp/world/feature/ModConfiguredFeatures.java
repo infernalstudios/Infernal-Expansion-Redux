@@ -45,6 +45,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_OPEN = create("gsc_spring_open");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GSC_SPRING_CLOSED = create("gsc_spring_closed");
     public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LUMINOUS_FUNGUS = create("huge_luminous_fungus");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_BASALT_IRON_SHORES = create("ore_basalt_iron_shores");
 
     public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, IECommon.makeID(name));
@@ -92,6 +93,9 @@ public class ModConfiguredFeatures {
 
         register(context, BURIED_BONE, SupportedBlockFeature.INSTANCE,
                 new SingleBlockFeatureConfig(BlockStateProvider.simple(ModBlocks.BURIED_BONE.get()), true));
+
+        register(context, ORE_BASALT_IRON_SHORES, Feature.ORE,
+                new OreConfiguration(new BlockMatchTest(Blocks.BASALT), ModBlocks.BASALT_IRON_ORE.get().defaultBlockState(), 10));
 
         register(context, BASALT_IRON_ORE, Feature.ORE,
                 new OreConfiguration(new BlockMatchTest(Blocks.BASALT), ModBlocks.BASALT_IRON_ORE.get().defaultBlockState(), 10));

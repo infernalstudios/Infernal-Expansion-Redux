@@ -47,13 +47,5 @@ public class FeatureModuleFabric {
                 1,
                 3
         );
-        BiomeModifications.addSpawn(
-                BiomeSelectors.includeByKey(ModBiomes.GLOWSTONE_CANYON),
-                MobCategory.MONSTER,
-                ModEntityTypes.GLOWSQUITO.get(),
-                3,
-                1,
-                5
-        );
     }
 }

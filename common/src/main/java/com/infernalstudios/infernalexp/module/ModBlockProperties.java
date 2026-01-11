@@ -77,6 +77,11 @@ public class ModBlockProperties {
             .strength(0.95F, 4.2F)
             .sound(SoundType.SAND);
 
+    public static final BlockBehaviour.Properties SILT = BlockBehaviour.Properties.copy(Blocks.SAND)
+            .mapColor(MapColor.COLOR_GRAY)
+            .strength(0.5F)
+            .sound(SoundType.SAND);
+
     public static final BlockBehaviour.Properties LUMINOUS_STEM = BlockBehaviour.Properties.copy(Blocks.CRIMSON_STEM)
             .mapColor(MapColor.COLOR_YELLOW);
 
