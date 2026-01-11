@@ -77,7 +77,7 @@ public class ModBlockProperties {
             .strength(0.95F, 4.2F)
             .sound(SoundType.SAND);
 
-    public static final BlockBehaviour.Properties SILT = BlockBehaviour.Properties.copy(Blocks.SAND)
+    public static final BlockBehaviour.Properties BASILT = BlockBehaviour.Properties.copy(Blocks.SAND)
             .mapColor(MapColor.COLOR_GRAY)
             .strength(0.5F)
             .sound(SoundType.SAND);

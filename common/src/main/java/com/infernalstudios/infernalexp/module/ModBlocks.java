@@ -356,11 +356,11 @@ public class ModBlocks {
             .withTranslation("Luminous Wart Block")
     );
 
-    public static final BlockDataHolder<?> SILT = register("silt", BlockDataHolder.of(() ->
-                    new SandBlock(0x222222, ModBlockProperties.SILT))
+    public static final BlockDataHolder<?> BASILT = register("basilt", BlockDataHolder.of(() ->
+                    new SandBlock(0x222222, ModBlockProperties.BASILT))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_SHOVEL)
-            .withTranslation("Silt")
+            .withTranslation("Basilt")
     );
 
     public static BlockDataHolder<?> register(String name, BlockDataHolder<?> blockDataHolder) {

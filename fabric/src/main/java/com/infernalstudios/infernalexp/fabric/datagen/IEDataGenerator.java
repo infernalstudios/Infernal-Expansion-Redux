@@ -286,6 +286,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             // Biome Translations
             builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");
 
+            // Music
+            builder.add("item.infernalexp.music_disc_flush.desc", "LudoCrypt - Flush");
+
             // This handles all supplied block and item entries automatically
             for (BlockDataHolder<?> blockDataHolder : ModBlocks.getBlockRegistry().values()) {
                 if (blockDataHolder.hasTranslation()) {

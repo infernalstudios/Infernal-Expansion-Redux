@@ -19,7 +19,7 @@ public class ModSurfaceRules {
     private static final SurfaceRules.RuleSource BEDROCK = makeStateRule(Blocks.BEDROCK);
 
     // New Rules
-    private static final SurfaceRules.RuleSource SILT = makeStateRule(ModBlocks.SILT.get());
+    private static final SurfaceRules.RuleSource BASILT = makeStateRule(ModBlocks.BASILT.get());
     private static final SurfaceRules.RuleSource GRAVEL = makeStateRule(Blocks.GRAVEL);
     private static final SurfaceRules.RuleSource BLACKSTONE = makeStateRule(Blocks.BLACKSTONE);
 
@@ -33,13 +33,13 @@ public class ModSurfaceRules {
     ));
 
     private static final SurfaceRules.RuleSource DELTA_SHORES = SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.DELTA_SHORES), SurfaceRules.sequence(
-            SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, CaveSurface.CEILING), SILT),
+            SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, CaveSurface.CEILING), BASILT),
             SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(0, false, CaveSurface.FLOOR), SurfaceRules.sequence(
                     SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.PATCH, -0.012, 1.7976931348623157E308),
                             SurfaceRules.ifTrue(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(30), 0),
                                     SurfaceRules.ifTrue(SurfaceRules.not(SurfaceRules.yBlockCheck(VerticalAnchor.absolute(35), 0)),
                                             GRAVEL))),
-                    SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.NETHER_STATE_SELECTOR, 0.0, 1.7976931348623157E308), SILT),
+                    SurfaceRules.ifTrue(SurfaceRules.noiseCondition(Noises.NETHER_STATE_SELECTOR, 0.0, 1.7976931348623157E308), BASILT),
                     BLACKSTONE
             ))
     ));

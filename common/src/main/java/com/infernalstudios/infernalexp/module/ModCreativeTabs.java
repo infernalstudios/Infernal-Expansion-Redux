@@ -88,7 +88,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.BASALT_BRICKS.getSlab().get());
         entries.accept(ModBlocks.BASALT_BRICKS.getWall().get());
 
-        entries.accept(ModBlocks.SILT.get());
+        entries.accept(ModBlocks.BASILT.get());
 
         entries.accept(ModBlocks.QUARTZ_GLASS.get());
         entries.accept(ModBlocks.QUARTZ_GLASS.getPaneBlock().get());

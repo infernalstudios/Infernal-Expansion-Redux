@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "infernalexp:block/basilt"
+      },
+      {
+        "model": "infernalexp:block/basilt",
+        "y": 90
+      },
+      {
+        "model": "infernalexp:block/basilt",
+        "y": 180
+      },
+      {
+        "model": "infernalexp:block/basilt",
+        "y": 270
+      }
+    ]
+  }
+}
