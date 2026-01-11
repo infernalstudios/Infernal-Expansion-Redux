@@ -91,7 +91,7 @@ publishMods {
 
     modrinth {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-        projectId = ""
+        projectId = "wiPmcmNp"
         minecraftVersions.add("1.20.1")
 
         requires { slug = "geckolib" }
