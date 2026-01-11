@@ -99,6 +99,13 @@ public class ModItems {
             .withTags(ItemTags.MUSIC_DISCS)
     );
 
+    public static final ItemDataHolder<?> GLOWCOAL = register("glowcoal", ItemDataHolder.of(() ->
+                    new Item(new Item.Properties()))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Glowcoal")
+            .withFuel(1600)
+    );
+
     public static ItemDataHolder<?> register(String name, ItemDataHolder<?> itemDataHolder) {
         return register(IECommon.makeID(name), itemDataHolder);
     }

@@ -68,6 +68,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.DULLTHORNS.get());
         entries.accept(ModBlocks.DULLTHORNS_BLOCK.get());
 
+        entries.accept(ModItems.GLOWCOAL.get());
         entries.accept(ModItems.GLOWLIGHT_TORCH.get());
         entries.accept(ModBlocks.GLOWLIGHT_CAMPFIRE.get());
         entries.accept(ModBlocks.GLOWLIGHT_LANTERN.get());
