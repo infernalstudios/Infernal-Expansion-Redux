@@ -6,6 +6,7 @@ import com.infernalstudios.infernalexp.client.entity.render.GlowsquitoRenderer;
 import com.infernalstudios.infernalexp.client.entity.render.VolineRenderer;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.entity.Entity;
 
 import java.util.HashMap;
@@ -28,5 +29,7 @@ public class ModEntityRenderers {
         register(ModEntityTypes.GLOWSQUITO, GlowsquitoRenderer::new);
         register(ModEntityTypes.GLOWSILK_ARROW, GlowsilkArrowRenderer::new);
         register(ModEntityTypes.GLOWSILK_MOTH, GlowsilkMothRenderer::new);
+        register(ModEntityTypes.THROWABLE_MAGMA_CREAM, ThrownItemRenderer::new);
+        register(ModEntityTypes.THROWABLE_FIRE_CHARGE, (context) -> new ThrownItemRenderer<>(context, 0.75F, true));
     }
 }

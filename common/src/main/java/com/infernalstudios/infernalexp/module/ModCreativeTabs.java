@@ -60,7 +60,6 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.LUMINOUS_PLANKS.getFenceGate().get());
         entries.accept(ModBlocks.LUMINOUS_PLANKS.getButton().get());
         entries.accept(ModBlocks.LUMINOUS_PLANKS.getPressurePlate().get());
-
         entries.accept(ModBlocks.LUMINOUS_DOOR.get());
         entries.accept(ModBlocks.LUMINOUS_TRAPDOOR.get());
 

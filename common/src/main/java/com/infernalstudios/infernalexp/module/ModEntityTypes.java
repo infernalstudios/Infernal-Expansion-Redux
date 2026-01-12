@@ -4,6 +4,8 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.entities.GlowsilkArrowEntity;
 import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
+import com.infernalstudios.infernalexp.entities.ThrowableFireChargeEntity;
+import com.infernalstudios.infernalexp.entities.ThrowableMagmaCreamEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.minecraft.resources.ResourceLocation;
@@ -59,6 +61,22 @@ public class ModEntityTypes {
                             .build())
             .attributes(GlowsilkMothEntity::createAttributes)
             .withTranslation("Glowsilk Moth"));
+
+    public static final EntityTypeDataHolder<ThrowableMagmaCreamEntity> THROWABLE_MAGMA_CREAM = register("throwable_magma_cream", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.<ThrowableMagmaCreamEntity>of(ThrowableMagmaCreamEntity::new, MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build())
+            .withTranslation("Throwable Magma Cream"));
+
+    public static final EntityTypeDataHolder<ThrowableFireChargeEntity> THROWABLE_FIRE_CHARGE = register("throwable_fire_charge", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.<ThrowableFireChargeEntity>of(ThrowableFireChargeEntity::new, MobCategory.MISC)
+                            .sized(0.3125F, 0.3125F)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build())
+            .withTranslation("Throwable Fire Charge"));
 
     public static void load() {}
 }
