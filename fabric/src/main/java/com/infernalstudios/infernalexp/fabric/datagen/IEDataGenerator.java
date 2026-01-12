@@ -178,6 +178,13 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .unlockedBy(getHasName(ModBlocks.SHIMMER_SAND.get()), has(ModBlocks.SHIMMER_SAND.get()))
                     .group("shimmer_sheet").save(exporter, IECommon.makeID("shimmer_sheet"));
 
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BASALT_SAND_SHEET.get(), 6)
+                    .pattern("###")
+                    .define('#', ModBlocks.BASALT_SAND.get())
+                    .unlockedBy(getHasName(ModBlocks.BASALT_SAND.get()), has(ModBlocks.BASALT_SAND.get()))
+                    .group("basalt_sand_sheet").save(exporter, IECommon.makeID("basalt_sand_sheet"));
+
+
             offer2x2Recipe(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), 4, ModBlocks.SHIMMER_SAND.get());
 
             buttonBuilder(ModBlocks.DULLSTONE_BUTTON.get(), Ingredient.of(ModBlocks.POLISHED_DULLSTONE.get()))

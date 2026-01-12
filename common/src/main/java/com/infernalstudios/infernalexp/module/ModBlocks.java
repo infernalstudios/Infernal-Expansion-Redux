@@ -272,7 +272,7 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> COBBLED_BASALT = register("cobbled_basalt", BlockDataHolder.of(() ->
                     new Block(BlockBehaviour.Properties.copy(Blocks.BASALT).strength(1.1f, 3.5f)))
-            .withStairs().withSlab()
+            .withStairs().withSlab().withWall()
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Cobbled Basalt")
@@ -344,7 +344,7 @@ public class ModBlocks {
             .withTranslation("Luminous Trapdoor");
 
     public static final BlockDataHolder<?> LUMINOUS_DOOR = register("luminous_door", BlockDataHolder.of(() ->
-            DoorBlockAccessor.createDoorBlock(ModBlockProperties.LUMINOUS_PLANKS, luminousSet)))
+            DoorBlockAccessor.createDoorBlock(BlockBehaviour.Properties.copy(LUMINOUS_PLANKS.get()).noOcclusion(), luminousSet)))
             .cutout().withModel(BlockDataHolder.Model.DOOR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.DOORS)
             .withTranslation("Luminous Door");

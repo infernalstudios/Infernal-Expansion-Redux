@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "basalt_sand_sheet",
+  "key": {
+    "#": {
+      "item": "infernalexp:basalt_sand"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "infernalexp:basalt_sand_sheet"
+  },
+  "show_notification": true
+}
