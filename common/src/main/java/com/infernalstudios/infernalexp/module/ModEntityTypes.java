@@ -55,7 +55,7 @@ public class ModEntityTypes {
 
     public static final EntityTypeDataHolder<GlowsilkMothEntity> GLOWSILK_MOTH = register("glowsilk_moth", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(GlowsilkMothEntity::new, MobCategory.AMBIENT)
-                            .sized(0.5F, 1.0F)
+                            .sized(0.5F, 0.9F)
                             .build())
             .attributes(GlowsilkMothEntity::createAttributes)
             .withTranslation("Glowsilk Moth"));

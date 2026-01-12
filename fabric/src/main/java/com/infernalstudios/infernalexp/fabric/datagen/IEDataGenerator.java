@@ -152,6 +152,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                             .unlockedBy(getHasName(block.get()), has(block.get()))
                             .save(exporter, IECommon.makeID(getName(block.getSlab().get())));
                 }
+                if (block.getWall() != null) {
+                    wallBuilder(RecipeCategory.BUILDING_BLOCKS, block.getWall().get(), Ingredient.of(block.get()))
+                            .group(getName(block.getWall().get()))
+                            .unlockedBy(getHasName(block.get()), has(block.get()))
+                            .save(exporter, IECommon.makeID(getName(block.getWall().get())));
+                }
                 if (block.getPaneBlock() != null) {
                     ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, block.getPaneBlock().get(), 16)
                             .pattern("###")

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "shimmer_stone_bricks_wall",
+  "key": {
+    "#": {
+      "item": "infernalexp:shimmer_stone_bricks"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "infernalexp:shimmer_stone_bricks_wall"
+  },
+  "show_notification": true
+}

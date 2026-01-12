@@ -14,7 +14,7 @@ Additions:
   * New animations and textures.
 * Re-added Glowcoal.
 * Re-added bucketable baby Striders and Magma Cubes.
-* Re-added Shimmer Stone Brick Walls.
+* Re-added missing block variants for Shimmer Stone and Basalt Bricks.
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 
 Fixes:
