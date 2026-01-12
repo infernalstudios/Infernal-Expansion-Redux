@@ -14,6 +14,8 @@ Additions:
   * New animations and textures.
 * Re-added Glowcoal.
 * Re-added bucketable baby Striders and Magma Cubes.
+* Re-added Shimmer Stone Brick Walls.
+* Adjusted Glowlight Lantern and Glowlight Torch textures.
 
 Fixes:
 * Missing sounds for bonemealing Shroomlight.

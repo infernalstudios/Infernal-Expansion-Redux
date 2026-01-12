@@ -26,6 +26,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.get());
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get());
+        entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
 
         entries.accept(ModBlocks.POLISHED_GLOWSTONE.get());
         entries.accept(ModBlocks.DIMSTONE.get());
@@ -106,7 +107,6 @@ public class ModCreativeTabs {
 
     }).build());
 
-    // Called in the mod initializer / constructor in order to make sure that items are registered
     public static void load() {
     }
 }

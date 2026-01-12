@@ -70,7 +70,7 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> SHIMMER_STONE_BRICKS = register("shimmer_stone_bricks", BlockDataHolder.of(() ->
                     new Block(ModBlockProperties.SHIMMERSTONE))
-            .withStairs().withSlab()
+            .withStairs().withSlab().withWall()
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
             .withTranslation("Shimmer Stone Bricks")
@@ -185,13 +185,13 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_TORCH = register("glowlight_torch", BlockDataHolder.of(() ->
-                    TorchBlockAccessor.createTorchBlock(BlockBehaviour.Properties.copy(Blocks.FIRE), ModParticleTypes.GLOWSTONE_SPARKLE))
+                    TorchBlockAccessor.createTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH), ModParticleTypes.GLOWSTONE_SPARKLE))
             .cutout()
             .withTranslation("Glowlight Torch")
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_WALL_TORCH = register("glowlight_wall_torch", BlockDataHolder.of(() ->
-                    WallTorchBlockAccessor.createWallTorchBlock(BlockBehaviour.Properties.copy(Blocks.FIRE), ModParticleTypes.GLOWSTONE_SPARKLE))
+                    WallTorchBlockAccessor.createWallTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH), ModParticleTypes.GLOWSTONE_SPARKLE))
             .cutout()
     );
 
