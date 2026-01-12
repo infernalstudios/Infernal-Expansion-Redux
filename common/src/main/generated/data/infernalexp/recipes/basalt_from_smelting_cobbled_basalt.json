@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "basalt",
+  "ingredient": {
+    "item": "infernalexp:cobbled_basalt"
+  },
+  "result": "minecraft:basalt"
+}

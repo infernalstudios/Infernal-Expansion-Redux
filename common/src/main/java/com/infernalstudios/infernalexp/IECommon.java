@@ -10,6 +10,7 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.ComposterBlock;
 
 public class IECommon {
     private static IEConfig CONFIG;
@@ -36,6 +37,8 @@ public class IECommon {
         ModSurfaceRuleConditions.load();
         ModParticleTypes.load();
         ModSounds.load();
+
+        ComposterBlock.COMPOSTABLES.put(ModBlocks.LUMINOUS_FUNGUS.get(), 0.65F);
     }
 
     public static ResourceLocation makeID(String name) {

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_shimmer_sand": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "infernalexp:shimmer_sand"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:glowlight_glass_from_smelting_shimmer_sand"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_shimmer_sand",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:glowlight_glass_from_smelting_shimmer_sand"
+    ]
+  },
+  "sends_telemetry_event": false
+}

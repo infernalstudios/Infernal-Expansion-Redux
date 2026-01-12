@@ -287,6 +287,22 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .define('B', ModItems.GLOWLIGHT_TORCH.get())
                     .unlockedBy("has_glowlight_torch", has(ModItems.GLOWLIGHT_TORCH.get()))
                     .save(exporter, IECommon.makeID("glowlight_lantern"));
+
+            oreSmelting(exporter, List.of(ModBlocks.COBBLED_BASALT.get()), RecipeCategory.BUILDING_BLOCKS, Blocks.BASALT,
+                    0.1f, 200, "basalt");
+            offer2x2Recipe(exporter, ModBlocks.BASALT_BRICKS.get(), 4, Blocks.BASALT);
+
+            oreSmelting(exporter, List.of(ModBlocks.SHIMMER_SAND.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWLIGHT_GLASS.get(),
+                    0.1f, 200, "glowlight_glass");
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.QUARTZ_GLASS.get())
+                    .pattern(" Q ")
+                    .pattern("QGQ")
+                    .pattern(" Q ")
+                    .define('Q', Items.QUARTZ)
+                    .define('G', Items.GLASS)
+                    .unlockedBy(getHasName(ModBlocks.QUARTZ_GLASS.get()), has(ModBlocks.QUARTZ_GLASS.get()))
+                    .save(exporter, IECommon.makeID("quartz_glass"));
         }
     }
 
@@ -336,7 +352,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
                 for (Map.Entry<BlockDataHolder.Model, BlockDataHolder<?>> blocksetEntry : blockDataHolder.getBlocksets().entrySet()) {
                     if (blockDataHolder.hasTranslation()) {
-                        builder.add(blocksetEntry.getValue().get(), blockDataHolder.getTranslation() + " " + blocksetEntry.getKey().getLang());
+                        String translation = blockDataHolder.getTranslation();
+                        if (translation.endsWith(" Bricks")) {
+                            translation = translation.substring(0, translation.length() - 1);
+                        }
+                        builder.add(blocksetEntry.getValue().get(), translation + " " + blocksetEntry.getKey().getLang());
                     }
                 }
             }

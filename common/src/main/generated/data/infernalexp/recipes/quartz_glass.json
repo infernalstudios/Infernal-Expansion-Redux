@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "Q": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    " Q ",
+    "QGQ",
+    " Q "
+  ],
+  "result": {
+    "item": "infernalexp:quartz_glass"
+  },
+  "show_notification": true
+}
