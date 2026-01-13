@@ -1,7 +1,6 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.effect.InfectionEffect;
 import com.infernalstudios.infernalexp.effect.LuminousEffect;
 import com.infernalstudios.infernalexp.effect.StatusEffect;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
@@ -31,10 +30,6 @@ public class ModEffects {
             new StatusEffect(MobEffectCategory.BENEFICIAL, 0x00ffba)))
             .withTranslation("Warped")
             .withPotion(() -> Items.WARPED_FUNGUS);
-
-    public static final MobEffectDataHolder<?> INFECTION = register("infection", MobEffectDataHolder.of(() ->
-            new InfectionEffect(MobEffectCategory.HARMFUL, 12918043)))
-            .withTranslation("Infection");
 
     public static final MobEffectDataHolder<?> LUMINOUS = register("luminous", MobEffectDataHolder.of(() ->
             new LuminousEffect(MobEffectCategory.NEUTRAL, 16777086)))

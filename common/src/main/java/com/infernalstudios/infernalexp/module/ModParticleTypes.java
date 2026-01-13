@@ -19,5 +19,4 @@ public class ModParticleTypes {
     public static void load() {}
 
     public static final SimpleParticleType GLOWSTONE_SPARKLE = register("glowstone_sparkle", SimpleParticleTypeAccessor.createSimpleParticleType(false));
-    public static final SimpleParticleType INFECTION = register("infection", SimpleParticleTypeAccessor.createSimpleParticleType(false));
 }

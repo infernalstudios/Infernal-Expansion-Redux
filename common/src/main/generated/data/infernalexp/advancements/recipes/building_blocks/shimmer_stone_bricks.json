@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shimmer_sand": {
+    "has_shimmer_stone": {
       "conditions": {
         "items": [
           {
             "items": [
-              "infernalexp:shimmer_sand"
+              "infernalexp:shimmer_stone"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_shimmer_sand",
+      "has_shimmer_stone",
       "has_the_recipe"
     ]
   ],

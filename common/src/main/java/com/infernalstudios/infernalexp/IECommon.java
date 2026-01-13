@@ -37,8 +37,6 @@ public class IECommon {
         ModSurfaceRuleConditions.load();
         ModParticleTypes.load();
         ModSounds.load();
-
-        ComposterBlock.COMPOSTABLES.put(ModBlocks.LUMINOUS_FUNGUS.get(), 0.65F);
     }
 
     public static ResourceLocation makeID(String name) {

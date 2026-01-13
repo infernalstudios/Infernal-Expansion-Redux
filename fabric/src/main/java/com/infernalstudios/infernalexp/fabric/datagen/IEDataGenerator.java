@@ -191,7 +191,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .group("basalt_sand_sheet").save(exporter, IECommon.makeID("basalt_sand_sheet"));
 
 
-            offer2x2Recipe(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), 4, ModBlocks.SHIMMER_SAND.get());
+            offer2x2Recipe(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), 4, ModBlocks.SHIMMER_STONE.get());
 
             buttonBuilder(ModBlocks.DULLSTONE_BUTTON.get(), Ingredient.of(ModBlocks.POLISHED_DULLSTONE.get()))
                     .group(getName(ModBlocks.DULLSTONE_BUTTON.get()))

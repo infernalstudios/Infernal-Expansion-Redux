@@ -2,7 +2,6 @@ package com.infernalstudios.infernalexp.forge.client;
 
 import com.infernalstudios.infernalexp.client.IECommonClient;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
-import com.infernalstudios.infernalexp.client.particle.InfectionParticle;
 import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModModelLayers;
@@ -64,7 +63,6 @@ public class InfernalExpansionForgeClient {
 
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticleTypes.GLOWSTONE_SPARKLE, GlowstoneSparkleParticle.Factory::new);
-        event.registerSpriteSet(ModParticleTypes.INFECTION, InfectionParticle.Factory::new);
     }
 
     @SuppressWarnings("unchecked")

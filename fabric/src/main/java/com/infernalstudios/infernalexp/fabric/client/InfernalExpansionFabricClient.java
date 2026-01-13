@@ -2,7 +2,6 @@ package com.infernalstudios.infernalexp.fabric.client;
 
 import com.infernalstudios.infernalexp.client.IECommonClient;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
-import com.infernalstudios.infernalexp.client.particle.InfectionParticle;
 import com.infernalstudios.infernalexp.client.sound.GlowsquitoFlightSound;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.*;
@@ -74,7 +73,6 @@ public class InfernalExpansionFabricClient implements ClientModInitializer {
 
     private void registerParticleProviders() {
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.GLOWSTONE_SPARKLE, GlowstoneSparkleParticle.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ModParticleTypes.INFECTION, InfectionParticle.Factory::new);
     }
 
     // Helper methods to capture wildcard generics
