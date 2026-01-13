@@ -1,4 +1,4 @@
-Additions:
+### Additions:
 * Re-added and reworked the Glowsquito.
   * Glowsquitos will now drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
   * New animations and textures.
@@ -12,14 +12,17 @@ Additions:
 * Re-added the Glowsilk Bow.
 * Re-added the Glowsilk Moth.
   * New animations and textures.
+* Re-added and reworked the Blindsight.
+  * New animations and textures
 * Re-added Glowcoke.
 * Re-added bucketable baby Striders and Magma Cubes.
 * Re-added missing block variants for Shimmer Stone and Basalt.
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 
-Fixes:
+### Fixes:
 * Missing sounds for bonemealing Shroomlight.
 * Missing sounds for placing Quartz and Bones.
 * Missing recipes for Glowlight Torches and Glowlight Campfires.
+* Missing recipes for various blocks.
 * Volatile Geyser model not working with mods like Hold My Items.
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.
