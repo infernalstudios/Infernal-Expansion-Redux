@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "luminous_planks_button",
+  "ingredients": [
+    {
+      "item": "infernalexp:luminous_planks"
+    }
+  ],
+  "result": {
+    "item": "infernalexp:luminous_planks_button"
+  }
+}

@@ -130,10 +130,10 @@ public class ModItems {
             .withTags(ItemTags.MUSIC_DISCS)
     );
 
-    public static final ItemDataHolder<?> GLOWCOAL = register("glowcoal", ItemDataHolder.of(() ->
+    public static final ItemDataHolder<?> GLOWCOKE = register("glowcoke", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)
-            .withTranslation("Glowcoal")
+            .withTranslation("Glowcoke")
             .withFuel(1600)
     );
 

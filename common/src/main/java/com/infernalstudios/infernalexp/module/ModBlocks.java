@@ -39,13 +39,6 @@ public class ModBlocks {
             .withTranslation("Shimmer Sand")
     );
 
-    public static final BlockDataHolder<?> SHIMMER_SHEET = register("shimmer_sheet", BlockDataHolder.of(() ->
-                    new LayerBlock(BlockBehaviour.Properties.copy(Blocks.SAND)))
-            .withItem().withTags(BlockTags.MINEABLE_WITH_SHOVEL,
-                    BlockTags.MUSHROOM_GROW_BLOCK)
-            .withTranslation("Shimmer Sheet")
-    );
-
     public static final BlockDataHolder<?> GLIMMER_GRAVEL = register("glimmer_gravel", BlockDataHolder.of(() ->
                     new GlimmerGravelBlock(ModBlockProperties.GLIMMER_GRAVEL))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
@@ -61,7 +54,8 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> SHIMMER_STONE = register("shimmer_stone", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.SHIMMERSTONE))
+                    new Block(ModBlockProperties.SHIMMER_STONE))
+            .withStairs().withSlab().withWall()
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS,
                     BlockTags.MUSHROOM_GROW_BLOCK, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
@@ -69,11 +63,18 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> SHIMMER_STONE_BRICKS = register("shimmer_stone_bricks", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.SHIMMERSTONE))
+                    new Block(ModBlockProperties.SHIMMER_STONE))
             .withStairs().withSlab().withWall()
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
             .withTranslation("Shimmer Stone Bricks")
+    );
+
+    public static final BlockDataHolder<?> CHISELED_SHIMMER_STONE_BRICKS = register("chiseled_shimmer_stone_bricks", BlockDataHolder.of(() ->
+                    new Block(ModBlockProperties.SHIMMER_STONE))
+            .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withTranslation("Chiseled Shimmer Stone Bricks")
     );
 
     public static final BlockDataHolder<?> POLISHED_GLOWSTONE = register("polished_glowstone", BlockDataHolder.of(() ->
@@ -264,12 +265,6 @@ public class ModBlocks {
             .withTranslation("Basalt Sand")
     );
 
-    public static final BlockDataHolder<?> BASALT_SAND_SHEET = register("basalt_sand_sheet", BlockDataHolder.of(() ->
-                    new LayerBlock(ModBlockProperties.BASALT_SAND))
-            .withItem().withTags(BlockTags.MINEABLE_WITH_SHOVEL)
-            .withTranslation("Basalt Sand Sheet")
-    );
-
     public static final BlockDataHolder<?> COBBLED_BASALT = register("cobbled_basalt", BlockDataHolder.of(() ->
                     new Block(BlockBehaviour.Properties.copy(Blocks.BASALT).strength(1.1f, 3.5f)))
             .withStairs().withSlab().withWall()
@@ -279,12 +274,19 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> BASALT_BRICKS = register("basalt_bricks", BlockDataHolder.of(() ->
-                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+                    new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT)))
             .withItem().dropsSelf()
             .withStairs().withSlab().withWall()
             .withModel(BlockDataHolder.Model.PILLAR)
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Basalt Bricks")
+    );
+
+    public static final BlockDataHolder<?> CHISELED_BASALT_BRICKS = register("chiseled_basalt_bricks", BlockDataHolder.of(() ->
+                    new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+            .withModel(BlockDataHolder.Model.PILLAR).withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
+            .withTranslation("Chiseled Basalt Bricks")
     );
 
     public static final BlockDataHolder<?> VOLATILE_GEYSER = register("volatile_geyser", BlockDataHolder.of(() ->

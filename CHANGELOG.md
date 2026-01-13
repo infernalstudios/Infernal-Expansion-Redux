@@ -12,9 +12,9 @@ Additions:
 * Re-added the Glowsilk Bow.
 * Re-added the Glowsilk Moth.
   * New animations and textures.
-* Re-added Glowcoal.
+* Re-added Glowcoke.
 * Re-added bucketable baby Striders and Magma Cubes.
-* Re-added missing block variants for Shimmer Stone and Basalt Bricks.
+* Re-added missing block variants for Shimmer Stone and Basalt.
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 
 Fixes:

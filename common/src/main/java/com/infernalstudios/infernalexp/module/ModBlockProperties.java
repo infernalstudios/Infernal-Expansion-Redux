@@ -19,7 +19,7 @@ public class ModBlockProperties {
     public static final BlockBehaviour.Properties GLOWLIGHT_GLASS = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
             .noOcclusion();
 
-    public static final BlockBehaviour.Properties SHIMMERSTONE = BlockBehaviour.Properties.copy(Blocks.STONE)
+    public static final BlockBehaviour.Properties SHIMMER_STONE = BlockBehaviour.Properties.copy(Blocks.STONE)
             .mapColor(MapColor.COLOR_YELLOW);
 
     public static final BlockBehaviour.Properties GLOWSTONE = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE);

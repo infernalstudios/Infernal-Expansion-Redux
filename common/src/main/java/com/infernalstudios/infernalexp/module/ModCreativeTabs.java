@@ -10,23 +10,27 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeTabs {
     /**
-     * The provider for creative tabs
+     * The provider for the mod creative tabs.
      */
     public static final RegistrationProvider<CreativeModeTab> TABS = RegistrationProvider.get(Registries.CREATIVE_MODE_TAB, IEConstants.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> INFERNAL_EXPANSION_TAB = TABS.register(IEConstants.MOD_ID, () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0).title(Component.translatable("itemgroup.infernalexp")).icon(() -> new ItemStack(ModItems.TAB_ICON.get())).displayItems((itemDisplayParameters, entries) -> {
 
         entries.accept(ModBlocks.SHIMMER_SAND.get());
-        entries.accept(ModBlocks.SHIMMER_SHEET.get());
         entries.accept(ModBlocks.GLIMMER_GRAVEL.get());
         entries.accept(ModBlocks.GLOWLIGHT_GLASS.get());
         entries.accept(ModBlocks.GLOWLIGHT_GLASS.getPaneBlock().get());
 
         entries.accept(ModBlocks.SHIMMER_STONE.get());
+        entries.accept(ModBlocks.SHIMMER_STONE.getStairs().get());
+        entries.accept(ModBlocks.SHIMMER_STONE.getSlab().get());
+        entries.accept(ModBlocks.SHIMMER_STONE.getWall().get());
+
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.get());
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get());
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
+        entries.accept(ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
         entries.accept(ModBlocks.POLISHED_GLOWSTONE.get());
         entries.accept(ModBlocks.DIMSTONE.get());
@@ -68,7 +72,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.DULLTHORNS.get());
         entries.accept(ModBlocks.DULLTHORNS_BLOCK.get());
 
-        entries.accept(ModItems.GLOWCOAL.get());
+        entries.accept(ModItems.GLOWCOKE.get());
         entries.accept(ModItems.GLOWLIGHT_TORCH.get());
         entries.accept(ModBlocks.GLOWLIGHT_CAMPFIRE.get());
         entries.accept(ModBlocks.GLOWLIGHT_LANTERN.get());
@@ -79,7 +83,6 @@ public class ModCreativeTabs {
 
         entries.accept(ModBlocks.BASALT_IRON_ORE.get());
         entries.accept(ModBlocks.BASALT_SAND.get());
-        entries.accept(ModBlocks.BASALT_SAND_SHEET.get());
 
         entries.accept(ModBlocks.COBBLED_BASALT.get());
         entries.accept(ModBlocks.COBBLED_BASALT.getStairs().get());
@@ -90,6 +93,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.BASALT_BRICKS.getStairs().get());
         entries.accept(ModBlocks.BASALT_BRICKS.getSlab().get());
         entries.accept(ModBlocks.BASALT_BRICKS.getWall().get());
+        entries.accept(ModBlocks.CHISELED_BASALT_BRICKS.get());
 
         entries.accept(ModBlocks.QUARTZ_GLASS.get());
         entries.accept(ModBlocks.QUARTZ_GLASS.getPaneBlock().get());

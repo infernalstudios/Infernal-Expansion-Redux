@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_glowcoal": {
+    "has_glowcoke": {
       "conditions": {
         "items": [
           {
             "items": [
-              "infernalexp:glowcoal"
+              "infernalexp:glowcoke"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_glowcoal",
+      "has_glowcoke",
       "has_the_recipe"
     ]
   ],

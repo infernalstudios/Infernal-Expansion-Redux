@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_shimmer_sand": {
+    "has_basalt": {
       "conditions": {
         "items": [
           {
             "items": [
-              "infernalexp:shimmer_sand"
+              "minecraft:basalt"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "infernalexp:shimmer_sheet"
+        "recipe": "infernalexp:basalt_slab_from_basalt_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_shimmer_sand",
+      "has_basalt",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "infernalexp:shimmer_sheet"
+      "infernalexp:basalt_slab_from_basalt_stonecutting"
     ]
   },
   "sends_telemetry_event": false

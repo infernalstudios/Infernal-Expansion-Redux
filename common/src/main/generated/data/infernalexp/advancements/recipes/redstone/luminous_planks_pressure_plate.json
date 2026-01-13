@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_basalt_sand": {
+    "has_luminous_planks": {
       "conditions": {
         "items": [
           {
             "items": [
-              "infernalexp:basalt_sand"
+              "infernalexp:luminous_planks"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "infernalexp:basalt_sand_sheet"
+        "recipe": "infernalexp:luminous_planks_pressure_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_basalt_sand",
+      "has_luminous_planks",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "infernalexp:basalt_sand_sheet"
+      "infernalexp:luminous_planks_pressure_plate"
     ]
   },
   "sends_telemetry_event": false

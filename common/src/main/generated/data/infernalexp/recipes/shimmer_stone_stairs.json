@@ -1,18 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "basalt_sand_sheet",
+  "group": "shimmer_stone_stairs",
   "key": {
     "#": {
-      "item": "infernalexp:basalt_sand"
+      "item": "infernalexp:shimmer_stone"
     }
   },
   "pattern": [
+    "#  ",
+    "## ",
     "###"
   ],
   "result": {
-    "count": 6,
-    "item": "infernalexp:basalt_sand_sheet"
+    "count": 4,
+    "item": "infernalexp:shimmer_stone_stairs"
   },
   "show_notification": true
 }

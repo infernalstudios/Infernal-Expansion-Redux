@@ -22,10 +22,7 @@ import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -37,6 +34,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -82,7 +80,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         }
 
         @Override
-        public String getName() {
+        public @NotNull String getName() {
             return "World Gen";
         }
     }
@@ -94,6 +92,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
         private static String getName(ItemLike item) {
             return BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
+        }
+
+        private static void offerStonecutting(Consumer<FinishedRecipe> exporter, ItemLike input, ItemLike output) {
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output)
+                    .unlockedBy(getHasName(input), has(input))
+                    .save(exporter, IECommon.makeID(getName(output) + "_from_" + getName(input) + "_stonecutting"));
         }
 
         private static void offerTilesRecipe(Consumer<FinishedRecipe> exporter, ItemLike result, int count,
@@ -158,6 +162,30 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                             .unlockedBy(getHasName(block.get()), has(block.get()))
                             .save(exporter, IECommon.makeID(getName(block.getWall().get())));
                 }
+                if (block.getFence() != null) {
+                    fenceBuilder(block.getFence().get(), Ingredient.of(block.get()))
+                            .group(getName(block.getFence().get()))
+                            .unlockedBy(getHasName(block.get()), has(block.get()))
+                            .save(exporter, IECommon.makeID(getName(block.getFence().get())));
+                }
+                if (block.getFenceGate() != null) {
+                    fenceGateBuilder(block.getFenceGate().get(), Ingredient.of(block.get()))
+                            .group(getName(block.getFenceGate().get()))
+                            .unlockedBy(getHasName(block.get()), has(block.get()))
+                            .save(exporter, IECommon.makeID(getName(block.getFenceGate().get())));
+                }
+                if (block.getButton() != null) {
+                    buttonBuilder(block.getButton().get(), Ingredient.of(block.get()))
+                            .group(getName(block.getButton().get()))
+                            .unlockedBy(getHasName(block.get()), has(block.get()))
+                            .save(exporter, IECommon.makeID(getName(block.getButton().get())));
+                }
+                if (block.getPressurePlate() != null) {
+                    pressurePlateBuilder(RecipeCategory.REDSTONE, block.getPressurePlate().get(), Ingredient.of(block.get()))
+                            .group(getName(block.getPressurePlate().get()))
+                            .unlockedBy(getHasName(block.get()), has(block.get()))
+                            .save(exporter, IECommon.makeID(getName(block.getPressurePlate().get())));
+                }
                 if (block.getPaneBlock() != null) {
                     ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, block.getPaneBlock().get(), 16)
                             .pattern("###")
@@ -169,6 +197,24 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                 }
             }
 
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getWall().get());
+
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getWall().get());
+
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
+
+            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getWall().get());
+            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.CHISELED_BASALT_BRICKS.get());
+
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GLOWSILK_BOW.get())
                     .pattern(" /#")
                     .pattern("/ #")
@@ -177,19 +223,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .define('/', Items.STICK)
                     .unlockedBy("has_glowsilk_string", has(ModItems.GLOWSILK_STRING.get()))
                     .save(exporter, IECommon.makeID(getName(ModItems.GLOWSILK_BOW.get())));
-
-            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SHIMMER_SHEET.get(), 6)
-                    .pattern("###")
-                    .define('#', ModBlocks.SHIMMER_SAND.get())
-                    .unlockedBy(getHasName(ModBlocks.SHIMMER_SAND.get()), has(ModBlocks.SHIMMER_SAND.get()))
-                    .group("shimmer_sheet").save(exporter, IECommon.makeID("shimmer_sheet"));
-
-            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BASALT_SAND_SHEET.get(), 6)
-                    .pattern("###")
-                    .define('#', ModBlocks.BASALT_SAND.get())
-                    .unlockedBy(getHasName(ModBlocks.BASALT_SAND.get()), has(ModBlocks.BASALT_SAND.get()))
-                    .group("basalt_sand_sheet").save(exporter, IECommon.makeID("basalt_sand_sheet"));
-
 
             offer2x2Recipe(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), 4, ModBlocks.SHIMMER_STONE.get());
 
@@ -270,9 +303,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_TORCH.get(), 4)
                     .pattern("A")
                     .pattern("B")
-                    .define('A', ModItems.GLOWCOAL.get())
+                    .define('A', ModItems.GLOWCOKE.get())
                     .define('B', Items.STICK)
-                    .unlockedBy("has_glowcoal", has(ModItems.GLOWCOAL.get()))
+                    .unlockedBy("has_glowcoke", has(ModItems.GLOWCOKE.get()))
                     .save(exporter, IECommon.makeID("glowlight_torch"));
 
             ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_CAMPFIRE.get())
@@ -280,9 +313,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .pattern("SAS")
                     .pattern("LLL")
                     .define('S', Items.STICK)
-                    .define('A', ModItems.GLOWCOAL.get())
+                    .define('A', ModItems.GLOWCOKE.get())
                     .define('L', ItemTags.LOGS)
-                    .unlockedBy("has_glowcoal", has(ModItems.GLOWCOAL.get()))
+                    .unlockedBy("has_glowcoke", has(ModItems.GLOWCOKE.get()))
                     .save(exporter, IECommon.makeID("glowlight_campfire"));
 
             ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWLIGHT_LANTERN.get())
@@ -297,6 +330,25 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             oreSmelting(exporter, List.of(ModBlocks.COBBLED_BASALT.get()), RecipeCategory.BUILDING_BLOCKS, Blocks.BASALT,
                     0.1f, 200, "basalt");
             offer2x2Recipe(exporter, ModBlocks.BASALT_BRICKS.get(), 4, Blocks.BASALT);
+
+            stairBuilder(ModBlocks.BASALT_STAIRS.get(), Ingredient.of(Blocks.BASALT))
+                    .group("basalt_stairs")
+                    .unlockedBy("has_basalt", has(Blocks.BASALT))
+                    .save(exporter, IECommon.makeID("basalt_stairs"));
+
+            slabBuilder(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BASALT_SLAB.get(), Ingredient.of(Blocks.BASALT))
+                    .group("basalt_slab")
+                    .unlockedBy("has_basalt", has(Blocks.BASALT))
+                    .save(exporter, IECommon.makeID("basalt_slab"));
+
+            wallBuilder(RecipeCategory.BUILDING_BLOCKS, ModBlocks.BASALT_WALL.get(), Ingredient.of(Blocks.BASALT))
+                    .group("basalt_wall")
+                    .unlockedBy("has_basalt", has(Blocks.BASALT))
+                    .save(exporter, IECommon.makeID("basalt_wall"));
+
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_STAIRS.get());
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_SLAB.get());
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_WALL.get());
 
             oreSmelting(exporter, List.of(ModBlocks.SHIMMER_SAND.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWLIGHT_GLASS.get(),
                     0.1f, 200, "glowlight_glass");
@@ -322,6 +374,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             // Put manually added entries here
             builder.add(ModCreativeTabs.INFERNAL_EXPANSION_TAB.getResourceKey(), "Infernal Expansion");
             generateConfigTranslations(builder);
+
+            // Tag Translations
+            builder.add("tag.item.infernalexp.voline_food", "Voline Food");
 
             // Geyser Tooltips
             builder.add("text.autoconfig.infernalexp.option.common.geyser.geyserSteamHeight.@Tooltip",
@@ -361,6 +416,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                         String translation = blockDataHolder.getTranslation();
                         if (translation.endsWith(" Bricks")) {
                             translation = translation.substring(0, translation.length() - 1);
+                        } else if (translation.endsWith(" Planks")) {
+                            translation = translation.substring(0, translation.length() - 7);
                         }
                         builder.add(blocksetEntry.getValue().get(), translation + " " + blocksetEntry.getKey().getLang());
                     }
@@ -529,15 +586,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
                 for (Map.Entry<BlockDataHolder.Model, BlockDataHolder<?>> entry : blockDataHolder.getBlocksets().entrySet()) {
                     switch (entry.getKey()) {
-                        case SLAB -> {
-                            add(entry.getValue().get(), createSlabItemTable(entry.getValue().get()));
-                        }
-                        case DOOR -> {
-                            add(entry.getValue().get(), createDoorTable(entry.getValue().get()));
-                        }
-                        default -> {
-                            add(entry.getValue().get(), createSingleItemTable(entry.getValue().get()));
-                        }
+                        case SLAB -> add(entry.getValue().get(), createSlabItemTable(entry.getValue().get()));
+                        case DOOR -> add(entry.getValue().get(), createDoorTable(entry.getValue().get()));
+                        default -> add(entry.getValue().get(), createSingleItemTable(entry.getValue().get()));
                     }
                 }
             }
@@ -558,9 +609,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                         generator.createGlassBlocks(blockDataHolder.get(), blockDataHolder.getPaneBlock().get());
                     } else if (blockDataHolder.hasModel()) {
                         switch (blockDataHolder.getModel()) {
-                            case CUBE -> {
-                                generator.createTrivialCube(blockDataHolder.get());
-                            }
+                            case CUBE -> generator.createTrivialCube(blockDataHolder.get());
                             case PILLAR -> {
                                 var pillar = generator.woodProvider(blockDataHolder.get());
                                 pillar.log(blockDataHolder.get());

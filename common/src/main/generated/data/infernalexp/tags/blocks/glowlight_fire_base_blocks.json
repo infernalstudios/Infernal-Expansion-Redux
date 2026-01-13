@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "infernalexp:chiseled_shimmer_stone_bricks",
     "infernalexp:dimstone",
     "infernalexp:dullstone",
     "infernalexp:glimmer_gravel",
@@ -13,6 +14,9 @@
     "infernalexp:shimmer_stone_bricks_slab",
     "infernalexp:shimmer_stone_bricks_stairs",
     "infernalexp:shimmer_stone_bricks_wall",
+    "infernalexp:shimmer_stone_slab",
+    "infernalexp:shimmer_stone_stairs",
+    "infernalexp:shimmer_stone_wall",
     "minecraft:glowstone"
   ]
 }

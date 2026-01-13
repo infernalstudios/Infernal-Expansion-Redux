@@ -6,6 +6,8 @@
     "infernalexp:basalt_bricks_stairs",
     "infernalexp:basalt_bricks_wall",
     "infernalexp:basalt_iron_ore",
+    "infernalexp:chiseled_basalt_bricks",
+    "infernalexp:chiseled_shimmer_stone_bricks",
     "infernalexp:cobbled_basalt",
     "infernalexp:cobbled_basalt_slab",
     "infernalexp:cobbled_basalt_stairs",
@@ -23,6 +25,9 @@
     "infernalexp:shimmer_stone_bricks_slab",
     "infernalexp:shimmer_stone_bricks_stairs",
     "infernalexp:shimmer_stone_bricks_wall",
+    "infernalexp:shimmer_stone_slab",
+    "infernalexp:shimmer_stone_stairs",
+    "infernalexp:shimmer_stone_wall",
     "infernalexp:volatile_geyser"
   ]
 }

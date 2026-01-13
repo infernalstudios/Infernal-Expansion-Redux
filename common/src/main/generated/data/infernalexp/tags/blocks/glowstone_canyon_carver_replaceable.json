@@ -4,6 +4,9 @@
     "infernalexp:dimstone",
     "infernalexp:dullstone",
     "infernalexp:shimmer_sand",
-    "infernalexp:shimmer_stone"
+    "infernalexp:shimmer_stone",
+    "infernalexp:shimmer_stone_slab",
+    "infernalexp:shimmer_stone_stairs",
+    "infernalexp:shimmer_stone_wall"
   ]
 }
