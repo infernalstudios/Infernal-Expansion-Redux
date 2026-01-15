@@ -10,6 +10,9 @@ import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import com.infernalstudios.infernalexp.world.carver.ModConfiguredCarvers;
 import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import com.infernalstudios.infernalexp.world.feature.ModPlacedFeatures;
+import com.infernalstudios.infernalexp.world.structure.ModProcessorLists;
+import com.infernalstudios.infernalexp.world.structure.ModStructurePools;
+import com.infernalstudios.infernalexp.world.structure.ModStructures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -60,9 +63,16 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
     @Override
     public void buildRegistry(RegistrySetBuilder builder) {
+        builder.add(Registries.BIOME, ModBiomes::bootstrap);
+
         builder.add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
         builder.add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
         builder.add(Registries.CONFIGURED_CARVER, ModConfiguredCarvers::bootstrap);
+
+        builder.add(Registries.PROCESSOR_LIST, ModProcessorLists::bootstrap);
+        builder.add(Registries.TEMPLATE_POOL, ModStructurePools::bootstrap);
+        builder.add(Registries.STRUCTURE, ModStructures::bootstrapStructures);
+        builder.add(Registries.STRUCTURE_SET, ModStructures::bootstrapSets);
     }
 
 
@@ -77,6 +87,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_FEATURE));
             entries.addAll(registries.lookupOrThrow(Registries.PLACED_FEATURE));
             entries.addAll(registries.lookupOrThrow(Registries.CONFIGURED_CARVER));
+
+            entries.addAll(registries.lookupOrThrow(Registries.PROCESSOR_LIST));
+            entries.addAll(registries.lookupOrThrow(Registries.TEMPLATE_POOL));
+            entries.addAll(registries.lookupOrThrow(Registries.STRUCTURE));
+            entries.addAll(registries.lookupOrThrow(Registries.STRUCTURE_SET));
         }
 
         @Override
@@ -219,7 +234,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .pattern(" /#")
                     .pattern("/ #")
                     .pattern(" /#")
-                    .define('#',ModItems.GLOWSILK_STRING.get())
+                    .define('#', ModItems.GLOWSILK_STRING.get())
                     .define('/', Items.STICK)
                     .unlockedBy("has_glowsilk_string", has(ModItems.GLOWSILK_STRING.get()))
                     .save(exporter, IECommon.makeID(getName(ModItems.GLOWSILK_BOW.get())));
@@ -632,7 +647,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                             case DOOR -> generator.createDoor(blockDataHolder.get());
                             case TRAPDOOR -> generator.createTrapdoor(blockDataHolder.get());
                             case FLOWER_POT -> {
-                                // Manual model generation using FLOWER_POT_CROSS template
                                 Block potted = blockDataHolder.get();
                                 if (potted instanceof FlowerPotBlock pot) {
                                     TextureMapping textureMapping = TextureMapping.plant(pot.getContent());

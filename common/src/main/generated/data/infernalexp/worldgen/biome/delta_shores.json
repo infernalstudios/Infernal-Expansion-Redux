@@ -1,8 +1,6 @@
 {
   "carvers": {
-    "air": [
-      "minecraft:nether_cave"
-    ]
+    "air": "minecraft:nether_cave"
   },
   "downfall": 0.0,
   "effects": {
@@ -68,8 +66,8 @@
   "has_precipitation": false,
   "spawn_costs": {
     "infernalexp:glowsilk_moth": {
-      "energy_budget": 1.0,
-      "charge": 0.4
+      "charge": 0.4,
+      "energy_budget": 1.0
     }
   },
   "spawners": {

@@ -1,0 +1,59 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_1",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_2",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_3",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_4",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_5",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "infernalexp:heaven_portal_6",
+        "processors": "infernalexp:heaven_portal_processor",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}
