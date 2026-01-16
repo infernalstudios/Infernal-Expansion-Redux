@@ -24,10 +24,13 @@
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 * Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
 
+### Changes:
+* Vanilla ruined portals will no longer generate in the Glowstone Canyon.
+
 ### Fixes:
 * Missing sounds for bonemealing Shroomlight.
 * Missing sounds for placing Quartz and Bones.
 * Missing recipes for Glowlight Torches and Glowlight Campfires.
-* Missing recipes for various blocks.
+* Missing recipes for various decorative blocks.
+* Missing recipe for composting Luminous Fungus.
 * Volatile Geyser model not working with mods like Hold My Items.
-* Vanilla ruined portals will no longer generate in the Glowstone Canyon.

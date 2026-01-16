@@ -38,6 +38,7 @@ public class BlockDataHolder<T extends Block> {
     private final Map<Block, FlammabilityRegistry.Entry> FLAMMABILITIES = new HashMap<>();
     private Supplier<? extends Block> strippingResult;
     private int fuelDuration;
+    private float compostChance;
     private final Map<Model, BlockDataHolder<?>> BLOCKSETS = new HashMap<>();
     private Supplier<ItemLike> drop;
     private NumberProvider dropCount;
@@ -137,6 +138,23 @@ public class BlockDataHolder<T extends Block> {
 
     public int getFuelDuration() {
         return this.fuelDuration;
+    }
+
+    /**
+     * Registers the block item as a compostable.
+     * @param chance the chance (0.0 to 1.0) for the composter to fill
+     */
+    public BlockDataHolder<?> withCompost(float chance) {
+        this.compostChance = chance;
+        return this;
+    }
+
+    public boolean isCompostable() {
+        return this.compostChance > 0;
+    }
+
+    public float getCompostChance() {
+        return this.compostChance;
     }
 
     /**

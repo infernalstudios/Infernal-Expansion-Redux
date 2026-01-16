@@ -5,6 +5,7 @@ import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.compat.TerraBlenderCompat;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.forge.client.InfernalExpansionForgeClient;
+import com.infernalstudios.infernalexp.forge.compat.autumnity.AutumnityCompat;
 import com.infernalstudios.infernalexp.platform.Services;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +36,7 @@ public class InfernalExpansionForge {
         }
 
         if (ModList.get().isLoaded("autumnity")) {
-            com.infernalstudios.infernalexp.forge.compat.autumnity.AutumnityCompat.register(modEventBus);
+            AutumnityCompat.register(modEventBus);
         }
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InfernalExpansionForgeClient::init);
@@ -46,6 +47,8 @@ public class InfernalExpansionForge {
             if (Services.PLATFORM.isModLoaded("terrablender")) {
                 TerraBlenderCompat.register();
             }
+
+            IECommon.registerCompostables();
         });
     }
 }

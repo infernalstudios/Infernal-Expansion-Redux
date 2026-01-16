@@ -136,6 +136,7 @@ public class ModBlocks {
                     new LuminousFungusBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_FUNGUS).mapColor(DyeColor.YELLOW)
                             .lightLevel(a -> a.getValue(LuminousFungusBlock.LIT) ? 15 : 0).randomTicks()))
             .cutout().withItem().dropsSelf()
+            .withCompost(0.65f)
             .withTranslation("Luminous Fungus")
     );
 

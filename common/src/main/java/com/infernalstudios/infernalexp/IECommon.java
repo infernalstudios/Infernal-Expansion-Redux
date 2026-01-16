@@ -10,6 +10,7 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.ComposterBlock;
 
 public class IECommon {
     private static IEConfig CONFIG;
@@ -70,6 +71,14 @@ public class IECommon {
 
     public static IEConfig getConfig() {
         return CONFIG;
+    }
+
+    public static void registerCompostables() {
+        ModBlocks.getBlockRegistry().values().forEach(holder -> {
+            if (holder.isCompostable() && holder.hasItem()) {
+                ComposterBlock.COMPOSTABLES.put(holder.get().asItem(), holder.getCompostChance());
+            }
+        });
     }
 
     @Deprecated
