@@ -10,7 +10,6 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.level.block.ComposterBlock;
 
 public class IECommon {
     private static IEConfig CONFIG;
@@ -32,6 +31,7 @@ public class IECommon {
         ModCreativeTabs.load();
         ModBiomes.load();
         ModFeatures.load();
+        ModStructureTypes.load();
         ModEffects.load();
         ModCarvers.load();
         ModSurfaceRuleConditions.load();
