@@ -15,10 +15,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class VolatileGeyserBlockEntity extends BlockEntity {
+public class VolatileGeyserBlockEntity extends BlockEntity implements GeoBlockEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int cooldown = 0;
 
     public VolatileGeyserBlockEntity(BlockPos pos, BlockState state) {
@@ -50,6 +55,16 @@ public class VolatileGeyserBlockEntity extends BlockEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 
     private void applyStreamPhysics(Level level, BlockPos pos, Direction facing, double range) {

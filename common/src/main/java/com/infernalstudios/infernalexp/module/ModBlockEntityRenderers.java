@@ -15,8 +15,9 @@ public class ModBlockEntityRenderers {
 
     /**
      * Registers a Block Entity Renderer.
+     *
      * @param blockEntityType The RegistryObject for the Block Entity Type.
-     * @param renderer The renderer factory (usually Constructor::new).
+     * @param renderer        The renderer factory (usually Constructor::new).
      */
     public static <T extends BlockEntity> void register(RegistryObject<BlockEntityType<T>> blockEntityType, BlockEntityRendererProvider<T> renderer) {
         BLOCK_ENTITY_RENDERER_REGISTRY.put(blockEntityType, renderer);

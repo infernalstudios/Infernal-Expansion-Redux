@@ -136,6 +136,6 @@ public class VolatileGeyserBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 }
