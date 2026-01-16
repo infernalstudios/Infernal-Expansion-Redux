@@ -6,14 +6,14 @@
   ],
   "key": {
     "A": {
-      "item": "autumnity:carved_large_pumpkin_slice"
+      "item": "minecraft:carved_pumpkin"
     },
     "B": {
-      "item": "infernalexp:glow_torch"
+      "item": "infernalexp:glowlight_torch"
     }
   },
   "result": {
-    "item": "infernalexp:large_glow_jack_o_lantern_slice"
+    "item": "infernalexp:glowlight_jack_o_lantern"
   },
   "conditions": [
     {

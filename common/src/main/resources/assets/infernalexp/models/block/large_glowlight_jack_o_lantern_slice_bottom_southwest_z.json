@@ -1,9 +1,9 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "autumnity:block/large_pumpkin_slice_bottom_left",
-		"left": "autumnity:block/large_pumpkin_slice_bottom_left",
-		"right": "infernalexp:block/large_glow_jack_o_lantern_slice_bottom_right",
+		"particle": "infernalexp:block/large_glowlight_jack_o_lantern_slice_bottom_left",
+		"left": "infernalexp:block/large_glowlight_jack_o_lantern_slice_bottom_left",
+		"right": "autumnity:block/large_pumpkin_slice_bottom_right",
 		"down": "autumnity:block/large_pumpkin_slice_northwest",
 		"up": "autumnity:block/carved_large_pumpkin_slice_inside"
 	},

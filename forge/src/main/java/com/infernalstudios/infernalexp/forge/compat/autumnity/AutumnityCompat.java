@@ -17,19 +17,19 @@ public class AutumnityCompat {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IEConstants.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IEConstants.MOD_ID);
 
-    public static final RegistryObject<Block> GLOW_JACK_O_LANTERN = BLOCKS.register("glow_jack_o_lantern", () ->
+    public static final RegistryObject<Block> GLOWLIGHT_JACK_O_LANTERN = BLOCKS.register("glowlight_jack_o_lantern", () ->
             new GlowlightJackOLanternBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
                     .lightLevel((state) -> 15)));
 
-    public static final RegistryObject<Item> GLOW_JACK_O_LANTERN_ITEM = ITEMS.register("glow_jack_o_lantern", () ->
-            new BlockItem(GLOW_JACK_O_LANTERN.get(), new Item.Properties()));
+    public static final RegistryObject<Item> GLOWLIGHT_JACK_O_LANTERN_ITEM = ITEMS.register("glowlight_jack_o_lantern", () ->
+            new BlockItem(GLOWLIGHT_JACK_O_LANTERN.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> LARGE_GLOW_JACK_O_LANTERN_SLICE = BLOCKS.register("large_glow_jack_o_lantern_slice", () ->
+    public static final RegistryObject<Block> LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE = BLOCKS.register("large_glowlight_jack_o_lantern_slice", () ->
             new LargeGlowlightJackOLanternSliceBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
                     .lightLevel((state) -> 15)));
 
-    public static final RegistryObject<Item> LARGE_GLOW_JACK_O_LANTERN_SLICE_ITEM = ITEMS.register("large_glow_jack_o_lantern_slice", () ->
-            new BlockItem(LARGE_GLOW_JACK_O_LANTERN_SLICE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE_ITEM = ITEMS.register("large_glowlight_jack_o_lantern_slice", () ->
+            new BlockItem(LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE.get(), new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
@@ -39,8 +39,8 @@ public class AutumnityCompat {
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == ModCreativeTabs.INFERNAL_EXPANSION_TAB.get()) {
-            event.accept(GLOW_JACK_O_LANTERN_ITEM);
-            event.accept(LARGE_GLOW_JACK_O_LANTERN_SLICE_ITEM);
+            event.accept(GLOWLIGHT_JACK_O_LANTERN_ITEM);
+            event.accept(LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE_ITEM);
         }
     }
 }

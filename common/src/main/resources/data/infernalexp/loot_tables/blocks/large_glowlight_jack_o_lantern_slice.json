@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "infernalexp:large_glow_jack_o_lantern_slice"
+          "name": "infernalexp:large_glowlight_jack_o_lantern_slice"
         }
       ],
       "conditions": [

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "infernalexp:glow_jack_o_lantern"
+          "name": "infernalexp:glowlight_jack_o_lantern"
         }
       ],
       "conditions": [

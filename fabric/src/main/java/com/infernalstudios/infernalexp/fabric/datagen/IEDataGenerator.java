@@ -394,9 +394,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("tag.item.infernalexp.voline_food", "Voline Food");
 
             // Autumnity Compat
-            builder.add("block.infernalexp.glow_jack_o_lantern",
+            builder.add("block.infernalexp.glowlight_jack_o_lantern",
                     "Glowlight Jack o'Lantern");
-            builder.add("block.infernalexp.large_glow_jack_o_lantern_slice",
+            builder.add("block.infernalexp.large_glowlight_jack_o_lantern_slice",
                     "Large Glowlight Jack o'Lantern Slice");
 
             // Geyser Tooltips
