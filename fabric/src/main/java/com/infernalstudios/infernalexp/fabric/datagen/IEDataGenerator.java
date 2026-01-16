@@ -393,6 +393,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             // Tag Translations
             builder.add("tag.item.infernalexp.voline_food", "Voline Food");
 
+            // Autumnity Compat
+            builder.add("block.infernalexp.glow_jack_o_lantern",
+                    "Glowlight Jack o'Lantern");
+            builder.add("block.infernalexp.large_glow_jack_o_lantern_slice",
+                    "Large Glowlight Jack o'Lantern Slice");
+
             // Geyser Tooltips
             builder.add("text.autoconfig.infernalexp.option.common.geyser.geyserSteamHeight.@Tooltip",
                     "Determines the maximum height of the steam particles produced by the geyser.");

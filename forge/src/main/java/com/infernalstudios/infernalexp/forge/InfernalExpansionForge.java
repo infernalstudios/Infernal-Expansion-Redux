@@ -11,6 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,6 +32,10 @@ public class InfernalExpansionForge {
                     () -> new ConfigScreenHandler.ConfigScreenFactory((mc, screen) ->
                             AutoConfig.getConfigScreen(ClothConfigConstructor.class, screen).get())
             );
+        }
+
+        if (ModList.get().isLoaded("autumnity")) {
+            com.infernalstudios.infernalexp.forge.compat.autumnity.AutumnityCompat.register(modEventBus);
         }
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InfernalExpansionForgeClient::init);

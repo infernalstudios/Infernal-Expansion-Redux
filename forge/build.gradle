@@ -59,7 +59,11 @@ dependencies {
     modImplementation "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
 
     // TerraBlender
-    modImplementation "com.github.glitchfiend:TerraBlender-forge:$terrablender_version"
+    modImplementation "com.github.glitchfiend:TerraBlender-forge:${terrablender_version}"
+
+    // Optional Dependencies
+    modImplementation "maven.modrinth:blueprint:${blueprint_version}"
+    modImplementation "maven.modrinth:autumnity:${autumnity_version}"
 
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")

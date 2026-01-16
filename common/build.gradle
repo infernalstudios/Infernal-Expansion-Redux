@@ -32,6 +32,7 @@ dependencies {
     compileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
     compileOnly "com.github.glitchfiend:TerraBlender-common:$terrablender_version"
     compileOnly "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
+    compileOnly "maven.modrinth:autumnity:${autumnity_version}"
 }
 
 configurations {
