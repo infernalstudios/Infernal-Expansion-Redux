@@ -14,7 +14,7 @@ public class GlowsquitoModel extends GeoModel<GlowsquitoEntity> {
 
     @Override
     public ResourceLocation getTextureResource(GlowsquitoEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/" + (entity.getBred() ? "glowsquito_shroomlight.png" : "glowsquito.png"));
+        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/" + (entity.isShroomlightPowered() ? "glowsquito_shroomlight.png" : "glowsquito.png"));
     }
 
     @Override

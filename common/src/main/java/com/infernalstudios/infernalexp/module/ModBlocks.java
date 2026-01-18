@@ -226,6 +226,13 @@ public class ModBlocks {
             .withTranslation("Shroomlight Tear")
     );
 
+    public static final BlockDataHolder<?> HOLLOWLIGHT = register("hollowlight", BlockDataHolder.of(() ->
+                    new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT)))
+            .withItem().withModel(BlockDataHolder.Model.CUBE).dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_HOE)
+            .withTranslation("Hollowlight")
+    );
+
     public static final BlockDataHolder<?> PLANTED_QUARTZ = register("planted_quartz", BlockDataHolder.of(() ->
                     new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BLOCK).instabreak().noCollission(), () -> Items.QUARTZ))
             .cutout().dropsOther(() -> Items.QUARTZ)

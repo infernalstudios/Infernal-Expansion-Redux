@@ -8,6 +8,7 @@ import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,7 +31,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -53,6 +53,7 @@ import java.util.EnumSet;
 public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
     private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SHROOMLIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModBlocks.SHROOMLIGHT_TEAR.get().asItem());
 
@@ -65,6 +66,9 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     private static final RawAnimation FLYING_TILTING = RawAnimation.begin().thenLoop("flying_tilting");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    // New timer field
+    private int shroomlightTimer;
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -83,6 +87,10 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 .add(Attributes.ATTACK_DAMAGE, 2.0D)
                 .add(Attributes.FLYING_SPEED, 0.6D)
                 .add(Attributes.MOVEMENT_SPEED, 0.3D);
+    }
+
+    public static boolean checkGlowsquitoSpawnRules(EntityType<GlowsquitoEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.noCollision(entityType.getAABB(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D));
     }
 
     @Override
@@ -154,6 +162,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         super.defineSynchedData();
         this.entityData.define(BRED, false);
         this.entityData.define(EATING, false);
+        this.entityData.define(SHROOMLIGHT_POWERED, false);
     }
 
     public boolean isEating() {
@@ -170,6 +179,46 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     public void setBred(boolean isBred) {
         this.entityData.set(BRED, isBred);
+    }
+
+    public boolean isShroomlightPowered() {
+        return this.entityData.get(SHROOMLIGHT_POWERED);
+    }
+
+    public void setShroomlightPowered(boolean powered) {
+        this.entityData.set(SHROOMLIGHT_POWERED, powered);
+    }
+
+    public void setShroomlightTimer(int time) {
+        this.shroomlightTimer = time;
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("ShroomlightPowered", this.isShroomlightPowered());
+        compound.putInt("ShroomlightTimer", this.shroomlightTimer);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setShroomlightPowered(compound.getBoolean("ShroomlightPowered"));
+        this.shroomlightTimer = compound.getInt("ShroomlightTimer");
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (!this.level().isClientSide) {
+            if (this.isShroomlightPowered()) {
+                this.shroomlightTimer--;
+                if (this.shroomlightTimer <= 0) {
+                    this.setShroomlightPowered(false);
+                }
+            }
+        }
     }
 
     @Override
@@ -240,10 +289,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     @Override
     protected void checkFallDamage(double pY, boolean pOnGround, @NotNull BlockState pState, @NotNull BlockPos pPos) {
-    }
-
-    public static boolean checkGlowsquitoSpawnRules(EntityType<GlowsquitoEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.noCollision(entityType.getAABB(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D));
     }
 
     static class LookAroundGoal extends Goal {

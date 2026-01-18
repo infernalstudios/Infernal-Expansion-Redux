@@ -68,6 +68,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.LUMINOUS_TRAPDOOR.get());
 
         entries.accept(ModBlocks.SHROOMLIGHT_TEAR.get());
+        entries.accept(ModBlocks.HOLLOWLIGHT.get());
 
         entries.accept(ModBlocks.DULLTHORNS.get());
         entries.accept(ModBlocks.DULLTHORNS_BLOCK.get());

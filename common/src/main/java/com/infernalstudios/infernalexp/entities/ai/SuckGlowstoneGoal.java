@@ -133,6 +133,10 @@ public class SuckGlowstoneGoal extends Goal {
                         newState = ModBlocks.DIMSTONE.get().defaultBlockState();
                     } else if (currentState.is(ModBlocks.DIMSTONE.get())) {
                         newState = ModBlocks.DULLSTONE.get().defaultBlockState();
+                    } else if (currentState.is(Blocks.SHROOMLIGHT)) {
+                        newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
+                        this.mob.setShroomlightPowered(true);
+                        this.mob.setShroomlightTimer(6000);
                     }
 
                     if (newState != null) {
@@ -160,7 +164,7 @@ public class SuckGlowstoneGoal extends Goal {
     }
 
     private boolean isValidTarget(BlockState state) {
-        return state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get());
+        return state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get()) || state.is(Blocks.SHROOMLIGHT);
     }
 
     private boolean findGlowstoneOrDimstone() {
