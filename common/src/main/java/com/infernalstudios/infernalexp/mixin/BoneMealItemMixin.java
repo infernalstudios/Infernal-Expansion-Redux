@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
+import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,8 +28,10 @@ public class BoneMealItemMixin {
     public void useOn(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         Level world = context.getLevel();
         BlockPos pos = context.getClickedPos();
+        BlockState state = world.getBlockState(pos);
 
-        if (world.getBlockState(pos).is(Blocks.SHROOMLIGHT)) {
+        // TODO: this should definitely be a helper or something
+        if (state.is(Blocks.SHROOMLIGHT)) {
             boolean isWarped = world.getBiome(pos).is(Biomes.WARPED_FOREST);
             BlockPos targetPos = isWarped ? pos.above() : pos.below();
 
@@ -51,6 +54,33 @@ public class BoneMealItemMixin {
                     }
                 }
                 cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
+            }
+        } else if (NetherExpCompat.isShroomnight(state.getBlock())) {
+            if (NetherExpCompat.SHROOMNIGHT_TEAR != null) {
+                boolean isWarped = world.getBiome(pos).is(Biomes.WARPED_FOREST);
+                BlockPos targetPos = isWarped ? pos.above() : pos.below();
+
+                if (world.getBlockState(targetPos).isAir()) {
+                    if (!world.isClientSide) {
+                        context.getItemInHand().shrink(1);
+
+                        BlockState tear = NetherExpCompat.SHROOMNIGHT_TEAR.get().defaultBlockState();
+
+                        if (isWarped)
+                            world.setBlock(targetPos, tear.setValue(ShroomlightTearBlock.UP, true), Block.UPDATE_ALL);
+                        else
+                            world.setBlock(targetPos, tear.setValue(ShroomlightTearBlock.UP, false), Block.UPDATE_ALL);
+
+                        world.playSound(null, targetPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+                        if (world instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                    targetPos.getX() + 0.5D, targetPos.getY() + 0.5D, targetPos.getZ() + 0.5D,
+                                    15, 0.25D, 0.25D, 0.25D, 0.05D);
+                        }
+                    }
+                    cir.setReturnValue(InteractionResult.sidedSuccess(world.isClientSide));
+                }
             }
         }
     }

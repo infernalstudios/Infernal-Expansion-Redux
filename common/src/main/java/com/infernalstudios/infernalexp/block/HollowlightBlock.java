@@ -11,10 +11,14 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class HollowlightBlock extends Block implements BonemealableBlock {
+import java.util.function.Supplier;
 
-    public HollowlightBlock(Properties properties) {
+public class HollowlightBlock extends Block implements BonemealableBlock {
+    private final Supplier<Block> transformBlock;
+
+    public HollowlightBlock(Properties properties, Supplier<Block> transformBlock) {
         super(properties);
+        this.transformBlock = transformBlock;
     }
 
     @Override
@@ -24,11 +28,11 @@ public class HollowlightBlock extends Block implements BonemealableBlock {
 
     @Override
     public boolean isBonemealSuccess(@NotNull Level pLevel, @NotNull RandomSource pRandom, @NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return true;
+        return this.transformBlock.get() != Blocks.AIR;
     }
 
     @Override
     public void performBonemeal(ServerLevel pLevel, @NotNull RandomSource pRandom, @NotNull BlockPos pPos, @NotNull BlockState pState) {
-        pLevel.setBlock(pPos, Blocks.SHROOMLIGHT.defaultBlockState(), 3);
+        pLevel.setBlock(pPos, this.transformBlock.get().defaultBlockState(), 3);
     }
 }

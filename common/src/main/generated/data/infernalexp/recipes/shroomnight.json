@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "shroomnight",
+  "ingredients": [
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    },
+    {
+      "item": "infernalexp:shroomnight_tear"
+    }
+  ],
+  "result": {
+    "item": "netherexp:shroomnight"
+  }
+}

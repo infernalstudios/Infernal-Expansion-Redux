@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "is_up=true": {
+      "model": "infernalexp:block/shroomnight_tear",
+      "x": 180
+    },
+    "is_up=false": {
+      "model": "infernalexp:block/shroomnight_tear"
+    }
+  }
+}

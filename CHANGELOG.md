@@ -1,6 +1,7 @@
 ### Additions:
 * Re-added and reworked the Glowsquito.
   * Glowsquitos will now drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
+  * Glowsquitos will drink Shroomlight to turn it into Hollowlight.
   * New animations and textures.
   * Glowsquitos are now repelled by Campfires.
 * Re-added and reworked the Blindsight.
@@ -23,6 +24,7 @@
 * Re-added missing block variants for Shimmer Stone and Basalt.
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 * Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
+* Added Shroomnight Tears and Hollownight when Jaden's Nether Expansion is installed.
 
 ### Changes:
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.

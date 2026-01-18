@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "infernalexp:shroomlight_tear",
+    {
+      "id": "netherexp:shroomnight_tear",
+      "required": false
+    }
+  ]
+}

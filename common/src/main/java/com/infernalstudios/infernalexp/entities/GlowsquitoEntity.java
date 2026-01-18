@@ -3,10 +3,10 @@ package com.infernalstudios.infernalexp.entities;
 import com.infernalstudios.infernalexp.entities.ai.AvoidCampfiresGoal;
 import com.infernalstudios.infernalexp.entities.ai.RandomFlyGoal;
 import com.infernalstudios.infernalexp.entities.ai.SuckGlowstoneGoal;
-import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
+import com.infernalstudios.infernalexp.module.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -55,7 +55,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHROOMLIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModBlocks.SHROOMLIGHT_TEAR.get().asItem());
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation PERCHING = RawAnimation.begin().thenLoop("perching");
@@ -67,7 +67,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // New timer field
     private int shroomlightTimer;
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {

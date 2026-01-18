@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.block.*;
+import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.mixin.accessor.*;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.minecraft.core.BlockPos;
@@ -227,7 +228,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> HOLLOWLIGHT = register("hollowlight", BlockDataHolder.of(() ->
-                    new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT)))
+                    new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT), () -> Blocks.SHROOMLIGHT))
             .withItem().withModel(BlockDataHolder.Model.CUBE).dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Hollowlight")
@@ -377,5 +378,6 @@ public class ModBlocks {
     }
 
     public static void load() {
+        NetherExpCompat.load();
     }
 }

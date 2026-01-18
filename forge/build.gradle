@@ -65,6 +65,10 @@ dependencies {
     modImplementation "maven.modrinth:blueprint:${blueprint_version}"
     modImplementation "maven.modrinth:autumnity:${autumnity_version}"
 
+    // Jaden's Nether Expansion
+    modImplementation "maven.modrinth:architectury-api:${architectury_version}+forge"
+    modImplementation "maven.modrinth:jadens-nether-expansion:${jne_version}-Forge"
+
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 }
