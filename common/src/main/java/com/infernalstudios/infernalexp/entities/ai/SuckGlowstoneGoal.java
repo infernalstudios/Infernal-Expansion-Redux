@@ -1,9 +1,13 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
+import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
+import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
@@ -137,6 +141,17 @@ public class SuckGlowstoneGoal extends Goal {
                         newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
                         this.mob.setShroomlightPowered(true);
                         this.mob.setShroomlightTimer(6000);
+                        this.mob.setShroomnightPowered(false);
+                        this.mob.setShroomnightTimer(0);
+                    } else if (Services.PLATFORM.isModLoaded("netherexp")) {
+                        Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
+                        if (currentState.is(shroomnight) && NetherExpCompat.HOLLOWNIGHT != null) {
+                            newState = NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState();
+                            this.mob.setShroomnightPowered(true);
+                            this.mob.setShroomnightTimer(6000);
+                            this.mob.setShroomlightPowered(false);
+                            this.mob.setShroomlightTimer(0);
+                        }
                     }
 
                     if (newState != null) {
@@ -164,7 +179,16 @@ public class SuckGlowstoneGoal extends Goal {
     }
 
     private boolean isValidTarget(BlockState state) {
-        return state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get()) || state.is(Blocks.SHROOMLIGHT);
+        if (state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get()) || state.is(Blocks.SHROOMLIGHT)) {
+            return true;
+        }
+
+        if (Services.PLATFORM.isModLoaded("netherexp")) {
+            Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
+            return state.is(shroomnight);
+        }
+
+        return false;
     }
 
     private boolean findGlowstoneOrDimstone() {

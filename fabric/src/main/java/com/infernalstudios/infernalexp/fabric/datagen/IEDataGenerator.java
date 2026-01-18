@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.fabric.datagen;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.config.IEConfig;
 import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
@@ -271,7 +272,13 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     5, 100, "basalt_iron_ore");
 
             offer3x3Recipe(exporter, Blocks.SHROOMLIGHT, 1, ModBlocks.SHROOMLIGHT_TEAR.get());
-
+            if (NetherExpCompat.SHROOMNIGHT_TEAR != null) {
+                offer3x3Recipe(exporter,
+                        BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight")),
+                        1,
+                        NetherExpCompat.SHROOMNIGHT_TEAR.get()
+                );
+            }
             offer2x2Recipe(exporter, ModBlocks.GLOWSILK_COCOON.get(), 1, ModItems.GLOWSILK_STRING.get());
             offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(), 4, ModBlocks.GLOWSILK_COCOON.get());
 
@@ -559,6 +566,13 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
                 entry.getValue().forEach(b -> tagBuilder.add(b.get()));
             }
+
+            getOrCreateTagBuilder(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS)
+                    .add(ModBlocks.SHROOMLIGHT_TEAR.get().asItem())
+                    .addOptional(new ResourceLocation("netherexp", "shroomnight_tear"));
+
+            getOrCreateTagBuilder(ModTags.Items.VOLINE_FOOD)
+                    .add(Items.MAGMA_CREAM);
         }
     }
 

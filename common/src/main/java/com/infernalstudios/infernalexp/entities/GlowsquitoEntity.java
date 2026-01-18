@@ -3,10 +3,10 @@ package com.infernalstudios.infernalexp.entities;
 import com.infernalstudios.infernalexp.entities.ai.AvoidCampfiresGoal;
 import com.infernalstudios.infernalexp.entities.ai.RandomFlyGoal;
 import com.infernalstudios.infernalexp.entities.ai.SuckGlowstoneGoal;
-import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
+import com.infernalstudios.infernalexp.module.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -54,8 +54,9 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> SHROOMLIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> SHROOMNIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModBlocks.SHROOMLIGHT_TEAR.get().asItem());
+    private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation PERCHING = RawAnimation.begin().thenLoop("perching");
@@ -67,8 +68,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    // New timer field
     private int shroomlightTimer;
+    private int shroomnightTimer;
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -163,6 +164,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.entityData.define(BRED, false);
         this.entityData.define(EATING, false);
         this.entityData.define(SHROOMLIGHT_POWERED, false);
+        this.entityData.define(SHROOMNIGHT_POWERED, false);
     }
 
     public boolean isEating() {
@@ -193,11 +195,25 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.shroomlightTimer = time;
     }
 
+    public boolean isShroomnightPowered() {
+        return this.entityData.get(SHROOMNIGHT_POWERED);
+    }
+
+    public void setShroomnightPowered(boolean powered) {
+        this.entityData.set(SHROOMNIGHT_POWERED, powered);
+    }
+
+    public void setShroomnightTimer(int time) {
+        this.shroomnightTimer = time;
+    }
+
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putBoolean("ShroomlightPowered", this.isShroomlightPowered());
         compound.putInt("ShroomlightTimer", this.shroomlightTimer);
+        compound.putBoolean("ShroomnightPowered", this.isShroomnightPowered());
+        compound.putInt("ShroomnightTimer", this.shroomnightTimer);
     }
 
     @Override
@@ -205,6 +221,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         super.readAdditionalSaveData(compound);
         this.setShroomlightPowered(compound.getBoolean("ShroomlightPowered"));
         this.shroomlightTimer = compound.getInt("ShroomlightTimer");
+        this.setShroomnightPowered(compound.getBoolean("ShroomnightPowered"));
+        this.shroomnightTimer = compound.getInt("ShroomnightTimer");
     }
 
     @Override
@@ -216,6 +234,13 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 this.shroomlightTimer--;
                 if (this.shroomlightTimer <= 0) {
                     this.setShroomlightPowered(false);
+                }
+            }
+
+            if (this.isShroomnightPowered()) {
+                this.shroomnightTimer--;
+                if (this.shroomnightTimer <= 0) {
+                    this.setShroomnightPowered(false);
                 }
             }
         }

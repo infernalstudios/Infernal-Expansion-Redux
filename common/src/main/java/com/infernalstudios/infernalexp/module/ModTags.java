@@ -16,6 +16,7 @@ public class ModTags {
 
         public static final TagKey<Block> GLOW_FIRE_BASE_BLOCKS = create("glowlight_fire_base_blocks");
         public static final TagKey<Block> SHROOMLIGHT_TEARS_GROWABLE = create("shroomlight_tears_growable_on");
+        public static final TagKey<Block> SHROOMNIGHT_TEARS_GROWABLE = create("shroomnight_tears_growable_on");
         public static final TagKey<Block> GLOWSTONE_CANYON_CARVER_REPLACEABLES = create("glowstone_canyon_carver_replaceable");
     }
 
@@ -33,6 +34,7 @@ public class ModTags {
         }
 
         public static final TagKey<Item> VOLINE_FOOD = create("voline_food");
+        public static final TagKey<Item> GLOWSQUITO_TEMPTATION_ITEMS = create("glowsquito_temptation_items");
     }
 
     public static class EntityTypes {
