@@ -44,14 +44,11 @@ public class IEConfig {
         public static class Miscellaneous {
             @ConfigEntry.Gui.Tooltip
             public double luminousFungusActivateDistance = 4.0D;
-
-            @ConfigEntry.Gui.Tooltip
-            public int glimmerGravelTriggerRadius = 1;
         }
 
         public static class MobInteractions {
             @ConfigEntry.Gui.Tooltip
-            public double glowsilkSpeed = 1.0D;
+            public double glowsilkBowSpeed = 1.0D;
         }
     }
 }

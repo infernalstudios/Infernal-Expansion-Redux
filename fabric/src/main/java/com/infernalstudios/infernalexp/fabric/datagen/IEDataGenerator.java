@@ -452,13 +452,13 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("text.autoconfig.infernalexp.option.common.voline.volineMagmaCreamAmount.@Tooltip",
                     "Determines the amount of Magma Cream a Voline needs to eat to grow.");
 
-            // Glowsilk Bow Tooltips
-            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsilkSpeed.@Tooltip",
+            // Mob Interactions Tooltips
+            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsilkBowSpeed.@Tooltip",
                     "Determines the speed at which arrows are fired from the Glowsilk Bow.");
 
-            // Glimmer Gravel Tooltips
-            builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.glimmerGravelTriggerRadius.@Tooltip",
-                    "Determines the radius in blocks around the stepped-on Glimmer Gravel that will trigger a chain reaction.");
+            // Miscellaneous Tooltips
+            builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.luminousFungusActivateDistance.@Tooltip",
+                    "Determines the radius in blocks around Luminous Fungus that will cause them to light up.");
 
             // Biome Translations
             builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");
