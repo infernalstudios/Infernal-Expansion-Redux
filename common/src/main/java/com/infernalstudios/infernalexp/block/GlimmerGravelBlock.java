@@ -1,6 +1,5 @@
 package com.infernalstudios.infernalexp.block;
 
-import com.infernalstudios.infernalexp.IECommon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -27,13 +26,11 @@ public class GlimmerGravelBlock extends FallingBlock {
     }
 
     @Override
-    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {
-    }
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {}
 
     @Override
     public void tick(@NotNull BlockState state, ServerLevel level, BlockPos pos, @NotNull RandomSource random) {
         if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
-            level.playSound(null, pos, SoundEvents.SAND_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
                     5, 0.25D, 0.25D, 0.25D, 0.05D);
@@ -45,34 +42,19 @@ public class GlimmerGravelBlock extends FallingBlock {
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
         super.stepOn(level, pos, state, entity);
 
-        if (!level.isClientSide && !entity.isSteppingCarefully()) {
-            triggerChainReaction((ServerLevel) level, pos);
-        }
-    }
+        if (entity.isSteppingCarefully()) return;
+        if (!isFree(level.getBlockState(pos.below()))) return;
 
-    /**
-     * Scans a radius around the stepped-on block and triggers all other GlimmerGravelBlocks.
-     */
-    private void triggerChainReaction(ServerLevel level, BlockPos centerPos) {
-        int radius = IECommon.getConfig().common.miscellaneous.glimmerGravelTriggerRadius;
-        for (int x = -radius; x <= radius; x++) {
-            for (int y = -radius; y <= radius; y++) {
-                for (int z = -radius; z <= radius; z++) {
-                    BlockPos targetPos = centerPos.offset(x, y, z);
-                    BlockState targetState = level.getBlockState(targetPos);
-
-                    if (targetState.getBlock() instanceof GlimmerGravelBlock) {
-                        if (!level.getBlockTicks().hasScheduledTick(targetPos, this)) {
-                            level.scheduleTick(targetPos, this, 0);
-                        }
-                    }
-                }
-            }
+        if (!level.getBlockTicks().hasScheduledTick(pos, this)) {
+            level.playSound(null, pos, SoundEvents.SAND_STEP, SoundSource.BLOCKS, 1.0F, 0.5F);
         }
+
+        int delay = entity.isSprinting() ? 2 : 10;
+        level.scheduleTick(pos, this, delay);
     }
 
     @Override
     protected int getDelayAfterPlace() {
-        return 2;
+        return 10;
     }
 }

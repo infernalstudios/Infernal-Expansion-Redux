@@ -28,10 +28,12 @@
 * Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
 * Added Shroomnight Tears and Hollownight when Jaden's Nether Expansion is installed.
 * New recipes for Create compatibility.
+* Config options for Luminous Fungus activation distance and Glowsilk Bow fire speed.
 
 ### Changes:
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.
 * When flowing Lava encounters Blue Ice over Shimmer Sand, it turns to Shimmer Stone.
+* Reworked how Glimmer Gravel activates.
 
 ### Fixes:
 * Missing sounds for bonemealing Shroomlight.
@@ -39,4 +41,5 @@
 * Missing recipes for Glowlight Torches and Glowlight Campfires.
 * Missing recipes for various decorative blocks.
 * Missing recipe for composting Luminous Fungus.
+* Glowsilk Bow shooting inaccurately due to a Vanilla bug.
 * Volatile Geyser model not working with mods like Hold My Items.
