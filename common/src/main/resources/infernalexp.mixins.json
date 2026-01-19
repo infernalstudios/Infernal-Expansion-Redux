@@ -20,6 +20,7 @@
     "LavaFluidMixin",
     "LiquidBlockMixin",
     "LivingEntityMixin",
+    "LuminousEffectSyncMixin",
     "MagmaCubeMixin",
     "MinecraftServerMixin",
     "MultiPackResourceManagerMixin",

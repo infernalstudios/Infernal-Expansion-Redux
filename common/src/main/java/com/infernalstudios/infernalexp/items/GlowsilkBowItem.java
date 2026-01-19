@@ -1,7 +1,7 @@
 package com.infernalstudios.infernalexp.items;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.api.AbstractArrowEntityAccess;
+import com.infernalstudios.infernalexp.entities.GlowsilkArrowEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -42,11 +42,10 @@ public class GlowsilkBowItem extends BowItem {
                     boolean isArrowInfinite = playerEntity.getAbilities().instabuild || (itemStack.is(Items.ARROW) && hasInfinity);
 
                     if (!level.isClientSide) {
-                        ArrowItem arrowItem = (ArrowItem) (itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
-                        AbstractArrow abstractArrow = arrowItem.createArrow(level, itemStack, playerEntity);
+                        GlowsilkArrowEntity abstractArrow = new GlowsilkArrowEntity(level, playerEntity);
 
-                        if (abstractArrow instanceof AbstractArrowEntityAccess access) {
-                            access.infernalexp$setGlow(true);
+                        if (itemStack.getItem() instanceof ArrowItem) {
+                            abstractArrow.setEffectsFromItem(itemStack);
                         }
 
                         double speedMultiplier = IECommon.getConfig().common.mobInteractions.glowsilkBowSpeed;

@@ -95,6 +95,7 @@ publishMods {
         requires { slug = "geckolib" }
         optional { slug = "lambdynamiclights" }
         optional { slug = "cloth-config" }
+        optional { slug = "afterimages" }
     }
 
     modrinth {
@@ -105,5 +106,6 @@ publishMods {
         requires { slug = "geckolib" }
         optional { slug = "lambdynamiclights" }
         optional { slug = "cloth-config" }
+        optional { slug = "afterimages" }
     }
 }

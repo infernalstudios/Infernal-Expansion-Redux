@@ -13,11 +13,12 @@
 * Added huge Luminous Fungus trees, obtained by bonemealing Luminous Fungus.
 * Added a new Luminous wood set, crafted from Luminous Stems.
 * Re-added the Luminous effect.
-  * Luminous will now give the player dynamic lighting effects when LambDynamicLights is installed.
+  * Luminous will now give entities dynamic lighting effects when LambDynamicLights is installed.
 * Luminous Fungus can now be placed in flower pots.
 * Added the Delta Shores.
 * Re-added the Glowsilk Bow.
   * Arrows shot by the Glowsilk Bow will now have dynamic lighting when LambDynamicLights is installed.
+  * Arrows shot by the Glowsilk Bow will now have special afterimage trails when Afterimages is installed.
 * Re-added and remade Ruined Aether Portals.
   * Reworked the loot tables to be more varied.
 * Re-added Glowcoke.
@@ -34,6 +35,7 @@
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.
 * When flowing Lava encounters Blue Ice over Shimmer Sand, it turns to Shimmer Stone.
 * Reworked how Glimmer Gravel activates.
+* Glowfire now gives entities the Luminous effect.
 
 ### Fixes:
 * Missing sounds for bonemealing Shroomlight.
