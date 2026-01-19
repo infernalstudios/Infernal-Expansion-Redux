@@ -275,7 +275,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         };
         flyingpathnavigator.setCanOpenDoors(false);
         flyingpathnavigator.setCanFloat(true);
-        flyingpathnavigator.setCanPassDoors(true);
+        flyingpathnavigator.setCanPassDoors(false);
         return flyingpathnavigator;
     }
 

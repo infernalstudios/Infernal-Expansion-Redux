@@ -96,7 +96,7 @@ public class SuckGlowstoneGoal extends Goal {
 
         double distSqr = this.mob.distanceToSqr(this.latchPos);
 
-        if (distSqr < 2.0D && !this.mob.isEating()) {
+        if (distSqr < 1.0D && !this.mob.isEating()) {
             this.mob.setEating(true);
             this.mob.getNavigation().stop();
         }

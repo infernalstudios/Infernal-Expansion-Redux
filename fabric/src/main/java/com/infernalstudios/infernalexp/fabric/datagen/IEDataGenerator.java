@@ -111,7 +111,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         }
 
         private static void offerStonecutting(Consumer<FinishedRecipe> exporter, ItemLike input, ItemLike output) {
-            SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output)
+            offerStonecutting(exporter, input, output, 1);
+        }
+
+        private static void offerStonecutting(Consumer<FinishedRecipe> exporter, ItemLike input, ItemLike output, int count) {
+            SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, count)
                     .unlockedBy(getHasName(input), has(input))
                     .save(exporter, IECommon.makeID(getName(output) + "_from_" + getName(input) + "_stonecutting"));
         }
@@ -214,22 +218,46 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             }
 
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getSlab().get(), 2);
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE.getWall().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE_BRICKS.get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get(), 2);
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
             offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getSlab().get(), 2);
             offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getWall().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getSlab().get(), 2);
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getWall().get());
+            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.CHISELED_BASALT_BRICKS.get());
 
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get(), 2);
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
             offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getSlab().get());
+            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getSlab().get(), 2);
             offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getWall().get());
             offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.CHISELED_BASALT_BRICKS.get());
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get())
+                    .pattern("#")
+                    .pattern("#")
+                    .define('#', ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get())
+                    .unlockedBy(getHasName(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get()), has(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get()))
+                    .save(exporter, IECommon.makeID("chiseled_shimmer_stone_bricks_from_slabs"));
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BASALT_BRICKS.get())
+                    .pattern("#")
+                    .pattern("#")
+                    .define('#', ModBlocks.BASALT_BRICKS.getSlab().get())
+                    .unlockedBy(getHasName(ModBlocks.BASALT_BRICKS.getSlab().get()), has(ModBlocks.BASALT_BRICKS.getSlab().get()))
+                    .save(exporter, IECommon.makeID("chiseled_basalt_bricks_from_slabs"));
 
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GLOWSILK_BOW.get())
                     .pattern(" /#")

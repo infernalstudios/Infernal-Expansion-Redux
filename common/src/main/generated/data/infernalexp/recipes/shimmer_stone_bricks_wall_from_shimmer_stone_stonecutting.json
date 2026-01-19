@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
-  "count": 2,
+  "count": 1,
   "ingredient": {
     "item": "infernalexp:shimmer_stone"
   },
-  "result": "infernalexp:shimmer_stone_slab"
+  "result": "infernalexp:shimmer_stone_bricks_wall"
 }

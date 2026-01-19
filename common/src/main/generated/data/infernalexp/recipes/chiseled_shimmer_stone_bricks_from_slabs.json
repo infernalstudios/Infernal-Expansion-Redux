@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "infernalexp:shimmer_stone_bricks_slab"
+    }
+  },
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "result": {
+    "item": "infernalexp:chiseled_shimmer_stone_bricks"
+  },
+  "show_notification": true
+}

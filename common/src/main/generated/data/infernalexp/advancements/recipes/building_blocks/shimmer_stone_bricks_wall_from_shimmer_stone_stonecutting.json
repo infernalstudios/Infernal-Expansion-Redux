@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_shimmer_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "infernalexp:shimmer_stone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:shimmer_stone_bricks_wall_from_shimmer_stone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_shimmer_stone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:shimmer_stone_bricks_wall_from_shimmer_stone_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

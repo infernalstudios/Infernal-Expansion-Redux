@@ -363,7 +363,7 @@ public class ModBlocks {
     public static final BlockDataHolder<?> LUMINOUS_WART_BLOCK = register("luminous_wart_block", BlockDataHolder.of(() ->
                     new Block(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_HOE)
+            .withTags(BlockTags.MINEABLE_WITH_HOE, BlockTags.WART_BLOCKS)
             .withTranslation("Luminous Wart Block")
     );
 
