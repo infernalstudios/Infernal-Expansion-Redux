@@ -26,15 +26,30 @@ public class GlimmerGravelBlock extends FallingBlock {
     }
 
     @Override
-    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {}
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {
+    }
 
     @Override
     public void tick(@NotNull BlockState state, ServerLevel level, BlockPos pos, @NotNull RandomSource random) {
         if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
+
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
                     5, 0.25D, 0.25D, 0.25D, 0.05D);
+            level.playSound(null, pos, SoundEvents.SAND_FALL, SoundSource.BLOCKS, 1.0F, 0.5F);
+
+            for (Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockPos neighborPos = pos.relative(direction);
+                BlockState neighborState = level.getBlockState(neighborPos);
+
+                if (neighborState.getBlock() instanceof GlimmerGravelBlock) {
+                    if (!level.getBlockTicks().hasScheduledTick(neighborPos, this)) {
+                        level.scheduleTick(neighborPos, this, 10);
+                    }
+                }
+            }
         }
+
         super.tick(state, level, pos, random);
     }
 
@@ -47,10 +62,8 @@ public class GlimmerGravelBlock extends FallingBlock {
 
         if (!level.getBlockTicks().hasScheduledTick(pos, this)) {
             level.playSound(null, pos, SoundEvents.SAND_STEP, SoundSource.BLOCKS, 1.0F, 0.5F);
+            level.scheduleTick(pos, this, 10);
         }
-
-        int delay = entity.isSprinting() ? 2 : 10;
-        level.scheduleTick(pos, this, delay);
     }
 
     @Override
