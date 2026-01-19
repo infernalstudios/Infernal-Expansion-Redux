@@ -1,0 +1,27 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "infernalexp:dimstone"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:glowstone_dust",
+      "count": 1
+    },
+    {
+      "item": "infernalexp:dullrocks",
+      "count": 1
+    },
+    {
+      "item": "minecraft:glowstone_dust",
+      "chance": 0.5
+    },
+    {
+      "item": "infernalexp:dullrocks",
+      "chance": 0.5
+    }
+  ],
+  "processingTime": 150
+}

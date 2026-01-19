@@ -1,0 +1,19 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "infernalexp:shimmer_stone"
+    }
+  ],
+  "results": [
+    {
+      "item": "infernalexp:shimmer_sand",
+      "count": 2
+    },
+    {
+      "item": "infernalexp:shimmer_sand",
+      "chance": 0.25
+    }
+  ],
+  "processingTime": 150
+}

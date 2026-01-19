@@ -27,6 +27,7 @@
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 * Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
 * Added Shroomnight Tears and Hollownight when Jaden's Nether Expansion is installed.
+* New recipes for Create compatibility.
 
 ### Changes:
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.
