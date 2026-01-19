@@ -19,6 +19,9 @@ public class IEConfig {
         @ConfigEntry.Gui.CollapsibleObject
         public Miscellaneous miscellaneous = new Miscellaneous();
 
+        @ConfigEntry.Gui.CollapsibleObject
+        public MobInteractions mobInteractions = new MobInteractions();
+
         public static class Geyser {
             @ConfigEntry.Gui.Tooltip
             public int geyserSteamHeight = 8;
@@ -38,17 +41,17 @@ public class IEConfig {
             public int volineMagmaCreamAmount = 3;
         }
 
-        @ConfigEntry.Gui.CollapsibleObject
-        public MobInteractions mobInteractions = new MobInteractions();
-
         public static class Miscellaneous {
             @ConfigEntry.Gui.Tooltip
             public double luminousFungusActivateDistance = 4.0D;
+
+            @ConfigEntry.Gui.Tooltip
+            public int glimmerGravelTriggerRadius = 1;
         }
 
         public static class MobInteractions {
             @ConfigEntry.Gui.Tooltip
-            public static double glowsilkSpeed = 1.0D;
+            public double glowsilkSpeed = 1.0D;
         }
     }
 }

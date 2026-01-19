@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.block;
 
+import com.infernalstudios.infernalexp.IECommon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -26,7 +27,8 @@ public class GlimmerGravelBlock extends FallingBlock {
     }
 
     @Override
-    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {}
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState old, boolean piston) {
+    }
 
     @Override
     public void tick(@NotNull BlockState state, ServerLevel level, BlockPos pos, @NotNull RandomSource random) {
@@ -42,12 +44,35 @@ public class GlimmerGravelBlock extends FallingBlock {
     @Override
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
         super.stepOn(level, pos, state, entity);
-        if (!entity.isSteppingCarefully())
-            level.scheduleTick(pos, this, this.getDelayAfterPlace());
+
+        if (!level.isClientSide && !entity.isSteppingCarefully()) {
+            triggerChainReaction((ServerLevel) level, pos);
+        }
+    }
+
+    /**
+     * Scans a radius around the stepped-on block and triggers all other GlimmerGravelBlocks.
+     */
+    private void triggerChainReaction(ServerLevel level, BlockPos centerPos) {
+        int radius = IECommon.getConfig().common.miscellaneous.glimmerGravelTriggerRadius;
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    BlockPos targetPos = centerPos.offset(x, y, z);
+                    BlockState targetState = level.getBlockState(targetPos);
+
+                    if (targetState.getBlock() instanceof GlimmerGravelBlock) {
+                        if (!level.getBlockTicks().hasScheduledTick(targetPos, this)) {
+                            level.scheduleTick(targetPos, this, 0);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
     protected int getDelayAfterPlace() {
-        return 10;
+        return 2;
     }
 }

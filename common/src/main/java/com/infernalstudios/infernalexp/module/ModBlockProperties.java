@@ -1,20 +1,21 @@
 package com.infernalstudios.infernalexp.module;
 
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.item.DyeColor;
 
 public class ModBlockProperties {
 
     public static final BlockBehaviour.Properties SHIMMER_SAND = BlockBehaviour.Properties.copy(Blocks.SAND)
             .mapColor(MapColor.SAND);
 
-    public static final BlockBehaviour.Properties GLIMMER_GRAVEL = BlockBehaviour.Properties.copy(Blocks.GRAVEL);
+    public static final BlockBehaviour.Properties GLIMMER_GRAVEL = BlockBehaviour.Properties.copy(Blocks.SAND)
+            .mapColor(MapColor.SAND);
 
     public static final BlockBehaviour.Properties GLOWLIGHT_GLASS = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
             .noOcclusion();

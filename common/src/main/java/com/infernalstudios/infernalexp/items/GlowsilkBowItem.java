@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.items;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.api.AbstractArrowEntityAccess;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -48,7 +49,8 @@ public class GlowsilkBowItem extends BowItem {
                             access.infernalexp$setGlow(true);
                         }
 
-                        abstractArrow.shootFromRotation(playerEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, velocity * 6.0F, 1.0F);
+                        double speedMultiplier = IECommon.getConfig().common.mobInteractions.glowsilkSpeed;
+                        abstractArrow.shootFromRotation(playerEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, velocity * 6.0F * (float) speedMultiplier, 1.0F);
 
                         abstractArrow.setBaseDamage((abstractArrow.getBaseDamage() / 2.0D) + 0.1D);
 

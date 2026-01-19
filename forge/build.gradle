@@ -61,7 +61,7 @@ dependencies {
     // TerraBlender
     modImplementation "com.github.glitchfiend:TerraBlender-forge:${terrablender_version}"
 
-    // Optional Dependencies
+    // Autumnity
     modImplementation "maven.modrinth:blueprint:${blueprint_version}"
     modImplementation "maven.modrinth:autumnity:${autumnity_version}"
 

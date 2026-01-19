@@ -427,6 +427,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
             // Tag Translations
             builder.add("tag.item.infernalexp.voline_food", "Voline Food");
+            builder.add("tag.item.infernalexp.glowsquito_temptation_items", "Glowsquito Temptation Items");
 
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
@@ -450,6 +451,14 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
             builder.add("text.autoconfig.infernalexp.option.common.voline.volineMagmaCreamAmount.@Tooltip",
                     "Determines the amount of Magma Cream a Voline needs to eat to grow.");
+
+            // Glowsilk Bow Tooltips
+            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsilkSpeed.@Tooltip",
+                    "Determines the speed at which arrows are fired from the Glowsilk Bow.");
+
+            // Glimmer Gravel Tooltips
+            builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.glimmerGravelTriggerRadius.@Tooltip",
+                    "Determines the radius in blocks around the stepped-on Glimmer Gravel that will trigger a chain reaction.");
 
             // Biome Translations
             builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");
