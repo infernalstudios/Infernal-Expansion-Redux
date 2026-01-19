@@ -178,6 +178,10 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
                 Vec3 wanted = new Vec3(this.wantedX - this.moth.getX(), this.wantedY - this.moth.getY(), this.wantedZ - this.moth.getZ());
                 double dist = wanted.length();
 
+                if (this.moth.horizontalCollision && this.moth.level().getGameTime() % 20 == 0) {
+                    this.moth.getNavigation().recomputePath();
+                }
+
                 if (dist < 0.5D) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.moth.setDeltaMovement(this.moth.getDeltaMovement().scale(0.5D));

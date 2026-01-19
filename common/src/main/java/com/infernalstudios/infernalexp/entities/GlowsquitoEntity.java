@@ -364,6 +364,10 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 Vec3 wanted = new Vec3(this.wantedX - this.parentEntity.getX(), this.wantedY - this.parentEntity.getY(), this.wantedZ - this.parentEntity.getZ());
                 double dist = wanted.length();
 
+                if (this.parentEntity.horizontalCollision && this.parentEntity.level().getGameTime() % 20 == 0) {
+                    this.parentEntity.getNavigation().recomputePath();
+                }
+
                 if (dist < 0.3D) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.parentEntity.setDeltaMovement(this.parentEntity.getDeltaMovement().scale(0.5D));
