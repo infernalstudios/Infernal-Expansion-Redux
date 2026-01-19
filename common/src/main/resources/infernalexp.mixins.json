@@ -16,6 +16,8 @@
     "FeatureMixin",
     "GlowstoneFeatureMixin",
     "ItemMixin",
+    "LavaFluidMixin",
+    "LiquidBlockMixin",
     "LivingEntityMixin",
     "MagmaCubeMixin",
     "MinecraftServerMixin",

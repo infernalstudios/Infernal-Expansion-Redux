@@ -1,7 +1,9 @@
 ### Additions:
 * Re-added and reworked the Glowsquito.
-  * Glowsquitos will now drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
-  * Glowsquitos will drink Shroomlight to turn it into Hollowlight.
+  * Glowsquitos drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
+  * Glowsquitos drink Shroomlight to turn it into Hollowlight.
+  * Glowsquitos have unique textures after drinking Shroomlight or Shroomnight from Jaden's Nether Expansion.
+  * Glowsquitos have a unique texture when named "glowseeyou" with a nametag.
   * New animations and textures.
   * Glowsquitos are now repelled by Campfires.
 * Re-added and reworked the Blindsight.
@@ -28,6 +30,7 @@
 
 ### Changes:
 * Vanilla ruined portals will no longer generate in the Glowstone Canyon.
+* When flowing Lava encounters Blue Ice over Shimmer Sand, it turns to Shimmer Stone.
 
 ### Fixes:
 * Missing sounds for bonemealing Shroomlight.

@@ -30,18 +30,20 @@ body:
             description: If applicable, add screenshots or videos to help explain your problem
         validations:
             required: false
-    -   type: input
+    -   type: dropdown
         attributes:
-            label: Operating System
-            description: The operating system you were using when the bug occurred
-            placeholder: Windows 11, macOS, Linux
+            label: Game Version
+            description: The Minecraft version you were using to run Infernal Expansion Redux
+            options:
+                - "1.20.1"
         validations:
             required: true
     -   type: dropdown
         attributes:
             label: Mod Version
-            description: The version of IE Redux you were using
+            description: The version of Infernal Expansion Redux you were using
             options:
+                - "0.2.0"
                 - "0.1.2"
                 - "0.1.1"
                 - "0.1.0"
@@ -63,7 +65,7 @@ body:
             description: The version of the loader used (e.g., Forge 47.2.0 or Fabric Loader 0.15.7)
             placeholder: 47.2.0
         validations:
-            required: true
+            required: false
     -   type: textarea
         attributes:
             label: Other Mods / Modpack
@@ -73,7 +75,7 @@ body:
     -   type: textarea
         attributes:
             label: Additional Context
-            description: Attach crash reports or logs here (use Pastebin or similar if long).
+            description: Attach crash reports or logs here (use https://mclo.gs/ or similar if long).
         validations:
             required: false
     -   type: markdown
