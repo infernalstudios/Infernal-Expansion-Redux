@@ -8,6 +8,7 @@
   "mixins": [
     "AbstractArrowMixin",
     "AnvilMenuMixin",
+    "ArrowMixin",
     "BaseFireBlockMixin",
     "BlockEntityTypeMixin",
     "BoneMealItemMixin",

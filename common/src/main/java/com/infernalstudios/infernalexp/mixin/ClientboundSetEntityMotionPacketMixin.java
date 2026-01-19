@@ -3,9 +3,10 @@ package com.infernalstudios.infernalexp.mixin;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.world.phys.Vec3;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,43 +15,51 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientboundSetEntityMotionPacketMixin {
 
     @Shadow
+    @Final
+    @Mutable
+    private int id;
+
+    @Shadow
+    @Final
+    @Mutable
     private int xa;
+
     @Shadow
+    @Final
+    @Mutable
     private int ya;
+
     @Shadow
+    @Final
+    @Mutable
     private int za;
 
-    @Unique
-    private double infernal$originalX;
-    @Unique
-    private double infernal$originalY;
-    @Unique
-    private double infernal$originalZ;
-
-    @Inject(method = "<init>(ILnet/minecraft/world/phys/Vec3;)V", at = @At("TAIL"))
-    private void infernal$capturePreciseVelocity(int id, Vec3 deltaMovement, CallbackInfo ci) {
-        this.infernal$originalX = deltaMovement.x;
-        this.infernal$originalY = deltaMovement.y;
-        this.infernal$originalZ = deltaMovement.z;
+    @Inject(method = "<init>(ILnet/minecraft/world/phys/Vec3;)V", at = @At("RETURN"))
+    private void infernalexp$cacheVelocity(int id, Vec3 velocity, CallbackInfo ci) {
+        this.xa = (int) (velocity.x * 8000.0D);
+        this.ya = (int) (velocity.y * 8000.0D);
+        this.za = (int) (velocity.z * 8000.0D);
     }
 
-    @Inject(method = "write", at = @At("TAIL"))
-    private void infernal$writePreciseVelocity(FriendlyByteBuf buffer, CallbackInfo ci) {
-        buffer.writeDouble(this.infernal$originalX);
-        buffer.writeDouble(this.infernal$originalY);
-        buffer.writeDouble(this.infernal$originalZ);
+    @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("RETURN"))
+    private void infernalexp$readVelocity(FriendlyByteBuf buffer, CallbackInfo ci) {
+        buffer.readerIndex(buffer.readerIndex() - 6);
+
+        float x = buffer.readFloat();
+        float y = buffer.readFloat();
+        float z = buffer.readFloat();
+
+        this.xa = (int) (x * 8000.0F);
+        this.ya = (int) (y * 8000.0F);
+        this.za = (int) (z * 8000.0F);
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("TAIL"))
-    private void infernal$readPreciseVelocity(FriendlyByteBuf buffer, CallbackInfo ci) {
-        if (buffer.readableBytes() >= 24) {
-            double x = buffer.readDouble();
-            double y = buffer.readDouble();
-            double z = buffer.readDouble();
-
-            this.xa = (int) (x * 8000.0D);
-            this.ya = (int) (y * 8000.0D);
-            this.za = (int) (z * 8000.0D);
-        }
+    @Inject(method = "write", at = @At("HEAD"), cancellable = true)
+    private void infernalexp$writeVelocity(FriendlyByteBuf buffer, CallbackInfo ci) {
+        buffer.writeVarInt(this.id);
+        buffer.writeFloat((float) this.xa / 8000.0F);
+        buffer.writeFloat((float) this.ya / 8000.0F);
+        buffer.writeFloat((float) this.za / 8000.0F);
+        ci.cancel();
     }
 }

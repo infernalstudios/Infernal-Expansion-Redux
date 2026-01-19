@@ -49,7 +49,7 @@ public class GlowsilkBowItem extends BowItem {
                             access.infernalexp$setGlow(true);
                         }
 
-                        double speedMultiplier = IECommon.getConfig().common.mobInteractions.glowsilkSpeed;
+                        double speedMultiplier = IECommon.getConfig().common.mobInteractions.glowsilkBowSpeed;
                         abstractArrow.shootFromRotation(playerEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, velocity * 6.0F * (float) speedMultiplier, 1.0F);
 
                         abstractArrow.setBaseDamage((abstractArrow.getBaseDamage() / 2.0D) + 0.1D);
