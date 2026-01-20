@@ -5,8 +5,6 @@ import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.block.SoundType;
 
 public class ModSounds {
     public static final RegistrationProvider<SoundEvent> SOUNDS = RegistrationProvider.get(BuiltInRegistries.SOUND_EVENT, com.infernalstudios.infernalexp.IEConstants.MOD_ID);
@@ -17,6 +15,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> GLOWSQUITO_HURT = register("entity.glowsquito.hurt");
     public static final RegistryObject<SoundEvent> GLOWSQUITO_DEATH = register("entity.glowsquito.death");
     public static final RegistryObject<SoundEvent> GLOWSQUITO_LOOP = register("entity.glowsquito.loop");
+    public static final RegistryObject<SoundEvent> GLOWSQUITO_SLURP = register("entity.glowsquito.slurp");
 
     public static final RegistryObject<SoundEvent> GLOWSILK_MOTH_AMBIENT = register("entity.glowsilk_moth.ambient");
     public static final RegistryObject<SoundEvent> GLOWSILK_MOTH_HURT = register("entity.glowsilk_moth.hurt");

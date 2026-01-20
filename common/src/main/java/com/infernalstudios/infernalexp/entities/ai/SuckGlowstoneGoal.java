@@ -3,6 +3,7 @@ package com.infernalstudios.infernalexp.entities.ai;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
+import com.infernalstudios.infernalexp.module.ModSounds;
 import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +28,7 @@ import java.util.List;
 public class SuckGlowstoneGoal extends Goal {
     private final GlowsquitoEntity mob;
     private final Level level;
+    private int slurpSoundCooldown;
     private int eatAnimationTick;
     private int timeoutCounter;
     private BlockPos targetPos = BlockPos.ZERO;
@@ -88,6 +90,7 @@ public class SuckGlowstoneGoal extends Goal {
         this.targetPos = BlockPos.ZERO;
         this.mob.setEating(false);
         this.mob.getNavigation().stop();
+        this.slurpSoundCooldown = 0;
     }
 
     @Override
@@ -99,9 +102,16 @@ public class SuckGlowstoneGoal extends Goal {
         if (distSqr < 1.0D && !this.mob.isEating()) {
             this.mob.setEating(true);
             this.mob.getNavigation().stop();
+            this.slurpSoundCooldown = 0;
         }
 
         if (this.mob.isEating()) {
+            if (this.slurpSoundCooldown-- <= 0) {
+                float pitch = 0.9F + this.mob.getRandom().nextFloat() * 0.3F;
+                this.mob.playSound(ModSounds.GLOWSQUITO_SLURP.get(), 0.8F, pitch);
+                this.slurpSoundCooldown = 10 + this.mob.getRandom().nextInt(5);
+            }
+
             if (distSqr > 0.05D) {
                 Vec3 moveVec = this.latchPos.subtract(this.mob.position());
                 if (moveVec.lengthSqr() > 0.0001) {
@@ -253,5 +263,6 @@ public class SuckGlowstoneGoal extends Goal {
         return false;
     }
 
-    private record Candidate(BlockPos pos, Direction face, double dist) {}
+    private record Candidate(BlockPos pos, Direction face, double dist) {
+    }
 }

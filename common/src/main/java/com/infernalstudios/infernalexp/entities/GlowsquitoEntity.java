@@ -248,8 +248,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     @Override
     public void ate() {
-        this.playSound(ModSounds.GLOWSQUITO_HURT.get(), 1.0F, 1.0F); // TODO: sucking sound
-        this.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 1200, 0));
+        this.playSound(ModSounds.GLOWSQUITO_HURT.get(), 1.0F, 1.0F);
+        this.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 1200));
     }
 
     @Override

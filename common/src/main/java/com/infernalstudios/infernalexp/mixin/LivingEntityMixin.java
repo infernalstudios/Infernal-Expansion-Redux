@@ -1,6 +1,8 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.module.ModEffects;
+import com.infernalstudios.infernalexp.module.ModParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,18 +22,48 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements Attackable {
-    @Shadow public abstract RandomSource getRandom();
-
-    @Shadow public abstract boolean randomTeleport(double $$0, double $$1, double $$2, boolean $$3);
-
-    @Shadow public abstract boolean hasEffect(MobEffect $$0);
-
     public LivingEntityMixin(EntityType<?> type, Level world) {
         super(type, world);
+    }
+
+    @Shadow
+    public abstract RandomSource getRandom();
+
+    @Shadow
+    public abstract boolean randomTeleport(double $$0, double $$1, double $$2, boolean $$3);
+
+    @Shadow
+    public abstract boolean hasEffect(MobEffect $$0);
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void infernalexp$tick(CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+
+        if (!entity.level().isClientSide && entity.hasEffect(ModEffects.LUMINOUS.get())) {
+            var effectInstance = entity.getEffect(ModEffects.LUMINOUS.get());
+
+            if (effectInstance != null) {
+                if ((effectInstance.getDuration() % 10) == 0 && effectInstance.isVisible()) {
+
+                    ((ServerLevel) entity.level()).sendParticles(
+                            ModParticleTypes.GLOWSTONE_SPARKLE,
+                            entity.getX(),
+                            entity.getRandomY(),
+                            entity.getZ(),
+                            1,
+                            entity.getBbWidth() / 4.0,
+                            0.1,
+                            entity.getBbWidth() / 4.0,
+                            0.05
+                    );
+                }
+            }
+        }
     }
 
     @Inject(method = "hurt", at = @At("TAIL"))

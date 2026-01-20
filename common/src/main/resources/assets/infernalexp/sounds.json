@@ -148,6 +148,14 @@
       "infernalexp:entity/glowsquito/death1"
     ]
   },
+  "entity.glowsquito.slurp": {
+    "subtitle": "subtitles.entity.glowsquito.slurp",
+    "sounds": [
+      "infernalexp:entity/glowsquito/slurp1",
+      "infernalexp:entity/glowsquito/slurp2",
+      "infernalexp:entity/glowsquito/slurp3"
+    ]
+  },
   "ambient.glowstone_canyon.loop": {
     "sounds": [
       {

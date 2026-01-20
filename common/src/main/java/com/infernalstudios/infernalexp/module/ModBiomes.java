@@ -33,9 +33,12 @@ public class ModBiomes {
     public static final ResourceKey<Biome> GLOWSTONE_CANYON = register("glowstone_canyon",
             Climate.parameters(0.7F, -0.2F, 0.0F, 0.0F, 0.0F, 0.0F, 0.175F)
     );
+    public static final ResourceKey<Biome> DELTA_SHORES = ResourceKey.create(Registries.BIOME, IECommon.makeID("delta_shores"));
+    /*
     public static final ResourceKey<Biome> DELTA_SHORES = register("delta_shores",
             Climate.parameters(-0.4F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.195F)
     );
+    */
 
     public static ResourceKey<Biome> register(String name, Climate.ParameterPoint parameterPoint) {
         return register(ResourceKey.create(Registries.BIOME, IECommon.makeID(name)), parameterPoint);

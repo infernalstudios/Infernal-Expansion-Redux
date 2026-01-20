@@ -86,7 +86,7 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
         super.entityInside(state, world, pos, entity);
         if (entity instanceof LivingEntity living) {
             boolean hadEffect = living.hasEffect(ModEffects.LUMINOUS.get());
-            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100, 0));
+            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100));
 
             if (!hadEffect && !world.isClientSide) {
                 world.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME,

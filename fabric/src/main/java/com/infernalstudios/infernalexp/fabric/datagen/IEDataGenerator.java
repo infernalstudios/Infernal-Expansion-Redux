@@ -429,6 +429,19 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("tag.item.infernalexp.voline_food", "Voline Food");
             builder.add("tag.item.infernalexp.glowsquito_temptation_items", "Glowsquito Temptation Items");
 
+            // Subtitles
+            builder.add("subtitles.infernalexp.entity.voline.ambient", "Voline grunts");
+            builder.add("subtitles.infernalexp.entity.voline.hurt", "Voline hurts");
+
+            builder.add("subtitles.infernalexp.entity.glowsquito.hurt", "Glowsquito hurts");
+            builder.add("subtitles.infernalexp.entity.glowsquito.death", "Glowsquito dies");
+            builder.add("subtitles.infernalexp.entity.glowsquito.loop", "Glowsquito buzzes");
+            builder.add("subtitles.infernalexp.entity.glowsquito.slurp", "Glowsquito slurps");
+
+            builder.add("subtitles.infernalexp.entity.glowsilk_moth.ambient", "Glowsilk Moth flutters");
+            builder.add("subtitles.infernalexp.entity.glowsilk_moth.hurt", "Glowsilk Moth hurts");
+            builder.add("subtitles.infernalexp.entity.glowsilk_moth.death", "Glowsilk Moth dies");
+
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
                     "Glowlight Jack o'Lantern");

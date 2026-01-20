@@ -21,10 +21,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class DullthornsBlock extends NetherPlantBlock {
     public static void applyEffect(Entity entity) {
-        if (entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200, 0));
+        if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.LUMINOUS.get())) {
+            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200));
 
             if (!entity.level().isClientSide) {
                 entity.level().playSound(null, entity.blockPosition(),
@@ -65,7 +67,7 @@ public class DullthornsBlock extends NetherPlantBlock {
 
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-        return super.getStateForPlacement(context).setValue(TIP, true);
+        return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(TIP, true);
     }
 
     @Override
