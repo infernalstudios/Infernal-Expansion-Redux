@@ -15,22 +15,22 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
     // EMI
-    modImplementation "dev.emi:emi-fabric:${emi_version}"
+    modRuntimeOnly "dev.emi:emi-fabric:${emi_version}"
 
     // Cloth Config
     modImplementation "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
     modImplementation "com.terraformersmc:modmenu:${mod_menu_version}"
 
     // TerraBlender
-    modImplementation "com.github.glitchfiend:TerraBlender-fabric:$terrablender_version"
+    modCompileOnly "com.github.glitchfiend:TerraBlender-fabric:$terrablender_version"
 
     // GeckoLib
     modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
 
     // Jaden's Nether Expansion
-    modImplementation "maven.modrinth:forge-config-api-port:${fcapi_version}"
-    modImplementation "maven.modrinth:architectury-api:${architectury_version}+fabric"
-    modImplementation "maven.modrinth:jadens-nether-expansion:${jne_version}-Fabric"
+    modCompileOnly "maven.modrinth:forge-config-api-port:${fcapi_version}"
+    modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+fabric"
+    modCompileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}-Fabric"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
