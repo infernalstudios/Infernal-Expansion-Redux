@@ -3,9 +3,15 @@
   "pools": [
     {
       "rolls": 1,
+      "conditions": [
+        {
+          "condition": "minecraft:killed_by_player"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "infernalexp:glowsilk_string",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -22,8 +28,7 @@
                 "max": 1.0
               }
             }
-          ],
-          "name": "infernalexp:glowsilk_string"
+          ]
         }
       ]
     }

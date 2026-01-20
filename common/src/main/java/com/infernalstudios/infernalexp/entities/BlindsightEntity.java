@@ -4,9 +4,12 @@ import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -28,6 +31,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -53,6 +58,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_JUMPING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_RESTING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation IDLE_RARE = RawAnimation.begin().thenLoop("idle_rare");
@@ -75,6 +81,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     private boolean hasPlayedWarning = false;
     private int alertTimer = 0;
     private int attackTimer = 0;
+    private int jumpsTowardsTarget = 0;
+    private boolean lastJumpWasOverhead = false;
 
     public BlindsightEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -100,6 +108,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         super.defineSynchedData();
         this.entityData.define(IS_JUMPING, false);
         this.entityData.define(IS_ATTACKING, false);
+        this.entityData.define(IS_RESTING, false);
     }
 
     @Override
@@ -109,8 +118,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(1, new BlindsightAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new ExtinguishFireGoal(this, 1.2D));
         this.goalSelector.addGoal(3, new BlindsightHopGoal(this));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new BlindsightRandomDirectionGoal(this));
+        this.goalSelector.addGoal(4, new BlindsightRestGoal(this));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new BlindsightRandomDirectionGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true,
@@ -139,7 +149,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         if (this.alertTimer > 0) this.alertTimer--;
 
         if (!this.level().isClientSide && this.alertTimer <= 0 && this.attackTimer <= 0 && this.onGround() && this.getTarget() == null) {
-            if (this.random.nextInt(600) == 0) {
+            if (this.random.nextInt(600) == 0 && !this.entityData.get(IS_RESTING)) {
                 this.triggerAnim("attackController", "idle_rare");
             }
         }
@@ -198,14 +208,24 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     @Override
     protected void jumpFromGround() {
-        Vec3 vec3 = this.getDeltaMovement();
         float jumpPower = 0.42F + (random.nextFloat() * 0.1F);
+        LivingEntity target = this.getTarget();
 
-        if (this.getTarget() instanceof GlowsquitoEntity) {
-            jumpPower = 0.85F;
+        if (target instanceof GlowsquitoEntity) {
+            jumpPower = 1.0F;
+        } else if (target instanceof Player) {
+            this.jumpsTowardsTarget++;
+
+            if (this.jumpsTowardsTarget % 3 == 0) {
+                jumpPower = 0.9F;
+                this.lastJumpWasOverhead = true;
+
+                Vec3 jumpDir = target.position().subtract(this.position()).normalize().scale(0.5D);
+                this.setDeltaMovement(this.getDeltaMovement().add(jumpDir.x, 0, jumpDir.z));
+            }
         }
 
-        this.setDeltaMovement(vec3.x, jumpPower, vec3.z);
+        this.setDeltaMovement(this.getDeltaMovement().x, jumpPower, this.getDeltaMovement().z);
         this.hasImpulse = true;
     }
 
@@ -213,6 +233,17 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         Vec3 vec3 = this.getDeltaMovement();
         this.setDeltaMovement(vec3.x, this.getJumpBoostPower(), vec3.z);
         this.hasImpulse = true;
+    }
+
+    @Override
+    public void playAmbientSound() {
+        if (this.getTarget() != null || this.attackTimer > 0) {
+            return;
+        }
+
+        if (this.entityData.get(IS_RESTING) || this.random.nextInt(100) == 0) {
+            super.playAmbientSound();
+        }
     }
 
     @Nullable
@@ -243,6 +274,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             }
             if (event.getAnimatable().entityData.get(IS_JUMPING)) {
                 return event.setAndContinue(JUMP_LOOP);
+            }
+            if (event.getAnimatable().entityData.get(IS_RESTING)) {
+                return event.setAndContinue(IDLE_RARE);
             }
             return event.setAndContinue(IDLE);
         }));
@@ -316,7 +350,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                         }
 
                         this.blindsight.getJumpControl().jump();
-                        this.blindsight.playSound(this.blindsight.getJumpSound(), this.blindsight.getSoundVolume(), 1.0F);
+                        this.blindsight.playSound(this.blindsight.getJumpSound(), this.blindsight.getSoundVolume(), this.blindsight.getVoicePitch());
                         this.blindsight.performJump();
                     } else {
                         this.blindsight.xxa = 0.0F;
@@ -341,7 +375,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         }
 
         public boolean canUse() {
-            return this.blindsight.getTarget() == null && (this.blindsight.onGround() || this.blindsight.isInWater() || this.blindsight.isInLava() || this.blindsight.hasEffect(MobEffects.LEVITATION));
+            return this.blindsight.getTarget() == null
+                    && !this.blindsight.entityData.get(IS_RESTING)
+                    && (this.blindsight.onGround() || this.blindsight.isInWater() || this.blindsight.isInLava() || this.blindsight.hasEffect(MobEffects.LEVITATION));
         }
 
         public void tick() {
@@ -350,6 +386,47 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 this.chosenDegrees = (float) this.blindsight.getRandom().nextInt(360);
             }
             ((BlindsightMoveControl) this.blindsight.getMoveControl()).setDirection(this.chosenDegrees, false);
+        }
+    }
+
+    static class BlindsightRestGoal extends Goal {
+        private final BlindsightEntity blindsight;
+        private int restDuration;
+
+        public BlindsightRestGoal(BlindsightEntity blindsight) {
+            this.blindsight = blindsight;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP));
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.blindsight.getTarget() == null
+                    && this.blindsight.onGround()
+                    && this.blindsight.getRandom().nextInt(100) == 0;
+        }
+
+        @Override
+        public void start() {
+            this.restDuration = 60 + this.blindsight.getRandom().nextInt(60);
+            this.blindsight.entityData.set(IS_RESTING, true);
+            this.blindsight.getNavigation().stop();
+            ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.restDuration > 0 && this.blindsight.getTarget() == null;
+        }
+
+        @Override
+        public void tick() {
+            this.restDuration--;
+            ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);
+        }
+
+        @Override
+        public void stop() {
+            this.blindsight.entityData.set(IS_RESTING, false);
         }
     }
 
@@ -362,7 +439,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         }
 
         public boolean canUse() {
-            return !this.blindsight.isPassenger();
+            return !this.blindsight.isPassenger() && !this.blindsight.entityData.get(IS_RESTING);
         }
 
         public void tick() {
@@ -414,11 +491,16 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         }
 
         @Override
+        protected double getAttackReachSqr(LivingEntity attackTarget) {
+            return this.blindsight.getBbWidth() * 1.5F * this.blindsight.getBbWidth() * 1.5F + attackTarget.getBbWidth();
+        }
+
+        @Override
         protected void checkAndPerformAttack(@NotNull LivingEntity target, double distToEnemySqr) {
             double attackReachSqr = this.getAttackReachSqr(target);
 
             if (target instanceof GlowsquitoEntity || target.isBaby()) {
-                double eatingReach = attackReachSqr * 2.0D;
+                double eatingReach = attackReachSqr * 1.25D;
                 if (distToEnemySqr <= eatingReach && this.getTicksUntilNextAttack() <= 0) {
                     this.resetAttackCooldown();
 
@@ -428,6 +510,10 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                     this.blindsight.attackTimer = 10;
                     this.blindsight.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
 
+                    if (this.blindsight.level() instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.BEEF)), target.getX(), target.getY(), target.getZ(), 10, 0.5, 0.5, 0.5, 0.1);
+                    }
+
                     target.remove(Entity.RemovalReason.KILLED);
                     this.blindsight.heal(4.0F);
 
@@ -436,19 +522,23 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 }
             }
 
-            if (this.blindsight.jumpAttackCounter >= this.blindsight.nextTongueAttackThreshold) {
-                double tongueReachSqr = attackReachSqr * 4.0D;
-                if (distToEnemySqr <= tongueReachSqr && this.getTicksUntilNextAttack() <= 0) {
-                    this.resetAttackCooldown();
-                    this.blindsight.lookAt(target, 360.0F, 360.0F);
-                    this.blindsight.triggerAnim("attackController", "tongue_attack");
-                    this.blindsight.attackTimer = 26;
-                    this.blindsight.doHurtTarget(target);
+            if (this.blindsight.lastJumpWasOverhead && this.blindsight.jumpAttackCounter >= this.blindsight.nextTongueAttackThreshold) {
+                if (this.blindsight.getRandom().nextBoolean()) {
+                    double tongueReachSqr = attackReachSqr * 4.0D;
+                    if (distToEnemySqr <= tongueReachSqr && this.getTicksUntilNextAttack() <= 0) {
+                        this.resetAttackCooldown();
+                        this.blindsight.lookAt(target, 360.0F, 360.0F);
+                        this.blindsight.triggerAnim("attackController", "tongue_attack");
+                        this.blindsight.attackTimer = 26;
+                        this.blindsight.doHurtTarget(target);
 
-                    this.blindsight.jumpAttackCounter = 0;
-                    this.blindsight.nextTongueAttackThreshold = this.blindsight.getRandom().nextInt(3) + 3;
-                    return;
+                        this.blindsight.jumpAttackCounter = 0;
+                        this.blindsight.nextTongueAttackThreshold = this.blindsight.getRandom().nextInt(3) + 3;
+                        this.blindsight.lastJumpWasOverhead = false;
+                        return;
+                    }
                 }
+                this.blindsight.lastJumpWasOverhead = false;
             }
 
             if (distToEnemySqr <= attackReachSqr && this.getTicksUntilNextAttack() <= 0) {

@@ -36,7 +36,8 @@ public class GlimmerGravelBlock extends FallingBlock {
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state),
                     pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
                     5, 0.25D, 0.25D, 0.25D, 0.05D);
-            level.playSound(null, pos, SoundEvents.SAND_FALL, SoundSource.BLOCKS, 1.0F, 0.5F);
+
+            level.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 1.0F, 0.5F);
 
             for (Direction direction : Direction.Plane.HORIZONTAL) {
                 BlockPos neighborPos = pos.relative(direction);
@@ -61,8 +62,10 @@ public class GlimmerGravelBlock extends FallingBlock {
         if (!isFree(level.getBlockState(pos.below()))) return;
 
         if (!level.getBlockTicks().hasScheduledTick(pos, this)) {
-            level.playSound(null, pos, SoundEvents.SAND_STEP, SoundSource.BLOCKS, 1.0F, 0.5F);
-            level.scheduleTick(pos, this, 10);
+            level.playSound(null, pos, SoundEvents.GRAVEL_HIT, SoundSource.BLOCKS, 1.0F, 0.5F);
+
+            int delay = entity.isSprinting() ? 3 : 10;
+            level.scheduleTick(pos, this, delay);
         }
     }
 
