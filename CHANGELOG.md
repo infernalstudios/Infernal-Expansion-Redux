@@ -15,7 +15,6 @@
 * Re-added the Luminous effect.
   * Luminous will now give entities dynamic lighting effects when LambDynamicLights is installed.
 * Luminous Fungus can now be placed in flower pots.
-* Added the Delta Shores.
 * Re-added the Glowsilk Bow.
   * Arrows shot by the Glowsilk Bow will now have dynamic lighting when LambDynamicLights is installed.
   * Arrows shot by the Glowsilk Bow will now have special afterimage trails when Afterimages is installed.

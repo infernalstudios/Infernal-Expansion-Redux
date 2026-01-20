@@ -17,9 +17,8 @@ public abstract class ArrowMixin {
         AbstractArrow arrow = (AbstractArrow) (Object) this;
 
         if (arrow instanceof AbstractArrowEntityAccess access) {
-
             if (access.infernalexp$getLuminous() || access.infernalexp$getGlow()) {
-                for (int j = 0; j < particleCount; ++j) {
+                if (arrow.level().isClientSide && arrow.level().getRandom().nextFloat() < 0.3F) {
                     arrow.level().addParticle(
                             ModParticleTypes.GLOWSTONE_SPARKLE,
                             arrow.getRandomX(0.5D),
