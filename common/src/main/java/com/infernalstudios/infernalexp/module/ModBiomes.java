@@ -68,7 +68,9 @@ public class ModBiomes {
         MobSpawnSettings.Builder spawnSettings = new MobSpawnSettings.Builder();
         spawnSettings.addSpawn(MobCategory.AMBIENT, new MobSpawnSettings.SpawnerData(ModEntityTypes.GLOWSILK_MOTH.get(), 1, 1, 1));
         spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntityTypes.GLOWSQUITO.get(), 3, 1, 5));
-        spawnSettings.addMobCharge(ModEntityTypes.GLOWSILK_MOTH.get(), 0.1, 3.0);
+        spawnSettings.addMobCharge(ModEntityTypes.GLOWSILK_MOTH.get(), 0.6, 1.0);
+        spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntityTypes.BLINDSIGHT.get(), 1, 1, 1));
+        spawnSettings.addMobCharge(ModEntityTypes.BLINDSIGHT.get(), 0.1D, 1.5D);
 
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder(placedFeatures, carvers);
         generationSettings.addCarver(GenerationStep.Carving.AIR, ModConfiguredCarvers.GLOWSTONE_RAVINE);
@@ -115,7 +117,7 @@ public class ModBiomes {
         spawnSettings.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.STRIDER, 40, 1, 2));
         spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.GHAST, 20, 1, 1));
         spawnSettings.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.MAGMA_CUBE, 50, 2, 5));
-        spawnSettings.addMobCharge(ModEntityTypes.GLOWSILK_MOTH.get(), 0.4, 1.0);
+        spawnSettings.addMobCharge(ModEntityTypes.GLOWSILK_MOTH.get(), 0.8, 1.0);
 
         BiomeGenerationSettings.Builder generationSettings = new BiomeGenerationSettings.Builder(placedFeatures, carvers);
         generationSettings.addCarver(GenerationStep.Carving.AIR, Carvers.NETHER_CAVE);

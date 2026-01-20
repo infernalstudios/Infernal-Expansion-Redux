@@ -1,3 +1,5 @@
+## The Luminous Update!
+
 ### Additions:
 * Re-added and reworked the Glowsquito.
   * Glowsquitos drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.

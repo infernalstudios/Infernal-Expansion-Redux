@@ -70,9 +70,13 @@
   ],
   "has_precipitation": false,
   "spawn_costs": {
-    "infernalexp:glowsilk_moth": {
+    "infernalexp:blindsight": {
       "charge": 0.1,
-      "energy_budget": 3.0
+      "energy_budget": 1.5
+    },
+    "infernalexp:glowsilk_moth": {
+      "charge": 0.6,
+      "energy_budget": 1.0
     }
   },
   "spawners": {
@@ -93,6 +97,12 @@
         "maxCount": 5,
         "minCount": 1,
         "weight": 3
+      },
+      {
+        "type": "infernalexp:blindsight",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 1
       }
     ],
     "underground_water_creature": [],

@@ -18,6 +18,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,6 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import java.util.EnumSet;
 
@@ -49,18 +49,28 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0D)
-                .add(Attributes.FLYING_SPEED, 0.4D)
+                .add(Attributes.FLYING_SPEED, 0.7D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2D);
     }
 
     public static boolean checkGlowsilkMothSpawnRules(EntityType<GlowsilkMothEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).isValidSpawn(level, pos.below(), entityType);
+        if (!level.getBlockState(pos.below()).isValidSpawn(level, pos.below(), entityType)) {
+            return false;
+        }
+
+        if (random.nextFloat() > 0.01F) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new MothRandomFlyGoal(this));
+        this.goalSelector.addGoal(1, new MothHoverGoal(this));
+        this.goalSelector.addGoal(2, new MothRandomFlyGoal(this));
+        this.goalSelector.addGoal(3, new LookAroundGoal(this));
     }
 
     @Override
@@ -185,6 +195,7 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
                 if (dist < 0.5D) {
                     this.operation = MoveControl.Operation.WAIT;
                     this.moth.setDeltaMovement(this.moth.getDeltaMovement().scale(0.5D));
+                    this.moth.getNavigation().stop();
                 } else {
                     this.moth.setDeltaMovement(this.moth.getDeltaMovement().add(wanted.scale(this.speedModifier * 0.05D / dist)));
 
@@ -212,7 +223,7 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
 
         @Override
         public boolean canUse() {
-            return moth.getNavigation().isDone() && moth.getRandom().nextInt(10) == 0;
+            return moth.getNavigation().isDone();
         }
 
         @Override
@@ -244,6 +255,79 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
             if (randomPos != null) {
                 this.moth.getNavigation().moveTo(randomPos.getX() + 0.5D, randomPos.getY() + 0.5D, randomPos.getZ() + 0.5D, 1.0D);
             }
+        }
+    }
+
+    static class LookAroundGoal extends Goal {
+        private final GlowsilkMothEntity moth;
+
+        public LookAroundGoal(GlowsilkMothEntity moth) {
+            this.moth = moth;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            if (this.moth.getTarget() == null) {
+                Vec3 vector3d = this.moth.getDeltaMovement();
+
+                if (vector3d.horizontalDistanceSqr() > 0.003D) {
+                    float targetYaw = -((float) Mth.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI);
+                    this.moth.setYRot(this.rotlerp(this.moth.getYRot(), targetYaw, 10.0F));
+                    this.moth.yBodyRot = this.moth.getYRot();
+                }
+            }
+        }
+
+        private float rotlerp(float current, float target, float maxChange) {
+            float f = Mth.wrapDegrees(target - current);
+            if (f > maxChange) f = maxChange;
+            if (f < -maxChange) f = -maxChange;
+            return current + f;
+        }
+    }
+
+    static class MothHoverGoal extends Goal {
+        private final GlowsilkMothEntity moth;
+        private int hoverTime;
+
+        public MothHoverGoal(GlowsilkMothEntity moth) {
+            this.moth = moth;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.moth.getNavigation().isInProgress() && this.moth.getRandom().nextFloat() < 0.015F;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.hoverTime > 0;
+        }
+
+        @Override
+        public void start() {
+            this.hoverTime = 10 + this.moth.getRandom().nextInt(20);
+
+            this.moth.getNavigation().stop();
+
+            this.moth.getMoveControl().setWantedPosition(
+                    this.moth.getX(),
+                    this.moth.getY(),
+                    this.moth.getZ(),
+                    0.0D
+            );
+        }
+
+        @Override
+        public void tick() {
+            this.hoverTime--;
         }
     }
 }
