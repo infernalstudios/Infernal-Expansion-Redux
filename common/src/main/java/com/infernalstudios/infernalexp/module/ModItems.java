@@ -112,6 +112,17 @@ public class ModItems {
             .withTranslation("Glowsquito Spawn Egg")
     );
 
+    public static final ItemDataHolder<?> BLINDSIGHT_SPAWN_EGG = register("blindsight_spawn_egg", ItemDataHolder.of(() ->
+                    new SpawnEggItem(
+                            ModEntityTypes.BLINDSIGHT.get(),
+                            0x312c36,
+                            0xfbda74,
+                            new Item.Properties()
+                    ))
+            .withModel(SPAWN_EGG)
+            .withTranslation("Blindsight Spawn Egg")
+    );
+
     public static final ItemDataHolder<?> GLOWSILK_STRING = register("glowsilk_string", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)

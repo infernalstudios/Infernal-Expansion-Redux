@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.fabric.module;
 
+import com.infernalstudios.infernalexp.entities.BlindsightEntity;
 import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
@@ -23,5 +24,10 @@ public class SpawnPlacementModuleFabric {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GlowsilkMothEntity::checkGlowsilkMothSpawnRules);
+
+        SpawnPlacements.register(ModEntityTypes.BLINDSIGHT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                BlindsightEntity::checkBlindsightSpawnRules);
     }
 }

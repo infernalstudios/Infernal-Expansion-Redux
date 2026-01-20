@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.forge.module;
 
+import com.infernalstudios.infernalexp.entities.BlindsightEntity;
 import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.entities.VolineEntity;
@@ -19,12 +20,20 @@ public class SpawnPlacementModuleForge {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 VolineEntity::checkVolineSpawnRules,
-                SpawnPlacementRegisterEvent.Operation.REPLACE);
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
 
         event.register(ModEntityTypes.GLOWSQUITO.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GlowsquitoEntity::checkGlowsquitoSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE
+        );
+
+        event.register(ModEntityTypes.BLINDSIGHT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                BlindsightEntity::checkBlindsightSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.REPLACE
         );
 
