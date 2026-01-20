@@ -46,6 +46,9 @@ public class ModCreativeTabs {
         entries.accept(ModItems.GLOWSILK_STRING.get());
         entries.accept(ModItems.GLOWSILK_BOW.get());
 
+        entries.accept(ModItems.BLINDSIGHT_TONGUE.get());
+        entries.accept(ModItems.BLINDSIGHT_TONGUE_STEW.get());
+
         entries.accept(ModBlocks.LUMINOUS_FUNGUS.get());
         entries.accept(ModBlocks.LUMINOUS_WART_BLOCK.get());
 
@@ -112,6 +115,7 @@ public class ModCreativeTabs {
         entries.accept(ModItems.VOLINE_BUCKET.get());
         entries.accept(ModItems.STRIDER_BUCKET.get());
         entries.accept(ModItems.MAGMA_CUBE_BUCKET.get());
+        entries.accept(ModItems.GLOWSILK_MOTH_BOTTLE.get());
 
         entries.accept(ModItems.VOLINE_SPAWN_EGG.get());
         entries.accept(ModItems.GLOWSQUITO_SPAWN_EGG.get());

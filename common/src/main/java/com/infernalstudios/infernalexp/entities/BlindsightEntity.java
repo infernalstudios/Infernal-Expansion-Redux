@@ -139,7 +139,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         if (this.alertTimer > 0) this.alertTimer--;
 
         if (!this.level().isClientSide && this.alertTimer <= 0 && this.attackTimer <= 0 && this.onGround() && this.getTarget() == null) {
-            if (this.random.nextInt(400) == 0) {
+            if (this.random.nextInt(600) == 0) {
                 this.triggerAnim("attackController", "idle_rare");
             }
         }

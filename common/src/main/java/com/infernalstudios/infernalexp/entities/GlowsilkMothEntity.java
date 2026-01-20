@@ -1,10 +1,14 @@
 package com.infernalstudios.infernalexp.entities;
 
+import com.infernalstudios.infernalexp.module.ModItems;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -15,6 +19,9 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -125,6 +132,22 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSourceIn) {
         return ModSounds.GLOWSILK_MOTH_HURT.get();
+    }
+
+    @Override
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (itemStack.getItem() == Items.GLASS_BOTTLE) {
+            player.playSound(SoundEvents.BOTTLE_FILL, 1.0F, 1.0F);
+            ItemStack bottleStack = new ItemStack(ModItems.GLOWSILK_MOTH_BOTTLE.get());
+
+            ItemStack result = IBucketable.ItemUtils.createFilledResult(itemStack, player, bottleStack, false);
+            player.setItemInHand(hand, result);
+
+            this.discard();
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

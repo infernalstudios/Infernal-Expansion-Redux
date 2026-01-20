@@ -3,20 +3,23 @@ package com.infernalstudios.infernalexp.module;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.items.EntityBucketItem;
 import com.infernalstudios.infernalexp.items.GlowsilkBowItem;
+import com.infernalstudios.infernalexp.items.GlowsilkMothBottleItem;
 import com.infernalstudios.infernalexp.items.MusicDiscItem;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -123,6 +126,48 @@ public class ModItems {
             .withTranslation("Blindsight Spawn Egg")
     );
 
+    public static final ItemDataHolder<?> BLINDSIGHT_TONGUE = register("blindsight_tongue", ItemDataHolder.of(() ->
+                    new Item(new Item.Properties()
+                            .food(new FoodProperties.Builder()
+                                    .nutrition(3)
+                                    .saturationMod(0.5F)
+                                    .effect(new MobEffectInstance(MobEffects.JUMP, 100, 1), 1.0F)
+                                    .build())) {
+                        @Override
+                        public @NotNull SoundEvent getDrinkingSound() {
+                            return SoundEvents.HONEY_DRINK;
+                        }
+
+                        @Override
+                        public @NotNull SoundEvent getEatingSound() {
+                            return SoundEvents.HONEY_DRINK;
+                        }
+                    })
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Blindsight Tongue")
+    );
+
+    public static final ItemDataHolder<?> BLINDSIGHT_TONGUE_STEW = register("blindsight_tongue_stew", ItemDataHolder.of(() ->
+                    new BowlFoodItem(new Item.Properties().stacksTo(1)
+                            .food(new FoodProperties.Builder()
+                                    .nutrition(6)
+                                    .saturationMod(0.9F)
+                                    .effect(new MobEffectInstance(MobEffects.JUMP, 1200, 1), 1.0F)
+                                    .build())) {
+                        @Override
+                        public @NotNull SoundEvent getDrinkingSound() {
+                            return SoundEvents.HONEY_DRINK;
+                        }
+
+                        @Override
+                        public @NotNull SoundEvent getEatingSound() {
+                            return SoundEvents.HONEY_DRINK;
+                        }
+                    })
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Blindsight Tongue Stew")
+    );
+
     public static final ItemDataHolder<?> GLOWSILK_STRING = register("glowsilk_string", ItemDataHolder.of(() ->
                     new Item(new Item.Properties()))
             .withModel(ModelTemplates.FLAT_ITEM)
@@ -132,6 +177,12 @@ public class ModItems {
     public static final ItemDataHolder<?> GLOWSILK_BOW = register("glowsilk_bow", ItemDataHolder.of(() ->
                     new GlowsilkBowItem(new Item.Properties().durability(384)))
             .withTranslation("Glowsilk Bow")
+    );
+
+    public static final ItemDataHolder<?> GLOWSILK_MOTH_BOTTLE = register("glowsilk_moth_bottle", ItemDataHolder.of(() ->
+                    new GlowsilkMothBottleItem(new Item.Properties().stacksTo(1)))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Bottle of Glowsilk Moth")
     );
 
     public static final ItemDataHolder<?> MUSIC_DISC_FLUSH = register("music_disc_flush", ItemDataHolder.of(() ->

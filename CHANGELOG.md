@@ -10,6 +10,9 @@
   * Glowsquitos are now repelled by Campfires.
 * Re-added and reworked the Blindsight.
   * New animations and textures.
+  * Blindsights now eat baby mobs.
+* Re-added Blindsight Tongue and Blindsight Tongue Stew.
+  * Blindsight Tongue Whips are being reworked and will come in a future update.
 * Re-added the Glowsilk Moth.
   * New animations and textures.
 * Added huge Luminous Fungus trees, obtained by bonemealing Luminous Fungus.
@@ -26,6 +29,7 @@
 * Re-added bucketable baby Striders and Magma Cubes.
 * Re-added the ability to throw Magma Cream and Fire Charges.
 * Re-added missing block variants for Shimmer Stone and Basalt.
+* Added Bottle of Glowsilk Moth.
 * Adjusted Glowlight Lantern and Glowlight Torch textures.
 * Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
 * Added Shroomnight Tears and Hollownight when Jaden's Nether Expansion is installed.

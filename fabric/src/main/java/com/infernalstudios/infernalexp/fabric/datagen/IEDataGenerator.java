@@ -411,6 +411,15 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .define('G', Items.GLASS)
                     .unlockedBy(getHasName(ModBlocks.QUARTZ_GLASS.get()), has(ModBlocks.QUARTZ_GLASS.get()))
                     .save(exporter, IECommon.makeID("quartz_glass"));
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.BLINDSIGHT_TONGUE_STEW.get())
+                    .requires(ModItems.BLINDSIGHT_TONGUE.get())
+                    .requires(Items.CRIMSON_FUNGUS)
+                    .requires(ModBlocks.LUMINOUS_FUNGUS.get())
+                    .requires(Items.WARPED_FUNGUS)
+                    .requires(Items.BOWL)
+                    .unlockedBy("has_blindsight_tongue", has(ModItems.BLINDSIGHT_TONGUE.get()))
+                    .save(exporter, IECommon.makeID("blindsight_tongue_stew"));
         }
     }
 
@@ -441,6 +450,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("subtitles.infernalexp.entity.glowsilk_moth.ambient", "Glowsilk Moth flutters");
             builder.add("subtitles.infernalexp.entity.glowsilk_moth.hurt", "Glowsilk Moth hurts");
             builder.add("subtitles.infernalexp.entity.glowsilk_moth.death", "Glowsilk Moth dies");
+
+            builder.add("subtitles.infernalexp.entity.blindsight.ambient", "Blindsight croaks");
+            builder.add("subtitles.infernalexp.entity.blindsight.hurt", "Blindsight hurts");
+            builder.add("subtitles.infernalexp.entity.blindsight.death", "Blindsight dies");
+            builder.add("subtitles.infernalexp.entity.blindsight.leap", "Blindsight leaps");
 
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
