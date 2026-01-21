@@ -23,7 +23,7 @@ public class BlindsightRestGoal extends Goal {
 
     @Override
     public void start() {
-        this.restDuration = 20 + this.blindsight.getRandom().nextInt(21);
+        this.restDuration = 40 + this.blindsight.getRandom().nextInt(21);
         this.blindsight.setResting(true);
         this.blindsight.getNavigation().stop();
         ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);

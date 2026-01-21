@@ -38,8 +38,9 @@ public class BlindsightMoveControl extends MoveControl {
             return;
         }
 
-        if (this.operation != Operation.MOVE_TO) {
+        if (this.operation != Operation.MOVE_TO || this.speedModifier <= 0.0D) {
             this.mob.setZza(0.0F);
+            this.mob.setSpeed(0.0F);
         } else {
             this.operation = Operation.WAIT;
 

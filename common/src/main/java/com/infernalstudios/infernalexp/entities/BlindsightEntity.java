@@ -116,7 +116,6 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(3, new BlindsightRestGoal(this));
         this.goalSelector.addGoal(4, new BlindsightRandomDirectionGoal(this));
         this.goalSelector.addGoal(5, new BlindsightKeepOnJumpingGoal(this));
-
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
