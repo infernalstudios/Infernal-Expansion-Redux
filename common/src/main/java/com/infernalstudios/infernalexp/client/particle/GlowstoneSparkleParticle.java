@@ -1,12 +1,9 @@
 package com.infernalstudios.infernalexp.client.particle;
 
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import org.jetbrains.annotations.NotNull;
 
 public class GlowstoneSparkleParticle extends TextureSheetParticle {
 
@@ -40,7 +37,7 @@ public class GlowstoneSparkleParticle extends TextureSheetParticle {
         }
     }
 
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
@@ -48,14 +45,14 @@ public class GlowstoneSparkleParticle extends TextureSheetParticle {
         return 15728880;
     }
 
-    public static class Factory implements ParticleProvider<SimpleParticleType> {
+    public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;
 
-        public Factory(SpriteSet spriteSet) {
+        public Provider(SpriteSet spriteSet) {
             this.spriteSet = spriteSet;
         }
 
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public Particle createParticle(@NotNull SimpleParticleType typeIn, @NotNull ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             GlowstoneSparkleParticle glowstoneSparkleParticle = new GlowstoneSparkleParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
             glowstoneSparkleParticle.pickSprite(this.spriteSet);
             glowstoneSparkleParticle.scale(0.5F);

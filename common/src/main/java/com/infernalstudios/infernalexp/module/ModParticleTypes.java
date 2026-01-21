@@ -13,6 +13,7 @@ public class ModParticleTypes {
      */
     private static final RegistrationProvider<ParticleType<?>> PARTICLE_TYPE_REGISTRY = RegistrationProvider.get(Registries.PARTICLE_TYPE, IEConstants.MOD_ID);
     public static final SimpleParticleType GLOWSTONE_SPARKLE = register("glowstone_sparkle", SimpleParticleTypeAccessor.createSimpleParticleType(false));
+    public static final SimpleParticleType GLOWSQUITO_WING = register("glowsquito_wing", SimpleParticleTypeAccessor.createSimpleParticleType(false));
 
     public static <T extends ParticleType<?>> T register(String name, T particle) {
         PARTICLE_TYPE_REGISTRY.register(name, () -> particle);

@@ -78,7 +78,7 @@ public interface RegistrationProvider<T> {
     String getModId();
 
     /**
-     * Factory class for {@link RegistrationProvider registration providers}. <br>
+     * Provider class for {@link RegistrationProvider registration providers}. <br>
      * This class is loaded using {@link java.util.ServiceLoader Service Loaders}, and only one
      * should exist per mod loader.
      */

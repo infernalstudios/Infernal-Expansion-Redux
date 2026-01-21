@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.entities;
 
 import com.infernalstudios.infernalexp.entities.ai.AvoidCampfiresGoal;
+import com.infernalstudios.infernalexp.entities.ai.LookAroundGoal;
 import com.infernalstudios.infernalexp.entities.ai.RandomFlyGoal;
 import com.infernalstudios.infernalexp.entities.ai.SuckGlowstoneGoal;
 import com.infernalstudios.infernalexp.module.ModEffects;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,7 +24,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -47,8 +49,6 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import java.util.EnumSet;
 
 public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
     private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
@@ -97,9 +97,19 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(1, new AvoidCampfiresGoal(this, 8.0D, 1.2D));
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true) {
+            @Override
+            protected double getAttackReachSqr(@NotNull LivingEntity attackTarget) {
+                double standardReach = super.getAttackReachSqr(attackTarget);
 
+                if (attackTarget instanceof Player) {
+                    return standardReach * 0.5D;
+                }
+
+                return standardReach;
+            }
+        });
+        this.goalSelector.addGoal(1, new AvoidCampfiresGoal(this, 8.0D, 1.2D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8d));
         this.goalSelector.addGoal(3, new SuckGlowstoneGoal(this));
         this.goalSelector.addGoal(4, new TemptGoal(this, 0.8d, TEMPTATION_ITEMS, false));
@@ -156,6 +166,16 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     @Override
     public boolean isFood(@NotNull ItemStack stack) {
         return TEMPTATION_ITEMS.test(stack);
+    }
+
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return ModSounds.GLOWSQUITO_HURT.get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDeathSound() {
+        return ModSounds.GLOWSQUITO_DEATH.get();
     }
 
     @Override
@@ -314,37 +334,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     @Override
     protected void checkFallDamage(double pY, boolean pOnGround, @NotNull BlockState pState, @NotNull BlockPos pPos) {
-    }
-
-    static class LookAroundGoal extends Goal {
-        private final GlowsquitoEntity parentEntity;
-
-        public LookAroundGoal(GlowsquitoEntity mob) {
-            this.parentEntity = mob;
-            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            return true;
-        }
-
-        public void tick() {
-            if (this.parentEntity.getTarget() == null && !this.parentEntity.isEating()) {
-                Vec3 vector3d = this.parentEntity.getDeltaMovement();
-                if (vector3d.horizontalDistanceSqr() > 0.003D) {
-                    float targetYaw = -((float) Mth.atan2(vector3d.x, vector3d.z)) * (180F / (float) Math.PI);
-                    this.parentEntity.setYRot(this.rotlerp(this.parentEntity.getYRot(), targetYaw, 10.0F));
-                    this.parentEntity.yBodyRot = this.parentEntity.getYRot();
-                }
-            }
-        }
-
-        private float rotlerp(float current, float target, float maxChange) {
-            float f = Mth.wrapDegrees(target - current);
-            if (f > maxChange) f = maxChange;
-            if (f < -maxChange) f = -maxChange;
-            return current + f;
-        }
     }
 
     static class MoveHelperController extends MoveControl {

@@ -73,6 +73,18 @@
       "infernalexp:entity/blindsight/blindsight_leap"
     ]
   },
+  "entity.blindsight.alert":  {
+    "subtitle": "subtitles.entity.blindsight.alert",
+    "sounds": [
+      "infernalexp:entity/blindsight/luminous_alert"
+    ]
+  },
+  "entity.blindsight.lick":  {
+    "subtitle": "subtitles.entity.blindsight.lick",
+    "sounds": [
+      "infernalexp:entity/blindsight/blindsight_lick"
+    ]
+  },
   "entity.warpbeetle.ambient": {
     "subtitle": "subtitles.entity.warpbeetle.ambient",
     "sounds": [

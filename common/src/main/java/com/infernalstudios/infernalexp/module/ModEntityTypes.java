@@ -44,7 +44,7 @@ public class ModEntityTypes {
             .withTranslation("Glowsilk Moth"));
     public static final EntityTypeDataHolder<BlindsightEntity> BLINDSIGHT = register("blindsight", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(BlindsightEntity::new, MobCategory.MONSTER)
-                            .sized(1.0F, 1.0F)
+                            .sized(1.0F, 0.6F)
                             .clientTrackingRange(8)
                             .fireImmune()
                             .build())

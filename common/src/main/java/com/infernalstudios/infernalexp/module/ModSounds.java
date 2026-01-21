@@ -25,6 +25,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BLINDSIGHT_HURT = register("entity.blindsight.hurt");
     public static final RegistryObject<SoundEvent> BLINDSIGHT_DEATH = register("entity.blindsight.death");
     public static final RegistryObject<SoundEvent> BLINDSIGHT_LEAP = register("entity.blindsight.leap");
+    public static final RegistryObject<SoundEvent> BLINDSIGHT_ALERT = register("entity.blindsight.alert");
+    public static final RegistryObject<SoundEvent> BLINDSIGHT_LICK = register("entity.blindsight.lick");
 
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_LOOP = register("ambient.glowstone_canyon.loop");
     public static final RegistryObject<SoundEvent> AMBIENT_GLOWSTONE_CANYON_ADDITIONS = register("ambient.glowstone_canyon.additions");

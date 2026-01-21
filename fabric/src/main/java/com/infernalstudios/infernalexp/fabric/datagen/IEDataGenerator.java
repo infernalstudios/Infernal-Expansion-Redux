@@ -455,6 +455,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("subtitles.infernalexp.entity.blindsight.hurt", "Blindsight hurts");
             builder.add("subtitles.infernalexp.entity.blindsight.death", "Blindsight dies");
             builder.add("subtitles.infernalexp.entity.blindsight.leap", "Blindsight leaps");
+            builder.add("subtitles.infernalexp.entity.blindsight.alert", "Blindsight roars");
+            builder.add("subtitles.infernalexp.entity.blindsight.lick", "Blindsight licks");
 
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
