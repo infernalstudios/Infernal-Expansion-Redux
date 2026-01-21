@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.entities.ai.blindsight;
 
 import com.infernalstudios.infernalexp.entities.BlindsightEntity;
+import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
@@ -12,9 +13,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class BlindsightAttackGoal extends MeleeAttackGoal {
     private final BlindsightEntity blindsight;
@@ -41,6 +47,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             } else {
                 executeTongueAttackLogic();
             }
+            ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);
             return;
         }
 
@@ -59,7 +66,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);
         }
 
-        if (target instanceof GlowsquitoEntity || target.isBaby()) {
+        if (target instanceof GlowsquitoEntity || target instanceof GlowsilkMothEntity || target.isBaby()) {
             handleEating(target);
             return;
         }
@@ -82,15 +89,22 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
         }
     }
 
+    @Override
+    public void stop() {
+        super.stop();
+        this.blindsight.wantsToTongueAttack = false;
+        this.blindsight.tongueTarget = null;
+    }
+
     private void startTongueAttack(LivingEntity target) {
         this.blindsight.wantsToTongueAttack = true;
         this.blindsight.jumpCount = 0;
         this.blindsight.triggerAnim("attackController", "tongue_attack");
         this.blindsight.playSound(ModSounds.BLINDSIGHT_LICK.get(), 1.0F, 1.0F);
 
-        this.blindsight.attackAnimationTimer = 27;
+        this.blindsight.attackAnimationTimer = 15;
         this.blindsight.tongueTarget = target;
-        this.attackCooldown = 40;
+        this.attackCooldown = 25;
 
         this.blindsight.setDeltaMovement(Vec3.ZERO);
     }
@@ -102,16 +116,14 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
 
         double d0 = this.blindsight.tongueTarget.getX() - this.blindsight.getX();
         double d1 = this.blindsight.tongueTarget.getZ() - this.blindsight.getZ();
-        float f = (float)(Mth.atan2(d1, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
+        float f = (float) (Mth.atan2(d1, d0) * (double) (180F / (float) Math.PI)) - 90.0F;
 
         ((BlindsightMoveControl) this.blindsight.getMoveControl()).setDirection(f, true);
 
-        if (this.blindsight.attackAnimationTimer <= 17) {
-            this.blindsight.getNavigation().moveTo(this.blindsight.tongueTarget, 1.0D);
-        }
+        this.blindsight.getNavigation().moveTo(this.blindsight.tongueTarget, 1.0D);
 
         if (this.blindsight.attackAnimationTimer == 10 && this.blindsight.tongueTarget.isAlive()) {
-            double maxReachSqr = 32.0D;
+            double maxReachSqr = 20.0D;
             double distSqr = this.blindsight.distanceToSqr(this.blindsight.tongueTarget);
 
             if (distSqr < maxReachSqr && this.blindsight.hasLineOfSight(this.blindsight.tongueTarget)) {
@@ -133,7 +145,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
         double reach = this.blindsight.getBbWidth() + target.getBbWidth() + 1.0D;
         double reachSqr = reach * reach;
 
-        boolean canEat = distSqr <= reachSqr && (this.blindsight.onGround() || target instanceof GlowsquitoEntity);
+        boolean canEat = distSqr <= reachSqr && (this.blindsight.onGround() || target instanceof GlowsquitoEntity || target instanceof GlowsilkMothEntity);
 
         if (canEat && this.attackCooldown <= 0) {
             this.attackCooldown = 20;
@@ -141,6 +153,8 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             this.blindsight.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
 
             if (this.blindsight.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.POOF, target.getX(), target.getY() + 0.5D, target.getZ(), 10, 0.2D, 0.2D, 0.2D, 0.05D);
+
                 if (target instanceof GlowsquitoEntity) {
                     for (int i = 0; i < 2; i++) {
                         double speedX = (this.blindsight.getRandom().nextDouble() - 0.5D) * 0.2D;
@@ -159,7 +173,21 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
                 }
             }
 
-            target.kill();
+            if (target instanceof Piglin && target.isBaby()) {
+                AABB aabb = this.blindsight.getBoundingBox().inflate(16.0D);
+                List<Piglin> piglins = this.blindsight.level().getEntitiesOfClass(Piglin.class, aabb);
+                for (Piglin piglin : piglins) {
+                    if (!piglin.isBaby()) {
+                        piglin.setTarget(this.blindsight);
+                        piglin.getBrain().setMemory(MemoryModuleType.ANGRY_AT, this.blindsight.getUUID());
+                        piglin.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, this.blindsight);
+                    } else {
+                        piglin.getBrain().setMemory(MemoryModuleType.AVOID_TARGET, this.blindsight);
+                    }
+                }
+            }
+
+            target.discard();
             this.blindsight.heal(4.0F);
             this.blindsight.triggerAnim("attackController", "swallow");
             this.blindsight.attackAnimationTimer = 20;

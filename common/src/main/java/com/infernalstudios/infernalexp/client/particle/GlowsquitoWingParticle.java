@@ -12,7 +12,7 @@ public class GlowsquitoWingParticle extends TextureSheetParticle {
         this.xd = motionX;
         this.yd = motionY;
         this.zd = motionZ;
-        this.quadSize *= 0.75F;
+        this.quadSize *= 1.2F;
         this.lifetime = (int) (20.0D / (this.random.nextDouble() * 0.8D + 0.2D));
         this.gravity = 0.08F;
         this.roll = (float) Math.random() * ((float) Math.PI * 2F);

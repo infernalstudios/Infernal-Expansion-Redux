@@ -78,7 +78,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     private boolean hasPlayedWarning = false;
     private boolean playRareIdle = false;
     private boolean wasResting = false;
-    private int jumpsTowardsTarget = 0;
+    private int jumpsUntilBigJump = 0;
 
     public BlindsightEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -127,6 +127,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 return this.mob.getBoundingBox().inflate(20.0D, 8.0D, 20.0D);
             }
         });
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsilkMothEntity.class, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, LivingEntity::isBaby));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -179,7 +180,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         boolean isAngry = this.getLastHurtByMob() != null;
 
         double desiredBaseRange = isAngry ? 12.0D : 6.0D;
-        if (target instanceof GlowsquitoEntity) {
+        if (target instanceof GlowsquitoEntity || target instanceof GlowsilkMothEntity) {
             desiredBaseRange = 20.0D;
         }
 
@@ -204,6 +205,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
                 this.alertTimer = 30;
                 this.hasPlayedWarning = true;
+                ((BlindsightMoveControl)this.getMoveControl()).setSpeed(0.0D);
             }
         } else {
             if (speed != null) speed.removeModifier(SPEED_MODIFIER_ATTACK_UUID);
@@ -215,25 +217,29 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     @Override
     protected void jumpFromGround() {
-        if (this.getTarget() == null) {
-            this.consecutiveHops++;
-        } else {
-            this.jumpCount++;
-        }
-
         float jumpPower = 0.42F + (random.nextFloat() * 0.1F);
+        float forwardImpulse;
+
         LivingEntity target = this.getTarget();
 
-        float forwardImpulse = 0.0F;
+        if (target == null) {
+            this.consecutiveHops++;
+            forwardImpulse = 0.4F;
+        } else {
+            this.jumpCount++;
 
-        if (target instanceof GlowsquitoEntity) {
-            jumpPower = 1.2F;
-            forwardImpulse = 0.6F;
-        } else if (target instanceof Player) {
-            this.jumpsTowardsTarget++;
-            if (this.jumpsTowardsTarget % 3 == 0) {
-                jumpPower = 0.9F;
-                forwardImpulse = 0.8F;
+            forwardImpulse = 0.3F;
+
+            if (target instanceof GlowsquitoEntity || target instanceof GlowsilkMothEntity) {
+                jumpPower = 1.2F;
+                forwardImpulse = 0.6F;
+            } else if (target instanceof Player) {
+                this.jumpsUntilBigJump--;
+                if (this.jumpsUntilBigJump <= 0) {
+                    jumpPower = 0.9F;
+                    forwardImpulse = 0.8F;
+                    this.jumpsUntilBigJump = 4 + this.random.nextInt(2);
+                }
             }
         }
 
@@ -241,15 +247,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.setDeltaMovement(motion.x, jumpPower, motion.z);
         this.hasImpulse = true;
 
-        if (forwardImpulse > 0.0F) {
-            float f = this.getYRot() * ((float) Math.PI / 180F);
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * forwardImpulse, 0.0D, Mth.cos(f) * forwardImpulse));
-        }
-
-        if (this.getTarget() == null) {
-            float f = this.getYRot() * ((float) Math.PI / 180F);
-            this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * 0.4F, 0.0D, Mth.cos(f) * 0.4F));
-        }
+        float f = this.getYRot() * ((float) Math.PI / 180F);
+        this.setDeltaMovement(this.getDeltaMovement().add(-Mth.sin(f) * forwardImpulse, 0.0D, Mth.cos(f) * forwardImpulse));
     }
 
     public boolean doPlayJumpSound() {
@@ -262,13 +261,12 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     }
 
     public int getJumpDelay() {
-        if (this.wantsToTongueAttack) return 20;
         return 10;
     }
 
     public void doTongueDamage(LivingEntity target) {
         if (this.doHurtTarget(target)) {
-            float knockbackStrength = 1.5F;
+            float knockbackStrength = 2.5F;
             target.knockback(knockbackStrength, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
             target.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600));
         }

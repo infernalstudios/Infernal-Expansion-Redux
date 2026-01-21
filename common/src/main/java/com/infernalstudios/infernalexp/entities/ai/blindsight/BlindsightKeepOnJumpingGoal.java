@@ -16,7 +16,12 @@ public class BlindsightKeepOnJumpingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return !this.blindsight.isPassenger();
+        return !this.blindsight.isPassenger() && !this.blindsight.isAttacking() && !this.blindsight.wantsToTongueAttack;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return this.canUse();
     }
 
     @Override
@@ -24,6 +29,14 @@ public class BlindsightKeepOnJumpingGoal extends Goal {
         MoveControl movecontrol = this.blindsight.getMoveControl();
         if (movecontrol instanceof BlindsightMoveControl blindsightMoveControl) {
             blindsightMoveControl.setSpeed(1.0D);
+        }
+    }
+
+    @Override
+    public void stop() {
+        MoveControl movecontrol = this.blindsight.getMoveControl();
+        if (movecontrol instanceof BlindsightMoveControl blindsightMoveControl) {
+            blindsightMoveControl.setSpeed(0.0D);
         }
     }
 }

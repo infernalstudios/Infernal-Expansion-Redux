@@ -20,6 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvents;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -145,14 +146,17 @@ public class SuckGlowstoneGoal extends Goal {
 
                     if (currentState.is(Blocks.GLOWSTONE)) {
                         newState = ModBlocks.DIMSTONE.get().defaultBlockState();
+                        this.mob.playSound(SoundEvents.GLASS_BREAK, 1.0F, 1.0F);
                     } else if (currentState.is(ModBlocks.DIMSTONE.get())) {
                         newState = ModBlocks.DULLSTONE.get().defaultBlockState();
+                        this.mob.playSound(ModSounds.BLOCK_DULLSTONE_BREAK.get(), 1.0F, 1.0F);
                     } else if (currentState.is(Blocks.SHROOMLIGHT)) {
                         newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
                         this.mob.setShroomlightPowered(true);
                         this.mob.setShroomlightTimer(6000);
                         this.mob.setShroomnightPowered(false);
                         this.mob.setShroomnightTimer(0);
+                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
                     } else if (Services.PLATFORM.isModLoaded("netherexp")) {
                         Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
                         if (currentState.is(shroomnight) && NetherExpCompat.HOLLOWNIGHT != null) {
@@ -161,6 +165,7 @@ public class SuckGlowstoneGoal extends Goal {
                             this.mob.setShroomnightTimer(6000);
                             this.mob.setShroomlightPowered(false);
                             this.mob.setShroomlightTimer(0);
+                            this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
                         }
                     }
 
