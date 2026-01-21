@@ -299,6 +299,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
+        if (this.getTarget() instanceof Player) {
+            return null;
+        }
         return ModSounds.BLINDSIGHT_AMBIENT.get();
     }
 
