@@ -113,7 +113,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
                 Vec3 targetDir = this.blindsight.tongueTarget.position().subtract(this.blindsight.position()).normalize();
                 double dot = lookDir.dot(targetDir);
 
-                if (dot > 0.95D) {
+                if (dot > 0.90D) {
                     this.blindsight.doTongueDamage(this.blindsight.tongueTarget);
                 }
             }
