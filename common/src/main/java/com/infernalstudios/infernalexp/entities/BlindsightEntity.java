@@ -51,13 +51,15 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     private static final EntityDataAccessor<Boolean> IS_JUMPING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_RESTING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_WATCHING_LUMINOUS = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation IDLE_RARE = RawAnimation.begin().thenLoop("idle_rare");
     private static final RawAnimation JUMP_LOOP = RawAnimation.begin().thenLoop("jump_loop");
     private static final RawAnimation BITE = RawAnimation.begin().thenPlay("bite");
     private static final RawAnimation SWALLOW = RawAnimation.begin().thenPlay("swallow");
-    private static final RawAnimation TONGUE_ATTACK = RawAnimation.begin().thenPlay("tongue_attack");
+    private static final RawAnimation TONGUE_ATTACK_TELEGRAPHED = RawAnimation.begin().thenPlay("tongue_attack_telegraphed");
+    private static final RawAnimation TONGUE_ATTACK_IMMEDIATE = RawAnimation.begin().thenPlay("tongue_attack_immediate");
     private static final RawAnimation ALERT = RawAnimation.begin().thenPlay("luminous_player_alert");
     private static final RawAnimation LAND = RawAnimation.begin().thenPlay("land");
 
@@ -74,6 +76,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     public LivingEntity tongueTarget;
     public int consecutiveHops = 0;
     public int hopsUntilIdle;
+    public int attackCooldown = 0;
+    public int damageTriggerTick = 10;
     private boolean wasOnGround;
     private boolean hasPlayedWarning = false;
     private boolean playRareIdle = false;
@@ -105,6 +109,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.entityData.define(IS_JUMPING, false);
         this.entityData.define(IS_ATTACKING, false);
         this.entityData.define(IS_RESTING, false);
+        this.entityData.define(IS_WATCHING_LUMINOUS, false);
     }
 
     @Override
@@ -141,6 +146,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
         if (this.alertTimer > 0) this.alertTimer--;
         if (this.attackAnimationTimer > 0) this.attackAnimationTimer--;
+        if (this.attackCooldown > 0) this.attackCooldown--;
 
         if (!this.level().isClientSide) {
             this.handleLuminousTargetLogic();
@@ -174,9 +180,33 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.targetSquish *= 0.6F;
     }
 
+    public void performTongueAttack(LivingEntity target, boolean immediate) {
+        this.wantsToTongueAttack = true;
+        this.jumpCount = 0;
+        this.tongueTarget = target;
+        this.playSound(ModSounds.BLINDSIGHT_LICK.get(), 1.0F, 1.0F);
+
+        if (immediate) {
+            this.triggerAnim("attackController", "tongue_attack_immediate");
+            this.attackAnimationTimer = 17;
+            this.damageTriggerTick = 9;
+            this.attackCooldown = 25;
+        } else {
+            this.triggerAnim("attackController", "tongue_attack_telegraphed");
+            this.attackAnimationTimer = 27;
+            this.damageTriggerTick = 9;
+            this.attackCooldown = 35;
+        }
+
+        this.setDeltaMovement(Vec3.ZERO);
+    }
+
     private void handleLuminousTargetLogic() {
         LivingEntity target = this.getTarget();
         boolean isLuminous = target != null && target.hasEffect(ModEffects.LUMINOUS.get());
+
+        this.entityData.set(IS_WATCHING_LUMINOUS, isLuminous);
+
         boolean isAngry = this.getLastHurtByMob() != null;
 
         double desiredBaseRange = isAngry ? 12.0D : 6.0D;
@@ -205,7 +235,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
                 this.alertTimer = 30;
                 this.hasPlayedWarning = true;
-                ((BlindsightMoveControl)this.getMoveControl()).setSpeed(0.0D);
+                ((BlindsightMoveControl) this.getMoveControl()).setSpeed(0.0D);
             }
         } else {
             if (speed != null) speed.removeModifier(SPEED_MODIFIER_ATTACK_UUID);
@@ -217,6 +247,10 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     @Override
     protected void jumpFromGround() {
+        if (this.wantsToTongueAttack) {
+            return;
+        }
+
         float jumpPower = 0.42F + (random.nextFloat() * 0.1F);
         float forwardImpulse;
 
@@ -239,6 +273,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                     jumpPower = 0.9F;
                     forwardImpulse = 0.8F;
                     this.jumpsUntilBigJump = 4 + this.random.nextInt(2);
+                    this.isBigJumping = true;
                 }
             }
         }
@@ -252,7 +287,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     }
 
     public boolean doPlayJumpSound() {
-        return this.onGround();
+        return this.onGround() && !this.wantsToTongueAttack;
     }
 
     @Override
@@ -286,6 +321,10 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     public void setResting(boolean resting) {
         this.entityData.set(IS_RESTING, resting);
+    }
+
+    public boolean isWatchingLuminous() {
+        return this.entityData.get(IS_WATCHING_LUMINOUS);
     }
 
     @Override
@@ -330,7 +369,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         controllers.add(new AnimationController<>(this, "attackController", 0, event -> PlayState.STOP)
                 .triggerableAnim("bite", BITE)
                 .triggerableAnim("swallow", SWALLOW)
-                .triggerableAnim("tongue_attack", TONGUE_ATTACK)
+                .triggerableAnim("tongue_attack_telegraphed", TONGUE_ATTACK_TELEGRAPHED)
+                .triggerableAnim("tongue_attack_immediate", TONGUE_ATTACK_IMMEDIATE)
                 .triggerableAnim("alert", ALERT)
                 .triggerableAnim("land", LAND));
     }
@@ -339,4 +379,5 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
     }
+
 }

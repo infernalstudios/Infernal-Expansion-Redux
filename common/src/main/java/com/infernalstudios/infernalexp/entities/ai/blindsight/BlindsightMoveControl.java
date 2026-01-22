@@ -31,7 +31,7 @@ public class BlindsightMoveControl extends MoveControl {
         this.mob.setYHeadRot(this.mob.getYRot());
         this.mob.setYBodyRot(this.mob.getYRot());
 
-        if (this.blindsight.alertTimer > 0) {
+        if (this.blindsight.alertTimer > 0 || this.blindsight.wantsToTongueAttack) {
             this.mob.setSpeed(0.0F);
             this.blindsight.xxa = 0.0F;
             this.blindsight.zza = 0.0F;

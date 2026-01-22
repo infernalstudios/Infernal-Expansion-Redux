@@ -14,6 +14,9 @@ public class BlindsightModel extends GeoModel<BlindsightEntity> {
 
     @Override
     public ResourceLocation getTextureResource(BlindsightEntity entity) {
+        if (entity.isWatchingLuminous()) {
+            return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/blindsight_open.png");
+        }
         return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/blindsight.png");
     }
 
