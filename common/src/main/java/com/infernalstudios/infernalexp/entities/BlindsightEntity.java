@@ -129,7 +129,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsquitoEntity.class, true) {
             @Override
             protected @NotNull AABB getTargetSearchArea(double targetDistance) {
-                return this.mob.getBoundingBox().inflate(20.0D, 8.0D, 20.0D);
+                return this.mob.getBoundingBox().inflate(16.0D, 8.0D, 16.0D);
             }
         });
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsilkMothEntity.class, true));

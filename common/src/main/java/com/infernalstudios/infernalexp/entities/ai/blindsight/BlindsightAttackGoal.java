@@ -118,7 +118,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
         }
 
         if (this.blindsight.attackAnimationTimer == this.blindsight.damageTriggerTick && this.blindsight.tongueTarget.isAlive()) {
-            double maxReachSqr = 25.0D;
+            double maxReachSqr = 30.0D;
             double distSqr = this.blindsight.distanceToSqr(this.blindsight.tongueTarget);
 
             if (distSqr < maxReachSqr && this.blindsight.hasLineOfSight(this.blindsight.tongueTarget)) {
