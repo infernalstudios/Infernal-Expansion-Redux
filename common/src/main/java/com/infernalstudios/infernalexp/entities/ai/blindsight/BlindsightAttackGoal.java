@@ -4,6 +4,7 @@ import com.infernalstudios.infernalexp.entities.BlindsightEntity;
 import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
+import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -62,6 +63,14 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             ((BlindsightMoveControl) this.blindsight.getMoveControl()).setSpeed(0.0D);
         }
 
+        if (target instanceof BlindsightEntity) {
+            double distSqr = this.blindsight.distanceToSqr(target);
+            if (distSqr < 36.0D && this.blindsight.attackCooldown <= 0 && this.blindsight.onGround()) {
+                this.blindsight.performTongueAttack(target, true);
+            }
+            return;
+        }
+
         if (target instanceof GlowsquitoEntity || target instanceof GlowsilkMothEntity || target.isBaby()) {
             handleEating(target);
             return;
@@ -94,7 +103,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
     private void executeTongueAttackLogic() {
         if (this.blindsight.tongueTarget == null) return;
 
-        if (this.blindsight.attackAnimationTimer > this.blindsight.damageTriggerTick) {
+        if (this.blindsight.attackAnimationTimer > this.blindsight.damageTriggerTick + 5) {
             this.blindsight.getLookControl().setLookAt(this.blindsight.tongueTarget, 30.0F, 30.0F);
 
             double d0 = this.blindsight.tongueTarget.getX() - this.blindsight.getX();
@@ -104,8 +113,12 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             ((BlindsightMoveControl) this.blindsight.getMoveControl()).setDirection(f, true);
         }
 
+        if (this.blindsight.attackAnimationTimer == this.blindsight.damageTriggerTick + 2) {
+            this.blindsight.playSound(ModSounds.BLINDSIGHT_LICK.get(), 0.8F, 0.9F + this.blindsight.getRandom().nextFloat() * 0.2F);
+        }
+
         if (this.blindsight.attackAnimationTimer == this.blindsight.damageTriggerTick && this.blindsight.tongueTarget.isAlive()) {
-            double maxReachSqr = 20.0D;
+            double maxReachSqr = 25.0D;
             double distSqr = this.blindsight.distanceToSqr(this.blindsight.tongueTarget);
 
             if (distSqr < maxReachSqr && this.blindsight.hasLineOfSight(this.blindsight.tongueTarget)) {
@@ -113,8 +126,9 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
                 Vec3 targetDir = this.blindsight.tongueTarget.position().subtract(this.blindsight.position()).normalize();
                 double dot = lookDir.dot(targetDir);
 
-                if (dot > 0.90D) {
+                if (dot > 0.96D) {
                     this.blindsight.doTongueDamage(this.blindsight.tongueTarget);
+                    this.blindsight.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 0.9F + this.blindsight.getRandom().nextFloat() * 0.2F);
                 }
             }
         }

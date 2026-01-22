@@ -135,6 +135,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsilkMothEntity.class, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, LivingEntity::isBaby));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, BlindsightEntity.class, 10, true, false,
+                (entity) -> entity.distanceToSqr(this) < 64.0D));
     }
 
     @Override
@@ -156,7 +158,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         } else {
             boolean isResting = this.isResting();
             if (isResting && !this.wasResting) {
-                this.playRareIdle = this.random.nextFloat() < 0.3F;
+                this.playRareIdle = this.getRandom().nextFloat() < 0.5F;
             }
             this.wasResting = isResting;
         }
@@ -184,7 +186,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.wantsToTongueAttack = true;
         this.jumpCount = 0;
         this.tongueTarget = target;
-        this.playSound(ModSounds.BLINDSIGHT_LICK.get(), 1.0F, 1.0F);
+        this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
 
         if (immediate) {
             this.triggerAnim("attackController", "tongue_attack_immediate");
@@ -300,7 +302,16 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     }
 
     public void doTongueDamage(LivingEntity target) {
-        if (this.doHurtTarget(target)) {
+        if (target instanceof BlindsightEntity) {
+            float knockbackStrength = 4.0F;
+            target.knockback(knockbackStrength, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
+
+            this.setTarget(null);
+            this.setLastHurtByMob(null);
+
+            ((BlindsightEntity) target).setTarget(null);
+            target.setLastHurtByMob(null);
+        } else if (this.doHurtTarget(target)) {
             float knockbackStrength = 2.5F;
             target.knockback(knockbackStrength, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
             target.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600));
