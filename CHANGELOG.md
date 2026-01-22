@@ -11,10 +11,15 @@
 * Re-added and reworked the Blindsight.
   * New animations and textures.
   * Blindsights now eat baby mobs.
+  * Blindsights eat Glowsquitos and Glowsilk Moths.
+  * Blindsights smack other Blindsights with their tongues to push them away.
+  * Eating a baby Piglin will scare nearby baby Piglins and anger nearby adult Piglins.
+  * Blindsights will aggressively target entities with the Luminous effect.
 * Re-added Blindsight Tongue and Blindsight Tongue Stew.
   * Blindsight Tongue Whips are being reworked and will come in a future update.
 * Re-added the Glowsilk Moth.
   * New animations and textures.
+  * Glowsilk Moths now drop Glowsilk String.
 * Added huge Luminous Fungus trees, obtained by bonemealing Luminous Fungus.
 * Added a new Luminous wood set, crafted from Luminous Stems.
 * Re-added the Luminous effect.
