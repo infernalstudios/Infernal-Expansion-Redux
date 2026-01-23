@@ -85,6 +85,13 @@ public class ModBlocks {
             .withTranslation("Polished Glowstone")
     );
 
+    public static final BlockDataHolder<?> WAXED_GLOWSTONE = register("waxed_glowstone", BlockDataHolder.of(() ->
+                    new Block(ModBlockProperties.GLOWSTONE))
+            .withModel(BlockDataHolder.Model.CUBE).withItem()
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
+            .withTranslation("Waxed Glowstone")
+    );
+
     public static final BlockDataHolder<?> DIMSTONE = register("dimstone", BlockDataHolder.of(() ->
                     new Block(ModBlockProperties.DIMSTONE))
             .withItem().withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)

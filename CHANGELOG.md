@@ -1,57 +1,13 @@
-## The Luminous Update!
+### Additions
 
-### Additions:
-* Re-added and reworked the Glowsquito.
-  * Glowsquitos drink Glowstone and Dimstone to convert it to Dimstone and Dullstone respectively.
-  * Glowsquitos drink Shroomlight to turn it into Hollowlight.
-  * Glowsquitos have unique textures after drinking Shroomlight or Shroomnight from Jaden's Nether Expansion.
-  * Glowsquitos have a unique texture when named "glowseeyou" with a nametag.
-  * New animations and textures.
-  * Glowsquitos are now repelled by Campfires.
-* Re-added and reworked the Blindsight.
-  * New animations and textures.
-  * Blindsights now eat baby mobs.
-  * Blindsights eat Glowsquitos and Glowsilk Moths.
-  * Blindsights smack other Blindsights with their tongues to push them away.
-  * Eating a baby Piglin will scare nearby baby Piglins and anger nearby adult Piglins.
-  * Blindsights will aggressively target entities with the Luminous effect.
-* Re-added Blindsight Tongue and Blindsight Tongue Stew.
-  * Blindsight Tongue Whips are being reworked and will come in a future update.
-* Re-added the Glowsilk Moth.
-  * New animations and textures.
-  * Glowsilk Moths now drop Glowsilk String.
-* Added huge Luminous Fungus trees, obtained by bonemealing Luminous Fungus.
-* Added a new Luminous wood set, crafted from Luminous Stems.
-* Re-added the Luminous effect.
-  * Luminous will now give entities dynamic lighting effects when LambDynamicLights is installed.
-* Luminous Fungus can now be placed in flower pots.
-* Re-added the Glowsilk Bow.
-  * Arrows shot by the Glowsilk Bow will now have dynamic lighting when LambDynamicLights is installed.
-  * Arrows shot by the Glowsilk Bow will now have special afterimage trails when Afterimages is installed.
-* Re-added and remade Ruined Aether Portals.
-  * Reworked the loot tables to be more varied.
-* Re-added Glowcoke.
-* Re-added bucketable baby Striders and Magma Cubes.
-* Re-added the ability to throw Magma Cream and Fire Charges.
-* Re-added missing block variants for Shimmer Stone and Basalt.
-* Added Bottle of Glowsilk Moth.
-* Adjusted Glowlight Lantern and Glowlight Torch textures.
-* Added Glowlight Pumpkin and Large Glowlight Pumpkin when Autumnity is installed.
-* Added Shroomnight Tears and Hollownight when Jaden's Nether Expansion is installed.
-* New recipes for Create compatibility.
-* Config options for Luminous Fungus activation distance and Glowsilk Bow fire speed.
+* Dullstone and Dimstone can be converted to Dimstone and Glowstone respectively by using Glowstone Dust on them.
+* Glowstone and Dimstone can be waxed and scraped, which will prevent Glowsquitos from drinking them while waxed.
+* Added config option to disable Glowsquito griefing.
 
-### Changes:
-* Vanilla ruined portals will no longer generate in the Glowstone Canyon.
-* When flowing Lava encounters Blue Ice over Shimmer Sand, it turns to Shimmer Stone.
-* Reworked how Glimmer Gravel activates.
-* Glowfire now gives entities the Luminous effect.
+### Changes
 
-### Fixes:
-* Missing sounds for bonemealing Shroomlight.
-* Missing sounds for placing Quartz and Bones.
-* Missing recipes for Glowlight Torches and Glowlight Campfires.
-* Missing recipes for various decorative blocks.
-* Missing recipe for composting Luminous Fungus.
-* Glowsilk Bow shooting inaccurately due to a Vanilla bug.
-* Volatile Geyser model not working with mods like Hold My Items.
+* Slightly increased cooldown on Glowsquito drinking.
+
+### Fixes
+
+* Fixed Glowsquito wings being invisible from below.

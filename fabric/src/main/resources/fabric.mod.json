@@ -1,50 +1,51 @@
 {
-    "schemaVersion": 1,
-    "id": "${mod_id}",
-    "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${description}",
-    "authors": [
-        "${mod_author}"
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://infernalstudios.org/",
+    "sources": "https://github.com/infernalstudios/Infernal-Expansion-Redux/",
+    "issues": "https://github.com/infernalstudios/Infernal-Expansion-Redux/issues"
+  },
+  "license": "${license}",
+  "icon": "${mod_id}.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.infernalstudios.infernalexp.fabric.InfernalExpansionFabric"
     ],
-    "contact": {
-        "homepage": "https://infernalstudios.org/",
-        "sources": "https://github.com/infernalstudios/Infernal-Expansion-Redux/",
-        "issues": "https://github.com/infernalstudios/Infernal-Expansion-Redux/issues"
-    },
-    "license": "${license}",
-    "icon": "${mod_id}.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-          "com.infernalstudios.infernalexp.fabric.InfernalExpansionFabric"
-        ],
-        "client": [
-            "com.infernalstudios.infernalexp.fabric.client.InfernalExpansionFabricClient"
-        ],
-        "terrablender": [
-            "com.infernalstudios.infernalexp.fabric.compat.FabricTerraBlenderCompat"
-        ],
-        "fabric-datagen": [
-            "com.infernalstudios.infernalexp.fabric.datagen.IEDataGenerator"
-        ],
-        "modmenu": [
-            "com.infernalstudios.infernalexp.fabric.compat.ModMenuCompat"
-        ]
-    },
-    "mixins": [
-        "${mod_id}.mixins.json",
-        "${mod_id}.fabric.mixins.json"
+    "client": [
+      "com.infernalstudios.infernalexp.fabric.client.InfernalExpansionFabricClient"
     ],
-    "depends": {
-        "fabricloader": ">=0.14",
-        "fabric": "*",
-        "minecraft": "${minecraft_version}",
-        "java": ">=17",
-        "geckolib": ">=4.4.7"
-    },
-    "suggests": {
-        "cloth-config": "*"
-    }
+    "terrablender": [
+      "com.infernalstudios.infernalexp.fabric.compat.FabricTerraBlenderCompat"
+    ],
+    "fabric-datagen": [
+      "com.infernalstudios.infernalexp.fabric.datagen.IEDataGenerator"
+    ],
+    "modmenu": [
+      "com.infernalstudios.infernalexp.fabric.compat.ModMenuCompat"
+    ]
+  },
+  "mixins": [
+    "${mod_id}.mixins.json",
+    "${mod_id}.fabric.mixins.json"
+  ],
+  "accessWidener": "infernalexp.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=17",
+    "geckolib": ">=4.4.7"
+  },
+  "suggests": {
+    "cloth-config": "*"
+  }
 }
   

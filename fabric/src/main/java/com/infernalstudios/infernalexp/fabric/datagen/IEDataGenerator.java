@@ -420,6 +420,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .requires(Items.BOWL)
                     .unlockedBy("has_blindsight_tongue", has(ModItems.BLINDSIGHT_TONGUE.get()))
                     .save(exporter, IECommon.makeID("blindsight_tongue_stew"));
+
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.WAXED_GLOWSTONE.get())
+                    .requires(Blocks.GLOWSTONE)
+                    .requires(Items.HONEYCOMB)
+                    .unlockedBy("has_glowstone", has(Blocks.GLOWSTONE))
+                    .save(exporter, IECommon.makeID("waxed_glowstone"));
         }
     }
 
@@ -482,12 +488,17 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     "Determines the amount of Magma Cream a Voline needs to eat to grow.");
 
             // Mob Interactions Tooltips
-            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsilkBowSpeed.@Tooltip",
-                    "Determines the speed at which arrows are fired from the Glowsilk Bow.");
+            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsquitoBlockSucking.@Tooltip",
+                    "Determines if Glowsquitos should drink from Glowstone and Shroomlight blocks.");
+
 
             // Miscellaneous Tooltips
             builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.luminousFungusActivateDistance.@Tooltip",
                     "Determines the radius in blocks around Luminous Fungus that will cause them to light up.");
+
+            builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.glowsilkBowSpeed.@Tooltip",
+                    "Determines the speed at which arrows are fired from the Glowsilk Bow.");
+
 
             // Biome Translations
             builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");

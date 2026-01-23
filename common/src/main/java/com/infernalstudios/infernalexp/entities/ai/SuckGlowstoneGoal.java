@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -9,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
@@ -20,7 +22,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvents;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -47,6 +48,7 @@ public class SuckGlowstoneGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!IECommon.getConfig().common.mobInteractions.glowsquitoBlockSucking) return false;
         if (!this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return false;
         if (this.level.getGameTime() < this.nextUseTime) return false;
         if (this.mob.isAggressive() || this.mob.getTarget() != null) return false;
@@ -173,7 +175,7 @@ public class SuckGlowstoneGoal extends Goal {
                         this.level.levelEvent(2001, targetPos, Block.getId(currentState));
                         this.level.setBlock(targetPos, newState, 3);
                         this.mob.ate();
-                        this.nextUseTime = this.level.getGameTime() + 400L;
+                        this.nextUseTime = this.level.getGameTime() + 600L;
                     }
                 }
                 this.mob.setEating(false);

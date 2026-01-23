@@ -33,6 +33,7 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
         entries.accept(ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
+        entries.accept(ModBlocks.WAXED_GLOWSTONE.get());
         entries.accept(ModBlocks.POLISHED_GLOWSTONE.get());
         entries.accept(ModBlocks.DIMSTONE.get());
         entries.accept(ModBlocks.POLISHED_DIMSTONE.get());
