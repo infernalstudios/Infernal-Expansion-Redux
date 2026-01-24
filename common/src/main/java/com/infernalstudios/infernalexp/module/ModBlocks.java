@@ -93,41 +93,41 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> DIMSTONE = register("dimstone", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.DIMSTONE))
+                    new Block(ModBlockProperties.DIMSTONE()))
             .withItem().withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Dimstone")
     );
 
     public static final BlockDataHolder<?> POLISHED_DIMSTONE = register("polished_dimstone", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.DIMSTONE))
+                    new Block(ModBlockProperties.DIMSTONE()))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
             .withTranslation("Polished Dimstone")
     );
 
     public static final BlockDataHolder<?> DULLSTONE = register("dullstone", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.DULLSTONE))
+                    new Block(ModBlockProperties.DULLSTONE()))
             .withModel(BlockDataHolder.Model.CUBE).withItem()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS, ModTags.Blocks.GLOWSTONE_CANYON_CARVER_REPLACEABLES)
             .withTranslation("Dullstone")
     );
 
     public static final BlockDataHolder<?> POLISHED_DULLSTONE = register("polished_dullstone", BlockDataHolder.of(() ->
-                    new Block(ModBlockProperties.DULLSTONE))
+                    new Block(ModBlockProperties.DULLSTONE()))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
             .withTranslation("Polished Dullstone")
     );
 
     public static final BlockDataHolder<?> DULLSTONE_BUTTON = register("dullstone_button", BlockDataHolder.of(() ->
-                    ButtonBlockAccessor.createButtonBlock(ModBlockProperties.DULLSTONE_BUTTON,
+                    ButtonBlockAccessor.createButtonBlock(ModBlockProperties.DULLSTONE_BUTTON(),
                             dullstoneSet, 20, false))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Dullstone Button")
     );
 
     public static final BlockDataHolder<?> DULLSTONE_PRESSURE_PLATE = register("dullstone_pressure_plate", BlockDataHolder.of(() ->
-                    PressurePlateBlockAccessor.createPressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, ModBlockProperties.DULLSTONE_PLATE,
+                    PressurePlateBlockAccessor.createPressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, ModBlockProperties.DULLSTONE_PLATE(),
                             dullstoneSet))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Dullstone Pressure Plate")

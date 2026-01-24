@@ -25,35 +25,43 @@ public class ModBlockProperties {
 
     public static final BlockBehaviour.Properties GLOWSTONE = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE);
 
-    public static final BlockBehaviour.Properties DIMSTONE = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
-            .strength(1)
-            .lightLevel(a -> 6)
-            .mapColor(MapColor.TERRACOTTA_BROWN)
-            .requiresCorrectToolForDrops()
-            .sound(ModSoundTypes.DIMSTONE);
+    public static BlockBehaviour.Properties DIMSTONE() {
+        return BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
+                .strength(1)
+                .lightLevel(a -> 6)
+                .mapColor(MapColor.TERRACOTTA_BROWN)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.DIMSTONE.get());
+    }
 
-    public static final BlockBehaviour.Properties DULLSTONE = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
-            .strength(1.7f)
-            .lightLevel(a -> 0)
-            .mapColor(MapColor.TERRACOTTA_GRAY)
-            .requiresCorrectToolForDrops()
-            .sound(ModSoundTypes.DULLSTONE);
+    public static BlockBehaviour.Properties DULLSTONE() {
+        return BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
+                .strength(1.7f)
+                .lightLevel(a -> 0)
+                .mapColor(MapColor.TERRACOTTA_GRAY)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.DULLSTONE.get());
+    }
 
-    public static final BlockBehaviour.Properties DULLSTONE_BUTTON = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
-            .strength(1.7f)
-            .noCollission()
-            .lightLevel(a -> a.getValue(ButtonBlock.POWERED) ? 15 : 0)
-            .mapColor(MapColor.TERRACOTTA_GRAY)
-            .requiresCorrectToolForDrops()
-            .sound(ModSoundTypes.DULLSTONE);
+    public static BlockBehaviour.Properties DULLSTONE_BUTTON() {
+        return BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
+                .strength(1.7f)
+                .noCollission()
+                .lightLevel(a -> a.getValue(ButtonBlock.POWERED) ? 15 : 0)
+                .mapColor(MapColor.TERRACOTTA_GRAY)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.DULLSTONE.get());
+    }
 
-    public static final BlockBehaviour.Properties DULLSTONE_PLATE = BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
-            .strength(1.7f)
-            .noCollission()
-            .lightLevel(a -> a.getValue(PressurePlateBlock.POWERED) ? 15 : 0)
-            .mapColor(MapColor.TERRACOTTA_GRAY)
-            .requiresCorrectToolForDrops()
-            .sound(ModSoundTypes.DULLSTONE);
+    public static BlockBehaviour.Properties DULLSTONE_PLATE() {
+        return BlockBehaviour.Properties.copy(Blocks.GLOWSTONE)
+                .strength(1.7f)
+                .noCollission()
+                .lightLevel(a -> a.getValue(PressurePlateBlock.POWERED) ? 15 : 0)
+                .mapColor(MapColor.TERRACOTTA_GRAY)
+                .requiresCorrectToolForDrops()
+                .sound(ModSoundTypes.DULLSTONE.get());
+    }
 
     public static final BlockBehaviour.Properties GLOWSILK_COCOON = BlockBehaviour.Properties.copy(Blocks.MOSS_BLOCK)
             .strength(2f)

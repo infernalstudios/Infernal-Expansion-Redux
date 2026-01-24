@@ -3,9 +3,11 @@ package com.infernalstudios.infernalexp.module;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.SoundType;
 
+import java.util.function.Supplier;
+
 public class ModSoundTypes {
 
-    public static final SoundType DULLSTONE = new SoundType(
+    public static final Supplier<SoundType> DULLSTONE = () -> new SoundType(
             1.0F,
             1.0F,
             ModSounds.BLOCK_DULLSTONE_BREAK.get(),
@@ -15,7 +17,7 @@ public class ModSoundTypes {
             ModSounds.BLOCK_DULLSTONE_FALL.get()
     );
 
-    public static final SoundType DIMSTONE = new SoundType(
+    public static final Supplier<SoundType> DIMSTONE = () -> new SoundType(
             1.0F,
             1.0F,
             SoundEvents.GLASS_BREAK,
