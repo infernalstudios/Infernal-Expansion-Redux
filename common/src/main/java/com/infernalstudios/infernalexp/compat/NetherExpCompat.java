@@ -6,6 +6,7 @@ import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
+import net.jadenxgamer.netherexp.registry.worldgen.feature.custom.WarpedFungusFeature;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -16,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 public class NetherExpCompat {
     public static BlockDataHolder<?> SHROOMNIGHT_TEAR;
     public static BlockDataHolder<?> HOLLOWNIGHT;
-
-    private static Class<?> JNE_WARPED_FUNGUS_CLASS;
 
     public static void load() {
         SHROOMNIGHT_TEAR = ModBlocks.register("shroomnight_tear", BlockDataHolder.of(() ->
@@ -36,13 +35,6 @@ public class NetherExpCompat {
                 .withTranslation("Hollownight")
         );
 
-        if (Services.PLATFORM.isModLoaded("netherexp")) {
-            try {
-                // 1.21: JNE_HUGE_FUNGUS_CLASS = Class.forName("net.jadenxgamer.netherexp.core.worldgen.feature.JNEHugeFungusFeature");
-                JNE_WARPED_FUNGUS_CLASS = Class.forName("net.jadenxgamer.netherexp.registry.worldgen.feature.custom.WarpedFungusFeature");
-            } catch (ClassNotFoundException ignored) {
-            }
-        }
     }
 
     public static boolean isShroomnight(Block block) {
@@ -53,13 +45,18 @@ public class NetherExpCompat {
         return id.getNamespace().equals("netherexp") && id.getPath().equals("shroomnight");
     }
 
-    /**
-     * Checks if the provided feature instance is a Nether Expansion fungus feature.
-     */
     public static boolean isNetherExpFungus(Object feature) {
-        if (feature == null) return false;
+        if (!Services.PLATFORM.isModLoaded("netherexp")) {
+            return false;
+        }
 
-        return JNE_WARPED_FUNGUS_CLASS != null
-                && JNE_WARPED_FUNGUS_CLASS.isAssignableFrom(feature.getClass());
+        return InnerCompat.isWarpedFungus(feature);
     }
+
+    private static class InnerCompat {
+        static boolean isWarpedFungus(Object feature) {
+            return feature instanceof WarpedFungusFeature;
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.infernalstudios.infernalexp.fabric.datagen;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.config.IEConfig;
@@ -33,6 +35,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -159,6 +162,172 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .unlockedBy(getHasName(from), has(from))
                     .group(getName(to))
                     .save(exporter, IECommon.makeID(getName(to)));
+        }
+
+        private void createAutumnityRecipe(Consumer<FinishedRecipe> exporter, String resultPath, ResourceLocation inputA, ItemLike inputB) {
+            ResourceLocation resultId = IECommon.makeID(resultPath);
+            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, "autumnity");
+
+            conditionalExporter.accept(new FinishedRecipe() {
+                @Override
+                public void serializeRecipeData(@NotNull JsonObject json) {
+                    json.addProperty("type", "minecraft:crafting_shaped");
+
+                    JsonArray pattern = new JsonArray();
+                    pattern.add("A");
+                    pattern.add("B");
+                    json.add("pattern", pattern);
+
+                    JsonObject key = new JsonObject();
+                    JsonObject keyA = new JsonObject();
+                    keyA.addProperty("item", inputA.toString());
+                    key.add("A", keyA);
+
+                    JsonObject keyB = new JsonObject();
+                    keyB.addProperty("item", BuiltInRegistries.ITEM.getKey(inputB.asItem()).toString());
+                    key.add("B", keyB);
+                    json.add("key", key);
+
+                    JsonObject result = new JsonObject();
+                    result.addProperty("item", resultId.toString());
+                    json.add("result", result);
+                }
+
+                @Override
+                public @NotNull ResourceLocation getId() {
+                    return resultId;
+                }
+
+                @Override
+                public @NotNull RecipeSerializer<?> getType() {
+                    return RecipeSerializer.SHAPED_RECIPE;
+                }
+
+                @Override
+                public JsonObject serializeAdvancement() {
+                    return null;
+                }
+
+                @Override
+                public ResourceLocation getAdvancementId() {
+                    return null;
+                }
+            });
+        }
+
+        /**
+         * Wraps a recipe exporter to append mod-loaded conditions for all 3 loaders.
+         */
+        private Consumer<FinishedRecipe> withConditions(Consumer<FinishedRecipe> exporter, String modId) {
+            return recipe -> {
+                JsonObject json = new JsonObject();
+                recipe.serializeRecipeData(json);
+
+                JsonObject forgeCondition = new JsonObject();
+                forgeCondition.addProperty("type", "forge:mod_loaded");
+                forgeCondition.addProperty("modid", modId);
+
+                JsonObject neoforgeCondition = new JsonObject();
+                neoforgeCondition.addProperty("type", "neoforge:mod_loaded");
+                neoforgeCondition.addProperty("modid", modId);
+
+                JsonObject fabricCondition = new JsonObject();
+                fabricCondition.addProperty("condition", "fabric:all_mods_loaded");
+                JsonArray values = new JsonArray();
+                values.add(modId);
+                fabricCondition.add("values", values);
+
+                JsonArray forgeConditions = new JsonArray();
+                forgeConditions.add(forgeCondition);
+                JsonArray neoforgeConditions = new JsonArray();
+                neoforgeConditions.add(neoforgeCondition);
+                JsonArray fabricConditions = new JsonArray();
+                fabricConditions.add(fabricCondition);
+
+                exporter.accept(new FinishedRecipe() {
+                    @Override
+                    public void serializeRecipeData(@NotNull JsonObject json) {
+                        recipe.serializeRecipeData(json);
+                        json.add("forge:conditions", forgeConditions);
+                        json.add("neoforge:conditions", neoforgeConditions);
+                        json.add("fabric:load_conditions", fabricConditions);
+                    }
+
+                    @Override
+                    public @NotNull ResourceLocation getId() {
+                        return recipe.getId();
+                    }
+
+                    @Override
+                    public @NotNull RecipeSerializer<?> getType() {
+                        return recipe.getType();
+                    }
+
+                    @Override
+                    public JsonObject serializeAdvancement() {
+                        return recipe.serializeAdvancement();
+                    }
+
+                    @Override
+                    public ResourceLocation getAdvancementId() {
+                        return recipe.getAdvancementId();
+                    }
+                });
+            };
+        }
+
+        /**
+         * Generates a Create Crushing recipe with multi-loader conditions.
+         */
+        private void offerCreateCrushing(Consumer<FinishedRecipe> exporter, ItemLike input, int time, CrushingResult... results) {
+            ResourceLocation id = IECommon.makeID("crushing/" + getName(input));
+            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, "create");
+
+            conditionalExporter.accept(new FinishedRecipe() {
+                @Override
+                public void serializeRecipeData(@NotNull JsonObject json) {
+                    json.addProperty("type", "create:crushing");
+
+                    JsonArray ingredients = new JsonArray();
+                    JsonObject ing = new JsonObject();
+                    ing.addProperty("item", BuiltInRegistries.ITEM.getKey(input.asItem()).toString());
+                    ingredients.add(ing);
+                    json.add("ingredients", ingredients);
+
+                    JsonArray resultsArray = new JsonArray();
+                    for (CrushingResult result : results) {
+                        JsonObject res = new JsonObject();
+                        res.addProperty("item", result.itemId);
+
+                        if (result.count > 1) res.addProperty("count", result.count);
+                        if (result.chance < 1.0f) res.addProperty("chance", result.chance);
+                        resultsArray.add(res);
+                    }
+
+                    json.add("results", resultsArray);
+                    json.addProperty("processingTime", time);
+                }
+
+                @Override
+                public @NotNull ResourceLocation getId() {
+                    return id;
+                }
+
+                @Override
+                public @NotNull RecipeSerializer<?> getType() {
+                    return RecipeSerializer.SHAPED_RECIPE;
+                }
+
+                @Override
+                public JsonObject serializeAdvancement() {
+                    return null;
+                }
+
+                @Override
+                public ResourceLocation getAdvancementId() {
+                    return null;
+                }
+            });
         }
 
         @Override
@@ -300,13 +469,49 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     5, 100, "basalt_iron_ore");
 
             offer3x3Recipe(exporter, Blocks.SHROOMLIGHT, 1, ModBlocks.SHROOMLIGHT_TEAR.get());
-            if (NetherExpCompat.SHROOMNIGHT_TEAR != null) {
-                offer3x3Recipe(exporter,
-                        BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight")),
-                        1,
-                        NetherExpCompat.SHROOMNIGHT_TEAR.get()
-                );
-            }
+
+            offerCompat3x3Recipe(
+                    exporter,
+                    new ResourceLocation("netherexp", "shroomnight"),
+                    NetherExpCompat.SHROOMNIGHT_TEAR.get(),
+                    "netherexp"
+            );
+
+            offerCreateCrushing(exporter, ModBlocks.DIMSTONE.get(), 150,
+                    new CrushingResult(Items.GLOWSTONE_DUST, 1),
+                    new CrushingResult(ModItems.DULLROCKS.get(), 1),
+                    new CrushingResult(Items.GLOWSTONE_DUST, 1, 0.5f),
+                    new CrushingResult(ModItems.DULLROCKS.get(), 1, 0.5f)
+            );
+
+            offerCreateCrushing(exporter, ModBlocks.DULLSTONE.get(), 150,
+                    new CrushingResult(ModItems.DULLROCKS.get(), 3),
+                    new CrushingResult(ModItems.DULLROCKS.get(), 1, 0.5f)
+            );
+
+            offerCreateCrushing(exporter, ModBlocks.SHIMMER_STONE.get(), 150,
+                    new CrushingResult(ModBlocks.SHIMMER_SAND.get(), 2),
+                    new CrushingResult(ModBlocks.SHIMMER_SAND.get(), 1, 0.25f)
+            );
+
+            offerCreateCrushing(exporter, ModBlocks.SHIMMER_SAND.get(), 150,
+                    new CrushingResult(Items.GLOWSTONE_DUST, 2),
+                    new CrushingResult(Items.GLOWSTONE_DUST, 1, 0.25f)
+            );
+
+            offerCreateCrushing(exporter, ModBlocks.BASALT_IRON_ORE.get(), 350,
+                    new CrushingResult(new ResourceLocation("create", "crushed_iron_ore"), 2, 1.0f),
+                    new CrushingResult(new ResourceLocation("create", "crushed_iron_ore"), 1, 0.25f),
+                    new CrushingResult(new ResourceLocation("create", "experience_nugget"), 1, 0.75f),
+                    new CrushingResult(Blocks.BASALT, 1, 0.125f)
+            );
+
+            createAutumnityRecipe(exporter, "glowlight_jack_o_lantern",
+                    new ResourceLocation("minecraft", "carved_pumpkin"), ModItems.GLOWLIGHT_TORCH.get());
+
+            createAutumnityRecipe(exporter, "large_glowlight_jack_o_lantern_slice",
+                    new ResourceLocation("autumnity", "carved_large_pumpkin_slice"), ModItems.GLOWLIGHT_TORCH.get());
+
             offer2x2Recipe(exporter, ModBlocks.GLOWSILK_COCOON.get(), 1, ModItems.GLOWSILK_STRING.get());
             offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(), 4, ModBlocks.GLOWSILK_COCOON.get());
 
@@ -426,6 +631,70 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .requires(Items.HONEYCOMB)
                     .unlockedBy("has_glowstone", has(Blocks.GLOWSTONE))
                     .save(exporter, IECommon.makeID("waxed_glowstone"));
+        }
+
+        /**
+         * Generates a 3x3 packing recipe (e.g. Nuggets to Ingot) for an item that might not exist at runtime.
+         */
+        private void offerCompat3x3Recipe(Consumer<FinishedRecipe> exporter, ResourceLocation outputId, ItemLike input, String conditionModId) {
+            ResourceLocation recipeId = IECommon.makeID(outputId.getPath());
+            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, conditionModId);
+
+            conditionalExporter.accept(new FinishedRecipe() {
+                @Override
+                public void serializeRecipeData(@NotNull JsonObject json) {
+                    json.addProperty("type", "minecraft:crafting_shapeless");
+                    json.addProperty("group", outputId.getPath());
+
+                    JsonArray ingredients = new JsonArray();
+                    JsonObject inputJson = new JsonObject();
+                    inputJson.addProperty("item", BuiltInRegistries.ITEM.getKey(input.asItem()).toString());
+
+                    for (int i = 0; i < 9; i++) {
+                        ingredients.add(inputJson);
+                    }
+                    json.add("ingredients", ingredients);
+
+                    JsonObject result = new JsonObject();
+                    result.addProperty("item", outputId.toString());
+                    result.addProperty("count", 1);
+                    json.add("result", result);
+                }
+
+                @Override
+                public @NotNull ResourceLocation getId() {
+                    return recipeId;
+                }
+
+                @Override
+                public @NotNull RecipeSerializer<?> getType() {
+                    return RecipeSerializer.SHAPELESS_RECIPE;
+                }
+
+                @Override
+                public JsonObject serializeAdvancement() {
+                    return null;
+                }
+
+                @Override
+                public ResourceLocation getAdvancementId() {
+                    return null;
+                }
+            });
+        }
+
+        private record CrushingResult(String itemId, int count, float chance) {
+            public CrushingResult(ResourceLocation id, int count, float chance) {
+                this(id.toString(), count, chance);
+            }
+
+            public CrushingResult(ItemLike item, int count, float chance) {
+                this(BuiltInRegistries.ITEM.getKey(item.asItem()).toString(), count, chance);
+            }
+
+            public CrushingResult(ItemLike item, int count) {
+                this(item, count, 1.0f);
+            }
         }
     }
 

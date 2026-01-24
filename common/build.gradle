@@ -28,6 +28,9 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
 
+    compileOnly "maven.modrinth:blueprint:${blueprint_version}"
+    compileOnly "maven.modrinth:autumnity:${autumnity_version}"
+    compileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}-Forge"
     compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}"
     compileOnly "me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"
     compileOnly "com.github.glitchfiend:TerraBlender-common:$terrablender_version"

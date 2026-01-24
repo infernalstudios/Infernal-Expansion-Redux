@@ -17,7 +17,7 @@ public class InfernalExpansionFabric implements ModInitializer {
         FeatureModuleFabric.registerFeatures();
         CarverModuleFabric.registerCarvers();
         SpawnPlacementModuleFabric.registerSpawnPlacements();
+        IECommon.commonSetup();
 
-        IECommon.registerCompostables();
     }
 }

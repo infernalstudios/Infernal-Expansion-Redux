@@ -11,3 +11,6 @@
 ### Fixes
 
 * Fixed Glowsquito wings being invisible from below.
+* Fixed mineable/hoe.json tag breaking.
+* Fixed log spam from missing loot table entries.
+* 

@@ -1,46 +1,37 @@
 package com.infernalstudios.infernalexp.forge.compat.autumnity;
 
-import com.infernalstudios.infernalexp.IEConstants;
+import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModCreativeTabs;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class AutumnityCompat {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IEConstants.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IEConstants.MOD_ID);
-
-    public static final RegistryObject<Block> GLOWLIGHT_JACK_O_LANTERN = BLOCKS.register("glowlight_jack_o_lantern", () ->
-            new GlowlightJackOLanternBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
-                    .lightLevel((state) -> 15)));
-
-    public static final RegistryObject<Item> GLOWLIGHT_JACK_O_LANTERN_ITEM = ITEMS.register("glowlight_jack_o_lantern", () ->
-            new BlockItem(GLOWLIGHT_JACK_O_LANTERN.get(), new Item.Properties()));
-
-    public static final RegistryObject<Block> LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE = BLOCKS.register("large_glowlight_jack_o_lantern_slice", () ->
-            new LargeGlowlightJackOLanternSliceBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
-                    .lightLevel((state) -> 15)));
-
-    public static final RegistryObject<Item> LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE_ITEM = ITEMS.register("large_glowlight_jack_o_lantern_slice", () ->
-            new BlockItem(LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE.get(), new Item.Properties()));
+    public static BlockDataHolder<?> GLOWLIGHT_JACK_O_LANTERN;
+    public static BlockDataHolder<?> LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE;
 
     public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
+        GLOWLIGHT_JACK_O_LANTERN = ModBlocks.register("glowlight_jack_o_lantern", BlockDataHolder.of(() ->
+                        new GlowlightJackOLanternBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
+                                .lightLevel((state) -> 15)))
+                .withItem()
+                .withTranslation("Glowlight Jack o'Lantern"));
+
+        LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE = ModBlocks.register("large_glowlight_jack_o_lantern_slice", BlockDataHolder.of(() ->
+                        new LargeGlowlightJackOLanternSliceBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
+                                .lightLevel((state) -> 15)))
+                .withItem()
+                .withTranslation("Large Glowlight Jack o'Lantern Slice"));
+
         eventBus.addListener(AutumnityCompat::addCreative);
     }
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == ModCreativeTabs.INFERNAL_EXPANSION_TAB.get()) {
-            event.accept(GLOWLIGHT_JACK_O_LANTERN_ITEM);
-            event.accept(LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE_ITEM);
+            event.accept(GLOWLIGHT_JACK_O_LANTERN.get());
+            event.accept(LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE.get());
         }
     }
 }

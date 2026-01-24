@@ -11,6 +11,7 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 
 public class IECommon {
@@ -26,7 +27,6 @@ public class IECommon {
         }
 
         ModBlocks.load();
-        StrippableRegistry.register(ModBlocks.WAXED_GLOWSTONE.get(), net.minecraft.world.level.block.Blocks.GLOWSTONE);
         ModItems.load();
         ModFireTypes.load();
         ModEntityTypes.load();
@@ -40,6 +40,17 @@ public class IECommon {
         ModSurfaceRuleConditions.load();
         ModParticleTypes.load();
         ModSounds.load();
+    }
+
+    public static void commonSetup() {
+        ModBlocks.getBlockRegistry().values().forEach(holder -> {
+            if (holder.isCompostable() && holder.hasItem()) {
+                ComposterBlock.COMPOSTABLES.put(holder.get().asItem(), holder.getCompostChance());
+            }
+        });
+
+        // Register strippables
+        StrippableRegistry.register(ModBlocks.WAXED_GLOWSTONE.get(), Blocks.GLOWSTONE);
     }
 
     public static ResourceLocation makeID(String name) {
@@ -75,26 +86,12 @@ public class IECommon {
         return CONFIG;
     }
 
-    public static void registerCompostables() {
-        ModBlocks.getBlockRegistry().values().forEach(holder -> {
-            if (holder.isCompostable() && holder.hasItem()) {
-                ComposterBlock.COMPOSTABLES.put(holder.get().asItem(), holder.getCompostChance());
-            }
-        });
-    }
-
-    @Deprecated
-    public static <T> T log(T message) {
-        return log(message, 0);
-    }
-
-    public static <T> T log(T message, int level) {
+    public static <T> void log(T message, int level) {
         if (level == 0)
             IEConstants.LOG.info("[InfernalExpansion] {}", message);
         else if (level == 1)
             IEConstants.LOG.warn("[InfernalExpansion] {}", message);
         else if (level == 2)
             IEConstants.LOG.error("[InfernalExpansion] {}", message);
-        return message;
     }
 }

@@ -48,7 +48,7 @@ public class InfernalExpansionForge {
                 TerraBlenderCompat.register();
             }
 
-            IECommon.registerCompostables();
+            IECommon.commonSetup();
         });
     }
 }
