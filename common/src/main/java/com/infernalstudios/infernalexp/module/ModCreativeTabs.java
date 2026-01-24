@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
+import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
 import net.minecraft.core.registries.Registries;
@@ -75,10 +76,8 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.SHROOMLIGHT_TEAR.get());
         entries.accept(ModBlocks.HOLLOWLIGHT.get());
 
-        if (NetherExpCompat.SHROOMNIGHT_TEAR != null) {
+        if (Services.PLATFORM.isModLoaded("netherexp")) {
             entries.accept(NetherExpCompat.SHROOMNIGHT_TEAR.get());
-        }
-        if (NetherExpCompat.HOLLOWNIGHT != null) {
             entries.accept(NetherExpCompat.HOLLOWNIGHT.get());
         }
 

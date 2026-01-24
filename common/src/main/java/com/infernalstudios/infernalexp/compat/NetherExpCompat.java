@@ -20,23 +20,23 @@ public class NetherExpCompat {
     private static Class<?> JNE_WARPED_FUNGUS_CLASS;
 
     public static void load() {
+        SHROOMNIGHT_TEAR = ModBlocks.register("shroomnight_tear", BlockDataHolder.of(() ->
+                        new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
+                                ModTags.Blocks.SHROOMNIGHT_TEARS_GROWABLE))
+                .withItem().cutout().dropsSelf()
+                .withTranslation("Shroomnight Tear")
+        );
+
+        HOLLOWNIGHT = ModBlocks.register("hollownight", BlockDataHolder.of(() ->
+                        new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT),
+                                () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"))))
+                .withItem().withModel(BlockDataHolder.Model.CUBE)
+                .dropsSelf()
+                .withTags(BlockTags.MINEABLE_WITH_HOE)
+                .withTranslation("Hollownight")
+        );
+
         if (Services.PLATFORM.isModLoaded("netherexp")) {
-            SHROOMNIGHT_TEAR = ModBlocks.register("shroomnight_tear", BlockDataHolder.of(() ->
-                            new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
-                                    ModTags.Blocks.SHROOMNIGHT_TEARS_GROWABLE))
-                    .withItem().cutout().dropsSelf()
-                    .withTranslation("Shroomnight Tear")
-            );
-
-            HOLLOWNIGHT = ModBlocks.register("hollownight", BlockDataHolder.of(() ->
-                            new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT),
-                                    () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"))))
-                    .withItem().withModel(BlockDataHolder.Model.CUBE)
-                    .dropsSelf()
-                    .withTags(BlockTags.MINEABLE_WITH_HOE)
-                    .withTranslation("Hollownight")
-            );
-
             try {
                 // 1.21: JNE_HUGE_FUNGUS_CLASS = Class.forName("net.jadenxgamer.netherexp.core.worldgen.feature.JNEHugeFungusFeature");
                 JNE_WARPED_FUNGUS_CLASS = Class.forName("net.jadenxgamer.netherexp.registry.worldgen.feature.custom.WarpedFungusFeature");
