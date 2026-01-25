@@ -20,7 +20,6 @@ public class CinderscapesCompat {
     public static BlockDataHolder<?> HOLLOWBRIGHT;
 
     public static void load() {
-
         SHROOMBRIGHT_TEAR = ModBlocks.register("shroombright_tear", BlockDataHolder.of(() ->
                         new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
                                 ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE))
@@ -37,7 +36,6 @@ public class CinderscapesCompat {
                 .withTranslation("Hollowbright")
         );
 
-        registerCompat();
     }
 
     public static boolean isShroombright(Block block) {
@@ -48,7 +46,7 @@ public class CinderscapesCompat {
     }
 
     public static void registerCompat() {
-        Block shroombright = BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+        Block shroombright = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroombright"));
         if (shroombright != Blocks.AIR) {
             GlowsquitoInteractionRegistry.register(
                     shroombright,

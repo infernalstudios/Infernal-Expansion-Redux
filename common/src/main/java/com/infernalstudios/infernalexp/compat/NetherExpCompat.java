@@ -37,7 +37,6 @@ public class NetherExpCompat {
                 .withTranslation("Hollownight")
         );
 
-        registerCompat();
     }
 
     public static boolean isShroomnight(Block block) {

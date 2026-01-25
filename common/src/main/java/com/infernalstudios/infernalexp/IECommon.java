@@ -1,5 +1,8 @@
 package com.infernalstudios.infernalexp;
 
+import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
+import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
+import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.config.IEConfig;
 import com.infernalstudios.infernalexp.datagen.config.ConfiguredData;
@@ -56,6 +59,10 @@ public class IECommon {
 
         // Register Glowsquito interactions
         GlowsquitoInteractionRegistry.registerDefaults();
+
+        NetherExpCompat.registerCompat();
+        GardensOfTheDeadCompat.registerCompat();
+        CinderscapesCompat.registerCompat();
     }
 
     public static ResourceLocation makeID(String name) {

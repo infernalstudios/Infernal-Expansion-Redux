@@ -29,14 +29,13 @@ public class GardensOfTheDeadCompat {
 
         HOLLOWBLIGHT = ModBlocks.register("hollowblight", BlockDataHolder.of(() ->
                         new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT),
-                                () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroomblight"))))
+                                () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomblight"))))
                 .withItem().withModel(BlockDataHolder.Model.CUBE)
                 .dropsSelf()
                 .withTags(BlockTags.MINEABLE_WITH_HOE)
                 .withTranslation("Hollowblight")
         );
 
-        registerCompat();
     }
 
     public static boolean isShroomblight(Block block) {
@@ -47,7 +46,7 @@ public class GardensOfTheDeadCompat {
     }
 
     public static void registerCompat() {
-        Block shroomblight = BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroomblight"));
+        Block shroomblight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomblight"));
         if (shroomblight != Blocks.AIR) {
             GlowsquitoInteractionRegistry.register(
                     shroomblight,
