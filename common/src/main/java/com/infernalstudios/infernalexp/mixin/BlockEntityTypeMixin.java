@@ -10,9 +10,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockEntityType.class)
 public class BlockEntityTypeMixin {
+
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true)
-    public void registerCampfires(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-        if (((BlockEntityType) (Object) this) == BlockEntityType.CAMPFIRE && state.is(ModBlocks.GLOWLIGHT_CAMPFIRE.get()))
+    public void infernalexp$isValid(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+        if ((Object) this == BlockEntityType.CAMPFIRE && state.is(ModBlocks.GLOWLIGHT_CAMPFIRE.get())) {
             cir.setReturnValue(true);
+        }
+
+        if ((Object) this == BlockEntityType.SIGN && (state.is(ModBlocks.LUMINOUS_SIGN.get()) || state.is(ModBlocks.LUMINOUS_WALL_SIGN.get()))) {
+            cir.setReturnValue(true);
+        }
+
+        if ((Object) this == BlockEntityType.HANGING_SIGN && (state.is(ModBlocks.LUMINOUS_HANGING_SIGN.get()) || state.is(ModBlocks.LUMINOUS_WALL_HANGING_SIGN.get()))) {
+            cir.setReturnValue(true);
+        }
     }
 }

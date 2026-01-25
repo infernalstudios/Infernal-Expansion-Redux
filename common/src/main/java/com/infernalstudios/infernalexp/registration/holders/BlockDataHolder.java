@@ -28,22 +28,22 @@ import java.util.function.Supplier;
 public class BlockDataHolder<T extends Block> {
     private static final Map<TagKey<Block>, List<BlockDataHolder<?>>> BLOCK_TAGS = new HashMap<>();
     private static final List<BlockDataHolder<?>> CUTOUT_BLOCKS = new ArrayList<>();
-
-    private T cachedEntry;
     private final Supplier<T> entrySupplier;
-
+    private final Map<Block, FlammabilityRegistry.Entry> FLAMMABILITIES = new HashMap<>();
+    private final Map<Model, BlockDataHolder<?>> BLOCKSETS = new HashMap<>();
+    private T cachedEntry;
     private ItemDataHolder<? extends Item> blockItem;
     private Model model;
     private String defaultTranslation;
-    private final Map<Block, FlammabilityRegistry.Entry> FLAMMABILITIES = new HashMap<>();
     private Supplier<? extends Block> strippingResult;
     private int fuelDuration;
     private float compostChance;
-    private final Map<Model, BlockDataHolder<?>> BLOCKSETS = new HashMap<>();
     private Supplier<ItemLike> drop;
     private NumberProvider dropCount;
     private boolean isGlass;
     private BlockDataHolder<?> paneBlock;
+    private Supplier<? extends Block> wallSignBlock;
+    private Supplier<? extends Block> textureSourceBlock;
 
     public BlockDataHolder(Supplier<T> entrySupplier) {
         this.entrySupplier = entrySupplier;
@@ -53,8 +53,17 @@ public class BlockDataHolder<T extends Block> {
         return new BlockDataHolder(blockSupplier);
     }
 
+    public static Map<TagKey<Block>, List<BlockDataHolder<?>>> getBlockTags() {
+        return BLOCK_TAGS;
+    }
+
+    public static List<BlockDataHolder<?>> getCutoutBlocks() {
+        return CUTOUT_BLOCKS;
+    }
+
     /**
      * Retrieves the cached entry if it exists, otherwise calls the supplier to create a new entry.
+     *
      * @return The cached entry, or a new entry if the cached entry does not exist.
      */
     public T get() {
@@ -67,6 +76,32 @@ public class BlockDataHolder<T extends Block> {
     }
 
     /**
+     * Configures this block as a Sign, linking it to its Wall Sign and Texture Source (usually planks).
+     */
+    public BlockDataHolder<?> withSign(Supplier<? extends Block> wallSign, Supplier<? extends Block> textureSource) {
+        this.wallSignBlock = wallSign;
+        this.textureSourceBlock = textureSource;
+        return this.withModel(Model.SIGN);
+    }
+
+    /**
+     * Configures this block as a Hanging Sign, linking it to its Wall Hanging Sign and Texture Source (usually stripped stem).
+     */
+    public BlockDataHolder<?> withHangingSign(Supplier<? extends Block> wallSign, Supplier<? extends Block> textureSource) {
+        this.wallSignBlock = wallSign;
+        this.textureSourceBlock = textureSource;
+        return this.withModel(Model.HANGING_SIGN);
+    }
+
+    public Block getWallSignBlock() {
+        return wallSignBlock != null ? wallSignBlock.get() : null;
+    }
+
+    public Block getTextureSourceBlock() {
+        return textureSourceBlock != null ? textureSourceBlock.get() : null;
+    }
+
+    /**
      * Creates a default BlockItem for this block
      */
     public BlockDataHolder<? extends Block> withItem() {
@@ -76,6 +111,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Adds the ability to strip this block with an axe
+     *
      * @param stripResult the block to set it to when it gets stripped
      */
     public BlockDataHolder<?> withStripping(Block stripResult) {
@@ -85,6 +121,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Adds the ability to strip this block with an axe (Supplier version)
+     *
      * @param stripResult the supplier of the block to set it to when it gets stripped
      */
     public BlockDataHolder<?> withStripping(Supplier<? extends Block> stripResult) {
@@ -102,16 +139,17 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Registers flammability with Vanilla Fire
+     *
      * @param flammabilityEntry an Entry of the ignite and spread chances
      */
     public BlockDataHolder<?> withFlammableDefault(FlammabilityRegistry.Entry flammabilityEntry) {
         return this.withFlammable(Blocks.FIRE, flammabilityEntry);
     }
 
-
     /**
      * Registers flammability with the supplied fire block
-     * @param fireBlock must extend FireBlock
+     *
+     * @param fireBlock         must extend FireBlock
      * @param flammabilityEntry an Entry of the ignite and spread chances
      */
     public BlockDataHolder<?> withFlammable(Block fireBlock, FlammabilityRegistry.Entry flammabilityEntry) {
@@ -125,6 +163,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Registers the block item as a fuel source. Does nothing if the block has no item.
+     *
      * @param fuelDuration the length in ticks this fuel source burns
      */
     public BlockDataHolder<?> withFuel(int fuelDuration) {
@@ -142,6 +181,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Registers the block item as a compostable.
+     *
      * @param chance the chance (0.0 to 1.0) for the composter to fill
      */
     public BlockDataHolder<?> withCompost(float chance) {
@@ -159,6 +199,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Registers this block to the supplied tags
+     *
      * @param tags the tag keys to register the block to
      */
     @SafeVarargs
@@ -171,10 +212,6 @@ public class BlockDataHolder<T extends Block> {
         }
 
         return this;
-    }
-
-    public static Map<TagKey<Block>, List<BlockDataHolder<?>>> getBlockTags() {
-        return BLOCK_TAGS;
     }
 
     public boolean hasItem() {
@@ -210,10 +247,6 @@ public class BlockDataHolder<T extends Block> {
         return this;
     }
 
-    public static List<BlockDataHolder<?>> getCutoutBlocks() {
-        return CUTOUT_BLOCKS;
-    }
-
     /**
      * Makes this a glass block with a glass pane
      */
@@ -225,6 +258,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Makes this a colored glass block with a glass pane
+     *
      * @param dye DyeColor to make the pane
      */
     public BlockDataHolder<?> glass(DyeColor dye) {
@@ -243,6 +277,7 @@ public class BlockDataHolder<T extends Block> {
 
     /**
      * Sets the default EN_US translation for this block
+     *
      * @param translation the name for this block
      */
     public BlockDataHolder<?> withTranslation(String translation) {
@@ -422,7 +457,9 @@ public class BlockDataHolder<T extends Block> {
         PRESSURE_PLATE("pressure_plate", "Pressure Plate"),
         FENCE("fence", "Fence"),
         FENCE_GATE("fence_gate", "Fence Gate"),
-        FLOWER_POT("flower_pot", "Flower Pot");
+        FLOWER_POT("flower_pot", "Flower Pot"),
+        SIGN("sign", "Sign"),
+        HANGING_SIGN("hanging_sign", "Hanging Sign");
 
         private final String suffix;
         private final String lang;

@@ -554,6 +554,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .unlockedBy(getHasName(ModBlocks.LUMINOUS_PLANKS.get()), has(ModBlocks.LUMINOUS_PLANKS.get()))
                     .save(exporter, IECommon.makeID("luminous_trapdoor"));
 
+            signBuilder(ModBlocks.LUMINOUS_SIGN.get(), Ingredient.of(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .unlockedBy(getHasName(ModBlocks.LUMINOUS_PLANKS.get()), has(ModBlocks.LUMINOUS_PLANKS.get()))
+                    .save(exporter, IECommon.makeID("luminous_sign"));
+
+            hangingSign(exporter, ModBlocks.LUMINOUS_HANGING_SIGN.get(), ModBlocks.STRIPPED_LUMINOUS_STEM.get());
+
             offer3x3Recipe(exporter, ModBlocks.LUMINOUS_FUNGUS_CAP.get(), 1, ModBlocks.LUMINOUS_FUNGUS.get());
             offerUnpackRecipe(exporter, ModBlocks.LUMINOUS_FUNGUS.get(), 9, ModBlocks.LUMINOUS_FUNGUS_CAP.get());
 
@@ -1067,6 +1073,16 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                                     ResourceLocation modelLocation = ModelTemplates.FLOWER_POT_CROSS.create(potted, textureMapping, generator.modelOutput);
                                     generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(potted, modelLocation));
                                 }
+                            }
+                            case SIGN, HANGING_SIGN -> {
+                                Block sign = blockDataHolder.get();
+                                Block wallSign = blockDataHolder.getWallSignBlock();
+                                Block textureSource = blockDataHolder.getTextureSourceBlock();
+                                TextureMapping textureMapping = TextureMapping.particle(textureSource);
+                                ResourceLocation resourceLocation = ModelTemplates.PARTICLE_ONLY.create(sign, textureMapping, generator.modelOutput);
+                                generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(sign, resourceLocation));
+                                generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wallSign, resourceLocation));
+                                generator.skipAutoItemBlock(wallSign);
                             }
                         }
                     }
