@@ -44,7 +44,7 @@ public class BlindsightMoveControl extends MoveControl {
         } else {
             this.operation = Operation.WAIT;
 
-            if (this.mob.onGround()) {
+            if (this.mob.onGround() || this.blindsight.isInLava()) {
                 this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 
                 if (this.jumpDelay-- <= 0) {
@@ -56,7 +56,7 @@ public class BlindsightMoveControl extends MoveControl {
 
                     this.blindsight.getJumpControl().jump();
 
-                    if (this.blindsight.doPlayJumpSound()) {
+                    if (this.blindsight.doPlayJumpSound() && this.mob.onGround()) {
                         this.blindsight.playSound(this.blindsight.getJumpSound(), 1.0f, this.blindsight.getVoicePitch());
                     }
                 } else {
