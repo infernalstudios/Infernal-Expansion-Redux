@@ -4,7 +4,7 @@
 * Glowstone can be waxed and scraped, which will prevent Glowsquitos from drinking it while waxed.
 * Added config option to disable Glowsquito griefing.
 * Added Hollowblights and Shroomblight Tears when both Jaden's Nether Expansion and Gardens of the Dead are installed.
-* Added Hollowbrights and Shroombright Tears when both Jaden's Nether Expansion and Gardens of the Dead are installed
+* Added Hollowbrights and Shroombright Tears when both Jaden's Nether Expansion and Cinderscapes are installed
 * Config option for enabling/disabling Blindsight fire extinguishing.
 * Config option for enabling/disabling Blindsight baby mob eating.
 * Added Luminous Signs and Luminous Hanging Signs.
