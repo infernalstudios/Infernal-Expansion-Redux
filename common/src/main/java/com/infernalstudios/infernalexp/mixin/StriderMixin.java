@@ -39,7 +39,7 @@ public abstract class StriderMixin extends Animal implements IBucketable {
         super(entityType, level);
     }
 
-    @Inject(method = "defineSynchedData", at = @At("HEAD"))
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
     private void IE_defineSynchedData(CallbackInfo ci) {
         this.entityData.define(infernalexp$FROM_BUCKET, false);
     }
@@ -66,11 +66,8 @@ public abstract class StriderMixin extends Animal implements IBucketable {
 
     @Inject(method = "mobInteract", at = @At("RETURN"), cancellable = true)
     private void IE_mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        InteractionResult result = cir.getReturnValue();
         if (this.isBaby()) {
-            cir.setReturnValue(IBucketable.tryBucketEntity(player, hand, this).orElse(super.mobInteract(player, hand)));
-        } else {
-            cir.setReturnValue(result);
+            IBucketable.tryBucketEntity(player, hand, this).ifPresent(cir::setReturnValue);
         }
     }
 
