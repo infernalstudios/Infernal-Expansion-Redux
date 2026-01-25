@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "gardens_of_the_dead:shroomblight",
+      "required": false
+    },
+    {
+      "id": "gardens_of_the_dead:shroombright",
+      "required": false
+    }
+  ]
+}

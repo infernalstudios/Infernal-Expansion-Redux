@@ -38,7 +38,7 @@ public class GardensOfTheDeadCompat {
 
         SHROOMBRIGHT_TEAR = ModBlocks.register("shroombright_tear", BlockDataHolder.of(() ->
                         new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
-                                ModTags.Blocks.SHROOMBLIGHT_TEARS_GROWABLE))
+                                ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE))
                 .withItem().cutout().dropsSelf()
                 .withTranslation("Shroombright Tear")
         );

@@ -10,6 +10,7 @@
 * Added Luminous Signs and Luminous Hanging Signs.
 * Added stonecutting recipes for Polished Glowstone, Dimstone, and Dullstone.
 * Added `glowsquito_suckables` tag for blocks that can be sucked by Glowsquitos.
+* Added `glimmer_gravel_blacklist` tag for entities that won't activate Glimmer Gravel.
 
 ### Changes
 
@@ -23,7 +24,7 @@
 ### Fixes
 
 * Fixed Glowsquito wings being invisible from below.
-* Fixed mineable/hoe.json tag breaking without Jaden's Nether Expansion installed.
+* Fixed `mineable/hoe` tag breaking without Jaden's Nether Expansion installed.
 * Fixed log spam from missing loot table entries and recipes.
 * Fixed Glowstone Spikes generating on top of Lava.
 * Fixed Basalt Slab stonecutting only giving one instead of two. 

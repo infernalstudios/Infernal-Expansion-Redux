@@ -82,7 +82,7 @@ public class ModCreativeTabs {
         if (Services.PLATFORM.isModLoaded("netherexp")) {
             entries.accept(NetherExpCompat.SHROOMNIGHT_TEAR.get());
             entries.accept(NetherExpCompat.HOLLOWNIGHT.get());
-            if (Services.PLATFORM.isModLoaded("gardensofthedead")) {
+            if (Services.PLATFORM.isModLoaded("gardens_of_the_dead")) {
                 entries.accept(GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get());
                 entries.accept(GardensOfTheDeadCompat.HOLLOWBLIGHT.get());
                 entries.accept(GardensOfTheDeadCompat.SHROOMBRIGHT_TEAR.get());

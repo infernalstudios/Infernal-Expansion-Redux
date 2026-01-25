@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.entities;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.entities.ai.ExtinguishFireGoal;
 import com.infernalstudios.infernalexp.entities.ai.blindsight.*;
 import com.infernalstudios.infernalexp.module.ModEffects;
@@ -25,7 +26,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -131,7 +131,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             }
         });
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsilkMothEntity.class, true));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, LivingEntity::isBaby));
+        if (IECommon.getConfig().common.mobInteractions.blindsightEatBabyMobs) {
+            this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, LivingEntity::isBaby));
+        }
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, BlindsightEntity.class, 10, true, false,
                 (entity) -> entity.distanceToSqr(this) < 64.0D));

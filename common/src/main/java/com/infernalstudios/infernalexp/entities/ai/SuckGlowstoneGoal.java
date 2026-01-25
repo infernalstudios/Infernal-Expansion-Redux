@@ -202,22 +202,7 @@ public class SuckGlowstoneGoal extends Goal {
     }
 
     private boolean isValidTarget(BlockState state) {
-        if (state.is(ModTags.Blocks.GLOWSQUITO_SUCKABLES) ||
-                state.is(Blocks.GLOWSTONE) ||
-                state.is(ModBlocks.DIMSTONE.get()) ||
-                state.is(Blocks.SHROOMLIGHT)) {
-            return true;
-        }
-
-        if (NetherExpCompat.isShroomnight(state.getBlock())) {
-            return true;
-        }
-
-        if (GardensOfTheDeadCompat.isShroomblight(state.getBlock())) {
-            return true;
-        }
-
-        return false;
+        return state.is(ModTags.Blocks.GLOWSQUITO_SUCKABLES);
     }
 
     private boolean findGlowstoneOrDimstone() {

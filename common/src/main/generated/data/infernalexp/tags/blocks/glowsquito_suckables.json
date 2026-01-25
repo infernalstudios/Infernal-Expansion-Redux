@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:glowstone",
+    "infernalexp:dimstone",
+    "minecraft:shroomlight",
+    {
+      "id": "netherexp:shroomnight",
+      "required": false
+    },
+    {
+      "id": "gardens_of_the_dead:shroomblight",
+      "required": false
+    },
+    {
+      "id": "gardens_of_the_dead:shroombright",
+      "required": false
+    }
+  ]
+}

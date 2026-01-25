@@ -18,6 +18,7 @@ public class ModTags {
         public static final TagKey<Block> SHROOMLIGHT_TEARS_GROWABLE = create("shroomlight_tears_growable_on");
         public static final TagKey<Block> SHROOMNIGHT_TEARS_GROWABLE = create("shroomnight_tears_growable_on");
         public static final TagKey<Block> SHROOMBLIGHT_TEARS_GROWABLE = create("shroomblight_tears_growable_on");
+        public static final TagKey<Block> SHROOMBRIGHT_TEARS_GROWABLE = create("shroomblight_tears_growable_on");
         public static final TagKey<Block> GLOWSQUITO_SUCKABLES = create("glowsquito_suckables");
         public static final TagKey<Block> GLOWSTONE_CANYON_CARVER_REPLACEABLES = create("glowstone_canyon_carver_replaceable");
     }

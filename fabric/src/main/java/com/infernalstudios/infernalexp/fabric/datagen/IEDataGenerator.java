@@ -29,9 +29,11 @@ import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -59,6 +61,7 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(IEWorldGenProvider::new);
         pack.addProvider(IEBlockTagProvider::new);
         pack.addProvider(IEItemTagProvider::new);
+        pack.addProvider(IEEntityTypeTagProvider::new);
         pack.addProvider(IEBlockLootTableProvider::new);
         pack.addProvider(IEModelProvider::new);
         pack.addProvider(IELangProvider::new);
@@ -764,6 +767,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.glowsquitoBlockSucking.@Tooltip",
                     "Determines if Glowsquitos should drink from Glowstone and Shroomlight blocks.");
 
+            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.blindsightExtinguishFire.@Tooltip",
+                    "If enabled, Blindsights will stomp out fire sources.");
+
+            builder.add("text.autoconfig.infernalexp.option.common.mobInteractions.blindsightEatBabyMobs.@Tooltip",
+                    "If enabled, Blindsights will target and eat baby mobs.");
 
             // Miscellaneous Tooltips
             builder.add("text.autoconfig.infernalexp.option.common.miscellaneous.luminousFungusActivateDistance.@Tooltip",
@@ -899,8 +907,45 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             getOrCreateTagBuilder(ModTags.Blocks.SHROOMLIGHT_TEARS_GROWABLE)
                     .add(Blocks.SHROOMLIGHT);
 
+            getOrCreateTagBuilder(ModTags.Blocks.SHROOMNIGHT_TEARS_GROWABLE)
+                    .addOptional(new ResourceLocation("netherexp", "shroomnight"));
+
+            getOrCreateTagBuilder(ModTags.Blocks.SHROOMBLIGHT_TEARS_GROWABLE)
+                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroomblight"));
+
+            getOrCreateTagBuilder(ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE)
+                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+
             getOrCreateTagBuilder(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
                     .add(Blocks.GLOWSTONE);
+
+            getOrCreateTagBuilder(ModTags.Blocks.GLOWSQUITO_SUCKABLES)
+                    .add(Blocks.GLOWSTONE)
+                    .add(ModBlocks.DIMSTONE.get())
+                    .add(Blocks.SHROOMLIGHT)
+                    .addOptional(new ResourceLocation("netherexp", "shroomnight"))
+                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroomblight"))
+                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+        }
+    }
+
+    private static class IEEntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
+        public IEEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
+            super(output, completableFuture);
+        }
+
+        @Override
+        protected void addTags(HolderLookup.Provider arg) {
+            getOrCreateTagBuilder(ModTags.EntityTypes.VOLINE_FEAR)
+                    .add(EntityType.PIGLIN)
+                    .add(EntityType.PIGLIN_BRUTE);
+
+            getOrCreateTagBuilder(ModTags.EntityTypes.VOLINE_HOSTILE)
+                    .add(EntityType.MAGMA_CUBE);
+
+            getOrCreateTagBuilder(ModTags.EntityTypes.GLIMMER_GRAVEL_BLACKLIST)
+                    .add(ModEntityTypes.GLOWSILK_MOTH.get())
+                    .add(ModEntityTypes.GLOWSQUITO.get());
         }
     }
 
