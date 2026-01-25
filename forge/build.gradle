@@ -62,11 +62,9 @@ dependencies {
     modCompileOnly "com.github.glitchfiend:TerraBlender-forge:${terrablender_version}"
 
     // Autumnity
-    modCompileOnly "maven.modrinth:blueprint:${blueprint_version}"
     modCompileOnly "maven.modrinth:autumnity:${autumnity_version}"
 
     // Jaden's Nether Expansion
-    modCompileOnly "maven.modrinth:architectury-api:${architectury_version}+forge"
     modCompileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}-Forge"
 
     compileOnly project(":common")

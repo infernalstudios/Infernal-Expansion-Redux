@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IEConstants;
+import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
@@ -72,6 +73,8 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.LUMINOUS_PLANKS.getPressurePlate().get());
         entries.accept(ModBlocks.LUMINOUS_DOOR.get());
         entries.accept(ModBlocks.LUMINOUS_TRAPDOOR.get());
+        entries.accept(ModBlocks.LUMINOUS_SIGN.get());
+        entries.accept(ModBlocks.LUMINOUS_HANGING_SIGN.get());
 
         entries.accept(ModBlocks.SHROOMLIGHT_TEAR.get());
         entries.accept(ModBlocks.HOLLOWLIGHT.get());
@@ -79,6 +82,12 @@ public class ModCreativeTabs {
         if (Services.PLATFORM.isModLoaded("netherexp")) {
             entries.accept(NetherExpCompat.SHROOMNIGHT_TEAR.get());
             entries.accept(NetherExpCompat.HOLLOWNIGHT.get());
+            if (Services.PLATFORM.isModLoaded("gardensofthedead")) {
+                entries.accept(GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get());
+                entries.accept(GardensOfTheDeadCompat.HOLLOWBLIGHT.get());
+                entries.accept(GardensOfTheDeadCompat.SHROOMBRIGHT_TEAR.get());
+                entries.accept(GardensOfTheDeadCompat.HOLLOWBRIGHT.get());
+            }
         }
 
         entries.accept(ModBlocks.DULLTHORNS.get());

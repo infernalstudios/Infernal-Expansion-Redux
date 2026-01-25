@@ -74,9 +74,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new GlowsquitoEntity.MoveHelperController(this);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 16.0F);
         this.setNoGravity(true);
@@ -92,6 +89,11 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     public static boolean checkGlowsquitoSpawnRules(EntityType<GlowsquitoEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.noCollision(entityType.getAABB(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D));
+    }
+
+    public void resetPowers() {
+        this.setShroomlightPowered(false);
+        this.setShroomnightPowered(false);
     }
 
     @Override

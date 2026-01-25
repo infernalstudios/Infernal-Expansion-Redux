@@ -53,6 +53,9 @@ public class IEConfig {
 
             @ConfigEntry.Gui.Tooltip
             public boolean glowsquitoBlockSucking = true;
+
+            @ConfigEntry.Gui.Tooltip
+            public boolean blindsightExtinguishFire = true;
         }
     }
 }

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dullstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "infernalexp:dullstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:polished_dullstone_from_dullstone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_dullstone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:polished_dullstone_from_dullstone_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

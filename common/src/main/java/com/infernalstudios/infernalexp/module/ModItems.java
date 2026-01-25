@@ -199,6 +199,16 @@ public class ModItems {
             .withFuel(1600)
     );
 
+    public static final ItemDataHolder<?> LUMINOUS_SIGN = register("luminous_sign", ItemDataHolder.of(() ->
+                    new SignItem(new Item.Properties().stacksTo(16), ModBlocks.LUMINOUS_SIGN.get(), ModBlocks.LUMINOUS_WALL_SIGN.get()))
+            .withModel(ModelTemplates.FLAT_ITEM)
+    );
+
+    public static final ItemDataHolder<?> LUMINOUS_HANGING_SIGN = register("luminous_hanging_sign", ItemDataHolder.of(() ->
+                    new HangingSignItem(ModBlocks.LUMINOUS_HANGING_SIGN.get(), ModBlocks.LUMINOUS_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)))
+            .withModel(ModelTemplates.FLAT_ITEM)
+    );
+
     public static ItemDataHolder<?> register(String name, ItemDataHolder<?> itemDataHolder) {
         return register(IECommon.makeID(name), itemDataHolder);
     }

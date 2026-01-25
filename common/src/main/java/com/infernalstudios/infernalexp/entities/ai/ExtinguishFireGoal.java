@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.entities.BlindsightEntity;
 import com.infernalstudios.infernalexp.entities.ai.blindsight.BlindsightMoveControl;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -27,9 +28,11 @@ public class ExtinguishFireGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!IECommon.getConfig().common.mobInteractions.blindsightExtinguishFire) return false;
         if (!this.blindsight.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return false;
         if (this.blindsight.getTarget() != null) return false;
         if (this.blindsight.alertTimer > 0) return false;
+        if (this.blindsight.getRandom().nextInt(20) != 0) return false;
 
         BlockPos entityPos = this.blindsight.blockPosition();
         int radius = 10;

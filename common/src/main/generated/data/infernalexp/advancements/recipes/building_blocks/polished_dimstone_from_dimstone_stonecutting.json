@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dimstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "infernalexp:dimstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:polished_dimstone_from_dimstone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_dimstone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:polished_dimstone_from_dimstone_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

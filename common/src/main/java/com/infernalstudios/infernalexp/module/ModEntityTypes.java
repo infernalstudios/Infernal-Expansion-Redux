@@ -23,6 +23,7 @@ public class ModEntityTypes {
     public static final EntityTypeDataHolder<GlowsquitoEntity> GLOWSQUITO = register("glowsquito", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(GlowsquitoEntity::new, MobCategory.MONSTER)
                             .sized(0.8f, 0.5f)
+                            .fireImmune()
                             .build())
             .attributes(GlowsquitoEntity::createAttributes)
             .withTranslation("Glowsquito"));
@@ -39,6 +40,7 @@ public class ModEntityTypes {
     public static final EntityTypeDataHolder<GlowsilkMothEntity> GLOWSILK_MOTH = register("glowsilk_moth", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(GlowsilkMothEntity::new, MobCategory.AMBIENT)
                             .sized(0.5F, 0.9F)
+                            .fireImmune()
                             .build())
             .attributes(GlowsilkMothEntity::createAttributes)
             .withTranslation("Glowsilk Moth"));

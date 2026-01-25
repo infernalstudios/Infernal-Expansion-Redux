@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.block.*;
+import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.mixin.accessor.*;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
@@ -25,8 +26,8 @@ import java.util.Map;
 public class ModBlocks {
     public static final BlockSetType dullstoneSet = new BlockSetType("dullstone");
     public static final BlockSetType luminousSet = new BlockSetType("luminous");
+    public static final WoodType LUMINOUS_WOOD_TYPE = WoodTypeAccessor.infernalexp$register(new WoodType("luminous", luminousSet));
     private static final Map<ResourceLocation, BlockDataHolder<?>> BLOCK_REGISTRY = new LinkedHashMap<>();
-
     public static final BlockDataHolder<?> SHIMMER_SAND = register("shimmer_sand", BlockDataHolder.of(() ->
                     new SandBlock(0xffffaa, ModBlockProperties.SHIMMER_SAND))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
@@ -344,7 +345,7 @@ public class ModBlocks {
     public static final BlockDataHolder<?> LUMINOUS_PLANKS = register("luminous_planks", BlockDataHolder.of(() ->
                     new Block(ModBlockProperties.LUMINOUS_PLANKS))
             .withStairs().withSlab()
-            .withFence().withFenceGate(WoodType.CRIMSON)
+            .withFence().withFenceGate(LUMINOUS_WOOD_TYPE)
             .withButton(luminousSet, 30, true)
             .withPressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, luminousSet)
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
@@ -367,6 +368,32 @@ public class ModBlocks {
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.DOORS)
             .withTranslation("Luminous Door");
 
+    public static final BlockDataHolder<?> LUMINOUS_SIGN = register("luminous_sign", BlockDataHolder.of(() ->
+                    new StandingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_SIGN), LUMINOUS_WOOD_TYPE))
+            .cutout()
+            .dropsOther(ModItems.LUMINOUS_SIGN::get)
+            .withTranslation("Luminous Sign")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_WALL_SIGN = register("luminous_wall_sign", BlockDataHolder.of(() ->
+                    new WallSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_WALL_SIGN), LUMINOUS_WOOD_TYPE))
+            .cutout()
+            .dropsOther(ModItems.LUMINOUS_SIGN::get)
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_HANGING_SIGN = register("luminous_hanging_sign", BlockDataHolder.of(() ->
+                    new CeilingHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_HANGING_SIGN), LUMINOUS_WOOD_TYPE))
+            .cutout()
+            .dropsOther(ModItems.LUMINOUS_HANGING_SIGN::get)
+            .withTranslation("Luminous Hanging Sign")
+    );
+
+    public static final BlockDataHolder<?> LUMINOUS_WALL_HANGING_SIGN = register("luminous_wall_hanging_sign", BlockDataHolder.of(() ->
+                    new WallHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_WALL_HANGING_SIGN), LUMINOUS_WOOD_TYPE))
+            .cutout()
+            .dropsOther(ModItems.LUMINOUS_HANGING_SIGN::get)
+    );
+
     public static final BlockDataHolder<?> LUMINOUS_WART_BLOCK = register("luminous_wart_block", BlockDataHolder.of(() ->
                     new Block(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
@@ -386,5 +413,6 @@ public class ModBlocks {
 
     public static void load() {
         NetherExpCompat.load();
+        GardensOfTheDeadCompat.load();
     }
 }

@@ -13,10 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -28,6 +25,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -294,6 +292,14 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     @Override
     public void travel(@NotNull Vec3 pTravelVector) {
+        if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
+            if (this.isInLava()) {
+                this.moveRelative(0.02F, pTravelVector);
+                this.move(MoverType.SELF, this.getDeltaMovement());
+                this.setDeltaMovement(this.getDeltaMovement().scale(0.8F));
+                return;
+            }
+        }
         super.travel(pTravelVector);
     }
 
@@ -384,6 +390,11 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 .triggerableAnim("tongue_attack_immediate", TONGUE_ATTACK_IMMEDIATE)
                 .triggerableAnim("alert", ALERT)
                 .triggerableAnim("land", LAND));
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
     }
 
     @Override

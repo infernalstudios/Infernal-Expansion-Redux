@@ -44,10 +44,6 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
         super(type, worldIn);
         this.setNoGravity(true);
         this.moveControl = new GlowsilkMothMoveControl(this);
-
-        this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -82,6 +78,11 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
         controllers.add(new AnimationController<>(this, "wing_controller", 0, event ->
                 event.setAndContinue(FLY)
         ));
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
     }
 
     @Override

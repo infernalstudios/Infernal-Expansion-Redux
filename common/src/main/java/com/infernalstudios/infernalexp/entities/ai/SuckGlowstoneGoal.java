@@ -1,15 +1,14 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModSounds;
-import com.infernalstudios.infernalexp.platform.Services;
+import com.infernalstudios.infernalexp.module.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.ClipContext;
@@ -154,21 +153,28 @@ public class SuckGlowstoneGoal extends Goal {
                         this.mob.playSound(ModSounds.BLOCK_DULLSTONE_BREAK.get(), 1.0F, 1.0F);
                     } else if (currentState.is(Blocks.SHROOMLIGHT)) {
                         newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
+                        this.mob.resetPowers();
                         this.mob.setShroomlightPowered(true);
                         this.mob.setShroomlightTimer(6000);
-                        this.mob.setShroomnightPowered(false);
-                        this.mob.setShroomnightTimer(0);
                         this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (Services.PLATFORM.isModLoaded("netherexp")) {
-                        Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
-                        if (currentState.is(shroomnight) && NetherExpCompat.HOLLOWNIGHT != null) {
-                            newState = NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState();
-                            this.mob.setShroomnightPowered(true);
-                            this.mob.setShroomnightTimer(6000);
-                            this.mob.setShroomlightPowered(false);
-                            this.mob.setShroomlightTimer(0);
-                            this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                        }
+                    } else if (NetherExpCompat.isShroomnight(currentState.getBlock()) && NetherExpCompat.HOLLOWNIGHT != null) {
+                        newState = NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState();
+                        this.mob.resetPowers();
+                        this.mob.setShroomnightPowered(true);
+                        this.mob.setShroomnightTimer(6000);
+                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
+                    } else if (GardensOfTheDeadCompat.isShroomblight(currentState.getBlock()) && GardensOfTheDeadCompat.HOLLOWBLIGHT != null) {
+                        newState = GardensOfTheDeadCompat.HOLLOWBLIGHT.get().defaultBlockState();
+                        this.mob.resetPowers();
+                        this.mob.setShroomlightPowered(true); // TODO: shroomblight powered
+                        this.mob.setShroomlightTimer(6000);
+                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
+                    } else if (GardensOfTheDeadCompat.isShroombright(currentState.getBlock()) && GardensOfTheDeadCompat.HOLLOWBRIGHT != null) {
+                        newState = GardensOfTheDeadCompat.HOLLOWBRIGHT.get().defaultBlockState();
+                        this.mob.resetPowers();
+                        this.mob.setShroomlightPowered(true); // TODO: shroombright powered
+                        this.mob.setShroomlightTimer(6000);
+                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
                     }
 
                     if (newState != null) {
@@ -196,13 +202,19 @@ public class SuckGlowstoneGoal extends Goal {
     }
 
     private boolean isValidTarget(BlockState state) {
-        if (state.is(Blocks.GLOWSTONE) || state.is(ModBlocks.DIMSTONE.get()) || state.is(Blocks.SHROOMLIGHT)) {
+        if (state.is(ModTags.Blocks.GLOWSQUITO_SUCKABLES) ||
+                state.is(Blocks.GLOWSTONE) ||
+                state.is(ModBlocks.DIMSTONE.get()) ||
+                state.is(Blocks.SHROOMLIGHT)) {
             return true;
         }
 
-        if (Services.PLATFORM.isModLoaded("netherexp")) {
-            Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
-            return state.is(shroomnight);
+        if (NetherExpCompat.isShroomnight(state.getBlock())) {
+            return true;
+        }
+
+        if (GardensOfTheDeadCompat.isShroomblight(state.getBlock())) {
+            return true;
         }
 
         return false;

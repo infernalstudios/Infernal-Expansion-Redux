@@ -500,8 +500,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             );
 
             offerCreateCrushing(exporter, ModBlocks.BASALT_IRON_ORE.get(), 350,
-                    new CrushingResult(new ResourceLocation("create", "crushed_iron_ore"), 2, 1.0f),
-                    new CrushingResult(new ResourceLocation("create", "crushed_iron_ore"), 1, 0.25f),
+                    new CrushingResult(new ResourceLocation("create", "crushed_raw_iron"), 2, 1.0f),
+                    new CrushingResult(new ResourceLocation("create", "crushed_raw_iron"), 1, 0.25f),
                     new CrushingResult(new ResourceLocation("create", "experience_nugget"), 1, 0.75f),
                     new CrushingResult(Blocks.BASALT, 1, 0.125f)
             );
@@ -602,8 +602,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .save(exporter, IECommon.makeID("basalt_wall"));
 
             offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_STAIRS.get());
-            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_SLAB.get());
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_SLAB.get(), 2);
             offerStonecutting(exporter, Blocks.BASALT, ModBlocks.BASALT_WALL.get());
+
+            offerStonecutting(exporter, Blocks.GLOWSTONE, ModBlocks.POLISHED_GLOWSTONE.get());
+            offerStonecutting(exporter, ModBlocks.DIMSTONE.get(), ModBlocks.POLISHED_DIMSTONE.get());
+            offerStonecutting(exporter, ModBlocks.DULLSTONE.get(), ModBlocks.POLISHED_DULLSTONE.get());
 
             oreSmelting(exporter, List.of(ModBlocks.SHIMMER_SAND.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWLIGHT_GLASS.get(),
                     0.1f, 200, "glowlight_glass");

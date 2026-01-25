@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.block;
 
+import com.infernalstudios.infernalexp.module.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -57,6 +58,8 @@ public class GlimmerGravelBlock extends FallingBlock {
     @Override
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
         super.stepOn(level, pos, state, entity);
+
+        if (entity.getType().is(ModTags.EntityTypes.GLIMMER_GRAVEL_BLACKLIST)) return;
 
         if (entity.isSteppingCarefully()) return;
         if (!isFree(level.getBlockState(pos.below()))) return;
