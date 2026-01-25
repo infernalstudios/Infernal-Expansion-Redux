@@ -15,44 +15,45 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class GardensOfTheDeadCompat {
-    public static BlockDataHolder<?> SHROOMBLIGHT_TEAR;
-    public static BlockDataHolder<?> HOLLOWBLIGHT;
+public class CinderscapesCompat {
+    public static BlockDataHolder<?> SHROOMBRIGHT_TEAR;
+    public static BlockDataHolder<?> HOLLOWBRIGHT;
 
     public static void load() {
-        SHROOMBLIGHT_TEAR = ModBlocks.register("shroomblight_tear", BlockDataHolder.of(() ->
+
+        SHROOMBRIGHT_TEAR = ModBlocks.register("shroombright_tear", BlockDataHolder.of(() ->
                         new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
-                                ModTags.Blocks.SHROOMBLIGHT_TEARS_GROWABLE))
+                                ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE))
                 .withItem().cutout().dropsSelf()
-                .withTranslation("Shroomblight Tear")
+                .withTranslation("Shroombright Tear")
         );
 
-        HOLLOWBLIGHT = ModBlocks.register("hollowblight", BlockDataHolder.of(() ->
+        HOLLOWBRIGHT = ModBlocks.register("hollowbright", BlockDataHolder.of(() ->
                         new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT),
-                                () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroomblight"))))
+                                () -> BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroombright"))))
                 .withItem().withModel(BlockDataHolder.Model.CUBE)
                 .dropsSelf()
                 .withTags(BlockTags.MINEABLE_WITH_HOE)
-                .withTranslation("Hollowblight")
+                .withTranslation("Hollowbright")
         );
 
         registerCompat();
     }
 
-    public static boolean isShroomblight(Block block) {
+    public static boolean isShroombright(Block block) {
         if (!Services.PLATFORM.isModLoaded("netherexp") || !Services.PLATFORM.isModLoaded("gardens_of_the_dead"))
             return false;
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-        return id.getNamespace().equals("netherexp") && id.getPath().equals("shroomblight");
+        return id.getNamespace().equals("netherexp") && id.getPath().equals("shroombright");
     }
 
     public static void registerCompat() {
-        Block shroomblight = BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroomblight"));
-        if (shroomblight != Blocks.AIR) {
+        Block shroombright = BuiltInRegistries.BLOCK.get(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+        if (shroombright != Blocks.AIR) {
             GlowsquitoInteractionRegistry.register(
-                    shroomblight,
-                    () -> GardensOfTheDeadCompat.HOLLOWBLIGHT.get().defaultBlockState(),
-                    "shroomblight",
+                    shroombright,
+                    () -> CinderscapesCompat.HOLLOWBRIGHT.get().defaultBlockState(),
+                    "shroombright",
                     SoundEvents.SHROOMLIGHT_BREAK
             );
         }

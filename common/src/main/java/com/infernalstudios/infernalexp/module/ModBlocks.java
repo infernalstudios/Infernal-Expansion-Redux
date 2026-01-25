@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.block.*;
+import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
 import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.mixin.accessor.*;
@@ -414,5 +415,6 @@ public class ModBlocks {
     public static void load() {
         NetherExpCompat.load();
         GardensOfTheDeadCompat.load();
+        CinderscapesCompat.load();
     }
 }

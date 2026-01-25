@@ -31,7 +31,7 @@ public class DullthornsBlock extends NetherPlantBlock {
             if (!entity.level().isClientSide) {
                 entity.level().playSound(null, entity.blockPosition(),
                         SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS,
-                        1.0F, 1.0F);
+                        2.0F, 1.0F);
             }
         }
         entity.hurt(entity.damageSources().cactus(), 1.0F);

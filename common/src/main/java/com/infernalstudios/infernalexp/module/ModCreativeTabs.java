@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IEConstants;
+import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
 import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.platform.Services;
@@ -85,8 +86,10 @@ public class ModCreativeTabs {
             if (Services.PLATFORM.isModLoaded("gardens_of_the_dead")) {
                 entries.accept(GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get());
                 entries.accept(GardensOfTheDeadCompat.HOLLOWBLIGHT.get());
-                entries.accept(GardensOfTheDeadCompat.SHROOMBRIGHT_TEAR.get());
-                entries.accept(GardensOfTheDeadCompat.HOLLOWBRIGHT.get());
+            }
+            if (Services.PLATFORM.isModLoaded("cinderscapes")) {
+                entries.accept(CinderscapesCompat.SHROOMBRIGHT_TEAR.get());
+                entries.accept(CinderscapesCompat.HOLLOWBRIGHT.get());
             }
         }
 

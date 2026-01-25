@@ -29,7 +29,6 @@ import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -911,10 +910,10 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .addOptional(new ResourceLocation("netherexp", "shroomnight"));
 
             getOrCreateTagBuilder(ModTags.Blocks.SHROOMBLIGHT_TEARS_GROWABLE)
-                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroomblight"));
+                    .addOptional(new ResourceLocation("netherexp", "shroomblight"));
 
             getOrCreateTagBuilder(ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE)
-                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+                    .addOptional(new ResourceLocation("netherexp", "shroombright"));
 
             getOrCreateTagBuilder(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
                     .add(Blocks.GLOWSTONE);
@@ -924,8 +923,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .add(ModBlocks.DIMSTONE.get())
                     .add(Blocks.SHROOMLIGHT)
                     .addOptional(new ResourceLocation("netherexp", "shroomnight"))
-                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroomblight"))
-                    .addOptional(new ResourceLocation("gardens_of_the_dead", "shroombright"));
+                    .addOptional(new ResourceLocation("netherexp", "shroomblight"))
+                    .addOptional(new ResourceLocation("netherexp", "shroombright"));
         }
     }
 

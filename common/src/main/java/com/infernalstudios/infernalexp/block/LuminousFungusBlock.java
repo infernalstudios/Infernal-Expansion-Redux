@@ -90,7 +90,7 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
 
             if (!hadEffect && !world.isClientSide) {
                 world.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME,
-                        SoundSource.BLOCKS, 1.0F, 1.0F);
+                        SoundSource.BLOCKS, 2.0F, 1.0F);
             }
         }
     }

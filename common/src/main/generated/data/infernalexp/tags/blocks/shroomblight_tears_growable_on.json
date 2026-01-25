@@ -2,11 +2,11 @@
   "replace": false,
   "values": [
     {
-      "id": "gardens_of_the_dead:shroomblight",
+      "id": "netherexp:shroomblight",
       "required": false
     },
     {
-      "id": "gardens_of_the_dead:shroombright",
+      "id": "netherexp:shroombright",
       "required": false
     }
   ]

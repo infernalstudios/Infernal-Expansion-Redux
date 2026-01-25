@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
+import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
 import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -49,6 +50,7 @@ public class BoneMealItemMixin {
     @Unique
     @Nullable
     private Block infernalExp$getTearVariant(Block block) {
+        // TODO: this should probably be refactored
         if (block == Blocks.SHROOMLIGHT) {
             return ModBlocks.SHROOMLIGHT_TEAR.get();
         }
@@ -61,8 +63,8 @@ public class BoneMealItemMixin {
             return GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR != null ? GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get() : null;
         }
 
-        if (GardensOfTheDeadCompat.isShroombright(block)) {
-            return GardensOfTheDeadCompat.SHROOMBRIGHT_TEAR != null ? GardensOfTheDeadCompat.SHROOMBRIGHT_TEAR.get() : null;
+        if (CinderscapesCompat.isShroombright(block)) {
+            return CinderscapesCompat.SHROOMBRIGHT_TEAR != null ? CinderscapesCompat.SHROOMBRIGHT_TEAR.get() : null;
         }
 
         return null;
