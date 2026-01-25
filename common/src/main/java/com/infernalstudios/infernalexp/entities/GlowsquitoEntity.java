@@ -51,7 +51,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
-    private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.STRING);
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS);
@@ -63,7 +62,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     private static final RawAnimation FLYING_WOBBLING = RawAnimation.begin().thenLoop("flying_wobbling");
     private static final RawAnimation FLYING_TILTING = RawAnimation.begin().thenLoop("flying_tilting");
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private int variantTimer;
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -172,7 +170,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(BRED, false);
         this.entityData.define(EATING, false);
         this.entityData.define(VARIANT, "");
     }
@@ -185,14 +182,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.entityData.set(EATING, eating);
     }
 
-    public boolean getBred() {
-        return this.entityData.get(BRED);
-    }
-
-    public void setBred(boolean isBred) {
-        this.entityData.set(BRED, isBred);
-    }
-
     public String getVariant() {
         return this.entityData.get(VARIANT);
     }
@@ -201,41 +190,20 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.entityData.set(VARIANT, variant);
     }
 
-    public void setVariantTimer(int time) {
-        this.variantTimer = time;
-    }
-
     public void resetPowers() {
         this.setVariant("");
-        this.variantTimer = 0;
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Variant", this.getVariant());
-        compound.putInt("VariantTimer", this.variantTimer);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setVariant(compound.getString("Variant"));
-        this.variantTimer = compound.getInt("VariantTimer");
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        if (!this.level().isClientSide) {
-            if (this.variantTimer > 0) {
-                this.variantTimer--;
-                if (this.variantTimer <= 0) {
-                    this.resetPowers();
-                }
-            }
-        }
     }
 
     @Override

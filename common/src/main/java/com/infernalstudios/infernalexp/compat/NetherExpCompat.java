@@ -5,10 +5,12 @@ import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.platform.Services;
+import com.infernalstudios.infernalexp.registration.GlowsquitoInteractionRegistry;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.jadenxgamer.netherexp.registry.worldgen.feature.custom.WarpedFungusFeature;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -35,6 +37,7 @@ public class NetherExpCompat {
                 .withTranslation("Hollownight")
         );
 
+        registerCompat();
     }
 
     public static boolean isShroomnight(Block block) {
@@ -53,10 +56,22 @@ public class NetherExpCompat {
         return InnerCompat.isWarpedFungus(feature);
     }
 
+    public static void registerCompat() {
+        Block shroomnight = BuiltInRegistries.BLOCK.get(new ResourceLocation("netherexp", "shroomnight"));
+
+        if (shroomnight != Blocks.AIR) {
+            GlowsquitoInteractionRegistry.register(
+                    shroomnight,
+                    () -> NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState(),
+                    "shroomnight",
+                    SoundEvents.SHROOMLIGHT_BREAK
+            );
+        }
+    }
+
     private static class InnerCompat {
         static boolean isWarpedFungus(Object feature) {
             return feature instanceof WarpedFungusFeature;
         }
     }
-
 }

@@ -5,6 +5,7 @@ import com.infernalstudios.infernalexp.config.IEConfig;
 import com.infernalstudios.infernalexp.datagen.config.ConfiguredData;
 import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.platform.Services;
+import com.infernalstudios.infernalexp.registration.GlowsquitoInteractionRegistry;
 import com.infernalstudios.infernalexp.registration.StrippableRegistry;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
@@ -43,6 +44,7 @@ public class IECommon {
     }
 
     public static void commonSetup() {
+        // Register compostables
         ModBlocks.getBlockRegistry().values().forEach(holder -> {
             if (holder.isCompostable() && holder.hasItem()) {
                 ComposterBlock.COMPOSTABLES.put(holder.get().asItem(), holder.getCompostChance());
@@ -51,6 +53,9 @@ public class IECommon {
 
         // Register strippables
         StrippableRegistry.register(ModBlocks.WAXED_GLOWSTONE.get(), Blocks.GLOWSTONE);
+
+        // Register Glowsquito interactions
+        GlowsquitoInteractionRegistry.registerDefaults();
     }
 
     public static ResourceLocation makeID(String name) {

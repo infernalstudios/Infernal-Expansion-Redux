@@ -32,7 +32,7 @@ public class ExtinguishFireGoal extends Goal {
         if (!this.blindsight.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) return false;
         if (this.blindsight.getTarget() != null) return false;
         if (this.blindsight.alertTimer > 0) return false;
-        if (this.blindsight.getRandom().nextInt(20) != 0) return false;
+        if (this.blindsight.getRandom().nextInt(100) != 0) return false;
 
         BlockPos entityPos = this.blindsight.blockPosition();
         int radius = 10;

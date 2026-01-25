@@ -1,21 +1,17 @@
 package com.infernalstudios.infernalexp.entities.ai;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
-import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import com.infernalstudios.infernalexp.module.ModTags;
+import com.infernalstudios.infernalexp.registration.GlowsquitoInteractionRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -143,53 +139,22 @@ public class SuckGlowstoneGoal extends Goal {
             if (this.eatAnimationTick == 1) {
                 if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
                     BlockState currentState = this.level.getBlockState(targetPos);
-                    BlockState newState = null;
 
-                    if (currentState.is(Blocks.GLOWSTONE)) {
-                        newState = ModBlocks.DIMSTONE.get().defaultBlockState();
-                        this.mob.playSound(SoundEvents.GLASS_BREAK, 1.0F, 1.0F);
-                    } else if (currentState.is(ModBlocks.DIMSTONE.get())) {
-                        newState = ModBlocks.DULLSTONE.get().defaultBlockState();
-                        this.mob.playSound(ModSounds.BLOCK_DULLSTONE_BREAK.get(), 1.0F, 1.0F);
-                    } else if (currentState.is(Blocks.SHROOMLIGHT)) {
-                        newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
-                        this.mob.resetPowers();
+                    var interaction = GlowsquitoInteractionRegistry.getInteraction(currentState.getBlock());
 
-                        this.mob.setVariant("shroomlight");
-                        this.mob.setVariantTimer(6000);
+                    if (interaction != null) {
+                        BlockState newState = interaction.result().get();
 
-                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (NetherExpCompat.isShroomnight(currentState.getBlock())) {
-                        newState = NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState();
-                        this.mob.resetPowers();
+                        if (interaction.variant() != null) {
+                            this.mob.resetPowers();
+                            this.mob.setVariant(interaction.variant());
+                        }
 
-                        this.mob.setVariant("shroomnight");
-                        this.mob.setVariantTimer(6000);
-
-                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (GardensOfTheDeadCompat.isShroomblight(currentState.getBlock())) {
-                        newState = GardensOfTheDeadCompat.HOLLOWBLIGHT.get().defaultBlockState();
-                        this.mob.resetPowers();
-
-                        this.mob.setVariant("shroomblight");
-                        this.mob.setVariantTimer(6000);
-
-                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (GardensOfTheDeadCompat.isShroombright(currentState.getBlock())) {
-                        newState = GardensOfTheDeadCompat.HOLLOWBRIGHT.get().defaultBlockState();
-                        this.mob.resetPowers();
-
-                        this.mob.setVariant("shroombright");
-                        this.mob.setVariantTimer(6000);
-
-                        this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    }
-
-                    if (newState != null) {
+                        this.mob.playSound(interaction.sound(), 1.0F, 1.0F);
                         this.level.levelEvent(2001, targetPos, Block.getId(currentState));
                         this.level.setBlock(targetPos, newState, 3);
                         this.mob.ate();
-                        this.nextUseTime = this.level.getGameTime() + 600L;
+                        this.nextUseTime = this.level.getGameTime() + 800L;
                     }
                 }
                 this.mob.setEating(false);
