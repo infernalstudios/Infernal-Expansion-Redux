@@ -17,16 +17,15 @@ public class GlowsquitoModel extends GeoModel<GlowsquitoEntity> {
     @Override
     public ResourceLocation getTextureResource(GlowsquitoEntity entity) {
         String texture = "glowsquito.png";
+        String variant = entity.getVariant();
 
         if (entity.hasCustomName() && "glowseeyou".equalsIgnoreCase(Objects.requireNonNull(entity.getCustomName()).getString())) {
             texture = "glowsquito_halloween.png";
-        } else if (entity.isShroomnightPowered()) {
-            texture = "glowsquito_shroomnight.png";
-        } else if (entity.isShroomlightPowered()) {
-            texture = "glowsquito_shroomlight.png";
+        } else if (variant != null && !variant.isEmpty()) {
+            texture = "glowsquito_" + variant + ".png";
         }
 
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/" + texture);
+        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/glowsquito/" + texture);
     }
 
     @Override

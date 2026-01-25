@@ -53,11 +53,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
     private static final EntityDataAccessor<Boolean> BRED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SHROOMLIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> SHROOMNIGHT_POWERED = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
-
+    private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.STRING);
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS);
-
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation PERCHING = RawAnimation.begin().thenLoop("perching");
     private static final RawAnimation DRINKING = RawAnimation.begin().thenLoop("drinking");
@@ -65,11 +62,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     private static final RawAnimation FLYING_FLAPPING = RawAnimation.begin().thenLoop("flying_flapping");
     private static final RawAnimation FLYING_WOBBLING = RawAnimation.begin().thenLoop("flying_wobbling");
     private static final RawAnimation FLYING_TILTING = RawAnimation.begin().thenLoop("flying_tilting");
-
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    private int shroomlightTimer;
-    private int shroomnightTimer;
+    private int variantTimer;
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -89,11 +83,6 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     public static boolean checkGlowsquitoSpawnRules(EntityType<GlowsquitoEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.noCollision(entityType.getAABB(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D));
-    }
-
-    public void resetPowers() {
-        this.setShroomlightPowered(false);
-        this.setShroomnightPowered(false);
     }
 
     @Override
@@ -185,8 +174,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         super.defineSynchedData();
         this.entityData.define(BRED, false);
         this.entityData.define(EATING, false);
-        this.entityData.define(SHROOMLIGHT_POWERED, false);
-        this.entityData.define(SHROOMNIGHT_POWERED, false);
+        this.entityData.define(VARIANT, "");
     }
 
     public boolean isEating() {
@@ -205,46 +193,35 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.entityData.set(BRED, isBred);
     }
 
-    public boolean isShroomlightPowered() {
-        return this.entityData.get(SHROOMLIGHT_POWERED);
+    public String getVariant() {
+        return this.entityData.get(VARIANT);
     }
 
-    public void setShroomlightPowered(boolean powered) {
-        this.entityData.set(SHROOMLIGHT_POWERED, powered);
+    public void setVariant(String variant) {
+        this.entityData.set(VARIANT, variant);
     }
 
-    public void setShroomlightTimer(int time) {
-        this.shroomlightTimer = time;
+    public void setVariantTimer(int time) {
+        this.variantTimer = time;
     }
 
-    public boolean isShroomnightPowered() {
-        return this.entityData.get(SHROOMNIGHT_POWERED);
-    }
-
-    public void setShroomnightPowered(boolean powered) {
-        this.entityData.set(SHROOMNIGHT_POWERED, powered);
-    }
-
-    public void setShroomnightTimer(int time) {
-        this.shroomnightTimer = time;
+    public void resetPowers() {
+        this.setVariant("");
+        this.variantTimer = 0;
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("ShroomlightPowered", this.isShroomlightPowered());
-        compound.putInt("ShroomlightTimer", this.shroomlightTimer);
-        compound.putBoolean("ShroomnightPowered", this.isShroomnightPowered());
-        compound.putInt("ShroomnightTimer", this.shroomnightTimer);
+        compound.putString("Variant", this.getVariant());
+        compound.putInt("VariantTimer", this.variantTimer);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.setShroomlightPowered(compound.getBoolean("ShroomlightPowered"));
-        this.shroomlightTimer = compound.getInt("ShroomlightTimer");
-        this.setShroomnightPowered(compound.getBoolean("ShroomnightPowered"));
-        this.shroomnightTimer = compound.getInt("ShroomnightTimer");
+        this.setVariant(compound.getString("Variant"));
+        this.variantTimer = compound.getInt("VariantTimer");
     }
 
     @Override
@@ -252,17 +229,10 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         super.tick();
 
         if (!this.level().isClientSide) {
-            if (this.isShroomlightPowered()) {
-                this.shroomlightTimer--;
-                if (this.shroomlightTimer <= 0) {
-                    this.setShroomlightPowered(false);
-                }
-            }
-
-            if (this.isShroomnightPowered()) {
-                this.shroomnightTimer--;
-                if (this.shroomnightTimer <= 0) {
-                    this.setShroomnightPowered(false);
+            if (this.variantTimer > 0) {
+                this.variantTimer--;
+                if (this.variantTimer <= 0) {
+                    this.resetPowers();
                 }
             }
         }
@@ -272,6 +242,12 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     public void ate() {
         this.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 1200));
     }
+
+    @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
 
     @Override
     public boolean doHurtTarget(@NotNull Entity entityIn) {

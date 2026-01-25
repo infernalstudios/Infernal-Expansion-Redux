@@ -1,7 +1,7 @@
 ### Additions
 
 * Dullstone and Dimstone can be converted to Dimstone and Glowstone respectively by using Glowstone Dust on them.
-* Glowstone and Dimstone can be waxed and scraped, which will prevent Glowsquitos from drinking them while waxed.
+* Glowstone can be waxed and scraped, which will prevent Glowsquitos from drinking it while waxed.
 * Added config option to disable Glowsquito griefing.
 * Added Hollowblights and Shroomblight Tears when both Jaden's Nether Expansion and Gardens of the Dead are installed.
 * Added Hollowbrights and Shroombright Tears when both Jaden's Nether Expansion and Gardens of the Dead are installed

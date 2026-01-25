@@ -154,26 +154,34 @@ public class SuckGlowstoneGoal extends Goal {
                     } else if (currentState.is(Blocks.SHROOMLIGHT)) {
                         newState = ModBlocks.HOLLOWLIGHT.get().defaultBlockState();
                         this.mob.resetPowers();
-                        this.mob.setShroomlightPowered(true);
-                        this.mob.setShroomlightTimer(6000);
+
+                        this.mob.setVariant("shroomlight");
+                        this.mob.setVariantTimer(6000);
+
                         this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (NetherExpCompat.isShroomnight(currentState.getBlock()) && NetherExpCompat.HOLLOWNIGHT != null) {
+                    } else if (NetherExpCompat.isShroomnight(currentState.getBlock())) {
                         newState = NetherExpCompat.HOLLOWNIGHT.get().defaultBlockState();
                         this.mob.resetPowers();
-                        this.mob.setShroomnightPowered(true);
-                        this.mob.setShroomnightTimer(6000);
+
+                        this.mob.setVariant("shroomnight");
+                        this.mob.setVariantTimer(6000);
+
                         this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (GardensOfTheDeadCompat.isShroomblight(currentState.getBlock()) && GardensOfTheDeadCompat.HOLLOWBLIGHT != null) {
+                    } else if (GardensOfTheDeadCompat.isShroomblight(currentState.getBlock())) {
                         newState = GardensOfTheDeadCompat.HOLLOWBLIGHT.get().defaultBlockState();
                         this.mob.resetPowers();
-                        this.mob.setShroomlightPowered(true); // TODO: shroomblight powered
-                        this.mob.setShroomlightTimer(6000);
+
+                        this.mob.setVariant("shroomblight");
+                        this.mob.setVariantTimer(6000);
+
                         this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
-                    } else if (GardensOfTheDeadCompat.isShroombright(currentState.getBlock()) && GardensOfTheDeadCompat.HOLLOWBRIGHT != null) {
+                    } else if (GardensOfTheDeadCompat.isShroombright(currentState.getBlock())) {
                         newState = GardensOfTheDeadCompat.HOLLOWBRIGHT.get().defaultBlockState();
                         this.mob.resetPowers();
-                        this.mob.setShroomlightPowered(true); // TODO: shroombright powered
-                        this.mob.setShroomlightTimer(6000);
+
+                        this.mob.setVariant("shroombright");
+                        this.mob.setVariantTimer(6000);
+
                         this.mob.playSound(SoundEvents.SHROOMLIGHT_BREAK, 1.0F, 1.0F);
                     }
 
