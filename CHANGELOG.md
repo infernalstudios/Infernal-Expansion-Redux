@@ -17,6 +17,7 @@
 * Slightly increased cooldown on Glowsquito drinking.
 * Decreased frequency of Blindsight fire extinguishing.
 * Blindsights can swim in Lava.
+* Improved Blindsight tongue attack hit detection.
 * Glowsilk Moths and Glowsquitos are immune to Fire and Lava.
 * Glowsilk Moths and Glowsquitos no longer trigger Glimmer Gravel.
 * Lowered required Forge version.

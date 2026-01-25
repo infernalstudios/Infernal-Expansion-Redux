@@ -65,7 +65,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
 
         if (target instanceof BlindsightEntity) {
             double distSqr = this.blindsight.distanceToSqr(target);
-            if (distSqr < 36.0D && this.blindsight.attackCooldown <= 0 && this.blindsight.onGround()) {
+            if (distSqr < 36.0D && this.blindsight.attackCooldown <= 0 && this.blindsight.ticksOnGround > 2) {
                 this.blindsight.performTongueAttack(target, true);
             }
             return;
@@ -76,7 +76,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             return;
         }
 
-        if (this.blindsight.attackCooldown <= 0 && this.blindsight.onGround() && this.blindsight.alertTimer == 0) {
+        if (this.blindsight.attackCooldown <= 0 && this.blindsight.ticksOnGround > 2 && this.blindsight.alertTimer == 0) {
             int threshold = 3 + this.blindsight.getRandom().nextInt(3);
             if (this.blindsight.jumpCount >= threshold && this.blindsight.distanceToSqr(target) < 64.0D) {
                 this.blindsight.performTongueAttack(target, false);
@@ -118,15 +118,21 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
         }
 
         if (this.blindsight.attackAnimationTimer == this.blindsight.damageTriggerTick && this.blindsight.tongueTarget.isAlive()) {
-            double maxReachSqr = 30.0D;
+            double maxReachSqr = 42.25D;
             double distSqr = this.blindsight.distanceToSqr(this.blindsight.tongueTarget);
 
             if (distSqr < maxReachSqr && this.blindsight.hasLineOfSight(this.blindsight.tongueTarget)) {
                 Vec3 lookDir = this.blindsight.getViewVector(1.0F).normalize();
-                Vec3 targetDir = this.blindsight.tongueTarget.position().subtract(this.blindsight.position()).normalize();
-                double dot = lookDir.dot(targetDir);
+                Vec3 eyePos = this.blindsight.getEyePosition(1.0F);
 
-                if (dot > 0.96D) {
+                Vec3 targetCenter = this.blindsight.tongueTarget.position().add(0, this.blindsight.tongueTarget.getBbHeight() * 0.5, 0);
+
+                Vec3 targetRelative = targetCenter.subtract(eyePos);
+                double projection = targetRelative.dot(lookDir);
+
+                Vec3 closestPointOnTongue = eyePos.add(lookDir.scale(projection));
+
+                if (projection > 0 && closestPointOnTongue.distanceToSqr(targetCenter) < 0.8D * 0.8D) {
                     this.blindsight.doTongueDamage(this.blindsight.tongueTarget);
                     this.blindsight.playSound(SoundEvents.SLIME_SQUISH, 1.0F, 0.9F + this.blindsight.getRandom().nextFloat() * 0.2F);
                 }

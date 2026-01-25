@@ -5,9 +5,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 
 public class BlindsightMoveControl extends MoveControl {
+    private final BlindsightEntity blindsight;
     private float yRot;
     private int jumpDelay;
-    private final BlindsightEntity blindsight;
     private boolean isAggressive;
 
     public BlindsightMoveControl(BlindsightEntity blindsight) {
@@ -43,9 +43,22 @@ public class BlindsightMoveControl extends MoveControl {
             this.mob.setSpeed(0.0F);
         } else {
             this.operation = Operation.WAIT;
+            double speedAttr = this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED);
 
-            if (this.mob.onGround() || this.blindsight.isInLava()) {
-                this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            if (this.blindsight.isInLava()) {
+                this.mob.setSpeed((float) (this.speedModifier * speedAttr));
+
+                if (this.mob.horizontalCollision) {
+                    this.blindsight.getJumpControl().jump();
+                }
+
+                double yDiff = this.wantedY - this.mob.getY();
+
+                if (yDiff > 0.1D) {
+                    this.mob.setDeltaMovement(this.mob.getDeltaMovement().add(0.0D, 0.02D, 0.0D));
+                }
+            } else if (this.mob.onGround()) {
+                this.mob.setSpeed((float) (this.speedModifier * speedAttr));
 
                 if (this.jumpDelay-- <= 0) {
                     this.jumpDelay = this.blindsight.getJumpDelay();
@@ -56,7 +69,7 @@ public class BlindsightMoveControl extends MoveControl {
 
                     this.blindsight.getJumpControl().jump();
 
-                    if (this.blindsight.doPlayJumpSound() && this.mob.onGround()) {
+                    if (this.blindsight.doPlayJumpSound()) {
                         this.blindsight.playSound(this.blindsight.getJumpSound(), 1.0f, this.blindsight.getVoicePitch());
                     }
                 } else {
@@ -65,7 +78,7 @@ public class BlindsightMoveControl extends MoveControl {
                     this.mob.setSpeed(0.0F);
                 }
             } else {
-                this.mob.setSpeed((float) (this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                this.mob.setSpeed((float) (this.speedModifier * speedAttr));
             }
         }
     }

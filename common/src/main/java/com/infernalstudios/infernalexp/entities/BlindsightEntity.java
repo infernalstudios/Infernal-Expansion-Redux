@@ -61,6 +61,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     private static final RawAnimation ALERT = RawAnimation.begin().thenPlay("luminous_player_alert");
     private static final RawAnimation LAND = RawAnimation.begin().thenPlay("land");
 
+    public int ticksOnGround = 0;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public float targetSquish;
@@ -146,6 +147,12 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             this.handleSlimeSquish();
         }
 
+        if (this.onGround()) {
+            this.ticksOnGround++;
+        } else {
+            this.ticksOnGround = 0;
+        }
+
         if (this.alertTimer > 0) this.alertTimer--;
         if (this.attackAnimationTimer > 0) this.attackAnimationTimer--;
         if (this.attackCooldown > 0) this.attackCooldown--;
@@ -200,7 +207,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             this.attackCooldown = 35;
         }
 
-        this.setDeltaMovement(Vec3.ZERO);
+        Vec3 currentMotion = this.getDeltaMovement();
+        this.setDeltaMovement(0.0D, Math.min(0.0D, currentMotion.y), 0.0D);
     }
 
     private void handleLuminousTargetLogic() {
@@ -232,8 +240,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             if (range != null && range.getModifier(FOLLOW_RANGE_MODIFIER_UUID) == null)
                 range.addTransientModifier(new AttributeModifier(FOLLOW_RANGE_MODIFIER_UUID, "Luminous range", 36.0D, AttributeModifier.Operation.ADDITION));
 
-            if (!this.hasPlayedWarning && this.onGround() && target instanceof Player && this.alertTimer == 0 && !this.wantsToTongueAttack && this.attackAnimationTimer == 0) {
-                this.triggerAnim("attackController", "alert");
+            if (!this.hasPlayedWarning && this.ticksOnGround > 2 && target instanceof Player && this.alertTimer == 0 && !this.wantsToTongueAttack && this.attackAnimationTimer == 0) {                this.triggerAnim("attackController", "alert");
                 this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
                 this.alertTimer = 30;
                 this.hasPlayedWarning = true;
@@ -296,7 +303,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     public void travel(@NotNull Vec3 pTravelVector) {
         if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
             if (this.isInLava()) {
-                this.moveRelative(0.02F, pTravelVector);
+                this.moveRelative(0.07F, pTravelVector);
                 this.move(MoverType.SELF, this.getDeltaMovement());
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.8F));
                 return;
