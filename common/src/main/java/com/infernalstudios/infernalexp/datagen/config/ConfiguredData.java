@@ -52,6 +52,54 @@ public class ConfiguredData {
 
         register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/large_glowlight_jack_o_lantern_slice.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
                 json -> Common.dropSelf(json, "infernalexp:large_glowlight_jack_o_lantern_slice"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dimstone.json"),
+                () -> Services.PLATFORM.isModLoaded("create"),
+                json -> Common.createCrushing(150, "infernalexp:dimstone",
+                        new Common.CrushOutput("minecraft:glowstone_dust", 1, 1.0f),
+                        new Common.CrushOutput("infernalexp:dullrocks", 1, 1.0f),
+                        new Common.CrushOutput("minecraft:glowstone_dust", 1, 0.5f),
+                        new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dullstone.json"),
+                () -> Services.PLATFORM.isModLoaded("create"),
+                json -> Common.createCrushing(150, "infernalexp:dullstone",
+                        new Common.CrushOutput("infernalexp:dullrocks", 3, 1.0f),
+                        new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_jack_o_lantern.json"),
+                () -> Services.PLATFORM.isModLoaded("autumnity"),
+                json -> Common.createShaped(
+                        "infernalexp:glowlight_jack_o_lantern",
+                        1,
+                        List.of("A", "B"),
+                        Map.of("A", "minecraft:carved_pumpkin", "B", "infernalexp:glowlight_torch")
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/shimmer_stone.json"),
+                () -> Services.PLATFORM.isModLoaded("create"),
+                json -> Common.createCrushing(150, "infernalexp:shimmer_stone",
+                        new Common.CrushOutput("infernalexp:shimmer_sand", 2, 1.0f),
+                        new Common.CrushOutput("infernalexp:shimmer_sand", 1, 0.25f)
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/shimmer_sand.json"),
+                () -> Services.PLATFORM.isModLoaded("create"),
+                json -> Common.createCrushing(150, "infernalexp:shimmer_sand",
+                        new Common.CrushOutput("minecraft:glowstone_dust", 2, 1.0f),
+                        new Common.CrushOutput("minecraft:glowstone_dust", 1, 0.25f)
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/basalt_iron_ore.json"),
+                () -> Services.PLATFORM.isModLoaded("create"),
+                json -> Common.createCrushing(350, "infernalexp:basalt_iron_ore",
+                        new Common.CrushOutput("create:crushed_raw_iron", 2, 1.0f),
+                        new Common.CrushOutput("create:crushed_raw_iron", 1, 0.25f),
+                        new Common.CrushOutput("create:experience_nugget", 1, 0.75f),
+                        new Common.CrushOutput("minecraft:basalt", 1, 0.125f)
+                ));
     }
 
     public String apply(@Nullable String original) {
@@ -146,6 +194,60 @@ public class ConfiguredData {
 
         public static String dropSelf(JsonElement json, String item) {
             return gson.fromJson("{\"type\":\"minecraft:block\",\"pools\":[{\"rolls\":1.0,\"bonus_rolls\":0.0,\"entries\":[{\"type\":\"minecraft:item\",\"name\":\"" + item + "\"}],\"conditions\":[{\"condition\":\"minecraft:survives_explosion\"}]}]}", JsonElement.class).toString();
+        }
+
+        public static String createCrushing(int time, String inputItem, CrushOutput... outputs) {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", "create:crushing");
+
+            JsonArray ingredients = new JsonArray();
+            JsonObject ing = new JsonObject();
+            ing.addProperty("item", inputItem);
+            ingredients.add(ing);
+            json.add("ingredients", ingredients);
+
+            json.addProperty("processingTime", time);
+
+            JsonArray results = new JsonArray();
+            for (CrushOutput output : outputs) {
+                JsonObject res = new JsonObject();
+                res.addProperty("item", output.item);
+                if (output.count > 1) res.addProperty("count", output.count);
+                if (output.chance < 1.0f) res.addProperty("chance", output.chance);
+                results.add(res);
+            }
+            json.add("results", results);
+
+            return gson.toJson(json);
+        }
+
+        public static String createShaped(String resultItem, int count, List<String> pattern, Map<String, String> keys) {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", "minecraft:crafting_shaped");
+
+            JsonArray patternArray = new JsonArray();
+            for (String line : pattern) {
+                patternArray.add(line);
+            }
+            json.add("pattern", patternArray);
+
+            JsonObject keyObj = new JsonObject();
+            for (Map.Entry<String, String> entry : keys.entrySet()) {
+                JsonObject itemObj = new JsonObject();
+                itemObj.addProperty("item", entry.getValue());
+                keyObj.add(entry.getKey(), itemObj);
+            }
+            json.add("key", keyObj);
+
+            JsonObject resultObj = new JsonObject();
+            resultObj.addProperty("item", resultItem);
+            if (count > 1) resultObj.addProperty("count", count);
+            json.add("result", resultObj);
+
+            return gson.toJson(json);
+        }
+
+        record CrushOutput(String item, int count, float chance) {
         }
     }
 }

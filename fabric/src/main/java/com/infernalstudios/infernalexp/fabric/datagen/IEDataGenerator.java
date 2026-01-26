@@ -166,57 +166,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .save(exporter, IECommon.makeID(getName(to)));
         }
 
-        private void createAutumnityRecipe(Consumer<FinishedRecipe> exporter, String resultPath, ResourceLocation inputA, ItemLike inputB) {
-            ResourceLocation resultId = IECommon.makeID(resultPath);
-            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, "autumnity");
-
-            conditionalExporter.accept(new FinishedRecipe() {
-                @Override
-                public void serializeRecipeData(@NotNull JsonObject json) {
-                    json.addProperty("type", "minecraft:crafting_shaped");
-
-                    JsonArray pattern = new JsonArray();
-                    pattern.add("A");
-                    pattern.add("B");
-                    json.add("pattern", pattern);
-
-                    JsonObject key = new JsonObject();
-                    JsonObject keyA = new JsonObject();
-                    keyA.addProperty("item", inputA.toString());
-                    key.add("A", keyA);
-
-                    JsonObject keyB = new JsonObject();
-                    keyB.addProperty("item", BuiltInRegistries.ITEM.getKey(inputB.asItem()).toString());
-                    key.add("B", keyB);
-                    json.add("key", key);
-
-                    JsonObject result = new JsonObject();
-                    result.addProperty("item", resultId.toString());
-                    json.add("result", result);
-                }
-
-                @Override
-                public @NotNull ResourceLocation getId() {
-                    return resultId;
-                }
-
-                @Override
-                public @NotNull RecipeSerializer<?> getType() {
-                    return RecipeSerializer.SHAPED_RECIPE;
-                }
-
-                @Override
-                public JsonObject serializeAdvancement() {
-                    return null;
-                }
-
-                @Override
-                public ResourceLocation getAdvancementId() {
-                    return null;
-                }
-            });
-        }
-
         /**
          * Wraps a recipe exporter to append mod-loaded conditions for all 3 loaders.
          */
@@ -276,60 +225,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     }
                 });
             };
-        }
-
-        /**
-         * Generates a Create Crushing recipe with multi-loader conditions.
-         */
-        private void offerCreateCrushing(Consumer<FinishedRecipe> exporter, ItemLike input, int time, CrushingResult... results) {
-            ResourceLocation id = IECommon.makeID("crushing/" + getName(input));
-            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, "create");
-
-            conditionalExporter.accept(new FinishedRecipe() {
-                @Override
-                public void serializeRecipeData(@NotNull JsonObject json) {
-                    json.addProperty("type", "create:crushing");
-
-                    JsonArray ingredients = new JsonArray();
-                    JsonObject ing = new JsonObject();
-                    ing.addProperty("item", BuiltInRegistries.ITEM.getKey(input.asItem()).toString());
-                    ingredients.add(ing);
-                    json.add("ingredients", ingredients);
-
-                    JsonArray resultsArray = new JsonArray();
-                    for (CrushingResult result : results) {
-                        JsonObject res = new JsonObject();
-                        res.addProperty("item", result.itemId);
-
-                        if (result.count > 1) res.addProperty("count", result.count);
-                        if (result.chance < 1.0f) res.addProperty("chance", result.chance);
-                        resultsArray.add(res);
-                    }
-
-                    json.add("results", resultsArray);
-                    json.addProperty("processingTime", time);
-                }
-
-                @Override
-                public @NotNull ResourceLocation getId() {
-                    return id;
-                }
-
-                @Override
-                public @NotNull RecipeSerializer<?> getType() {
-                    return RecipeSerializer.SHAPED_RECIPE;
-                }
-
-                @Override
-                public JsonObject serializeAdvancement() {
-                    return null;
-                }
-
-                @Override
-                public ResourceLocation getAdvancementId() {
-                    return null;
-                }
-            });
         }
 
         @Override
@@ -499,41 +394,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     NetherExpCompat.SHROOMNIGHT_TEAR.get(),
                     "netherexp"
             );
-
-            offerCreateCrushing(exporter, ModBlocks.DIMSTONE.get(), 150,
-                    new CrushingResult(Items.GLOWSTONE_DUST, 1),
-                    new CrushingResult(ModItems.DULLROCKS.get(), 1),
-                    new CrushingResult(Items.GLOWSTONE_DUST, 1, 0.5f),
-                    new CrushingResult(ModItems.DULLROCKS.get(), 1, 0.5f)
-            );
-
-            offerCreateCrushing(exporter, ModBlocks.DULLSTONE.get(), 150,
-                    new CrushingResult(ModItems.DULLROCKS.get(), 3),
-                    new CrushingResult(ModItems.DULLROCKS.get(), 1, 0.5f)
-            );
-
-            offerCreateCrushing(exporter, ModBlocks.SHIMMER_STONE.get(), 150,
-                    new CrushingResult(ModBlocks.SHIMMER_SAND.get(), 2),
-                    new CrushingResult(ModBlocks.SHIMMER_SAND.get(), 1, 0.25f)
-            );
-
-            offerCreateCrushing(exporter, ModBlocks.SHIMMER_SAND.get(), 150,
-                    new CrushingResult(Items.GLOWSTONE_DUST, 2),
-                    new CrushingResult(Items.GLOWSTONE_DUST, 1, 0.25f)
-            );
-
-            offerCreateCrushing(exporter, ModBlocks.BASALT_IRON_ORE.get(), 350,
-                    new CrushingResult(new ResourceLocation("create", "crushed_raw_iron"), 2, 1.0f),
-                    new CrushingResult(new ResourceLocation("create", "crushed_raw_iron"), 1, 0.25f),
-                    new CrushingResult(new ResourceLocation("create", "experience_nugget"), 1, 0.75f),
-                    new CrushingResult(Blocks.BASALT, 1, 0.125f)
-            );
-
-            createAutumnityRecipe(exporter, "glowlight_jack_o_lantern",
-                    new ResourceLocation("minecraft", "carved_pumpkin"), ModItems.GLOWLIGHT_TORCH.get());
-
-            createAutumnityRecipe(exporter, "large_glowlight_jack_o_lantern_slice",
-                    new ResourceLocation("autumnity", "carved_large_pumpkin_slice"), ModItems.GLOWLIGHT_TORCH.get());
 
             offer2x2Recipe(exporter, ModBlocks.GLOWSILK_COCOON.get(), 1, ModItems.GLOWSILK_STRING.get());
             offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(), 4, ModBlocks.GLOWSILK_COCOON.get());
