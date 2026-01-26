@@ -108,16 +108,16 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.BASALT_IRON_ORE.get());
         entries.accept(ModBlocks.BASALT_SAND.get());
 
-        entries.accept(ModBlocks.COBBLED_BASALT.get());
-        entries.accept(ModBlocks.COBBLED_BASALT.getStairs().get());
-        entries.accept(ModBlocks.COBBLED_BASALT.getSlab().get());
-        entries.accept(ModBlocks.COBBLED_BASALT.getWall().get());
+        entries.accept(ModBlocks.POLISHED_BASALT_BRICKS.get());
+        entries.accept(ModBlocks.POLISHED_BASALT_BRICKS.getStairs().get());
+        entries.accept(ModBlocks.POLISHED_BASALT_BRICKS.getSlab().get());
+        entries.accept(ModBlocks.POLISHED_BASALT_BRICKS.getWall().get());
+        entries.accept(ModBlocks.CHISELED_POLISHED_BASALT.get());
+        entries.accept(ModBlocks.CRACKED_POLISHED_BASALT_BRICKS.get());
 
-        entries.accept(ModBlocks.BASALT_BRICKS.get());
-        entries.accept(ModBlocks.BASALT_BRICKS.getStairs().get());
-        entries.accept(ModBlocks.BASALT_BRICKS.getSlab().get());
-        entries.accept(ModBlocks.BASALT_BRICKS.getWall().get());
-        entries.accept(ModBlocks.CHISELED_BASALT_BRICKS.get());
+        entries.accept(ModBlocks.POLISHED_BASALT_SLAB.get());
+        entries.accept(ModBlocks.POLISHED_BASALT_STAIRS.get());
+        entries.accept(ModBlocks.POLISHED_BASALT_WALL.get());
 
         entries.accept(ModBlocks.QUARTZ_GLASS.get());
         entries.accept(ModBlocks.QUARTZ_GLASS.getPaneBlock().get());

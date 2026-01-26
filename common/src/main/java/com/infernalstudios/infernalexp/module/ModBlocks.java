@@ -283,28 +283,53 @@ public class ModBlocks {
             .withTranslation("Basalt Sand")
     );
 
-    public static final BlockDataHolder<?> COBBLED_BASALT = register("cobbled_basalt", BlockDataHolder.of(() ->
-                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT).strength(1.1f, 3.5f)))
-            .withStairs().withSlab().withWall()
-            .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
-            .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withTranslation("Cobbled Basalt")
-    );
-
-    public static final BlockDataHolder<?> BASALT_BRICKS = register("basalt_bricks", BlockDataHolder.of(() ->
-                    new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+    public static final BlockDataHolder<?> POLISHED_BASALT_BRICKS = register("polished_basalt_bricks", BlockDataHolder.of(() ->
+                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+            .withModel(BlockDataHolder.Model.CUBE)
             .withItem().dropsSelf()
             .withStairs().withSlab().withWall()
-            .withModel(BlockDataHolder.Model.PILLAR)
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withTranslation("Basalt Bricks")
+            .withTranslation("Polished Basalt Bricks")
     );
 
-    public static final BlockDataHolder<?> CHISELED_BASALT_BRICKS = register("chiseled_basalt_bricks", BlockDataHolder.of(() ->
+    public static final BlockDataHolder<?> CRACKED_POLISHED_BASALT_BRICKS = register("cracked_polished_basalt_bricks", BlockDataHolder.of(() ->
+                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+            .withModel(BlockDataHolder.Model.CUBE)
+            .withItem().dropsSelf()
+            .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
+            .withTranslation("Cracked Polished Basalt Bricks")
+    );
+
+    public static final BlockDataHolder<?> POLISHED_BASALT_SLAB = register("polished_basalt_slab", BlockDataHolder.of(() ->
+                    new SlabBlock(BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT)))
+            .withItem()
+            .dropsSelf()
+            .withModel(BlockDataHolder.Model.SLAB)
+            .withTags(BlockTags.SLABS, BlockTags.MINEABLE_WITH_PICKAXE)
+            .withTranslation("Polished Basalt Slab")
+    );
+
+    public static final BlockDataHolder<?> POLISHED_BASALT_STAIRS = register("polished_basalt_stairs", BlockDataHolder.of(() ->
+            StairBlockAccessor.createStairBlock(Blocks.POLISHED_BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT))))
+            .withItem()
+            .dropsSelf()
+            .withModel(BlockDataHolder.Model.STAIRS)
+            .withTags(BlockTags.STAIRS, BlockTags.MINEABLE_WITH_PICKAXE)
+            .withTranslation("Polished Basalt Stairs");
+
+    public static final BlockDataHolder<?> POLISHED_BASALT_WALL = register("polished_basalt_wall", BlockDataHolder.of(() ->
+            new WallBlock(BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT))))
+            .withItem()
+            .dropsSelf()
+            .withModel(BlockDataHolder.Model.WALL)
+            .withTags(BlockTags.WALLS, BlockTags.MINEABLE_WITH_PICKAXE)
+            .withTranslation("Polished Basalt Wall");
+
+    public static final BlockDataHolder<?> CHISELED_POLISHED_BASALT = register("chiseled_polished_basalt", BlockDataHolder.of(() ->
                     new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT)))
             .withModel(BlockDataHolder.Model.PILLAR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
-            .withTranslation("Chiseled Basalt Bricks")
+            .withTranslation("Chiseled Polished Basalt")
     );
 
     public static final BlockDataHolder<?> VOLATILE_GEYSER = register("volatile_geyser", BlockDataHolder.of(() ->

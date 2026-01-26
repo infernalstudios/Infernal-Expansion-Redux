@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "infernalexp:block/cobbled_basalt",
-    "side": "infernalexp:block/cobbled_basalt",
-    "top": "infernalexp:block/cobbled_basalt"
-  }
-}

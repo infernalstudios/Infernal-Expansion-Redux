@@ -397,24 +397,45 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE.get(), ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getSlab().get(), 2);
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.COBBLED_BASALT.getWall().get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getSlab().get(), 2);
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.BASALT_BRICKS.getWall().get());
-            offerStonecutting(exporter, ModBlocks.COBBLED_BASALT.get(), ModBlocks.CHISELED_BASALT_BRICKS.get());
-
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getStairs().get());
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get(), 2);
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.SHIMMER_STONE_BRICKS.getWall().get());
             offerStonecutting(exporter, ModBlocks.SHIMMER_STONE_BRICKS.get(), ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get());
 
-            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getStairs().get());
-            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getSlab().get(), 2);
-            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.BASALT_BRICKS.getWall().get());
-            offerStonecutting(exporter, ModBlocks.BASALT_BRICKS.get(), ModBlocks.CHISELED_BASALT_BRICKS.get());
+            offerStonecutting(exporter, ModBlocks.POLISHED_BASALT_BRICKS.get(), ModBlocks.POLISHED_BASALT_BRICKS.getStairs().get());
+            offerStonecutting(exporter, ModBlocks.POLISHED_BASALT_BRICKS.get(), ModBlocks.POLISHED_BASALT_BRICKS.getSlab().get(), 2);
+            offerStonecutting(exporter, ModBlocks.POLISHED_BASALT_BRICKS.get(), ModBlocks.POLISHED_BASALT_BRICKS.getWall().get());
+            offerStonecutting(exporter, ModBlocks.POLISHED_BASALT_BRICKS.get(), ModBlocks.CHISELED_POLISHED_BASALT.get());
+
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_BRICKS.get());
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_BRICKS.getStairs().get());
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_BRICKS.getSlab().get(), 2);
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_BRICKS.getWall().get());
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.CHISELED_POLISHED_BASALT.get());
+
+            slabBuilder(RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_BASALT_SLAB.get(), Ingredient.of(Blocks.POLISHED_BASALT))
+                    .group(getName(ModBlocks.POLISHED_BASALT_SLAB.get()))
+                    .unlockedBy("has_polished_basalt", has(Blocks.POLISHED_BASALT))
+                    .save(exporter, IECommon.makeID("polished_basalt_slab"));
+
+            stairBuilder(ModBlocks.POLISHED_BASALT_STAIRS.get(), Ingredient.of(Blocks.POLISHED_BASALT))
+                    .group(getName(ModBlocks.POLISHED_BASALT_STAIRS.get()))
+                    .unlockedBy("has_polished_basalt", has(Blocks.POLISHED_BASALT))
+                    .save(exporter, IECommon.makeID("polished_basalt_stairs"));
+
+            wallBuilder(RecipeCategory.BUILDING_BLOCKS, ModBlocks.POLISHED_BASALT_WALL.get(), Ingredient.of(Blocks.POLISHED_BASALT))
+                    .group(getName(ModBlocks.POLISHED_BASALT_WALL.get()))
+                    .unlockedBy("has_polished_basalt", has(Blocks.POLISHED_BASALT))
+                    .save(exporter, IECommon.makeID("polished_basalt_wall"));
+
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.POLISHED_BASALT_SLAB.get(), 2);
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_SLAB.get(), 2);
+
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.POLISHED_BASALT_STAIRS.get());
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_STAIRS.get());
+
+            offerStonecutting(exporter, Blocks.BASALT, ModBlocks.POLISHED_BASALT_WALL.get());
+            offerStonecutting(exporter, Blocks.POLISHED_BASALT, ModBlocks.POLISHED_BASALT_WALL.get());
 
             ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_SHIMMER_STONE_BRICKS.get())
                     .pattern("#")
@@ -423,11 +444,11 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .unlockedBy(getHasName(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get()), has(ModBlocks.SHIMMER_STONE_BRICKS.getSlab().get()))
                     .save(exporter, IECommon.makeID("chiseled_shimmer_stone_bricks_from_slabs"));
 
-            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_BASALT_BRICKS.get())
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.CHISELED_POLISHED_BASALT.get())
                     .pattern("#")
                     .pattern("#")
-                    .define('#', ModBlocks.BASALT_BRICKS.getSlab().get())
-                    .unlockedBy(getHasName(ModBlocks.BASALT_BRICKS.getSlab().get()), has(ModBlocks.BASALT_BRICKS.getSlab().get()))
+                    .define('#', ModBlocks.POLISHED_BASALT_SLAB.get())
+                    .unlockedBy(getHasName(Blocks.POLISHED_BASALT), has(ModBlocks.POLISHED_BASALT_SLAB.get()))
                     .save(exporter, IECommon.makeID("chiseled_basalt_bricks_from_slabs"));
 
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GLOWSILK_BOW.get())
@@ -465,10 +486,10 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             offer3x3Recipe(exporter, ModBlocks.WARPED_FUNGUS_CAP.get(), 1, Items.WARPED_FUNGUS);
             offerUnpackRecipe(exporter, Items.WARPED_FUNGUS, 9, ModBlocks.WARPED_FUNGUS_CAP.get());
 
-            oreSmelting(exporter, List.of(ModBlocks.BASALT_IRON_ORE.get()), RecipeCategory.MISC, Items.IRON_ORE,
-                    5, 200, "basalt_iron_ore");
-            oreBlasting(exporter, List.of(ModBlocks.BASALT_IRON_ORE.get()), RecipeCategory.MISC, Items.IRON_ORE,
-                    5, 100, "basalt_iron_ore");
+            oreSmelting(exporter, List.of(ModBlocks.BASALT_IRON_ORE.get()), RecipeCategory.MISC, Items.IRON_INGOT,
+                    1, 200, "basalt_iron_ore");
+            oreBlasting(exporter, List.of(ModBlocks.BASALT_IRON_ORE.get()), RecipeCategory.MISC, Items.IRON_INGOT,
+                    1, 100, "basalt_iron_ore");
 
             offer3x3Recipe(exporter, Blocks.SHROOMLIGHT, 1, ModBlocks.SHROOMLIGHT_TEAR.get());
 
@@ -590,9 +611,9 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .unlockedBy("has_glowlight_torch", has(ModItems.GLOWLIGHT_TORCH.get()))
                     .save(exporter, IECommon.makeID("glowlight_lantern"));
 
-            oreSmelting(exporter, List.of(ModBlocks.COBBLED_BASALT.get()), RecipeCategory.BUILDING_BLOCKS, Blocks.BASALT,
+            oreSmelting(exporter, List.of(ModBlocks.POLISHED_BASALT_BRICKS.get()), RecipeCategory.BUILDING_BLOCKS, ModBlocks.CRACKED_POLISHED_BASALT_BRICKS.get(),
                     0.1f, 200, "basalt");
-            offer2x2Recipe(exporter, ModBlocks.BASALT_BRICKS.get(), 4, Blocks.BASALT);
+            offer2x2Recipe(exporter, ModBlocks.POLISHED_BASALT_BRICKS.get(), 4, Blocks.POLISHED_BASALT);
 
             stairBuilder(ModBlocks.BASALT_STAIRS.get(), Ingredient.of(Blocks.BASALT))
                     .group("basalt_stairs")
@@ -931,6 +952,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .addOptional(new ResourceLocation("netherexp", "shroomnight"))
                     .addOptional(new ResourceLocation("netherexp", "shroomblight"))
                     .addOptional(new ResourceLocation("netherexp", "shroombright"));
+
+            getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "ores")))
+                    .add(ModBlocks.BASALT_IRON_ORE.get());
+
+            getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "iron_ores")))
+                    .add(ModBlocks.BASALT_IRON_ORE.get());
         }
     }
 

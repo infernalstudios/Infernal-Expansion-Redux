@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "infernalexp:polished_basalt_bricks"
+  },
+  "result": "infernalexp:chiseled_polished_basalt"
+}

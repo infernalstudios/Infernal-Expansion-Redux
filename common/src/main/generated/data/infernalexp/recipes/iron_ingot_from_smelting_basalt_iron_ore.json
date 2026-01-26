@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "group": "basalt_iron_ore",
+  "ingredient": {
+    "item": "infernalexp:basalt_iron_ore"
+  },
+  "result": "minecraft:iron_ingot"
+}

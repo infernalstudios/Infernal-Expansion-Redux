@@ -1,10 +1,10 @@
 {
   "replace": false,
   "values": [
-    "infernalexp:basalt_bricks_stairs",
     "infernalexp:basalt_stairs",
-    "infernalexp:cobbled_basalt_stairs",
     "infernalexp:luminous_planks_stairs",
+    "infernalexp:polished_basalt_bricks_stairs",
+    "infernalexp:polished_basalt_stairs",
     "infernalexp:shimmer_stone_bricks_stairs",
     "infernalexp:shimmer_stone_stairs"
   ]

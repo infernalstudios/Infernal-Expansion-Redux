@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "basalt",
+  "ingredient": {
+    "item": "infernalexp:polished_basalt_bricks"
+  },
+  "result": "infernalexp:cracked_polished_basalt_bricks"
+}

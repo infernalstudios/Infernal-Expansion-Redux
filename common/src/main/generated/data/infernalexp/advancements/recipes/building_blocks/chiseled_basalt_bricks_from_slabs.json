@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_basalt_bricks_slab": {
+    "has_polished_basalt": {
       "conditions": {
         "items": [
           {
             "items": [
-              "infernalexp:basalt_bricks_slab"
+              "infernalexp:polished_basalt_slab"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_basalt_bricks_slab",
+      "has_polished_basalt",
       "has_the_recipe"
     ]
   ],

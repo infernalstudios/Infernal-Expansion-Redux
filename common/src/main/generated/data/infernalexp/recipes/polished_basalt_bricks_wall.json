@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "polished_basalt_bricks_wall",
+  "key": {
+    "#": {
+      "item": "infernalexp:polished_basalt_bricks"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "infernalexp:polished_basalt_bricks_wall"
+  },
+  "show_notification": true
+}
