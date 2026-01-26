@@ -1,4 +1,4 @@
-package com.infernalstudios.infernalexp.datagen.config;
+package com.infernalstudios.infernalexp.resources.config;
 
 import com.infernalstudios.infernalexp.IEConstants;
 import net.minecraft.resources.ResourceLocation;

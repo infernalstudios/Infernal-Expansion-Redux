@@ -5,7 +5,7 @@ import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.config.IEConfig;
-import com.infernalstudios.infernalexp.datagen.config.ConfiguredData;
+import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.GlowsquitoInteractionRegistry;
