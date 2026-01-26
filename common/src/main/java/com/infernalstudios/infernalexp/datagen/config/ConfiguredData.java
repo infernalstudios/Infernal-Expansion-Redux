@@ -21,24 +21,16 @@ import java.util.function.Supplier;
  */
 public class ConfiguredData {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+    public static List<ConfiguredData> INSTANCES = new LinkedList<>();
     public final ResourceLocation target;
-    public Function<JsonElement, String> provider;
     public final Supplier<Boolean> enabled;
+    public Function<JsonElement, String> provider;
 
     public ConfiguredData(ResourceLocation target, Supplier<Boolean> enabled, Function<JsonElement, String> provider) {
         this.target = target;
         this.provider = provider;
         this.enabled = enabled;
     }
-
-    public String apply(@Nullable String original) {
-        return gson.fromJson(this.provider.apply(gson.fromJson(original == null ? "" : original, JsonElement.class)),
-                JsonElement.class).toString();
-    }
-
-
-    public static List<ConfiguredData> INSTANCES = new LinkedList<>();
 
     public static @Nullable ConfiguredData get(ResourceLocation id) {
         return INSTANCES.stream().filter(data -> data.target.equals(id)).findAny().orElse(null);
@@ -48,13 +40,23 @@ public class ConfiguredData {
         INSTANCES.add(new ConfiguredData(target, enabled, provider));
     }
 
-
     public static void register() {
         register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"),
                 Common::changeNetherBiomeSource);
 
         register(ResourceLocation.tryBuild("minecraft", "loot_tables/entities/magma_cube.json"), () -> true,
                 Common::addVolineMagmaCreamDrop);
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/glowlight_jack_o_lantern.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
+                json -> Common.dropSelf(json, "infernalexp:glowlight_jack_o_lantern"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/large_glowlight_jack_o_lantern_slice.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
+                json -> Common.dropSelf(json, "infernalexp:large_glowlight_jack_o_lantern_slice"));
+    }
+
+    public String apply(@Nullable String original) {
+        return gson.fromJson(this.provider.apply(gson.fromJson(original == null ? "" : original, JsonElement.class)),
+                JsonElement.class).toString();
     }
 
     private static class Common {
@@ -140,6 +142,10 @@ public class ConfiguredData {
                 }
             }
             return json == null ? "" : json.toString();
+        }
+
+        public static String dropSelf(JsonElement json, String item) {
+            return gson.fromJson("{\"type\":\"minecraft:block\",\"pools\":[{\"rolls\":1.0,\"bonus_rolls\":0.0,\"entries\":[{\"type\":\"minecraft:item\",\"name\":\"" + item + "\"}],\"conditions\":[{\"condition\":\"minecraft:survives_explosion\"}]}]}", JsonElement.class).toString();
         }
     }
 }
