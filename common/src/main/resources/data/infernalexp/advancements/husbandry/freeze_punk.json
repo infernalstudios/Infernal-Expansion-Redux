@@ -1,0 +1,44 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:snowball"
+    },
+    "title": {
+      "translate": "advancements.infernalexp.freeze_punk.title",
+      "fallback": "Freeze, Punk!"
+    },
+    "description": {
+      "translate": "advancements.infernalexp.freeze_punk.desc",
+      "fallback": "Freeze a sleeping Voline with a snowball"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "infernalexp:husbandry/magma_mia",
+  "criteria": {
+    "freeze_voline": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "is_projectile": true,
+            "direct_entity": {
+              "type": "minecraft:snowball"
+            }
+          }
+        },
+        "entity": {
+          "type": "infernalexp:voline",
+          "nbt": "{IsSleeping:1b}"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "freeze_voline"
+    ]
+  ]
+}

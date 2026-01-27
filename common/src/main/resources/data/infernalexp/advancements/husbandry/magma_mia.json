@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:magma_cream"
+    },
+    "title": {
+      "translate": "advancements.infernalexp.magma_mia.title",
+      "fallback": "Magma Mia!"
+    },
+    "description": {
+      "translate": "advancements.infernalexp.magma_mia.desc",
+      "fallback": "Feed a baby Voline enough Magma Cream to make it reach adulthood"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "infernalexp:husbandry/hot_pocket",
+  "criteria": {
+    "magma_mia": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "magma_mia"
+    ]
+  ]
+}

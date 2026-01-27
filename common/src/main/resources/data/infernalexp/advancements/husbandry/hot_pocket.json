@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": {
+      "item": "infernalexp:voline_bucket"
+    },
+    "title": {
+      "translate": "advancements.infernalexp.hot_pocket.title",
+      "fallback": "Hot Pocket"
+    },
+    "description": {
+      "translate": "advancements.infernalexp.hot_pocket.desc",
+      "fallback": "Catch a baby Voline in a Lava Bucket"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "bucket_voline": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": [
+            "infernalexp:voline_bucket"
+          ]
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "bucket_voline"
+    ]
+  ]
+}

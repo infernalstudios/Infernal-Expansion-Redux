@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": {
+      "item": "infernalexp:blindsight_tongue"
+    },
+    "title": {
+      "translate": "advancements.infernalexp.deer_in_headlights.title",
+      "fallback": "Deer in Headlights"
+    },
+    "description": {
+      "translate": "advancements.infernalexp.deer_in_headlights.desc",
+      "fallback": "Kill a Blindsight while afflicted with Luminous"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:nether/root",
+  "criteria": {
+    "kill_blindsight_luminous": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "infernalexp:blindsight",
+          "effects": {
+            "infernalexp:luminous": {}
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "kill_blindsight_luminous"
+    ]
+  ]
+}

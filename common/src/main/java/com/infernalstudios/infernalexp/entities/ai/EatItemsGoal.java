@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -66,7 +67,10 @@ public class EatItemsGoal extends Goal {
             }
             if (this.eatAnimationTick == 0) {
                 ItemStack itemOnGround = this.targetItem.getItem();
-                this.mob.ate(itemOnGround.split(1));
+
+                Entity thrower = this.targetItem.getOwner();
+
+                this.mob.ate(itemOnGround.split(1), thrower);
                 if (itemOnGround.isEmpty()) {
                     this.targetItem.discard();
                 } else {

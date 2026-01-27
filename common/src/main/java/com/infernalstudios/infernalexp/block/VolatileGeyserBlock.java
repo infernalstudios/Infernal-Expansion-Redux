@@ -1,19 +1,21 @@
 package com.infernalstudios.infernalexp.block;
 
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.block.entity.VolatileGeyserBlockEntity;
 import com.infernalstudios.infernalexp.module.ModBlockEntityTypes;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -76,6 +78,19 @@ public class VolatileGeyserBlock extends BaseEntityBlock {
             boolean isPowered = level.hasNeighborSignal(pos);
             if (isPowered != state.getValue(POWERED)) {
                 level.setBlock(pos, state.setValue(POWERED, isPowered), 3);
+
+                if (isPowered && level instanceof ServerLevel serverLevel) {
+                    Player nearestPlayer = serverLevel.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 10.0D, false);
+
+                    if (nearestPlayer instanceof ServerPlayer serverPlayer) {
+                        ResourceLocation advId = new ResourceLocation(IEConstants.MOD_ID, "nether/pressure_cooker");
+                        Advancement advancement = serverLevel.getServer().getAdvancements().getAdvancement(advId);
+
+                        if (advancement != null) {
+                            serverPlayer.getAdvancements().award(advancement, "activate_geyser");
+                        }
+                    }
+                }
             }
         }
     }

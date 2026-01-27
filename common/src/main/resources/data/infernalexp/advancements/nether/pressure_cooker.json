@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": {
+      "item": "infernalexp:volatile_geyser"
+    },
+    "title": {
+      "translate": "advancements.infernalexp.pressure_cooker.title",
+      "fallback": "Pressure Cooker"
+    },
+    "description": {
+      "translate": "advancements.infernalexp.pressure_cooker.desc",
+      "fallback": "Activate a Volatile Geyser using Redstone"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:nether/root",
+  "criteria": {
+    "activate_geyser": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "activate_geyser"
+    ]
+  ]
+}

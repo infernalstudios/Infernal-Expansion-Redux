@@ -576,19 +576,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             });
         }
 
-        private record CrushingResult(String itemId, int count, float chance) {
-            public CrushingResult(ResourceLocation id, int count, float chance) {
-                this(id.toString(), count, chance);
-            }
-
-            public CrushingResult(ItemLike item, int count, float chance) {
-                this(BuiltInRegistries.ITEM.getKey(item.asItem()).toString(), count, chance);
-            }
-
-            public CrushingResult(ItemLike item, int count) {
-                this(item, count, 1.0f);
-            }
-        }
     }
 
     private static class IELangProvider extends FabricLanguageProvider {
@@ -625,6 +612,22 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("subtitles.infernalexp.entity.blindsight.leap", "Blindsight leaps");
             builder.add("subtitles.infernalexp.entity.blindsight.alert", "Blindsight roars");
             builder.add("subtitles.infernalexp.entity.blindsight.lick", "Blindsight licks");
+
+            // Advancements
+            builder.add("advancements.infernalexp.freeze_punk.title", "Freeze, Punk!");
+            builder.add("advancements.infernalexp.freeze_punk.desc", "Freeze a sleeping Voline with a snowball");
+
+            builder.add("advancements.infernalexp.magma_mia.title", "Magma Mia!");
+            builder.add("advancements.infernalexp.magma_mia.desc", "Feed a baby Voline enough Magma Cream to make it reach adulthood");
+
+            builder.add("advancements.infernalexp.hot_pocket.title", "Hot Pocket");
+            builder.add("advancements.infernalexp.hot_pocket.desc", "Catch a baby Voline in a Lava Bucket");
+
+            builder.add("advancements.infernalexp.deer_in_headlights.title", "Deer in Headlights");
+            builder.add("advancements.infernalexp.deer_in_headlights.desc", "Kill a Blindsight while afflicted with Luminous");
+
+            builder.add("advancements.infernalexp.pressure_cooker.title", "Pressure Cooker");
+            builder.add("advancements.infernalexp.pressure_cooker.desc", "Activate a Volatile Geyser using Redstone");
 
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
