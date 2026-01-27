@@ -2,7 +2,7 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
-import com.infernalstudios.infernalexp.resources.config.ConfiguredDataResourcePack;
+import com.infernalstudios.infernalexp.resources.config.ConfiguredResources;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
@@ -41,13 +41,13 @@ public class MultiPackResourceManagerMixin {
         }
 
         String finalResult = result;
-        return new Resource(ConfiguredDataResourcePack.INSTANCE,
+        return new Resource(ConfiguredResources.INSTANCE,
                 () -> new CharSequenceInputStream(finalResult, Charset.defaultCharset()));
     }
 
     @Unique
     private static Resource readAndApply(Resource resource, ConfiguredData data) {
-        if (resource.source() instanceof ConfiguredDataResourcePack) return resource;
+        if (resource.source() instanceof ConfiguredResources) return resource;
         return readAndApply(Optional.of(resource), data);
     }
 
@@ -55,7 +55,7 @@ public class MultiPackResourceManagerMixin {
     @ModifyReturnValue(method = {"getResource", "method_14486", "m_213713_"}, remap = false, at = @At("RETURN"))
     public Optional<Resource> getConfiguredResource(Optional<Resource> original, ResourceLocation id) {
         ConfiguredData data = ConfiguredData.get(id);
-        if (data == null || !data.enabled.get() || (original.isPresent() && original.get().source() instanceof ConfiguredDataResourcePack))
+        if (data == null || !data.enabled.get() || (original.isPresent() && original.get().source() instanceof ConfiguredResources))
             return original;
 
         return Optional.of(readAndApply(original, data));

@@ -44,6 +44,7 @@ public class IECommon {
         ModSurfaceRuleConditions.load();
         ModParticleTypes.load();
         ModSounds.load();
+        ModPaintingVariants.load();
     }
 
     public static void commonSetup() {

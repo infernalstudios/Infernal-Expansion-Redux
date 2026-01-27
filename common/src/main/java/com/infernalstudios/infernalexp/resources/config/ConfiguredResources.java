@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
-public class ConfiguredDataResourcePack implements PackResources {
-    public static final ConfiguredDataResourcePack INSTANCE = new ConfiguredDataResourcePack();
+public class ConfiguredResources implements PackResources {
+    public static final ConfiguredResources INSTANCE = new ConfiguredResources();
 
     @Override
     public @Nullable IoSupplier<InputStream> getRootResource(String @NotNull ... segments) {

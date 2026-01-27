@@ -629,6 +629,12 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("advancements.infernalexp.pressure_cooker.title", "Pressure Cooker");
             builder.add("advancements.infernalexp.pressure_cooker.desc", "Activate a Volatile Geyser using Redstone");
 
+            // Paintings
+            builder.add("painting.infernalexp.the_fallen_ones.author", "LazTheArtist");
+            builder.add("painting.infernalexp.the_fallen_ones.title", "The Fallen Ones");
+            builder.add("painting.infernalexp.glowstone_canyon.author", "Nekomaster");
+            builder.add("painting.infernalexp.glowstone_canyon.title", "Glowstone Canyon");
+
             // Autumnity Compat
             builder.add("block.infernalexp.glowlight_jack_o_lantern",
                     "Glowlight Jack o'Lantern");

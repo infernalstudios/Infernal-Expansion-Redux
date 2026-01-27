@@ -3,6 +3,7 @@
 * Right-clicking Carved Pumpkins with a Glowlight Torch when Autumnity is installed creates Glowlight Jack o'Lanterns.
   * This applies to Large Carved Pumpkin Slices as well.
 * Added 5 new advancements.
+* Re-added two paintings from the old versions of Infernal Expansion.
 
 ### Changes
 

@@ -55,12 +55,18 @@ public class ConfiguredData {
 
         register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dimstone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
-                json -> Common.createCrushing(150, "infernalexp:dimstone",
-                        new Common.CrushOutput("minecraft:glowstone_dust", 1, 1.0f),
-                        new Common.CrushOutput("infernalexp:dullrocks", 1, 1.0f),
-                        new Common.CrushOutput("minecraft:glowstone_dust", 1, 0.5f),
-                        new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
-                ));
+                json -> {
+                    if (json != null && !json.isJsonNull()) {
+                        return json.toString();
+                    }
+
+                    return Common.createCrushing(150, "infernalexp:dimstone",
+                            new Common.CrushOutput("minecraft:glowstone_dust", 1, 1.0f),
+                            new Common.CrushOutput("infernalexp:dullrocks", 1, 1.0f),
+                            new Common.CrushOutput("minecraft:glowstone_dust", 1, 0.5f),
+                            new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
+                    );
+                });
 
         register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dullstone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
