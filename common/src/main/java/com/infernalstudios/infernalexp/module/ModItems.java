@@ -1,10 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.items.EntityBucketItem;
-import com.infernalstudios.infernalexp.items.GlowsilkBowItem;
-import com.infernalstudios.infernalexp.items.GlowsilkMothBottleItem;
-import com.infernalstudios.infernalexp.items.MusicDiscItem;
+import com.infernalstudios.infernalexp.items.*;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.data.models.model.ModelTemplate;
@@ -124,6 +121,11 @@ public class ModItems {
                     ))
             .withModel(SPAWN_EGG)
             .withTranslation("Blindsight Spawn Egg")
+    );
+
+    public static final ItemDataHolder<?> BLINDSIGHT_TONGUE_WHIP = register("blindsight_tongue_whip", ItemDataHolder.of(() ->
+                    new BlindsightTongueWhipItem(new Item.Properties().durability(300)))
+            .withTranslation("Blindsight Tongue Whip")
     );
 
     public static final ItemDataHolder<?> BLINDSIGHT_TONGUE = register("blindsight_tongue", ItemDataHolder.of(() ->

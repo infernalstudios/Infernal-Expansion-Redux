@@ -1,0 +1,68 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "infernalexp:item/blindsight_tongue_whip"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.00
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_0"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.10
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_1"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.20
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_2"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.30
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_3"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.40
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_4"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.50
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_5"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.60
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_6"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.70
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_7"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.80
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_8"
+    },
+    {
+      "predicate": {
+        "infernalexp:whip_progress": 0.90
+      },
+      "model": "infernalexp:item/blindsight_tongue_whip_extending_9"
+    }
+  ]
+}

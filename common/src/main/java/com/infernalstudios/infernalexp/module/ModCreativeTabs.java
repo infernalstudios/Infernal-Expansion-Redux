@@ -52,6 +52,7 @@ public class ModCreativeTabs {
 
         entries.accept(ModItems.BLINDSIGHT_TONGUE.get());
         entries.accept(ModItems.BLINDSIGHT_TONGUE_STEW.get());
+        entries.accept(ModItems.BLINDSIGHT_TONGUE_WHIP.get());
 
         entries.accept(ModBlocks.LUMINOUS_FUNGUS.get());
         entries.accept(ModBlocks.LUMINOUS_WART_BLOCK.get());

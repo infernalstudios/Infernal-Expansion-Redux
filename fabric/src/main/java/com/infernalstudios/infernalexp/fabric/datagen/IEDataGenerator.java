@@ -3,7 +3,6 @@ package com.infernalstudios.infernalexp.fabric.datagen;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.config.IEConfig;
 import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
@@ -388,13 +387,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
 
             offer3x3Recipe(exporter, Blocks.SHROOMLIGHT, 1, ModBlocks.SHROOMLIGHT_TEAR.get());
 
-            offerCompat3x3Recipe(
-                    exporter,
-                    new ResourceLocation("netherexp", "shroomnight"),
-                    NetherExpCompat.SHROOMNIGHT_TEAR.get(),
-                    "netherexp"
-            );
-
             offer2x2Recipe(exporter, ModBlocks.GLOWSILK_COCOON.get(), 1, ModItems.GLOWSILK_STRING.get());
             offerUnpackRecipe(exporter, ModItems.GLOWSILK_STRING.get(), 4, ModBlocks.GLOWSILK_COCOON.get());
 
@@ -524,56 +516,6 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .requires(Items.HONEYCOMB)
                     .unlockedBy("has_glowstone", has(Blocks.GLOWSTONE))
                     .save(exporter, IECommon.makeID("waxed_glowstone"));
-        }
-
-        /**
-         * Generates a 3x3 packing recipe (e.g. Nuggets to Ingot) for an item that might not exist at runtime.
-         */
-        private void offerCompat3x3Recipe(Consumer<FinishedRecipe> exporter, ResourceLocation outputId, ItemLike input, String conditionModId) {
-            ResourceLocation recipeId = IECommon.makeID(outputId.getPath());
-            Consumer<FinishedRecipe> conditionalExporter = withConditions(exporter, conditionModId);
-
-            conditionalExporter.accept(new FinishedRecipe() {
-                @Override
-                public void serializeRecipeData(@NotNull JsonObject json) {
-                    json.addProperty("type", "minecraft:crafting_shapeless");
-                    json.addProperty("group", outputId.getPath());
-
-                    JsonArray ingredients = new JsonArray();
-                    JsonObject inputJson = new JsonObject();
-                    inputJson.addProperty("item", BuiltInRegistries.ITEM.getKey(input.asItem()).toString());
-
-                    for (int i = 0; i < 9; i++) {
-                        ingredients.add(inputJson);
-                    }
-                    json.add("ingredients", ingredients);
-
-                    JsonObject result = new JsonObject();
-                    result.addProperty("item", outputId.toString());
-                    result.addProperty("count", 1);
-                    json.add("result", result);
-                }
-
-                @Override
-                public @NotNull ResourceLocation getId() {
-                    return recipeId;
-                }
-
-                @Override
-                public @NotNull RecipeSerializer<?> getType() {
-                    return RecipeSerializer.SHAPELESS_RECIPE;
-                }
-
-                @Override
-                public JsonObject serializeAdvancement() {
-                    return null;
-                }
-
-                @Override
-                public ResourceLocation getAdvancementId() {
-                    return null;
-                }
-            });
         }
 
     }
