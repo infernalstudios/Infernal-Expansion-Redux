@@ -28,9 +28,12 @@ public class ModItemProperties {
 
     private static void makeWhip(Item item) {
         ItemPropertiesAccessor.register(item, new ResourceLocation("infernalexp", "whip_progress"), (stack, level, entity, seed) -> {
+
             if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
                 float useTime = (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks());
-                return Math.min(1.0F, useTime / BlindsightTongueWhipItem.CHARGE_CAP_TICKS);
+                float progress = Math.min(1.0F, useTime / BlindsightTongueWhipItem.CHARGE_CAP_TICKS);
+
+                return progress * 0.5F;
             }
 
             Level world = level != null ? level : (entity != null ? entity.level() : null);
@@ -53,7 +56,8 @@ public class ModItemProperties {
             if (start != 0) {
                 float elapsed = (float) (time - start);
                 if (elapsed <= BlindsightTongueWhipItem.ATTACK_DURATION_TICKS) {
-                    return 1.0F + (elapsed / BlindsightTongueWhipItem.ATTACK_DURATION_TICKS);
+                    float attackProgress = elapsed / (float) BlindsightTongueWhipItem.ATTACK_DURATION_TICKS;
+                    return 0.50F + (attackProgress * 0.50F) + 0.01F;
                 }
             }
 
