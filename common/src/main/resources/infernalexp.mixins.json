@@ -13,6 +13,8 @@
     "BlockEntityTypeMixin",
     "BoneMealItemMixin",
     "ClientboundSetEntityMotionPacketMixin",
+    "EnchantmentHelperMixin",
+    "EnchantmentMixin",
     "EntityMixin",
     "FeatureMixin",
     "GlowstoneFeatureMixin",
@@ -50,7 +52,8 @@
   "client": [
     "accessor.ItemPropertiesAccessor",
     "client.EntityRendererDispatcherMixin",
-    "client.ScreenEffectRendererMixin"
+    "client.ScreenEffectRendererMixin",
+    "client.BlindsightTongueWhipItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

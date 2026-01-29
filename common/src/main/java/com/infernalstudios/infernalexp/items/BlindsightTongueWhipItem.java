@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -69,6 +70,11 @@ public class BlindsightTongueWhipItem extends Item {
     }
 
     @Override
+    public int getEnchantmentValue() {
+        return 14;
+    }
+
+    @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof Player player) {
             int useTime = this.getUseDuration(stack) - timeLeft;
@@ -110,7 +116,7 @@ public class BlindsightTongueWhipItem extends Item {
     }
 
     private void performWhipAttack(Level level, Player player) {
-        double range = 6.0D;
+        double range = 4.0D;
         double width = 2.0D;
 
         Vec3 lookVec = player.getLookAngle();
@@ -120,11 +126,16 @@ public class BlindsightTongueWhipItem extends Item {
         AABB attackBox = new AABB(playerPos, targetPos).inflate(width, width, width);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, attackBox);
 
+        int knockbackLevel = EnchantmentHelper.getKnockbackBonus(player);
+
+        float knockbackStrength = 2.5F + (float) knockbackLevel * 0.5F;
+
         for (LivingEntity target : potentialTargets) {
             if (target != player && player.hasLineOfSight(target)) {
                 Vec3 dirToTarget = target.position().subtract(player.position()).normalize();
+
                 if (lookVec.dot(dirToTarget) > 0.5) {
-                    target.knockback(2.0F, player.getX() - target.getX(), player.getZ() - target.getZ());
+                    target.knockback(knockbackStrength, player.getX() - target.getX(), player.getZ() - target.getZ());
                     target.hurt(level.damageSources().playerAttack(player), 4.0F);
                 }
             }

@@ -42,7 +42,7 @@ public class ModItemProperties {
             long start = 0;
             long time = world.getGameTime();
 
-            if (entity != null && BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.containsKey(entity.getId())) {
+            if (entity != null && BlindsightTongueWhipItem.isAttacking(stack) && BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.containsKey(entity.getId())) {
                 long mappedStart = BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.get(entity.getId());
                 if (time - mappedStart >= 0 && time - mappedStart <= BlindsightTongueWhipItem.ATTACK_DURATION_TICKS) {
                     start = mappedStart;
