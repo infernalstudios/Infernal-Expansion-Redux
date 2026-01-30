@@ -2,9 +2,8 @@
   "replace": false,
   "values": [
     "infernalexp:shroomlight_tear",
-    {
-      "id": "netherexp:shroomnight_tear",
-      "required": false
-    }
+    "infernalexp:shroomnight_tear",
+    "infernalexp:shroombright_tear",
+    "infernalexp:shroomblight_tear"
   ]
 }

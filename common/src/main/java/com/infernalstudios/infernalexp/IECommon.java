@@ -91,8 +91,8 @@ public class IECommon {
      * Updates the main config instance with values from the Cloth Config wrapper.
      */
     private static void syncConfig(ClothConfigConstructor data) {
-        CONFIG.client = data.client;
         CONFIG.common = data.common;
+        CONFIG.client = data.client;
     }
 
     public static IEConfig getConfig() {

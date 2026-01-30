@@ -1,5 +1,7 @@
 package com.infernalstudios.infernalexp.block;
 
+import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
@@ -36,8 +38,8 @@ public class SupportedBlock extends Block {
 
     public SupportedBlock(Properties properties, Supplier<Item> pickItem) {
         super(properties);
-        this.pickItem = pickItem;
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.DOWN));
+        this.pickItem = pickItem;
     }
 
     @Override
@@ -51,7 +53,12 @@ public class SupportedBlock extends Block {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+    public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader world, @NotNull BlockPos pos) {
+        if (this == ModBlocks.PLANTED_QUARTZ.get() && !IECommon.getConfig().common.worldGeneration.enablePlantedQuartz)
+            return false;
+        if (this == ModBlocks.BURIED_BONE.get() && !IECommon.getConfig().common.worldGeneration.enableBuriedBone)
+            return false;
+
         BlockPos blockPos = pos.relative(state.getValue(FACING));
         BlockState support = world.getBlockState(blockPos);
         return support.isFaceSturdy(world, blockPos, state.getValue(FACING));

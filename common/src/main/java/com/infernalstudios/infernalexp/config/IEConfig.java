@@ -3,8 +3,8 @@ package com.infernalstudios.infernalexp.config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 public class IEConfig {
-    public Client client = new Client();
     public Common common = new Common();
+    public Client client = new Client();
 
     public static class Client {
     }
@@ -21,6 +21,9 @@ public class IEConfig {
 
         @ConfigEntry.Gui.CollapsibleObject
         public MobInteractions mobInteractions = new MobInteractions();
+
+        @ConfigEntry.Gui.CollapsibleObject
+        public WorldGeneration worldGeneration = new WorldGeneration();
 
         public static class Geyser {
             @ConfigEntry.Gui.Tooltip
@@ -50,7 +53,6 @@ public class IEConfig {
         }
 
         public static class MobInteractions {
-
             @ConfigEntry.Gui.Tooltip
             public boolean glowsquitoBlockSucking = true;
 
@@ -59,6 +61,14 @@ public class IEConfig {
 
             @ConfigEntry.Gui.Tooltip
             public boolean blindsightEatBabyMobs = true;
+        }
+
+        public static class WorldGeneration {
+            @ConfigEntry.Gui.Tooltip
+            public boolean enablePlantedQuartz = true;
+
+            @ConfigEntry.Gui.Tooltip
+            public boolean enableBuriedBone = true;
         }
     }
 }

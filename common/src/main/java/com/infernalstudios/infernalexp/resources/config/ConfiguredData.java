@@ -121,19 +121,19 @@ public class ConfiguredData {
 
         register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomlight_tear.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
-                json -> Common.dropSporeOrSelf("infernalexp:shroomlight_tear", "netherexp:lightspore"));
+                json -> Common.dropSporeOrSelf("infernalexp:shroomlight_tear", "netherexp:lightspores"));
 
-        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroomnight_tear.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomnight_tear.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
-                json -> Common.dropSporeOrSelf("netherexp:shroomnight_tear", "netherexp:nightspore"));
+                json -> Common.dropSporeOrSelf("infernalexp:shroomnight_tear", "netherexp:nightspores"));
 
-        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroomblight_tear.json"),
-                () -> Services.PLATFORM.isModLoaded("netherexp"),
-                json -> Common.dropSporeOrSelf("netherexp:shroomblight_tear", "netherexp:blightspore"));
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomblight_tear.json"),
+                () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("gardens_of_the_dead")),
+                json -> Common.dropSporeOrSelf("infernalexp:shroomblight_tear", "netherexp:blightspores"));
 
-        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroombright_tear.json"),
-                () -> Services.PLATFORM.isModLoaded("netherexp"),
-                json -> Common.dropSporeOrSelf("netherexp:shroombright_tear", "netherexp:brightspore"));
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroombright_tear.json"),
+                () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("cinderscapes")),
+                json -> Common.dropSporeOrSelf("infernalexp:shroombright_tear", "netherexp:brightspores"));
     }
 
     public String apply(@Nullable String original) {

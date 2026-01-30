@@ -171,5 +171,10 @@
   "text.autoconfig.infernalexp.option.common.voline.volineSleepWhenFed.@Tooltip": "If enabled, Volines will fall asleep after eating Magma Cream.",
   "text.autoconfig.infernalexp.option.common.voline.volineTurnIntoGeyser": "Voline Turn Into Geyser",
   "text.autoconfig.infernalexp.option.common.voline.volineTurnIntoGeyser.@Tooltip": "If enabled, sleeping Volines will transform into Volatile Geysers when hit with a snowball.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration": "World Generation Content",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone": "Enable Buried Bone",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone.@Tooltip": "Determines whether Buried Bone will generate in the world and be placeable.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz": "Enable Planted Quartz",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz.@Tooltip": "Determines whether Planted Quartz will generate in the world and be placeable.",
   "text.autoconfig.infernalexp.title": "Infernal Expansion Config"
 }

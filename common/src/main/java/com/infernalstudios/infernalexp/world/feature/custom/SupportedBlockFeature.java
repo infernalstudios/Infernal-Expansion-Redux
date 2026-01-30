@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.world.feature.custom;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.block.LuminousFungusBlock;
 import com.infernalstudios.infernalexp.block.SupportedBlock;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -8,11 +9,9 @@ import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureCo
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderSet;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -36,6 +35,12 @@ public class SupportedBlockFeature extends NetherFeature<SingleBlockFeatureConfi
         if (dir == null) return false;
 
         BlockState state = context.config().block().getState(random, pos);
+
+        if (state.is(ModBlocks.PLANTED_QUARTZ.get()) && !IECommon.getConfig().common.worldGeneration.enablePlantedQuartz)
+            return false;
+        if (state.is(ModBlocks.BURIED_BONE.get()) && !IECommon.getConfig().common.worldGeneration.enableBuriedBone)
+            return false;
+
         if (state.hasProperty(SupportedBlock.FACING)) state = state.setValue(SupportedBlock.FACING, dir);
         if (state.hasProperty(LuminousFungusBlock.FLOOR)) {
             if (dir.getAxis() == Direction.Axis.Y)
