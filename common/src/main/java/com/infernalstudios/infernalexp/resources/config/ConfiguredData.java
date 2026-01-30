@@ -106,6 +106,34 @@ public class ConfiguredData {
                         new Common.CrushOutput("create:experience_nugget", 1, 0.75f),
                         new Common.CrushOutput("minecraft:basalt", 1, 0.125f)
                 ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroomnight_from_tears.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.createPacking3x3("netherexp:shroomnight", "infernalexp:shroomnight_tear"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroomblight_from_tears.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.createPacking3x3("netherexp:shroomblight", "infernalexp:shroomblight_tear"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroombright_from_tears.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.createPacking3x3("netherexp:shroombright", "infernalexp:shroombright_tear"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomlight_tear.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.dropSporeOrSelf("infernalexp:shroomlight_tear", "netherexp:lightspore"));
+
+        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroomnight_tear.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.dropSporeOrSelf("netherexp:shroomnight_tear", "netherexp:nightspore"));
+
+        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroomblight_tear.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.dropSporeOrSelf("netherexp:shroomblight_tear", "netherexp:blightspore"));
+
+        register(ResourceLocation.tryBuild("netherexp", "loot_tables/blocks/shroombright_tear.json"),
+                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                json -> Common.dropSporeOrSelf("netherexp:shroombright_tear", "netherexp:brightspore"));
     }
 
     public String apply(@Nullable String original) {
@@ -202,6 +230,56 @@ public class ConfiguredData {
             return gson.fromJson("{\"type\":\"minecraft:block\",\"pools\":[{\"rolls\":1.0,\"bonus_rolls\":0.0,\"entries\":[{\"type\":\"minecraft:item\",\"name\":\"" + item + "\"}],\"conditions\":[{\"condition\":\"minecraft:survives_explosion\"}]}]}", JsonElement.class).toString();
         }
 
+        public static String dropSporeOrSelf(String selfItem, String sporeItem) {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", "minecraft:block");
+
+            JsonArray pools = new JsonArray();
+            JsonObject pool = new JsonObject();
+            pool.addProperty("rolls", 1.0);
+
+            JsonArray entries = new JsonArray();
+            JsonObject alternatives = new JsonObject();
+            alternatives.addProperty("type", "minecraft:alternatives");
+
+            JsonArray children = new JsonArray();
+
+            JsonObject silkTouchOption = new JsonObject();
+            silkTouchOption.addProperty("type", "minecraft:item");
+            silkTouchOption.addProperty("name", selfItem);
+
+            JsonArray conditions = new JsonArray();
+            JsonObject matchTool = new JsonObject();
+            matchTool.addProperty("condition", "minecraft:match_tool");
+            JsonObject predicate = new JsonObject();
+            JsonArray enchantments = new JsonArray();
+            JsonObject silkTouch = new JsonObject();
+            silkTouch.addProperty("enchantment", "minecraft:silk_touch");
+            JsonObject levels = new JsonObject();
+            levels.addProperty("min", 1);
+            silkTouch.add("levels", levels);
+            enchantments.add(silkTouch);
+            predicate.add("enchantments", enchantments);
+            matchTool.add("predicate", predicate);
+            conditions.add(matchTool);
+
+            silkTouchOption.add("conditions", conditions);
+            children.add(silkTouchOption);
+
+            JsonObject sporeOption = new JsonObject();
+            sporeOption.addProperty("type", "minecraft:item");
+            sporeOption.addProperty("name", sporeItem);
+            children.add(sporeOption);
+
+            alternatives.add("children", children);
+            entries.add(alternatives);
+            pool.add("entries", entries);
+            pools.add(pool);
+            json.add("pools", pools);
+
+            return gson.toJson(json);
+        }
+
         public static String createCrushing(int time, String inputItem, CrushOutput... outputs) {
             JsonObject json = new JsonObject();
             json.addProperty("type", "create:crushing");
@@ -251,6 +329,10 @@ public class ConfiguredData {
             json.add("result", resultObj);
 
             return gson.toJson(json);
+        }
+
+        public static String createPacking3x3(String resultItem, String inputItem) {
+            return createShaped(resultItem, 1, List.of("###", "###", "###"), Map.of("#", inputItem));
         }
 
         record CrushOutput(String item, int count, float chance) {

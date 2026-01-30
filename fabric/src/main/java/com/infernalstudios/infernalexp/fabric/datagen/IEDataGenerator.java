@@ -516,6 +516,16 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
                     .requires(Items.HONEYCOMB)
                     .unlockedBy("has_glowstone", has(Blocks.GLOWSTONE))
                     .save(exporter, IECommon.makeID("waxed_glowstone"));
+
+            ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLINDSIGHT_TONGUE_WHIP.get())
+                    .pattern("  G")
+                    .pattern(" ST")
+                    .pattern("S T")
+                    .define('T', ModItems.BLINDSIGHT_TONGUE.get())
+                    .define('G', ModItems.GLOWSILK_STRING.get())
+                    .define('S', Items.STICK)
+                    .unlockedBy("has_blindsight_tongue", has(ModItems.BLINDSIGHT_TONGUE.get()))
+                    .save(exporter, IECommon.makeID("blindsight_tongue_whip"));
         }
 
     }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "infernalexp:glowsilk_string"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "item": "infernalexp:blindsight_tongue"
+    }
+  },
+  "pattern": [
+    "  G",
+    " ST",
+    "S T"
+  ],
+  "result": {
+    "item": "infernalexp:blindsight_tongue_whip"
+  },
+  "show_notification": true
+}

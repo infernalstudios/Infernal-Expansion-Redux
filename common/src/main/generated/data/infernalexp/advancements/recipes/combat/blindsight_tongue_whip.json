@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_blindsight_tongue": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "infernalexp:blindsight_tongue"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:blindsight_tongue_whip"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_blindsight_tongue",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:blindsight_tongue_whip"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -98,7 +98,7 @@ public class BlindsightTongueWhipItem extends Item {
                 performWhipAttack(level, player);
             } else {
                 Vec3 lookVec = player.getLookAngle();
-                Vec3 particlePos = player.getEyePosition().add(lookVec.scale(4.0D)); // TODO: adjust?
+                Vec3 particlePos = player.getEyePosition().add(lookVec.scale(4.0D));
                 level.addParticle(ModParticleTypes.TONGUE_WHIP_SLASH, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0);
             }
 
