@@ -142,6 +142,7 @@
   "subtitles.infernalexp.entity.glowsquito.slurp": "Glowsquito slurps",
   "subtitles.infernalexp.entity.voline.ambient": "Voline grunts",
   "subtitles.infernalexp.entity.voline.hurt": "Voline hurts",
+  "subtitles.infernalexp.item.whip.whip_crack": "Whip cracks",
   "tag.item.infernalexp.glowsquito_temptation_items": "Glowsquito Temptation Items",
   "tag.item.infernalexp.voline_food": "Voline Food",
   "text.autoconfig.infernalexp.category.client": "Client Settings",

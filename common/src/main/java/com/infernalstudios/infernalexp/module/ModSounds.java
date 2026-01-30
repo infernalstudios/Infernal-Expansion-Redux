@@ -41,6 +41,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_HIT = register("block.dullstone.hit");
     public static final RegistryObject<SoundEvent> BLOCK_DULLSTONE_FALL = register("block.dullstone.fall");
 
+    public static final RegistryObject<SoundEvent> WHIP_CRACK = register("item.whip.whip_crack");
+
     private static RegistryObject<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(IECommon.makeID(name)));
     }

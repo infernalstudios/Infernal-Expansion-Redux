@@ -3,6 +3,7 @@ package com.infernalstudios.infernalexp.forge.client;
 import com.infernalstudios.infernalexp.client.IECommonClient;
 import com.infernalstudios.infernalexp.client.particle.GlowsquitoWingParticle;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
+import com.infernalstudios.infernalexp.client.particle.TongueWhipSlashParticle;
 import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModModelLayers;
@@ -65,6 +66,7 @@ public class InfernalExpansionForgeClient {
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticleTypes.GLOWSTONE_SPARKLE, GlowstoneSparkleParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.GLOWSQUITO_WING, GlowsquitoWingParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.TONGUE_WHIP_SLASH, TongueWhipSlashParticle.Provider::new);
     }
 
     @SuppressWarnings("unchecked")

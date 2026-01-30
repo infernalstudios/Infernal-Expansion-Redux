@@ -1,7 +1,8 @@
 package com.infernalstudios.infernalexp.items;
 
+import com.infernalstudios.infernalexp.module.ModParticleTypes;
+import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -95,9 +96,13 @@ public class BlindsightTongueWhipItem extends Item {
             if (!level.isClientSide) {
                 stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
                 performWhipAttack(level, player);
+            } else {
+                Vec3 lookVec = player.getLookAngle();
+                Vec3 particlePos = player.getEyePosition().add(lookVec.scale(4.0D)); // TODO: adjust?
+                level.addParticle(ModParticleTypes.TONGUE_WHIP_SLASH, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0);
             }
 
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.WHIP_CRACK.get(), SoundSource.PLAYERS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
             player.awardStat(Stats.ITEM_USED.get(this));
         }
     }

@@ -442,5 +442,10 @@
       "infernalexp:block/dullstone/break1",
       "infernalexp:block/dullstone/break2"
     ]
+  },
+  "item.whip.whip_crack": {
+    "sounds": [
+      "infernalexp:item/whip/whip_crack1"
+    ]
   }
 }

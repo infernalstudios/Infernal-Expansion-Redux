@@ -6,12 +6,16 @@ import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
 import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
 import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.mixin.accessor.*;
+import com.infernalstudios.infernalexp.registration.FlammabilityRegistry;
+import com.infernalstudios.infernalexp.registration.FuelRegistry;
+import com.infernalstudios.infernalexp.registration.StrippableRegistry;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -23,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class ModBlocks {
     public static final BlockSetType dullstoneSet = new BlockSetType("dullstone");
@@ -448,5 +453,50 @@ public class ModBlocks {
         NetherExpCompat.load();
         GardensOfTheDeadCompat.load();
         CinderscapesCompat.load();
+    }
+
+    public static void registerBlocks(BiConsumer<ResourceLocation, Block> blockRegister, BiConsumer<ResourceLocation, Item> itemRegister) {
+        for (Map.Entry<ResourceLocation, BlockDataHolder<?>> entry : BLOCK_REGISTRY.entrySet()) {
+            ResourceLocation id = entry.getKey();
+            BlockDataHolder<?> holder = entry.getValue();
+
+            // Register Main Block
+            blockRegister.accept(id, holder.get());
+
+            // Register Main Item
+            if (holder.hasItem()) {
+                itemRegister.accept(id, holder.getBlockItem().get());
+                if (holder.isFuel()) {
+                    FuelRegistry.register(holder.getBlockItem().get(), holder.getFuelDuration());
+                }
+            }
+
+            // Register Pane (if glass)
+            if (holder.isGlass()) {
+                ResourceLocation paneId = new ResourceLocation(id.getNamespace(), id.getPath() + "_pane");
+                blockRegister.accept(paneId, holder.getPaneBlock().get());
+                itemRegister.accept(paneId, holder.getPaneBlock().getBlockItem().get());
+            }
+
+            // Register Blocksets (Stairs, Slabs, Walls, etc.)
+            for (Map.Entry<BlockDataHolder.Model, BlockDataHolder<?>> setEntry : holder.getBlocksets().entrySet()) {
+                ResourceLocation setId = new ResourceLocation(id.getNamespace(), id.getPath() + "_" + setEntry.getKey().suffix());
+                blockRegister.accept(setId, setEntry.getValue().get());
+
+                if (holder.hasItem()) {
+                    itemRegister.accept(setId, setEntry.getValue().getBlockItem().get());
+                }
+            }
+
+            // Register Flammability
+            for (Map.Entry<Block, FlammabilityRegistry.Entry> flammability : holder.getFlammabilities().entrySet()) {
+                FlammabilityRegistry.getRegistry(flammability.getKey()).register(holder.get(), flammability.getValue());
+            }
+
+            // Register Stripping
+            if (holder.hasStrippingResult()) {
+                StrippableRegistry.register(holder.get(), holder.getStrippingResult());
+            }
+        }
     }
 }

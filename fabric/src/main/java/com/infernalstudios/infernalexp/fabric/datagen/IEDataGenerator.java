@@ -555,6 +555,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
             builder.add("subtitles.infernalexp.entity.blindsight.alert", "Blindsight roars");
             builder.add("subtitles.infernalexp.entity.blindsight.lick", "Blindsight licks");
 
+            builder.add("subtitles.infernalexp.item.whip.whip_crack", "Whip cracks");
+
             // Advancements
             builder.add("advancements.infernalexp.freeze_punk.title", "Freeze, Punk!");
             builder.add("advancements.infernalexp.freeze_punk.desc", "Freeze a sleeping Voline with a snowball");
