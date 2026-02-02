@@ -1,15 +1,8 @@
-### Additions
+# Changelog
 
-* Re-added and reworked the Blindsight Tongue Whip.
-    * Adjusted the range and radius.
-    * Adjusted the recipe.
-    * Added a new particle and whip crack sound to the whip.
-    * Now supports Knockback.
+All notable changes to this project will be documented in this file.
 
-### Changes
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Shroomlight Tears and modded Shroomlight Tears now drop their Lightspores when Jaden's Nether Expansion is installed.
-
-### Fixes
-
-* Fixed missing recipes for modded Shroomlights using Shroomlight Tears.
+## [0.3.0] - [Unreleased]
