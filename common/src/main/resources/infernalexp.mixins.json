@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "refmap": "infernalexp.refmap.json",
+  "refmap": "${mod_id}.refmap.json",
   "package": "com.infernalstudios.infernalexp.mixin",
   "plugin": "com.infernalstudios.infernalexp.mixin.InfernalExpansionMixinPlugin",
   "compatibilityLevel": "JAVA_17",

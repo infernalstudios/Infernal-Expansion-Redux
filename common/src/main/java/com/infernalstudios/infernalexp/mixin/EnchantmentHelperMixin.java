@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
+import com.infernalstudios.infernalexp.module.ModEnchantments;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -11,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Mixin(EnchantmentHelper.class)
@@ -20,14 +22,24 @@ public class EnchantmentHelperMixin {
     private static void infernalexp$addWhipEnchantments(int power, ItemStack stack, boolean treasure, CallbackInfoReturnable<List<EnchantmentInstance>> cir) {
         if (stack.getItem() instanceof BlindsightTongueWhipItem) {
             List<EnchantmentInstance> list = cir.getReturnValue();
-            Enchantment knockback = Enchantments.KNOCKBACK;
 
-            boolean alreadyHasKnockback = list.stream().anyMatch(e -> e.enchantment == knockback);
+            List<Enchantment> whipEnchantments = Arrays.asList(
+                    Enchantments.KNOCKBACK,
+                    Enchantments.FIRE_ASPECT,
+                    ModEnchantments.LASHING.get(),
+                    ModEnchantments.DISARMING.get(),
+                    ModEnchantments.LEAPING.get(),
+                    ModEnchantments.ILLUMINATING.get()
+            );
 
-            if (!alreadyHasKnockback) {
-                for (int level = knockback.getMinLevel(); level <= knockback.getMaxLevel(); level++) {
-                    if (power >= knockback.getMinCost(level) && power <= knockback.getMaxCost(level)) {
-                        list.add(new EnchantmentInstance(knockback, level));
+            for (Enchantment enchantment : whipEnchantments) {
+                boolean alreadyPresent = list.stream().anyMatch(e -> e.enchantment == enchantment);
+
+                if (!alreadyPresent) {
+                    for (int level = enchantment.getMinLevel(); level <= enchantment.getMaxLevel(); level++) {
+                        if (power >= enchantment.getMinCost(level) && power <= enchantment.getMaxCost(level)) {
+                            list.add(new EnchantmentInstance(enchantment, level));
+                        }
                     }
                 }
             }

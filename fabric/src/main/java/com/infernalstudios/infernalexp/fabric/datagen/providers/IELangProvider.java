@@ -77,6 +77,17 @@ public class IELangProvider extends FabricLanguageProvider {
         builder.add("painting.infernalexp.glowstone_canyon.author", "Nekomaster");
         builder.add("painting.infernalexp.glowstone_canyon.title", "Glowstone Canyon");
 
+        // Enchantments
+        builder.add("enchantment.infernalexp.disarming", "Disarming");
+        builder.add("enchantment.infernalexp.leaping", "Leaping");
+        builder.add("enchantment.infernalexp.illuminating", "Illuminating");
+        builder.add("enchantment.infernalexp.lashing", "Lashing");
+
+        builder.add("enchantment.infernalexp.disarming.desc", "Chance to cause mobs to drop their held item, or disable a player's held item for a short duration.");
+        builder.add("enchantment.infernalexp.leaping.desc", "Propels the wielder forward when used in the air, or causes them to rebound off the target upon a successful hit.");
+        builder.add("enchantment.infernalexp.illuminating.desc", "Applies the Luminous effect to the target. Incompatible with Fire Aspect.");
+        builder.add("enchantment.infernalexp.lashing.desc", "Increases the damage dealt when attacking with this weapon.");
+
         // Autumnity Compat
         builder.add("block.infernalexp.glowlight_jack_o_lantern",
                 "Glowlight Jack o'Lantern");

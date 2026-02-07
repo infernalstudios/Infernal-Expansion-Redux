@@ -32,6 +32,7 @@ public class IECommon {
 
         ModBlocks.load();
         ModItems.load();
+        ModEnchantments.load();
         ModFireTypes.load();
         ModEntityTypes.load();
         ModBlockEntityTypes.load();

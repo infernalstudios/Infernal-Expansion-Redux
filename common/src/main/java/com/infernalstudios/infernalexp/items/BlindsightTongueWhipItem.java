@@ -1,12 +1,16 @@
 package com.infernalstudios.infernalexp.items;
 
+import com.infernalstudios.infernalexp.module.ModEffects;
+import com.infernalstudios.infernalexp.module.ModEnchantments;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -93,13 +98,31 @@ public class BlindsightTongueWhipItem extends Item {
                 CLIENT_ATTACK_TIMES.put(player.getId(), gameTime);
             }
 
-            if (!level.isClientSide) {
-                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
-                performWhipAttack(level, player);
-            } else {
+            if (level.isClientSide) {
                 Vec3 lookVec = player.getLookAngle();
                 Vec3 particlePos = player.getEyePosition().add(lookVec.scale(4.0D));
                 level.addParticle(ModParticleTypes.TONGUE_WHIP_SLASH, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0);
+            } else {
+                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
+
+                boolean hitEnemy = performWhipAttack(level, player, stack);
+
+                int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LEAPING.get(), stack);
+                if (leapingLevel > 0) {
+                    Vec3 lookVec = player.getLookAngle();
+
+                    player.resetFallDistance();
+
+                    if (hitEnemy) {
+                        double velocity = 0.8D + (0.15D * leapingLevel);
+                        player.push(lookVec.x * velocity, 0.5D + (0.1D * leapingLevel), lookVec.z * velocity);
+                        player.hurtMarked = true;
+                    } else if (!player.onGround()) {
+                        float impulseStrength = 0.6F + (0.1F * leapingLevel);
+                        player.setDeltaMovement(player.getDeltaMovement().add(lookVec.x * impulseStrength, 0.5D, lookVec.z * impulseStrength));
+                        player.hurtMarked = true;
+                    }
+                }
             }
 
             level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.WHIP_CRACK.get(), SoundSource.PLAYERS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
@@ -120,7 +143,10 @@ public class BlindsightTongueWhipItem extends Item {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
 
-    private void performWhipAttack(Level level, Player player) {
+    /**
+     * @return true if at least one entity was hit
+     */
+    private boolean performWhipAttack(Level level, Player player, ItemStack stack) {
         double range = 4.0D;
         double width = 2.0D;
 
@@ -131,18 +157,69 @@ public class BlindsightTongueWhipItem extends Item {
         AABB attackBox = new AABB(playerPos, targetPos).inflate(width, width, width);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, attackBox);
 
-        int knockbackLevel = EnchantmentHelper.getKnockbackBonus(player);
+        int knockbackLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, stack);
+        int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LEAPING.get(), stack);
+        int fireAspectLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);
+        int illuminatingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ILLUMINATING.get(), stack);
+        int disarmingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.DISARMING.get(), stack);
+        int lashingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LASHING.get(), stack);
 
-        float knockbackStrength = 2.5F + (float) knockbackLevel * 0.5F;
+        float knockbackStrength = (leapingLevel > 0) ? 0.0F : 2.0F + (float) knockbackLevel * 0.5F;
+        float baseDamage = 2.5F;
+
+        if (lashingLevel > 0) {
+            baseDamage += (float) lashingLevel * 1.5F;
+        }
+
+        boolean hitAny = false;
 
         for (LivingEntity target : potentialTargets) {
             if (target != player && player.hasLineOfSight(target)) {
                 Vec3 dirToTarget = target.position().subtract(player.position()).normalize();
 
                 if (lookVec.dot(dirToTarget) > 0.5) {
-                    target.knockback(knockbackStrength, player.getX() - target.getX(), player.getZ() - target.getZ());
-                    target.hurt(level.damageSources().playerAttack(player), 4.0F);
+                    hitAny = true;
+
+                    float damageBonus = EnchantmentHelper.getDamageBonus(stack, target.getMobType());
+                    target.hurt(level.damageSources().playerAttack(player), baseDamage + damageBonus);
+
+                    if (knockbackStrength > 0) {
+                        target.knockback(knockbackStrength, player.getX() - target.getX(), player.getZ() - target.getZ());
+                    }
+
+                    if (fireAspectLevel > 0) {
+                        target.setSecondsOnFire(4 * fireAspectLevel);
+                    }
+
+                    if (illuminatingLevel > 0) {
+                        int duration = 160 * illuminatingLevel;
+                        target.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), duration));
+                    }
+
+                    if (disarmingLevel > 0) {
+                        handleDisarming(level, target, disarmingLevel);
+                    }
                 }
+            }
+        }
+        return hitAny;
+    }
+
+    private void handleDisarming(Level level, LivingEntity target, int levelCount) {
+        ItemStack heldItem = target.getMainHandItem();
+        if (heldItem.isEmpty()) return;
+
+        float chance = 0.15F + (levelCount * 0.15F);
+
+        if (level.random.nextFloat() < chance) {
+            if (target instanceof Player playerTarget) {
+                int cooldownTicks = 60 * levelCount;
+                playerTarget.getCooldowns().addCooldown(heldItem.getItem(), cooldownTicks);
+                level.playSound(null, playerTarget.getX(), playerTarget.getY(), playerTarget.getZ(), SoundEvents.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+            } else {
+                target.spawnAtLocation(heldItem);
+                target.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+                level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
             }
         }
     }
