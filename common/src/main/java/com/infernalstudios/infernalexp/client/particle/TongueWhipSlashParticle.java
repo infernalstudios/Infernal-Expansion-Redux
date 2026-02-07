@@ -12,7 +12,7 @@ public class TongueWhipSlashParticle extends TextureSheetParticle {
         super(level, x, y, z, 0.0D, 0.0D, 0.0D);
         this.sprites = sprites;
         this.lifetime = 7;
-        this.quadSize = 2.0F; // TODO: adjust?
+        this.quadSize = 1.5F; // TODO: adjust?
         this.hasPhysics = false;
         this.setSpriteFromAge(sprites);
     }
