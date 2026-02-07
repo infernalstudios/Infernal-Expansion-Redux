@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BlindsightTongueWhipItem extends Item {
-    public static final int CHARGE_CAP_TICKS = 9;
+    public static final int CHARGE_CAP_TICKS = 15;
     public static final int ATTACK_DURATION_TICKS = 10;
     public static final Map<Integer, Long> CLIENT_ATTACK_TIMES = new HashMap<>();
 
@@ -148,7 +148,7 @@ public class BlindsightTongueWhipItem extends Item {
      */
     private boolean performWhipAttack(Level level, Player player, ItemStack stack) {
         double range = 4.0D;
-        double width = 2.0D;
+        double width = 1.0D;
 
         Vec3 lookVec = player.getLookAngle();
         Vec3 playerPos = player.getEyePosition();
@@ -165,10 +165,10 @@ public class BlindsightTongueWhipItem extends Item {
         int lashingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LASHING.get(), stack);
 
         float knockbackStrength = (leapingLevel > 0) ? 0.0F : 2.0F + (float) knockbackLevel * 0.5F;
-        float baseDamage = 2.5F;
+        float baseDamage = 4.0F;
 
         if (lashingLevel > 0) {
-            baseDamage += (float) lashingLevel * 1.5F;
+            baseDamage += (float) lashingLevel;
         }
 
         boolean hitAny = false;
@@ -213,7 +213,7 @@ public class BlindsightTongueWhipItem extends Item {
 
         if (level.random.nextFloat() < chance) {
             if (target instanceof Player playerTarget) {
-                int cooldownTicks = 60 * levelCount;
+                int cooldownTicks = 20 * levelCount;
                 playerTarget.getCooldowns().addCooldown(heldItem.getItem(), cooldownTicks);
                 level.playSound(null, playerTarget.getX(), playerTarget.getY(), playerTarget.getZ(), SoundEvents.SHIELD_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
             } else {

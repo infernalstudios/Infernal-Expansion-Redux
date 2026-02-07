@@ -51,9 +51,10 @@
   ],
   "client": [
     "accessor.ItemPropertiesAccessor",
+    "client.BlindsightTongueWhipItemMixin",
     "client.EntityRendererDispatcherMixin",
-    "client.ScreenEffectRendererMixin",
-    "client.BlindsightTongueWhipItemMixin"
+    "client.LocalPlayerMixin",
+    "client.ScreenEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
