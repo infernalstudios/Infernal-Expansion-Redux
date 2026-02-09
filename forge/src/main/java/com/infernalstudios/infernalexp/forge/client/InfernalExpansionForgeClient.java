@@ -1,6 +1,8 @@
 package com.infernalstudios.infernalexp.forge.client;
 
 import com.infernalstudios.infernalexp.client.IECommonClient;
+import com.infernalstudios.infernalexp.client.entity.render.WarpbeetleRenderer;
+import com.infernalstudios.infernalexp.client.layer.WarpbeetleBackpackLayer;
 import com.infernalstudios.infernalexp.client.particle.GlowsquitoWingParticle;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
 import com.infernalstudios.infernalexp.client.particle.TongueWhipSlashParticle;
@@ -17,6 +19,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -37,6 +40,7 @@ public class InfernalExpansionForgeClient {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionForgeClient::registerEntityRenderers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionForgeClient::registerLayerDefinitions);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionForgeClient::registerParticleProviders);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionForgeClient::addEntityLayers);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -60,6 +64,20 @@ public class InfernalExpansionForgeClient {
 
         for (Map.Entry<RegistryObject<? extends BlockEntityType<?>>, BlockEntityRendererProvider<?>> entry : ModBlockEntityRenderers.getRegistry().entrySet()) {
             registerBlockEntityRendererHelper(event, entry.getKey(), entry.getValue());
+        }
+    }
+
+    public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
+        WarpbeetleRenderer beetleRenderer = new WarpbeetleRenderer(event.getContext());
+
+        PlayerRenderer defaultPlayer = event.getSkin("default");
+        if (defaultPlayer != null) {
+            defaultPlayer.addLayer(new WarpbeetleBackpackLayer(defaultPlayer, beetleRenderer));
+        }
+
+        PlayerRenderer slimPlayer = event.getSkin("slim");
+        if (slimPlayer != null) {
+            slimPlayer.addLayer(new WarpbeetleBackpackLayer(slimPlayer, beetleRenderer));
         }
     }
 

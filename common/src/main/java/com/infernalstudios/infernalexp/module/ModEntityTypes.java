@@ -54,7 +54,7 @@ public class ModEntityTypes {
             .withTranslation("Blindsight"));
     public static final EntityTypeDataHolder<WarpbeetleEntity> WARPBEETLE = register("warpbeetle", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.of(WarpbeetleEntity::new, MobCategory.CREATURE)
-                            .sized(0.5F, 0.5F) // TODO: adjust?
+                            .sized(0.5F, 0.5F)
                             .fireImmune()
                             .build())
             .attributes(WarpbeetleEntity::createAttributes)

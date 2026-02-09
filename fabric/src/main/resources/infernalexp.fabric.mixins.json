@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "client.AbstractClientPlayerMixin"
+    "client.AbstractClientPlayerMixin",
+    "client.PlayerRendererMixin"
   ],
   "server": [
   ],
