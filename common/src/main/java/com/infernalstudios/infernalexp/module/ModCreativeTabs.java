@@ -46,6 +46,8 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.DULLSTONE_BUTTON.get());
         entries.accept(ModItems.DULLROCKS.get());
 
+        entries.accept(ModItems.WARPED_SHELL.get());
+
         entries.accept(ModBlocks.GLOWSILK_COCOON.get());
         entries.accept(ModItems.GLOWSILK_STRING.get());
         entries.accept(ModItems.GLOWSILK_BOW.get());
@@ -134,6 +136,7 @@ public class ModCreativeTabs {
         entries.accept(ModItems.GLOWSQUITO_SPAWN_EGG.get());
         entries.accept(ModItems.GLOWSILK_MOTH_SPAWN_EGG.get());
         entries.accept(ModItems.BLINDSIGHT_SPAWN_EGG.get());
+        entries.accept(ModItems.WARPBEETLE_SPAWN_EGG.get());
 
         entries.accept(ModItems.MUSIC_DISC_FLUSH.get());
 

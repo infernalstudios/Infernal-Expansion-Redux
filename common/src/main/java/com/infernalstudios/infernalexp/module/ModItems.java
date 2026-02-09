@@ -123,6 +123,17 @@ public class ModItems {
             .withTranslation("Blindsight Spawn Egg")
     );
 
+    public static final ItemDataHolder<?> WARPBEETLE_SPAWN_EGG = register("warpbeetle_spawn_egg", ItemDataHolder.of(() ->
+                    new SpawnEggItem(
+                            ModEntityTypes.WARPBEETLE.get(),
+                            0x2D3860,
+                            0x72EA95,
+                            new Item.Properties()
+                    ))
+            .withModel(SPAWN_EGG)
+            .withTranslation("Warpbeetle Spawn Egg")
+    );
+
     public static final ItemDataHolder<?> BLINDSIGHT_TONGUE_WHIP = register("blindsight_tongue_whip", ItemDataHolder.of(() ->
                     new BlindsightTongueWhipItem(new Item.Properties().durability(300)))
             .withTranslation("Blindsight Tongue Whip")
@@ -209,6 +220,16 @@ public class ModItems {
     public static final ItemDataHolder<?> LUMINOUS_HANGING_SIGN = register("luminous_hanging_sign", ItemDataHolder.of(() ->
                     new HangingSignItem(ModBlocks.LUMINOUS_HANGING_SIGN.get(), ModBlocks.LUMINOUS_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)))
             .withModel(ModelTemplates.FLAT_ITEM)
+    );
+
+    public static final ItemDataHolder<?> WARPED_SHELL = register("warped_shell", ItemDataHolder.of(() ->
+                    new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationMod(0.4F)
+                            .effect(new MobEffectInstance(ModEffects.WARPED.get(), 600, 0), 1.0F)
+                            .build())))
+            .withModel(ModelTemplates.FLAT_ITEM)
+            .withTranslation("Warped Shell")
     );
 
     public static ItemDataHolder<?> register(String name, ItemDataHolder<?> itemDataHolder) {

@@ -52,6 +52,13 @@ public class ModEntityTypes {
                             .build())
             .attributes(BlindsightEntity::createAttributes)
             .withTranslation("Blindsight"));
+    public static final EntityTypeDataHolder<WarpbeetleEntity> WARPBEETLE = register("warpbeetle", EntityTypeDataHolder.of(() ->
+                    EntityTypeDataHolder.Builder.of(WarpbeetleEntity::new, MobCategory.CREATURE)
+                            .sized(0.5F, 0.5F) // TODO: adjust?
+                            .fireImmune()
+                            .build())
+            .attributes(WarpbeetleEntity::createAttributes)
+            .withTranslation("Warpbeetle"));
     public static final EntityTypeDataHolder<ThrowableMagmaCreamEntity> THROWABLE_MAGMA_CREAM = register("throwable_magma_cream", EntityTypeDataHolder.of(() ->
                     EntityTypeDataHolder.Builder.<ThrowableMagmaCreamEntity>of(ThrowableMagmaCreamEntity::new, MobCategory.MISC)
                             .sized(0.25F, 0.25F)

@@ -25,6 +25,7 @@ public class ModEntityRenderers {
         register(ModEntityTypes.VOLINE, VolineRenderer::new);
         register(ModEntityTypes.GLOWSQUITO, GlowsquitoRenderer::new);
         register(ModEntityTypes.BLINDSIGHT, BlindsightRenderer::new);
+        register(ModEntityTypes.WARPBEETLE, WarpbeetleRenderer::new);
         register(ModEntityTypes.GLOWSILK_MOTH, GlowsilkMothRenderer::new);
         register(ModEntityTypes.GLOWSILK_ARROW, GlowsilkArrowRenderer::new);
         register(ModEntityTypes.THROWABLE_MAGMA_CREAM, ThrownItemRenderer::new);
