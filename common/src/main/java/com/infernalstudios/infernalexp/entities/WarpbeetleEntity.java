@@ -164,12 +164,6 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
 
     @Override
     public void tick() {
-        if (this.isPassenger()) {
-            this.setYRot(0);
-            this.setYHeadRot(0);
-            this.yBodyRot = 0;
-            this.setXRot(0);
-        }
         super.tick();
 
         if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 3.46D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
@@ -185,6 +179,14 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
         if (vehicle instanceof Player player) {
             this.setPos(player.getX(), player.getY() + 1.2D, player.getZ());
             this.setDeltaMovement(Vec3.ZERO);
+
+            this.yBodyRot = player.yBodyRot;
+            this.setYRot(player.yBodyRot);
+            this.setYHeadRot(player.yBodyRot);
+
+            this.yBodyRotO = player.yBodyRotO;
+            this.yRotO = player.yRotO;
+            this.yHeadRotO = player.yHeadRotO;
 
             if (!player.onGround() && player.getDeltaMovement().y < -0.1) {
                 player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
@@ -282,6 +284,7 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
+            if (this.isPassenger()) return event.setAndContinue(IDLE);
             if (this.isDancing()) return event.setAndContinue(DANCE);
             if (this.isFlying()) return event.setAndContinue(FLY);
             if (event.isMoving()) return event.setAndContinue(WALK);
