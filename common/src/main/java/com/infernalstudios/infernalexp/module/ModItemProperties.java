@@ -55,10 +55,6 @@ public class ModItemProperties {
             }
 
             if (start != 0) {
-                if (entity == Minecraft.getInstance().player && !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
-                    return 0.0F;
-                }
-
                 float elapsed = (float) (time - start);
                 if (elapsed <= BlindsightTongueWhipItem.ATTACK_DURATION_TICKS) {
                     float attackProgress = elapsed / (float) BlindsightTongueWhipItem.ATTACK_DURATION_TICKS;
