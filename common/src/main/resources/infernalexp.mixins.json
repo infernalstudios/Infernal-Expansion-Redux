@@ -28,7 +28,7 @@
     "MagmaCubeMixin",
     "MinecraftServerMixin",
     "MultiPackResourceManagerMixin",
-    "PiglinSpecificSensorMixin",
+    "HoglinSpecificSensorMixin",
     "PotionBrewingInvoker",
     "RuinedPortalStructureMixin",
     "StriderMixin",

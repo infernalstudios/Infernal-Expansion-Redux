@@ -18,7 +18,6 @@
 * Re-added and reworked the Warpbeetle.
     * Warpbeetles can now be shift-right-clicked to be placed on your back, giving Feather Falling.
       * Shift-right-click again to remove them.
-      * Crouching and jumping while wearing them doubles your jump height.
 
 * New config option to disable Quartz and Bone placement.
 * Added `/ntp` (Nether Teleport) command to safely teleport to the Nether.
