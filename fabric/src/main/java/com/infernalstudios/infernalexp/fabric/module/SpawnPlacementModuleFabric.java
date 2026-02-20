@@ -1,9 +1,6 @@
 package com.infernalstudios.infernalexp.fabric.module;
 
-import com.infernalstudios.infernalexp.entities.BlindsightEntity;
-import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
-import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
-import com.infernalstudios.infernalexp.entities.VolineEntity;
+import com.infernalstudios.infernalexp.entities.*;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -29,5 +26,10 @@ public class SpawnPlacementModuleFabric {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 BlindsightEntity::checkBlindsightSpawnRules);
+
+        SpawnPlacements.register(ModEntityTypes.WARPBEETLE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                WarpbeetleEntity::checkWarpbeetleSpawnRules);
     }
 }

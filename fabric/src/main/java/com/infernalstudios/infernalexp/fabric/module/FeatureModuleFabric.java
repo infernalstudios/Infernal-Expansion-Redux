@@ -50,6 +50,15 @@ public class FeatureModuleFabric {
         );
 
         BiomeModifications.addSpawn(
+                BiomeSelectors.includeByKey(Biomes.WARPED_FOREST),
+                MobCategory.AMBIENT,
+                ModEntityTypes.WARPBEETLE.get(),
+                50,
+                1,
+                5
+        );
+
+        BiomeModifications.addSpawn(
                 BiomeSelectors.includeByKey(Biomes.BASALT_DELTAS),
                 MobCategory.AMBIENT,
                 ModEntityTypes.GLOWSILK_MOTH.get(),

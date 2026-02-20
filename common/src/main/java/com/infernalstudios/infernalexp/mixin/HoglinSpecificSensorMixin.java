@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.mixin;
 
+import com.infernalstudios.infernalexp.entities.WarpbeetleEntity;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Optional;
+
 @Mixin(HoglinSpecificSensor.class)
 public class HoglinSpecificSensorMixin {
 
@@ -21,6 +24,13 @@ public class HoglinSpecificSensorMixin {
 
         if (player != null) {
             hoglin.getBrain().setMemory(MemoryModuleType.NEAREST_REPELLENT, player.blockPosition());
+            return;
         }
+
+        Optional<WarpbeetleEntity> nearestBeetle = world.getEntitiesOfClass(WarpbeetleEntity.class, hoglin.getBoundingBox().inflate(8.0D, 4.0D, 8.0D))
+                .stream()
+                .min((b1, b2) -> Float.compare(b1.distanceTo(hoglin), b2.distanceTo(hoglin)));
+
+        nearestBeetle.ifPresent(beetle -> hoglin.getBrain().setMemory(MemoryModuleType.NEAREST_REPELLENT, beetle.blockPosition()));
     }
 }

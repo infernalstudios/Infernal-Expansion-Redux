@@ -79,7 +79,9 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     }
 
     public static boolean checkWarpbeetleSpawnRules(EntityType<WarpbeetleEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBlockState(pos.below()).is(Blocks.WARPED_NYLIUM) && isBrightEnoughToSpawn(level, pos);
+        boolean randomThrottle = random.nextFloat() <= 0.05F;
+
+        return randomThrottle && level.getBlockState(pos.below()).is(Blocks.WARPED_NYLIUM);
     }
 
     @Override
