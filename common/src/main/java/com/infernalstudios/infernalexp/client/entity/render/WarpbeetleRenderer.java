@@ -4,6 +4,7 @@ import com.infernalstudios.infernalexp.client.entity.model.WarpbeetleModel;
 import com.infernalstudios.infernalexp.entities.WarpbeetleEntity;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -65,6 +66,11 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
                     new AnimationState<>(dummyBeetle, 0, 0, partialTick, false);
             this.getGeoModel().handleAnimations(dummyBeetle, instanceId, animationState);
 
+            if (entity.isFlying()) {
+                poseStack.pushPose();
+                poseStack.mulPose(Axis.XP.rotationDegrees(45.0F));
+            }
+
             ResourceLocation texture = ((EntityRenderer<WarpbeetleEntity>) this).getTextureLocation(entity);
             RenderType renderType = this.getRenderType(dummyBeetle, texture, bufferSource, partialTick);
 
@@ -81,6 +87,10 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
                     OverlayTexture.NO_OVERLAY,
                     1.0f, 1.0f, 1.0f, 1.0f
             );
+
+            if (entity.isFlying()) {
+                poseStack.popPose();
+            }
         }
 
         this.isRenderingBackpack = false;

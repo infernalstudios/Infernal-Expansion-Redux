@@ -2,7 +2,6 @@ package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
 import com.infernalstudios.infernalexp.mixin.accessor.ItemPropertiesAccessor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -29,33 +28,31 @@ public class ModItemProperties {
 
     private static void makeWhip(Item item) {
         ItemPropertiesAccessor.register(item, new ResourceLocation("infernalexp", "whip_progress"), (stack, level, entity, seed) -> {
+            if (entity == null || !(entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)) {
+                return 0.0F;
+            }
 
-            if (entity != null && entity.isUsingItem() && entity.getUseItem() == stack) {
+            if (entity.isUsingItem() && entity.getUseItem() == stack) {
                 float useTime = (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks());
                 float progress = Math.min(1.0F, useTime / BlindsightTongueWhipItem.CHARGE_CAP_TICKS);
-
                 return progress * 0.5F;
             }
 
-            Level world = level != null ? level : (entity != null ? entity.level() : null);
-            if (world == null) return 0.0F;
-
+            Level world = level != null ? level : entity.level();
             long start = 0;
             long time = world.getGameTime();
 
-            if (entity != null && BlindsightTongueWhipItem.isAttacking(stack) && BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.containsKey(entity.getId())) {
-                long mappedStart = BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.get(entity.getId());
-                if (time - mappedStart >= 0 && time - mappedStart <= BlindsightTongueWhipItem.ATTACK_DURATION_TICKS) {
-                    start = mappedStart;
+            if (BlindsightTongueWhipItem.isAttacking(stack)) {
+                if (world.isClientSide && BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.containsKey(entity.getId())) {
+                    start = BlindsightTongueWhipItem.CLIENT_ATTACK_TIMES.get(entity.getId());
+                } else {
+                    start = BlindsightTongueWhipItem.getAttackStartTick(stack);
                 }
             }
 
-            if (start == 0 && BlindsightTongueWhipItem.isAttacking(stack)) {
-                start = BlindsightTongueWhipItem.getAttackStartTick(stack);
-            }
-
             if (start != 0) {
-                float elapsed = (float) (time - start);
+                float elapsed = Math.max(0, (float) (time - start));
+
                 if (elapsed <= BlindsightTongueWhipItem.ATTACK_DURATION_TICKS) {
                     float attackProgress = elapsed / (float) BlindsightTongueWhipItem.ATTACK_DURATION_TICKS;
                     return 0.50F + (attackProgress * 0.50F) + 0.01F;
