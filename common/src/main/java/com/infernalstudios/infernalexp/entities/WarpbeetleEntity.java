@@ -177,7 +177,7 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     public void rideTick() {
         Entity vehicle = this.getVehicle();
         if (vehicle instanceof Player player) {
-            this.setPos(player.getX(), player.getY() + 1.2D, player.getZ());
+            this.setPos(player.getX(), player.getY() + 0.9D, player.getZ());
             this.setDeltaMovement(Vec3.ZERO);
 
             this.yBodyRot = player.yBodyRot;
@@ -188,8 +188,15 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
             this.yRotO = player.yRotO;
             this.yHeadRotO = player.yHeadRotO;
 
-            if (!player.onGround() && player.getDeltaMovement().y < -0.1) {
-                player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
+            boolean isFalling = !player.onGround() && (player.getDeltaMovement().y < -0.1 || player.fallDistance > 0.1F);
+
+            if (isFalling) {
+                if (!this.level().isClientSide) {
+                    player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
+                }
+                this.setFlying(true);
+            } else {
+                this.setFlying(false);
             }
         } else {
             super.rideTick();
@@ -200,6 +207,10 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     public boolean hurt(@NotNull DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
+        }
+
+        if (this.isPassenger()) {
+            this.stopRiding();
         }
 
         if (source.getEntity() instanceof LivingEntity attacker) {
@@ -215,7 +226,7 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
 
         boolean result = super.hurt(source, amount);
 
-        if (result && this.isAlive() && !this.level().isClientSide && !this.isPassenger()) {
+        if (result && this.isAlive() && !this.level().isClientSide) {
             for (int i = 0; i < 64; ++i) {
                 if (this.teleport()) {
                     return true;
@@ -284,9 +295,9 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
-            if (this.isPassenger()) return event.setAndContinue(IDLE);
             if (this.isDancing()) return event.setAndContinue(DANCE);
             if (this.isFlying()) return event.setAndContinue(FLY);
+            if (this.isPassenger()) return event.setAndContinue(IDLE);
             if (event.isMoving()) return event.setAndContinue(WALK);
             return event.setAndContinue(IDLE);
         }));

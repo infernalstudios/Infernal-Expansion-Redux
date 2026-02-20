@@ -15,7 +15,13 @@
     * Disarming I-III: Chance to cause mobs to drop their held item, or disable another player's held item for a short
       duration. Higher levels increase the chance, up to a max of 60%.
 
+* Re-added and reworked the Warpbeetle.
+    * Warpbeetles can now be shift-right-clicked to be placed on your back, giving Feather Falling.
+      * Shift-right-click again to remove them.
+      * Crouching and jumping while wearing them doubles your jump height.
+
 * New config option to disable Quartz and Bone placement.
+* Added `/ntp` (Nether Teleport) command to safely teleport to the Nether.
 
 ### Changed
 
@@ -24,3 +30,4 @@
 ### Fixed
 
 * Fixed missing recipes for modded Shroomlights using Shroomlight Tears.
+* Glowstone spikes no longer generate on top of Lava.

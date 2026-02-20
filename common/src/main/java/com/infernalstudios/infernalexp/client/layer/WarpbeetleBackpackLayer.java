@@ -34,7 +34,7 @@ public class WarpbeetleBackpackLayer extends RenderLayer<AbstractClientPlayer, P
 
                     ModelPart body = this.getParentModel().body;
                     body.translateAndRotate(poseStack);
-                    poseStack.translate(0.0D, 0.0D, 0.22D);
+                    poseStack.translate(0.0D, 0.2D, 0.22D);
 
                     poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
                     poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
