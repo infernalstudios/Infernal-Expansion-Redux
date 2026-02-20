@@ -1,9 +1,6 @@
 package com.infernalstudios.infernalexp.items;
 
-import com.infernalstudios.infernalexp.module.ModEffects;
-import com.infernalstudios.infernalexp.module.ModEnchantments;
-import com.infernalstudios.infernalexp.module.ModParticleTypes;
-import com.infernalstudios.infernalexp.module.ModSounds;
+import com.infernalstudios.infernalexp.module.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -55,6 +52,11 @@ public class BlindsightTongueWhipItem extends Item {
     public static long getAttackStartTick(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         return tag != null ? tag.getLong("AttackStartTick") : 0L;
+    }
+
+    @Override
+    public boolean isValidRepairItem(@NotNull ItemStack tool, ItemStack repairCandidate) {
+        return repairCandidate.is(ModItems.BLINDSIGHT_TONGUE.get()) || super.isValidRepairItem(tool, repairCandidate);
     }
 
     @Override

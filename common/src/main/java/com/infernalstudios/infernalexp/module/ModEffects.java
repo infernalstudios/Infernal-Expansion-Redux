@@ -6,13 +6,21 @@ import com.infernalstudios.infernalexp.effect.StatusEffect;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModEffects {
     private static final Map<ResourceLocation, MobEffectDataHolder<?>> EFFECT_REGISTRY = new HashMap<>();
+
+    public static final MobEffectDataHolder<?> WARPED = register("warped", MobEffectDataHolder.of(() ->
+            new StatusEffect(MobEffectCategory.BENEFICIAL, 0x00ffba)))
+            .withTranslation("Warped")
+            .withPotion(ModItems.WARPED_SHELL::get);
+    public static final MobEffectDataHolder<?> LUMINOUS = register("luminous", MobEffectDataHolder.of(() ->
+            new LuminousEffect(MobEffectCategory.NEUTRAL, 16777086)))
+            .withTranslation("Luminous")
+            .withPotion(() -> ModBlocks.LUMINOUS_FUNGUS.get().asItem());
 
     public static MobEffectDataHolder<?> register(String name, MobEffectDataHolder<?> effect) {
         ResourceLocation id = IECommon.makeID(name);
@@ -24,15 +32,6 @@ public class ModEffects {
         return EFFECT_REGISTRY;
     }
 
-    public static void load() {}
-
-    public static final MobEffectDataHolder<?> WARPED = register("warped", MobEffectDataHolder.of(() ->
-            new StatusEffect(MobEffectCategory.BENEFICIAL, 0x00ffba)))
-            .withTranslation("Warped")
-            .withPotion(() -> Items.WARPED_FUNGUS);
-
-    public static final MobEffectDataHolder<?> LUMINOUS = register("luminous", MobEffectDataHolder.of(() ->
-            new LuminousEffect(MobEffectCategory.NEUTRAL, 16777086)))
-            .withTranslation("Luminous")
-            .withPotion(() -> ModBlocks.LUMINOUS_FUNGUS.get().asItem());
+    public static void load() {
+    }
 }
