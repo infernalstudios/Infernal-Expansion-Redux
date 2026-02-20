@@ -29,6 +29,7 @@
     "MinecraftServerMixin",
     "MultiPackResourceManagerMixin",
     "PiglinSpecificSensorMixin",
+    "PotionBrewingInvoker",
     "RuinedPortalStructureMixin",
     "StriderMixin",
     "accessor.BlockBehaviourAccessor",

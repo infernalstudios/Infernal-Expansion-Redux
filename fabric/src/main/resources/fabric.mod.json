@@ -30,6 +30,9 @@
     ],
     "modmenu": [
       "com.infernalstudios.infernalexp.fabric.compat.ModMenuCompat"
+    ],
+    "emi": [
+      "com.infernalstudios.infernalexp.compat.emi.IEEmiPlugin"
     ]
   },
   "mixins": [
