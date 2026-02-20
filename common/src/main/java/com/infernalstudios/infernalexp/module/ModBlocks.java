@@ -249,13 +249,13 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> PLANTED_QUARTZ = register("planted_quartz", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BLOCK).instabreak().noCollission(), () -> Items.QUARTZ))
+                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_ROOTS).sound(SoundType.STONE).instabreak().noCollission(), () -> Items.QUARTZ))
             .cutout().dropsOther(() -> Items.QUARTZ)
             .withTranslation("Planted Quartz")
     );
 
     public static final BlockDataHolder<?> BURIED_BONE = register("buried_bone", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.BONE_BLOCK).instabreak().noCollission(), () -> Items.BONE))
+                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_ROOTS).sound(SoundType.BONE_BLOCK).instabreak().noCollission(), () -> Items.BONE))
             .cutout().dropsOther(() -> Items.BONE)
             .withTranslation("Buried Bone")
     );

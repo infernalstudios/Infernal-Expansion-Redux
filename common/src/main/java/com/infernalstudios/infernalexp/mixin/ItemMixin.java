@@ -97,20 +97,30 @@ public class ItemMixin {
 
         if ((Object) this == Items.QUARTZ) {
             BlockState state = ModBlocks.PLANTED_QUARTZ.get().getStateForPlacement(new BlockPlaceContext(context));
-            if (state.canSurvive(level, relativePos)) {
+            if (state != null && state.canSurvive(level, relativePos)) {
                 level.setBlock(relativePos, state, Block.UPDATE_ALL);
                 SoundType soundtype = state.getSoundType();
                 level.playSound(player, relativePos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
+                if (player != null && !player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+
                 cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
             }
         }
 
         if ((Object) this == Items.BONE) {
             BlockState state = ModBlocks.BURIED_BONE.get().getStateForPlacement(new BlockPlaceContext(context));
-            if (state.canSurvive(level, relativePos)) {
+            if (state != null && state.canSurvive(level, relativePos)) {
                 level.setBlock(relativePos, state, Block.UPDATE_ALL);
                 SoundType soundtype = state.getSoundType();
                 level.playSound(player, relativePos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
+                if (player != null && !player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+
                 cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
             }
         }
