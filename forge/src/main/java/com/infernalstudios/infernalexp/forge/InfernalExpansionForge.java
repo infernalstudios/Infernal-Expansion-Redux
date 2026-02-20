@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.forge;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.IEConstants;
+import com.infernalstudios.infernalexp.command.NtpCommand;
 import com.infernalstudios.infernalexp.compat.TerraBlenderCompat;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.forge.client.InfernalExpansionForgeClient;
@@ -10,6 +11,8 @@ import com.infernalstudios.infernalexp.platform.Services;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
@@ -26,6 +29,7 @@ public class InfernalExpansionForge {
         IECommon.init();
 
         modEventBus.addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.addListener(this::onCommandRegister);
 
         if (Services.PLATFORM.isModLoaded("cloth_config")) {
             ModLoadingContext.get().registerExtensionPoint(
@@ -40,6 +44,10 @@ public class InfernalExpansionForge {
         }
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InfernalExpansionForgeClient::init);
+    }
+
+    private void onCommandRegister(RegisterCommandsEvent event) {
+        NtpCommand.register(event.getDispatcher());
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

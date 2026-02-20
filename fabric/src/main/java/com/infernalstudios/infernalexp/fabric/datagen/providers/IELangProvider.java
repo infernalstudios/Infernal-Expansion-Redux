@@ -55,6 +55,12 @@ public class IELangProvider extends FabricLanguageProvider {
 
         builder.add("subtitles.infernalexp.item.whip.whip_crack", "Whip cracks");
 
+        // Commands
+        builder.add("commands.infernalexp.ntp.not_found", "The Nether dimension could not be found!");
+        builder.add("commands.infernalexp.ntp.already_in_nether", "You are already in the Nether!");
+        builder.add("commands.infernalexp.ntp.failed", "No safe spot found.");
+        builder.add("commands.infernalexp.ntp.success", "Teleported safely to the Nether!");
+
         // Advancements
         builder.add("advancements.infernalexp.freeze_punk.title", "Freeze, Punk!");
         builder.add("advancements.infernalexp.freeze_punk.desc", "Freeze a sleeping Voline with a snowball");
