@@ -22,6 +22,24 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
         super(codec);
     }
 
+    private static boolean ensureCanWrite(WorldGenLevel level, BlockPos pos) {
+        if (!(level instanceof WorldGenRegion world)) return true;
+
+        WorldGenRegionAccessor self = (WorldGenRegionAccessor) world;
+
+        int x = SectionPos.blockToSectionCoord(pos.getX());
+        int z = SectionPos.blockToSectionCoord(pos.getZ());
+        ChunkPos chunkPos = world.getCenter();
+        int sx = Math.abs(chunkPos.x - x);
+        int sz = Math.abs(chunkPos.z - z);
+        if (sx <= self.getWriteRadiusCutoff() && sz <= self.getWriteRadiusCutoff()) {
+            if (self.getCenter().isUpgrading())
+                return pos.getY() >= world.getMinBuildHeight() && pos.getY() < world.getMaxBuildHeight();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean place(FeaturePlaceContext<F> context) {
         WorldGenLevel level = context.level();
@@ -29,7 +47,7 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
 
         List<BlockPos> positions = new ArrayList<>();
         for (int i = 0; i < level.getMaxBuildHeight(); i++) {
-            if (level.isEmptyBlock(pos.atY(i)) && this.isValidPos(level, pos.atY(i)))
+            if (this.isTargetBlock(level, pos.atY(i)) && this.isValidPos(level, pos.atY(i)))
                 positions.add(pos.atY(i));
         }
         if (positions.isEmpty()) return false;
@@ -57,22 +75,7 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
 
     public abstract boolean isValidPos(LevelReader world, BlockPos pos);
 
-
-    private static boolean ensureCanWrite(WorldGenLevel level, BlockPos pos) {
-        if (!(level instanceof WorldGenRegion world)) return true;
-
-        WorldGenRegionAccessor self = (WorldGenRegionAccessor) world;
-
-        int x = SectionPos.blockToSectionCoord(pos.getX());
-        int z = SectionPos.blockToSectionCoord(pos.getZ());
-        ChunkPos chunkPos = world.getCenter();
-        int sx = Math.abs(chunkPos.x - x);
-        int sz = Math.abs(chunkPos.z - z);
-        if (sx <= self.getWriteRadiusCutoff() && sz <= self.getWriteRadiusCutoff()) {
-            if (self.getCenter().isUpgrading())
-                return pos.getY() >= world.getMinBuildHeight() && pos.getY() < world.getMaxBuildHeight();
-            return true;
-        }
-        return false;
+    protected boolean isTargetBlock(WorldGenLevel level, BlockPos pos) {
+        return level.isEmptyBlock(pos);
     }
 }

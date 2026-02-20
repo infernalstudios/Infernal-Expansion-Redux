@@ -24,58 +24,6 @@ public class GlowstoneSpikeFeature extends NetherFeature<NoneFeatureConfiguratio
         super(codec);
     }
 
-    @Override
-    public boolean generate(BlockPos pos, FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel world = context.level();
-        RandomSource random = context.random();
-
-        BlockPos tip = pos.offset(random.nextInt(16) - 8, 0, random.nextInt(16) - 8);
-        if (!world.isEmptyBlock(pos.below()))
-            tip = tip.above(random.nextInt(10) + 10);
-        else
-            tip = tip.below(random.nextInt(10) + 10);
-        if (!world.isEmptyBlock(tip)) return false;
-
-        BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
-        BlockState dimstone = ModBlocks.DIMSTONE.get().defaultBlockState();
-        BlockState dullstone = ModBlocks.DULLSTONE.get().defaultBlockState();
-        boolean dark = random.nextBoolean();
-
-        List<BlockPos> base = generateSphere(random.nextInt(2) + 1);
-        List<BlockPos> line;
-        for (BlockPos a : base) {
-            if (world.isEmptyBlock(pos.offset(a)))
-                this.setBlock(world, pos.offset(a), dark ? dullstone : glowstone);
-
-            if (a.getY() == 0) {
-                line = generateLine(pos.offset(a), tip);
-                for (int i = 0; i < line.size(); i++) {
-                    BlockPos b = line.get(i);
-                    BlockState state;
-
-                    float chance = (float) i / line.size() + random.nextFloat() * 0.3f - 0.15f;
-                    if (dark) chance = 1 - chance;
-
-                    if (chance <= 0.33) state = glowstone;
-                    else if (chance <= 0.66) state = dimstone;
-                    else state = dullstone;
-
-                    this.setBlock(world, b, state);
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean isValidPos(LevelReader world, BlockPos pos) {
-        BlockState below = world.getBlockState(pos.below());
-        return !below.is(Blocks.BEDROCK)
-                && (below.isSolid() || !below.is(Blocks.LAVA) || !world.isEmptyBlock(pos.below()))
-                && (world.getBlockState(pos.above()).is(ModBlocks.DULLSTONE.get()) || !world.isEmptyBlock(pos.below()));
-    }
-
     private static List<BlockPos> generateSphere(float radius) {
         List<BlockPos> posList = new ArrayList<>();
 
@@ -108,5 +56,63 @@ public class GlowstoneSpikeFeature extends NetherFeature<NoneFeatureConfiguratio
         }
 
         return posList;
+    }
+
+    @Override
+    public boolean generate(BlockPos pos, FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+
+        BlockPos tip = pos.offset(random.nextInt(16) - 8, 0, random.nextInt(16) - 8);
+
+        if (world.getBlockState(pos.below()).isSolid())
+            tip = tip.above(random.nextInt(10) + 10);
+        else
+            tip = tip.below(random.nextInt(10) + 10);
+
+        if (!this.isTargetBlock(world, tip)) return false;
+
+        BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
+        BlockState dimstone = ModBlocks.DIMSTONE.get().defaultBlockState();
+        BlockState dullstone = ModBlocks.DULLSTONE.get().defaultBlockState();
+        boolean dark = random.nextBoolean();
+
+        List<BlockPos> base = generateSphere(random.nextInt(2) + 1);
+        List<BlockPos> line;
+        for (BlockPos a : base) {
+            if (this.isTargetBlock(world, pos.offset(a)))
+                this.setBlock(world, pos.offset(a), dark ? dullstone : glowstone);
+
+            if (a.getY() == 0) {
+                line = generateLine(pos.offset(a), tip);
+                for (int i = 0; i < line.size(); i++) {
+                    BlockPos b = line.get(i);
+                    BlockState state;
+
+                    float chance = (float) i / line.size() + random.nextFloat() * 0.3f - 0.15f;
+                    if (dark) chance = 1 - chance;
+
+                    if (chance <= 0.33) state = glowstone;
+                    else if (chance <= 0.66) state = dimstone;
+                    else state = dullstone;
+
+                    this.setBlock(world, b, state);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean isValidPos(LevelReader world, BlockPos pos) {
+        BlockState below = world.getBlockState(pos.below());
+        return !below.is(Blocks.BEDROCK)
+                && (below.isSolid() || world.getBlockState(pos.above()).is(ModBlocks.DULLSTONE.get()));
+    }
+
+    @Override
+    protected boolean isTargetBlock(WorldGenLevel level, BlockPos pos) {
+        return level.isEmptyBlock(pos) || level.getBlockState(pos).is(Blocks.LAVA);
     }
 }
