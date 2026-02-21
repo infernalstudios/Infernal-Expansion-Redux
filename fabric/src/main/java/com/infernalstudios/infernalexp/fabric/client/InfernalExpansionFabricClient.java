@@ -6,7 +6,10 @@ import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
 import com.infernalstudios.infernalexp.client.particle.TongueWhipSlashParticle;
 import com.infernalstudios.infernalexp.client.sound.GlowsquitoFlightSound;
 import com.infernalstudios.infernalexp.entities.GlowsquitoEntity;
-import com.infernalstudios.infernalexp.module.*;
+import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
+import com.infernalstudios.infernalexp.module.ModEntityRenderers;
+import com.infernalstudios.infernalexp.module.ModModelLayers;
+import com.infernalstudios.infernalexp.module.ModParticleTypes;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
@@ -68,7 +71,7 @@ public class InfernalExpansionFabricClient implements ClientModInitializer {
     }
 
     private void registerBlockEntityRenderers() {
-        for (Map.Entry<RegistryObject<? extends BlockEntityType<?>>,BlockEntityRendererProvider<?>> entry : ModBlockEntityRenderers.getRegistry().entrySet()) {
+        for (Map.Entry<RegistryObject<? extends BlockEntityType<?>>, BlockEntityRendererProvider<?>> entry : ModBlockEntityRenderers.getRegistry().entrySet()) {
             registerBlockEntityRendererHelper(entry.getKey(), entry.getValue());
         }
     }

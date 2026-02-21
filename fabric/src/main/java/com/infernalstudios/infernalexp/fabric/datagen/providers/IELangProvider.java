@@ -55,9 +55,6 @@ public class IELangProvider extends FabricLanguageProvider {
 
         builder.add("subtitles.infernalexp.item.whip.whip_crack", "Whip cracks");
 
-        // Tooltips
-        builder.add("item.infernalexp.blindsight_tongue_whip.damage", " 4 Attack Damage");
-
         // Commands
         builder.add("commands.infernalexp.ntp.not_found", "The Nether dimension could not be found!");
         builder.add("commands.infernalexp.ntp.already_in_nether", "You are already in the Nether!");
