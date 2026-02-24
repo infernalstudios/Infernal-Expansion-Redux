@@ -7,6 +7,8 @@ import com.infernalstudios.infernalexp.compat.TerraBlenderCompat;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.forge.client.InfernalExpansionForgeClient;
 import com.infernalstudios.infernalexp.forge.compat.autumnity.AutumnityCompat;
+import com.infernalstudios.infernalexp.forge.compat.cavernsandchasms.CavernsAndChasmsCompat;
+import com.infernalstudios.infernalexp.forge.compat.environmental.EnvironmentalCompat;
 import com.infernalstudios.infernalexp.platform.Services;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,6 +43,14 @@ public class InfernalExpansionForge {
 
         if (ModList.get().isLoaded("autumnity")) {
             AutumnityCompat.register(modEventBus);
+        }
+
+        if (ModList.get().isLoaded("environmental")) {
+            EnvironmentalCompat.register();
+        }
+
+        if (ModList.get().isLoaded("caverns_and_chasms")) {
+            CavernsAndChasmsCompat.register(modEventBus);
         }
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InfernalExpansionForgeClient::init);

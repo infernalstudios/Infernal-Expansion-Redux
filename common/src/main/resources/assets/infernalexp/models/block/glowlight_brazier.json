@@ -1,0 +1,7 @@
+{
+  "parent": "caverns_and_chasms:block/template_brazier",
+  "textures": {
+    "fire": "infernalexp:block/glowlight_campfire_fire",
+    "lit": "infernalexp:block/glowlight_brazier_top_lit"
+  }
+}

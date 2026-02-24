@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "bottom=false": { "model": "infernalexp:block/dwarf_spruce_middle_glowlight_torch" },
+    "bottom=true": { "model": "infernalexp:block/dwarf_spruce_bottom_glowlight_torch" }
+  }
+}

@@ -100,6 +100,15 @@ public class IELangProvider extends FabricLanguageProvider {
         builder.add("block.infernalexp.large_glowlight_jack_o_lantern_slice",
                 "Large Glowlight Jack o'Lantern Slice");
 
+        // Environmental Compat
+        builder.add("block.infernalexp.dwarf_spruce_plant_glowlight_torch",
+                "Dwarf Spruce Plant with Glowlight Torches");
+        builder.add("block.infernalexp.dwarf_spruce_glowlight_torch", "Dwarf Spruce with Glowlight Torches");
+
+        // Caverns & Chasms Compat
+        builder.add("block.infernalexp.glowlight_brazier",
+                "Glowlight Brazier");
+
         // Geyser Tooltips
         builder.add("text.autoconfig.infernalexp.option.common.geyser.geyserSteamHeight.@Tooltip",
                 "Determines the maximum height of the steam particles produced by the geyser.");

@@ -1,0 +1,28 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "top": "false"
+      },
+      "apply": {
+        "model": "infernalexp:block/dwarf_spruce_glowlight_torch"
+      }
+    },
+    {
+      "when": {
+        "top": "true"
+      },
+      "apply": {
+        "model": "infernalexp:block/dwarf_spruce_top_glowlight_torch"
+      }
+    },
+    {
+      "when": {
+        "star": "true"
+      },
+      "apply": {
+        "model": "environmental:block/dwarf_spruce_star"
+      }
+    }
+  ]
+}

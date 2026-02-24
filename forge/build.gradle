@@ -61,8 +61,11 @@ dependencies {
     // TerraBlender
     modCompileOnly "com.github.glitchfiend:TerraBlender-forge:${terrablender_version}"
 
-    // Autumnity
+    // Abnormals
     modCompileOnly "maven.modrinth:autumnity:${autumnity_version}"
+    modCompileOnly "maven.modrinth:environmental:${environmental_version}"
+    modCompileOnly "maven.modrinth:caverns-and-chasms:${caverns_and_chasms_version}"
+    modCompileOnly "maven.modrinth:blueprint:${blueprint_version}"
 
     // Jaden's Nether Expansion
     modCompileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}-Forge"

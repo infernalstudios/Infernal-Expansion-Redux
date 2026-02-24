@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Credit for this system goes to [Lyof](https://github.com/Lyof429) and their mods
+ * Credit for this system goes to Lyof (<a href="https://github.com/Lyof429">...</a>) and their mods
  * Do not reuse without crediting
  */
 public class ConfiguredData {
@@ -53,6 +53,33 @@ public class ConfiguredData {
         register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/large_glowlight_jack_o_lantern_slice.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
                 json -> Common.dropSelf(json, "infernalexp:large_glowlight_jack_o_lantern_slice"));
 
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_jack_o_lantern.json"),
+                () -> Services.PLATFORM.isModLoaded("autumnity"),
+                json -> Common.createShaped(
+                        "infernalexp:glowlight_jack_o_lantern",
+                        1,
+                        List.of("A", "B"),
+                        Map.of("A", "minecraft:carved_pumpkin", "B", "infernalexp:glowlight_torch")
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/glowlight_brazier.json"), () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
+                json -> Common.dropSelf(json, "infernalexp:glowlight_brazier"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_brazier.json"),
+                () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
+                json -> Common.createShaped(
+                        "infernalexp:glowlight_brazier",
+                        1,
+                        List.of("A", "B"),
+                        Map.of("A", "caverns_and_chasms:brazier", "B", "infernalexp:glowlight_torch")
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/dwarf_spruce_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
+                json -> Common.dropSelf(json, "environmental:dwarf_spruce"));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/dwarf_spruce_plant_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
+                json -> Common.dropSelf(json, "environmental:dwarf_spruce"));
+
         register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dimstone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> {
@@ -73,15 +100,6 @@ public class ConfiguredData {
                 json -> Common.createCrushing(150, "infernalexp:dullstone",
                         new Common.CrushOutput("infernalexp:dullrocks", 3, 1.0f),
                         new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
-                ));
-
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_jack_o_lantern.json"),
-                () -> Services.PLATFORM.isModLoaded("autumnity"),
-                json -> Common.createShaped(
-                        "infernalexp:glowlight_jack_o_lantern",
-                        1,
-                        List.of("A", "B"),
-                        Map.of("A", "minecraft:carved_pumpkin", "B", "infernalexp:glowlight_torch")
                 ));
 
         register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/shimmer_stone.json"),
@@ -134,6 +152,18 @@ public class ConfiguredData {
         register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroombright_tear.json"),
                 () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("cinderscapes")),
                 json -> Common.dropSporeOrSelf("infernalexp:shroombright_tear", "netherexp:brightspores"));
+
+        register(ResourceLocation.tryBuild("minecraft", "tags/blocks/mineable/pickaxe.json"),
+                () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
+                json -> Common.appendToTag(json, "infernalexp:glowlight_brazier"));
+
+        register(ResourceLocation.tryBuild("minecraft", "tags/blocks/mineable/hoe.json"),
+                () -> Services.PLATFORM.isModLoaded("environmental"),
+                json -> Common.appendToTag(json, "infernalexp:dwarf_spruce_glowlight_torch", "infernalexp:dwarf_spruce_plant_glowlight_torch"));
+
+        register(ResourceLocation.tryBuild("caverns_and_chasms", "tags/blocks/braziers.json"),
+                () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
+                json -> Common.appendToTag(json, "infernalexp:glowlight_brazier"));
     }
 
     public String apply(@Nullable String original) {
@@ -189,6 +219,27 @@ public class ConfiguredData {
             }
 
             return json.toString();
+        }
+
+        public static String appendToTag(JsonElement json, String... newValues) {
+            JsonObject obj;
+            if (json == null || !json.isJsonObject()) {
+                obj = new JsonObject();
+                obj.addProperty("replace", false);
+                obj.add("values", new JsonArray());
+            } else {
+                obj = json.getAsJsonObject();
+                if (!obj.has("values")) {
+                    obj.add("values", new JsonArray());
+                }
+            }
+
+            JsonArray values = obj.getAsJsonArray("values");
+            for (String val : newValues) {
+                values.add(val);
+            }
+
+            return gson.toJson(obj);
         }
 
         public static String addVolineMagmaCreamDrop(JsonElement json) {

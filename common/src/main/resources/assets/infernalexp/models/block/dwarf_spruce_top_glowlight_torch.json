@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "infernalexp:block/dwarf_spruce_top_glowlight_torch"
+    }
+}
