@@ -67,9 +67,8 @@ public class BlindsightTongueWhipItem extends Item {
         return tag != null ? tag.getLong("AttackStartTick") : 0L;
     }
 
-    // 3. Override the vanilla method to apply them to the Main Hand
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot slot) {
         return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 

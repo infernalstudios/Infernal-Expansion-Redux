@@ -54,7 +54,6 @@ import java.util.List;
 public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal {
 
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(WarpbeetleEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DANCING = SynchedEntityData.defineId(WarpbeetleEntity.class, EntityDataSerializers.BOOLEAN);
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
@@ -63,7 +62,10 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    @Nullable
     private BlockPos jukeboxPosition;
+    private boolean isPartying;
 
     public WarpbeetleEntity(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -79,7 +81,7 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     }
 
     public static boolean checkWarpbeetleSpawnRules(EntityType<WarpbeetleEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        boolean randomThrottle = random.nextFloat() <= 0.05F;
+        boolean randomThrottle = random.nextFloat() <= 0.08F;
 
         return randomThrottle && level.getBlockState(pos.below()).is(Blocks.WARPED_NYLIUM);
     }
@@ -93,7 +95,6 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(FLYING, false);
-        this.entityData.define(DANCING, false);
     }
 
     @Override
@@ -168,11 +169,24 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     public void tick() {
         super.tick();
 
-        if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 3.46D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
-            this.setDancing(false);
-            this.jukeboxPosition = null;
+        if (!this.level().isClientSide()) {
+            if (!this.onGround() && this.fallDistance > 1.5F && !this.isFlying()) {
+                this.setFlying(true);
+            }
+
+            if (this.onGround() && this.isFlying() && this.getNavigation().isDone()) {
+                this.setFlying(false);
+            }
+        } else {
+            if (this.jukeboxPosition == null || !this.jukeboxPosition.closerToCenterThan(this.position(), 10.0D) || !this.level().getBlockState(this.jukeboxPosition).is(Blocks.JUKEBOX)) {
+                this.isPartying = false;
+                this.jukeboxPosition = null;
+            }
         }
 
+        if (this.isFlying() && !this.onGround() && this.getDeltaMovement().y < 0.0D) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
+        }
     }
 
     @Override
@@ -190,10 +204,13 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
             this.yRotO = player.yRotO;
             this.yHeadRotO = player.yHeadRotO;
 
-            boolean isFalling = !player.onGround() && (player.getDeltaMovement().y < -0.1 || player.fallDistance > 0.1F);
+            boolean isFalling = player.getDeltaMovement().y < -0.1D;
+            boolean hasSlowFalling = player.hasEffect(MobEffects.SLOW_FALLING);
 
-            if (isFalling) {
-                if (!this.level().isClientSide) {
+            boolean shouldFly = !player.onGround() && (isFalling || hasSlowFalling || player.isFallFlying() || player.getAbilities().flying);
+
+            if (shouldFly) {
+                if (!this.level().isClientSide && isFalling && !player.isFallFlying() && !player.getAbilities().flying) {
                     player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
                 }
                 this.setFlying(true);
@@ -273,17 +290,18 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     }
 
     @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource source) {
+        return false;
+    }
+
+    @Override
     public void setRecordPlayingNearby(@NotNull BlockPos pos, boolean isPartying) {
         this.jukeboxPosition = pos;
-        this.setDancing(isPartying);
+        this.isPartying = isPartying;
     }
 
     public boolean isDancing() {
-        return this.entityData.get(DANCING);
-    }
-
-    public void setDancing(boolean dancing) {
-        this.entityData.set(DANCING, dancing);
+        return this.isPartying;
     }
 
     public boolean isFlying() {
@@ -298,11 +316,20 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
             if (this.isDancing()) return event.setAndContinue(DANCE);
-            if (this.isFlying()) return event.setAndContinue(FLY);
-            if (this.isPassenger()) return event.setAndContinue(IDLE);
+
+            if (this.isPassenger()) {
+                if (this.isFlying()) {
+                    return event.setAndContinue(FLY);
+                }
+                return event.setAndContinue(IDLE);
+            }
+
+            if (this.isFlying() || (!this.onGround() && this.fallDistance > 0.15F)) return event.setAndContinue(FLY);
             if (event.isMoving()) return event.setAndContinue(WALK);
+
             return event.setAndContinue(IDLE);
         }));
+
         controllers.add(new AnimationController<>(this, "attack_controller", 0, event -> PlayState.STOP)
                 .triggerableAnim("attack", ATTACK));
     }
@@ -350,18 +377,43 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
 
         @Override
         public void tick() {
-            if (this.operation == Operation.MOVE_TO && this.beetle.isFlying()) {
-                this.beetle.setNoGravity(true);
-                Vec3 wanted = new Vec3(this.wantedX - this.beetle.getX(), this.wantedY - this.beetle.getY(), this.wantedZ - this.beetle.getZ());
-                double dist = wanted.length();
-                if (dist < 0.1D) {
-                    this.beetle.setDeltaMovement(this.beetle.getDeltaMovement().scale(0.5D));
+            if (this.beetle.isFlying()) {
+                if (this.operation == Operation.MOVE_TO) {
+                    this.beetle.setNoGravity(true);
+
+                    double dx = this.wantedX - this.beetle.getX();
+                    double dy = this.wantedY - this.beetle.getY();
+                    double dz = this.wantedZ - this.beetle.getZ();
+                    double distanceSq = dx * dx + dy * dy + dz * dz;
+
+                    if (distanceSq < 2.5E-7D) {
+                        this.beetle.setYya(0.0F);
+                        this.beetle.setZza(0.0F);
+                        return;
+                    }
+
+                    float targetYaw = (float) (Math.atan2(dz, dx) * (180F / Math.PI)) - 90.0F;
+                    this.beetle.setYRot(this.rotlerp(this.beetle.getYRot(), targetYaw, 90.0F));
+                    this.beetle.yBodyRot = this.beetle.getYRot();
+
+                    float speed = (float) (this.speedModifier * this.beetle.getAttributeValue(Attributes.FLYING_SPEED));
+                    this.beetle.setSpeed(speed);
+
+                    double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
+                    double distance = Math.sqrt(distanceSq);
+
+                    if (Math.abs(dy) > 1.0E-5F || Math.abs(horizontalDistance) > 1.0E-5F) {
+                        float targetPitch = (float) -(Math.atan2(dy, horizontalDistance) * (180F / Math.PI));
+                        this.beetle.setXRot(this.rotlerp(this.beetle.getXRot(), targetPitch, 20.0F));
+
+                        this.beetle.setYya((float) (dy / distance * speed));
+                    }
+
                 } else {
-                    this.beetle.setDeltaMovement(this.beetle.getDeltaMovement().add(wanted.scale(this.speedModifier * 0.1D / dist)));
+                    this.beetle.setNoGravity(false);
+                    this.beetle.setYya(0.0F);
+                    this.beetle.setZza(0.0F);
                 }
-                Vec3 velocity = this.beetle.getDeltaMovement();
-                this.beetle.setYRot(-((float) Math.atan2(velocity.x, velocity.z)) * (180F / (float) Math.PI));
-                this.beetle.yBodyRot = this.beetle.getYRot();
             } else {
                 this.beetle.setNoGravity(false);
                 super.tick();
@@ -379,7 +431,9 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
 
         @Override
         public boolean canUse() {
-            if (this.beetle.isPassenger()) return false;
+            if (this.beetle.isPassenger()) {
+                return false;
+            }
             return super.canUse();
         }
 
@@ -404,7 +458,7 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
         protected Vec3 getPosition() {
             RandomSource random = this.beetle.getRandom();
 
-            if (random.nextFloat() < 0.1F) {
+            if (random.nextFloat() < 0.15F) {
                 Vec3 airPos = findLowFlightPos();
                 if (airPos != null) {
                     this.beetle.setFlying(true);

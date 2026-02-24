@@ -49,7 +49,6 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
         if (dummyBeetle != null) {
             dummyBeetle.tickCount = entity.tickCount;
             dummyBeetle.setFlying(entity.isFlying());
-            dummyBeetle.setDancing(entity.isDancing());
 
             dummyBeetle.yBodyRot = 0;
             dummyBeetle.setYRot(0);
