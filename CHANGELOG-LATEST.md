@@ -3,10 +3,10 @@
 * Re-added and reworked the Blindsight Tongue Whip.
     * Adjusted the range and radius.
     * Adjusted the recipe.
-    * Added a new particle and whip crack sound to the whip.
+    * Added a new particle, texture, and whip crack sound to the whip.
     * Now supports Knockback and Fire Resistance.
 
-* New Enchantments for the Blindsight Tongue Whip.
+* Added new Enchantments for the Blindsight Tongue Whip.
     * Illuminating I-II: Applies the Luminous effect to the target. Higher levels increase effect duration. Incompatible
       with Fire Aspect.
     * Lashing I-V: Increases the damage dealt when attacking. Higher levels further increase damage.
@@ -16,11 +16,20 @@
       duration. Higher levels increase the chance, up to a max of 60%.
 
 * Re-added and reworked the Warpbeetle.
-    * Warpbeetles can now be shift-right-clicked to be placed on your back, giving Feather Falling.
-      * Shift-right-click again to remove them.
+    * Warpbeetles can be shift-right-clicked to be placed on your back, giving Feather Falling.
+        * Shift-right-click again to remove them.
+    * Warpbeetles anger nearby Endermen when attacked.
+    * Warpbeetles drop Warped Shell, which gives the Warping effect upon consumption.
+    * Playing a Music Disc near a Warpbeetle will cause them to bob their heads.
 
-* New config option to disable Quartz and Bone placement.
-* Added `/ntp` (Nether Teleport) command to safely teleport to the Nether.
+* Added Potions of Warping.
+    * Warping causes you to teleport upon taking damage, and scares Hoglins away.
+
+* Added Hollow Shroomlights and Shroomlight Tears for Spelunkery Shroomlights.
+* Added Dwarf Spruce with Glowlight when Environmental is installed.
+* Added Glowlight Brazier when Caverns & Chasms is installed.
+* Re-added the `/ntp` (Nether Teleport) command to safely teleport to the Nether.
+* Added a config option to disable Quartz and Bone placement.
 
 ### Changed
 
@@ -30,3 +39,6 @@
 
 * Fixed missing recipes for modded Shroomlights using Shroomlight Tears.
 * Glowstone spikes no longer generate on top of Lava.
+    * Instead, they generate on the Lava floor and will jut out of the Lava.
+* Fixed Bone and Quartz placement acting unusually.
+* Fixing incorrect output for Basalt Iron Ore when processing with Create.
