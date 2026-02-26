@@ -1,9 +1,7 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IEConstants;
-import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
-import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
+import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.util.RegistrationProvider;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
@@ -83,16 +81,10 @@ public class ModCreativeTabs {
         entries.accept(ModBlocks.SHROOMLIGHT_TEAR.get());
         entries.accept(ModBlocks.HOLLOWLIGHT.get());
 
-        if (Services.PLATFORM.isModLoaded("netherexp")) {
-            entries.accept(NetherExpCompat.SHROOMNIGHT_TEAR.get());
-            entries.accept(NetherExpCompat.HOLLOWNIGHT.get());
-            if (Services.PLATFORM.isModLoaded("gardens_of_the_dead")) {
-                entries.accept(GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get());
-                entries.accept(GardensOfTheDeadCompat.HOLLOWBLIGHT.get());
-            }
-            if (Services.PLATFORM.isModLoaded("cinderscapes")) {
-                entries.accept(CinderscapesCompat.SHROOMBRIGHT_TEAR.get());
-                entries.accept(CinderscapesCompat.HOLLOWBRIGHT.get());
+        for (ShroomlightCompatRegistry.Variant variant : ShroomlightCompatRegistry.VARIANTS) {
+            if (Services.PLATFORM.isModLoaded(variant.modId)) {
+                entries.accept(variant.tearBlockHolder.get());
+                entries.accept(variant.hollowBlockHolder.get());
             }
         }
 

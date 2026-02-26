@@ -1,8 +1,6 @@
 package com.infernalstudios.infernalexp.fabric.datagen.providers;
 
-import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
-import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
+import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
@@ -30,11 +28,12 @@ public class IEItemTagProvider extends FabricTagProvider.ItemTagProvider {
             entry.getValue().forEach(b -> tagBuilder.add(b.get()));
         }
 
-        getOrCreateTagBuilder(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS)
-                .add(ModBlocks.SHROOMLIGHT_TEAR.get().asItem())
-                .add(NetherExpCompat.SHROOMNIGHT_TEAR.get().asItem())
-                .add(CinderscapesCompat.SHROOMBRIGHT_TEAR.get().asItem())
-                .add(GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get().asItem());
+        FabricTagProvider<Item>.FabricTagBuilder temptationBuilder = getOrCreateTagBuilder(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS)
+                .add(ModBlocks.SHROOMLIGHT_TEAR.get().asItem());
+
+        for (ShroomlightCompatRegistry.Variant variant : ShroomlightCompatRegistry.VARIANTS) {
+            temptationBuilder.add(variant.tearBlockHolder.get().asItem());
+        }
 
         getOrCreateTagBuilder(ModTags.Items.VOLINE_FOOD)
                 .add(Items.MAGMA_CREAM);

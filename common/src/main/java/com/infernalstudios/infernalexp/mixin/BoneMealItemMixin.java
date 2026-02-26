@@ -1,10 +1,7 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
-import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
-import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
-import com.infernalstudios.infernalexp.module.ModBlocks;
+import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +13,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -50,24 +46,7 @@ public class BoneMealItemMixin {
     @Unique
     @Nullable
     private Block infernalExp$getTearVariant(Block block) {
-        // TODO: this should probably be refactored
-        if (block == Blocks.SHROOMLIGHT) {
-            return ModBlocks.SHROOMLIGHT_TEAR.get();
-        }
-
-        if (NetherExpCompat.isShroomnight(block)) {
-            return NetherExpCompat.SHROOMNIGHT_TEAR != null ? NetherExpCompat.SHROOMNIGHT_TEAR.get() : null;
-        }
-
-        if (GardensOfTheDeadCompat.isShroomblight(block)) {
-            return GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR != null ? GardensOfTheDeadCompat.SHROOMBLIGHT_TEAR.get() : null;
-        }
-
-        if (CinderscapesCompat.isShroombright(block)) {
-            return CinderscapesCompat.SHROOMBRIGHT_TEAR != null ? CinderscapesCompat.SHROOMBRIGHT_TEAR.get() : null;
-        }
-
-        return null;
+        return ShroomlightCompatRegistry.getTearVariant(block);
     }
 
     /**

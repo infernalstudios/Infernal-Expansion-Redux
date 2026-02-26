@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     {
-      "id": "netherexp:shroomblight",
+      "id": "netherexp:shroombright",
       "required": false
     }
   ]

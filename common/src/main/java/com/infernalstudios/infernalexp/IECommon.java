@@ -1,15 +1,13 @@
 package com.infernalstudios.infernalexp;
 
-import com.infernalstudios.infernalexp.compat.CinderscapesCompat;
-import com.infernalstudios.infernalexp.compat.GardensOfTheDeadCompat;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
+import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.config.IEConfig;
-import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import com.infernalstudios.infernalexp.module.*;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.GlowsquitoInteractionRegistry;
 import com.infernalstudios.infernalexp.registration.StrippableRegistry;
+import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
@@ -62,9 +60,8 @@ public class IECommon {
         // Register Glowsquito interactions
         GlowsquitoInteractionRegistry.registerDefaults();
 
-        NetherExpCompat.registerCompat();
-        GardensOfTheDeadCompat.registerCompat();
-        CinderscapesCompat.registerCompat();
+        // Register mod compat
+        ShroomlightCompatRegistry.registerAllCompat();
     }
 
     public static ResourceLocation makeID(String name) {
