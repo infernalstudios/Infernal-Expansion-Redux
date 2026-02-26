@@ -41,4 +41,4 @@
 * Glowstone spikes no longer generate on top of Lava.
     * Instead, they generate on the Lava floor and will jut out of the Lava.
 * Fixed Bone and Quartz placement acting unusually.
-* Fixing incorrect output for Basalt Iron Ore when processing with Create.
+* Fixed incorrect output for Basalt Iron Ore when processing with Create.
