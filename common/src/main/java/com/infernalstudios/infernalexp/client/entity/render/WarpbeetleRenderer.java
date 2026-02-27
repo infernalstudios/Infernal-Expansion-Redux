@@ -34,7 +34,15 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
         if (entity.isPassenger() && entity.getVehicle() instanceof Player && !isRenderingBackpack) {
             return;
         }
+
+        poseStack.pushPose();
+
+        if (entity.isBaby()) {
+            poseStack.scale(0.5f, 0.5f, 0.5f);
+        }
+
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
     }
 
     public void renderBackpack(WarpbeetleEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {

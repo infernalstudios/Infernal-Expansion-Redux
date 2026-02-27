@@ -77,7 +77,8 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
                 .add(Attributes.MAX_HEALTH, 10.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.FLYING_SPEED, 0.4D)
-                .add(Attributes.ATTACK_DAMAGE, 2.0D);
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.ATTACK_KNOCKBACK, 1.5D);
     }
 
     public static boolean checkWarpbeetleSpawnRules(EntityType<WarpbeetleEntity> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -103,13 +104,18 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, Ingredient.of(Items.CRIMSON_FUNGUS), false));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, true));
 
         this.goalSelector.addGoal(5, new WarpbeetleWanderGoal(this));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F;
     }
 
     @Override
@@ -124,8 +130,10 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
         if (player.isShiftKeyDown() && stack.isEmpty()) {
             if (this.isPassenger()) {
                 this.stopRiding();
+                this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.2F);
             } else if (!this.isVehicle()) {
                 this.startRiding(player, true);
+                this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.2F);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
@@ -211,7 +219,11 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
 
             if (shouldFly) {
                 if (!this.level().isClientSide && isFalling && !player.isFallFlying() && !player.getAbilities().flying) {
-                    player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
+                    if (player.isCrouching()) {
+                        player.removeEffect(MobEffects.SLOW_FALLING);
+                    } else {
+                        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 10, 0, false, false, false));
+                    }
                 }
                 this.setFlying(true);
             } else {
@@ -315,8 +327,6 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
-            if (this.isDancing()) return event.setAndContinue(DANCE);
-
             if (this.isPassenger()) {
                 if (this.isFlying()) {
                     return event.setAndContinue(FLY);
@@ -328,6 +338,11 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
             if (event.isMoving()) return event.setAndContinue(WALK);
 
             return event.setAndContinue(IDLE);
+        }));
+
+        controllers.add(new AnimationController<>(this, "dance_controller", 0, event -> {
+            if (this.isDancing()) return event.setAndContinue(DANCE);
+            return PlayState.STOP;
         }));
 
         controllers.add(new AnimationController<>(this, "attack_controller", 0, event -> PlayState.STOP)

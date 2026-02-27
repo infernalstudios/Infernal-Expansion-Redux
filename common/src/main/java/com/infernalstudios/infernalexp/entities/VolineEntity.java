@@ -26,11 +26,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -62,35 +58,31 @@ import java.util.Objects;
 
 public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntity {
 
+    public static final EntityDataAccessor<Integer> MAGMA_CREAM_EATEN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final String TAG_MAGMA_CREAM_EATEN = "MagmaCreamEaten";
     private static final String TAG_IS_SLEEPING = "IsSleeping";
     private static final String TAG_FROM_BUCKET = "FromBucket";
     private static final String TAG_SLEEP_TIMER = "SleepTimer";
     private static final String TAG_IS_SEEKING_SHELTER = "IsSeekingShelter";
     private static final String TAG_IS_GROWN = "IsGrown";
-
     private static final int SLEEP_DURATION_TICKS = 1000;
     private static final int SHELTER_SEEK_TIMEOUT_TICKS = 100;
     private static final double BASE_MOVEMENT_SPEED = 0.4D;
     private static final double GROWN_MOVEMENT_SPEED = 0.16D;
     private static final double SPEED_REDUCTION_PER_CREAM = 0.08D;
     private static final float SIZE_INCREMENT_PER_CREAM = 0.08F;
-
-    public static final EntityDataAccessor<Integer> MAGMA_CREAM_EATEN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> SLEEP_TIMER = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_SEEKING_SHELTER = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_GROWN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private int shelterSeekTime = 0;
-
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation EAT = RawAnimation.begin().thenPlay("eat");
     private static final RawAnimation FALLING_ASLEEP = RawAnimation.begin().thenPlay("falling_asleep");
     private static final RawAnimation ASLEEP = RawAnimation.begin().thenLoop("asleep");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private int shelterSeekTime = 0;
 
     public VolineEntity(EntityType<? extends Animal> type, Level level) {
         super(type, level);
@@ -98,6 +90,10 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 1.0D).add(Attributes.MOVEMENT_SPEED, BASE_MOVEMENT_SPEED);
+    }
+
+    public static boolean checkVolineSpawnRules(EntityType<VolineEntity> voline, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return !level.getBlockState(pos.below()).is(Blocks.NETHER_WART_BLOCK);
     }
 
     @Override
@@ -186,6 +182,13 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
 
         this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(ModTags.Items.VOLINE_FOOD), false) {
+            @Override
+            public boolean canUse() {
+                return !VolineEntity.this.isSeekingShelter() && !VolineEntity.this.isSleeping() && super.canUse();
+            }
+        });
+
+        this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(ItemTags.PIGLIN_LOVED), false) {
             @Override
             public boolean canUse() {
                 return !VolineEntity.this.isSeekingShelter() && !VolineEntity.this.isSleeping() && super.canUse();
@@ -367,11 +370,11 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         this.triggerAnim("actionController", "eat");
     }
 
-    public void ate(ItemStack stack) {
-        this.ate(stack, null);
-    }
-
     public void ate(ItemStack stack, @Nullable Entity source) {
+        float pitch = this.isGrown() ? 1.0F : 1.2F;
+        float volume = this.isGrown() ? 1.0F : 0.5F;
+        this.playSound(SoundEvents.GENERIC_EAT, volume, pitch);
+
         if (stack.is(ModTags.Items.VOLINE_FOOD)) {
             if (!this.isGrown()) {
                 int eaten = this.getMagmaCreamEaten() + 1;
@@ -380,6 +383,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
                 if (IECommon.getConfig().common.voline.volineGetBig && eaten >= IECommon.getConfig().common.voline.volineMagmaCreamAmount) {
                     this.setGrown(true);
                     this.setMagmaCreamEaten(0);
+                    this.setAge(0);
 
                     if (!this.level().isClientSide) {
                         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 0.5D, this.getZ(), 10, 0.5D, 0.5D, 0.5D, 1.0D);
@@ -399,13 +403,8 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
                 this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
             }
         } else if (stack.is(ItemTags.PIGLIN_LOVED)) {
-            if (this.isGrown()) {
-                if (this.canFallInLove()) {
-                    this.setInLove(null);
-                }
-                this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
-            } else {
-                this.playSound(SoundEvents.GENERIC_EAT, 0.5F, 1.2F);
+            if (this.isGrown() && this.canFallInLove()) {
+                this.setInLove(null);
             }
         }
 
@@ -466,9 +465,23 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
 
     @Override
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+
+        if (this.wantsToEat(itemstack)) {
+            if (!this.level().isClientSide) {
+                this.ate(itemstack, player);
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
+                }
+                this.playEatingAnimation();
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
         if (!this.isGrown()) {
             return IBucketable.tryBucketEntity(player, hand, this).orElse(super.mobInteract(player, hand));
         }
+
         return super.mobInteract(player, hand);
     }
 
@@ -530,10 +543,6 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
             }
             this.discard();
         }
-    }
-
-    public static boolean checkVolineSpawnRules(EntityType<VolineEntity> voline, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return !level.getBlockState(pos.below()).is(Blocks.NETHER_WART_BLOCK);
     }
 
     @Override

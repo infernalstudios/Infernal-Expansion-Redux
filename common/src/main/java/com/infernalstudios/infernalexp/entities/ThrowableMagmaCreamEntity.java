@@ -39,7 +39,7 @@ public class ThrowableMagmaCreamEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
+    protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
@@ -48,7 +48,7 @@ public class ThrowableMagmaCreamEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHit(HitResult result) {
+    protected void onHit(@NotNull HitResult result) {
         super.onHit(result);
         if (!this.level().isClientSide) {
             if (result.getType() == HitResult.Type.BLOCK) {
