@@ -11,7 +11,7 @@
       with Fire Aspect.
     * Lashing I-V: Increases the damage dealt when attacking. Higher levels further increase damage.
     * Leaping: Propels the wielder forward when used in the air, or causes them to rebound off the target upon a
-      successful hit.
+      successful hit. Found in Ruined Aether Portal chest loot.
     * Disarming I-III: Chance to cause mobs to drop their held item, or disable another player's held item for a short
       duration. Higher levels increase the chance, up to a max of 60%.
 
@@ -34,6 +34,7 @@
 ### Changed
 
 * Shroomlight Tears and modded Shroomlight Tears now drop their Lightspores when Jaden's Nether Expansion is installed.
+* Improved Voline item interactions.
 
 ### Fixed
 

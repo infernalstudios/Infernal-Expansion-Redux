@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - [Unreleased]
+## [0.3.0] - 2026-02-27
 
 ### Added
 
@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       with Fire Aspect.
     * Lashing I-V: Increases the damage dealt when attacking. Higher levels further increase damage.
     * Leaping: Propels the wielder forward when used in the air, or causes them to rebound off the target upon a
-      successful hit.
+      successful hit. Found in Ruined Aether Portal chest loot.
     * Disarming I-III: Chance to cause mobs to drop their held item, or disable another player's held item for a short
       duration. Higher levels increase the chance, up to a max of 60%.
 
@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Shroomlight Tears and modded Shroomlight Tears now drop their Lightspores when Jaden's Nether Expansion is installed.
+* Improved Voline item interactions.
 
 ### Fixed
 
@@ -50,4 +51,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Glowstone spikes no longer generate on top of Lava.
     * Instead, they generate on the Lava floor and will jut out of the Lava.
 * Fixed Bone and Quartz placement acting unusually.
-* Fixing incorrect output for Basalt Iron Ore when processing with Create.
+* Fixed incorrect output for Basalt Iron Ore when processing with Create.

@@ -1,12 +1,13 @@
 plugins {
     id 'multiloader-common'
+    id 'me.modmuss50.mod-publish-plugin'
 }
 
 configurations {
-    commonJava{
+    commonJava {
         canBeResolved = true
     }
-    commonResources{
+    commonResources {
         canBeResolved = true
     }
 }
@@ -31,14 +32,31 @@ processResources {
     from(configurations.commonResources)
 }
 
-tasks.named('javadoc', Javadoc).configure {
-    dependsOn(configurations.commonJava)
-    source(configurations.commonJava)
-}
+publishMods {
+    changelog = rootProject.file("CHANGELOG-LATEST.md").text
+    type = STABLE
+    displayName = "${mod_name} ${project.name.capitalize()} ${minecraft_version} - ${project.version}"
+    modLoaders.add(project.name)
 
-tasks.named('sourcesJar', Jar) {
-    dependsOn(configurations.commonJava)
-    from(configurations.commonJava)
-    dependsOn(configurations.commonResources)
-    from(configurations.commonResources)
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        projectId = "1407992"
+        minecraftVersions.add("${minecraft_version}")
+
+        requires { slug = "geckolib" }
+        optional { slug = "lambdynamiclights" }
+        optional { slug = "cloth-config" }
+        optional { slug = "afterimages" }
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "wiPmcmNp"
+        minecraftVersions.add("${minecraft_version}")
+
+        requires { slug = "geckolib" }
+        optional { slug = "lambdynamiclights" }
+        optional { slug = "cloth-config" }
+        optional { slug = "afterimages" }
+    }
 }
