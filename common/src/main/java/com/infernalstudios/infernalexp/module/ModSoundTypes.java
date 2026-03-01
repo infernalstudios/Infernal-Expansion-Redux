@@ -7,23 +7,23 @@ import java.util.function.Supplier;
 
 public class ModSoundTypes {
 
-    public static final Supplier<SoundType> DULLSTONE = () -> new SoundType(
+    public static final Supplier<SoundType> DULLSTONE = () -> new DeferredSoundType(
             1.0F,
             1.0F,
-            ModSounds.BLOCK_DULLSTONE_BREAK.get(),
-            ModSounds.BLOCK_DULLSTONE_STEP.get(),
-            ModSounds.BLOCK_DULLSTONE_PLACE.get(),
-            ModSounds.BLOCK_DULLSTONE_HIT.get(),
-            ModSounds.BLOCK_DULLSTONE_FALL.get()
+            ModSounds.BLOCK_DULLSTONE_BREAK,
+            ModSounds.BLOCK_DULLSTONE_STEP,
+            ModSounds.BLOCK_DULLSTONE_PLACE,
+            ModSounds.BLOCK_DULLSTONE_HIT,
+            ModSounds.BLOCK_DULLSTONE_FALL
     );
 
-    public static final Supplier<SoundType> DIMSTONE = () -> new SoundType(
+    public static final Supplier<SoundType> DIMSTONE = () -> new DeferredSoundType(
             1.0F,
             1.0F,
-            SoundEvents.GLASS_BREAK,
-            ModSounds.BLOCK_DULLSTONE_STEP.get(),
-            SoundEvents.GLASS_PLACE,
-            SoundEvents.GLASS_HIT,
-            SoundEvents.GLASS_FALL
+            () -> SoundEvents.GLASS_BREAK,
+            ModSounds.BLOCK_DULLSTONE_STEP,
+            () -> SoundEvents.GLASS_PLACE,
+            () -> SoundEvents.GLASS_HIT,
+            () -> SoundEvents.GLASS_FALL
     );
 }
