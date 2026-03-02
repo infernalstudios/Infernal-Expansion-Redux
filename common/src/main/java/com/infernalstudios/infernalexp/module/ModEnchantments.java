@@ -1,8 +1,10 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -14,6 +16,7 @@ import java.util.function.Supplier;
 
 public class ModEnchantments {
     private static final Map<ResourceLocation, EnchantmentRegistryObj> ENCHANTMENT_REGISTRY = new HashMap<>();
+
     public static final Supplier<Enchantment> DISARMING = register("disarming", () ->
             new Enchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND}) {
                 @Override
@@ -30,14 +33,26 @@ public class ModEnchantments {
                 public int getMaxCost(int level) {
                     return super.getMinCost(level) + 50;
                 }
+
+                @Override
+                public boolean canEnchant(@NotNull ItemStack stack) {
+                    return stack.getItem() instanceof BlindsightTongueWhipItem;
+                }
             });
+
     public static final Supplier<Enchantment> LEAPING = register("leaping", () ->
             new Enchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND}) {
                 @Override
                 public int getMaxLevel() {
                     return 1;
                 }
+
+                @Override
+                public boolean canEnchant(@NotNull ItemStack stack) {
+                    return stack.getItem() instanceof BlindsightTongueWhipItem;
+                }
             });
+
     public static final Supplier<Enchantment> ILLUMINATING = register("illuminating", () ->
             new Enchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND}) {
                 @Override
@@ -49,12 +64,23 @@ public class ModEnchantments {
                 protected boolean checkCompatibility(@NotNull Enchantment other) {
                     return super.checkCompatibility(other) && other != Enchantments.FIRE_ASPECT;
                 }
+
+                @Override
+                public boolean canEnchant(@NotNull ItemStack stack) {
+                    return stack.getItem() instanceof BlindsightTongueWhipItem;
+                }
             });
+
     public static final Supplier<Enchantment> LASHING = register("lashing", () ->
             new Enchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND}) {
                 @Override
                 public int getMaxLevel() {
                     return 5;
+                }
+
+                @Override
+                public boolean canEnchant(@NotNull ItemStack stack) {
+                    return stack.getItem() instanceof BlindsightTongueWhipItem;
                 }
             });
 
@@ -84,10 +110,10 @@ public class ModEnchantments {
 
         @Override
         public Enchantment get() {
-            if (registeredInstance != null) {
-                return registeredInstance;
+            if (registeredInstance == null) {
+                registeredInstance = factory.get();
             }
-            return factory.get();
+            return registeredInstance;
         }
 
         public void setRegisteredInstance(Enchantment instance) {
@@ -99,7 +125,7 @@ public class ModEnchantments {
         }
 
         public Supplier<Enchantment> getFactory() {
-            return factory;
+            return this;
         }
     }
 }

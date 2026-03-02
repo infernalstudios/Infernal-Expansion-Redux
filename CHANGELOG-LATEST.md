@@ -1,7 +1,4 @@
-### Changed
-
-- Changed texture of Phosphor Hollowlight.
-
 ### Fixed
 
-- Fixed crash on Forge.
+- Fixed crash with Balanced Shields.
+- Fixed Tongue Whip enchantments being applicable to Swords.

@@ -3,6 +3,7 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
 import com.infernalstudios.infernalexp.module.ModEnchantments;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -20,9 +21,9 @@ public class EnchantmentHelperMixin {
 
     @Inject(method = "getAvailableEnchantmentResults", at = @At("RETURN"))
     private static void infernalexp$addWhipEnchantments(int power, ItemStack stack, boolean treasure, CallbackInfoReturnable<List<EnchantmentInstance>> cir) {
-        if (stack.getItem() instanceof BlindsightTongueWhipItem) {
-            List<EnchantmentInstance> list = cir.getReturnValue();
+        List<EnchantmentInstance> list = cir.getReturnValue();
 
+        if (stack.getItem() instanceof BlindsightTongueWhipItem) {
             List<Enchantment> whipEnchantments = Arrays.asList(
                     Enchantments.KNOCKBACK,
                     Enchantments.FIRE_ASPECT,
@@ -43,6 +44,13 @@ public class EnchantmentHelperMixin {
                     }
                 }
             }
+        } else if (!stack.is(Items.BOOK)) {
+            list.removeIf(instance ->
+                    instance.enchantment == ModEnchantments.LASHING.get() ||
+                            instance.enchantment == ModEnchantments.DISARMING.get() ||
+                            instance.enchantment == ModEnchantments.LEAPING.get() ||
+                            instance.enchantment == ModEnchantments.ILLUMINATING.get()
+            );
         }
     }
 }
