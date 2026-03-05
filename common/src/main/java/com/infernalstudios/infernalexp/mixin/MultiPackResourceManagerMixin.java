@@ -5,19 +5,16 @@ import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredResources;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.Resource;
 import org.apache.commons.io.input.CharSequenceInputStream;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,20 +26,23 @@ public class MultiPackResourceManagerMixin {
     private static Resource readAndApply(Optional<Resource> resource, ConfiguredData data) {
         IECommon.log("Applying configured data: " + data.target, 0);
 
-        String result = "";
-        if (resource.isEmpty())
-            result = data.apply(null);
-        else {
-            try {
-                result = data.apply(new String(resource.get().open().readAllBytes()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (resource.isEmpty()) {
+            String result = data.apply(null);
+            return new Resource(ConfiguredResources.INSTANCE,
+                    () -> new CharSequenceInputStream(result, StandardCharsets.UTF_8));
         }
 
-        String finalResult = result;
-        return new Resource(ConfiguredResources.INSTANCE,
-                () -> new CharSequenceInputStream(finalResult, Charset.defaultCharset()));
+        try (InputStream stream = resource.get().open()) {
+            String originalText = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+            String result = data.apply(originalText);
+
+            return new Resource(ConfiguredResources.INSTANCE,
+                    () -> new CharSequenceInputStream(result, StandardCharsets.UTF_8));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return resource.get();
+        }
     }
 
     @Unique
@@ -113,10 +113,5 @@ public class MultiPackResourceManagerMixin {
                     .map(resource -> readAndApply(resource, data)).toList());
         }
         return original;
-    }
-
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void reloadConfigs(PackType type, List<PackResources> packs, CallbackInfo ci) {
-        //ReloadListener.INSTANCE.preload((ResourceManager) (Object) this);
     }
 }

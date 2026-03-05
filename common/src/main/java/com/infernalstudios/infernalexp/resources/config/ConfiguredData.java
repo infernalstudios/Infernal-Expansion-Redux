@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.resources.config;
 
 import com.google.gson.*;
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModBiomes;
 import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.resources.ResourceKey;
@@ -167,8 +168,16 @@ public class ConfiguredData {
     }
 
     public String apply(@Nullable String original) {
-        return gson.fromJson(this.provider.apply(gson.fromJson(original == null ? "" : original, JsonElement.class)),
-                JsonElement.class).toString();
+        try {
+            JsonElement parsedOriginal = gson.fromJson(original == null ? "" : original, JsonElement.class);
+            String modifiedString = this.provider.apply(parsedOriginal);
+
+            return gson.fromJson(modifiedString, JsonElement.class).toString();
+
+        } catch (JsonSyntaxException e) {
+            IEConstants.LOG.error("Failed to parse JSON for target: {}", this.target, e);
+            return original != null ? original : "";
+        }
     }
 
     private static class Common {
