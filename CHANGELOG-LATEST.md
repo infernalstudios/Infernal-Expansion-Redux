@@ -1,3 +1,4 @@
 ### Fixed
 
-- Fixed crash with mods with broken datapacks. 
+- Added translation for Delta Shores (currently unused).
+- Hopefully fixed loud dullstone breaking sound.

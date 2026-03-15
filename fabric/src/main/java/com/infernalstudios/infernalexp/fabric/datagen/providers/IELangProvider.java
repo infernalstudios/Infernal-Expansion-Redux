@@ -152,6 +152,7 @@ public class IELangProvider extends FabricLanguageProvider {
 
         // Biome Translations
         builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");
+        builder.add("biome.infernalexp.delta_shores", "Delta Shores");
 
         // Music
         builder.add("item.infernalexp.music_disc_flush.desc", "LudoCrypt - Flush");
