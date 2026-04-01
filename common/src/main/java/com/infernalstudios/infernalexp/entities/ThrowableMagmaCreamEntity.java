@@ -50,7 +50,7 @@ public class ThrowableMagmaCreamEntity extends ThrowableItemProjectile {
     @Override
     protected void onHit(@NotNull HitResult result) {
         super.onHit(result);
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide && !this.isRemoved()) {
             if (result.getType() == HitResult.Type.BLOCK) {
                 ItemEntity item = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), Items.MAGMA_CREAM.getDefaultInstance());
                 this.level().addFreshEntity(item);

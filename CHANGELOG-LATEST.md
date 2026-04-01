@@ -1,4 +1,7 @@
+### Changed
+
+- Adjusted Glowlight Brazier textures to match the Caverns and Chasms: Polished Up textures (@Derpgamer22).
+
 ### Fixed
 
-- Added translation for Delta Shores (currently unused).
-- Hopefully fixed loud dullstone breaking sound.
+- (Hopefully) fixed magma cream duplication.
