@@ -1,7 +1,7 @@
 ### Changed
 
-- Adjusted Glowlight Brazier textures to match the Caverns and Chasms: Polished Up textures (@Derpgamer22).
+- Adjusted Glowlight Brazier recipe.
 
 ### Fixed
 
-- (Hopefully) fixed magma cream duplication.
+- Hotfix for Caverns and Chasms Glowlight Brazier texture.

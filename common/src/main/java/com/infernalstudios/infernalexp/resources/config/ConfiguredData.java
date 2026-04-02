@@ -71,8 +71,14 @@ public class ConfiguredData {
                 json -> Common.createShaped(
                         "infernalexp:glowlight_brazier",
                         1,
-                        List.of("A", "B"),
-                        Map.of("A", "caverns_and_chasms:brazier", "B", "infernalexp:glowlight_torch")
+                        List.of(
+                                "S#S",
+                                " S "
+                        ),
+                        Map.of(
+                                "S", "#forge:ingots/silver",
+                                "#", "infernalexp:glowcoke"
+                        )
                 ));
 
         register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/dwarf_spruce_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
@@ -378,7 +384,16 @@ public class ConfiguredData {
             JsonObject keyObj = new JsonObject();
             for (Map.Entry<String, String> entry : keys.entrySet()) {
                 JsonObject itemObj = new JsonObject();
-                itemObj.addProperty("item", entry.getValue());
+                String value = entry.getValue();
+
+                // tags
+                if (value.startsWith("#")) {
+                    itemObj.addProperty("tag", value.substring(1));
+                } else {
+                    // items
+                    itemObj.addProperty("item", value);
+                }
+
                 keyObj.add(entry.getKey(), itemObj);
             }
             json.add("key", keyObj);
