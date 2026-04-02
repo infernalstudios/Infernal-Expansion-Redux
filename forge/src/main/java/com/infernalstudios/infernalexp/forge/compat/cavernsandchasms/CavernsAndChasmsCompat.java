@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +25,11 @@ public class CavernsAndChasmsCompat {
 
     public static void register(IEventBus eventBus) {
         GLOWLIGHT_BRAZIER = ModBlocks.register("glowlight_brazier", BlockDataHolder.of(() ->
-                        new GlowlightBrazierBlock(2.0F, BlockBehaviour.Properties.copy(Blocks.CAMPFIRE)
+                        new GlowlightBrazierBlock(2.0F, BlockBehaviour.Properties.of()
+                                .requiresCorrectToolForDrops()
+                                .strength(3.5F)
+                                .sound(SoundType.LANTERN)
+                                .noOcclusion()
                                 .lightLevel((state) -> state.getValue(BrazierBlock.LIT) ? 15 : 0)))
                 .cutout()
                 .withItem()

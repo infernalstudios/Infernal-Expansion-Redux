@@ -1,7 +1,3 @@
-### Changed
-
-- Adjusted Glowlight Brazier recipe.
-
 ### Fixed
 
-- Hotfix for Caverns and Chasms Glowlight Brazier texture.
+- Adjust Glowlight Brazier texture and sound to closer match the Caverns and Chasms ones.
