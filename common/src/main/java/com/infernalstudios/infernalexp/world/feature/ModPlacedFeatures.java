@@ -3,7 +3,7 @@ package com.infernalstudios.infernalexp.world.feature;
 import com.infernalstudios.infernalexp.IECommon;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -33,21 +33,21 @@ public class ModPlacedFeatures {
         return ResourceKey.create(Registries.PLACED_FEATURE, IECommon.makeID(name));
     }
 
-    private static void register(BootstapContext<PlacedFeature> context,
+    private static void register(BootstrapContext<PlacedFeature> context,
                                  ResourceKey<PlacedFeature> key,
                                  Holder<ConfiguredFeature<?, ?>> config,
                                  List<PlacementModifier> modifiers) {
         context.register(key, new PlacedFeature(config, List.copyOf(modifiers)));
     }
 
-    private static void register(BootstapContext<PlacedFeature> context,
+    private static void register(BootstrapContext<PlacedFeature> context,
                                  ResourceKey<PlacedFeature> key,
                                  Holder<ConfiguredFeature<?, ?>> config,
                                  PlacementModifier... modifiers) {
         register(context, key, config, List.of(modifiers));
     }
 
-    public static void bootstrap(BootstapContext<PlacedFeature> context) {
+    public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         var configLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
         register(context, LUMINOUS_FUNGUS, configLookup.getOrThrow(ModConfiguredFeatures.LUMINOUS_FUNGUS),

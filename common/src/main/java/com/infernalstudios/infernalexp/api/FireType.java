@@ -43,7 +43,7 @@ public class FireType {
             return null;
             //throw new IllegalStateException(name.toString() + " already exists in the FireType registry.");
 
-        return new FireType(name, block, new ResourceLocation(name.getNamespace(), spriteLocation0), new ResourceLocation(name.getNamespace(), spriteLocation1));
+        return new FireType(name, block, ResourceLocation.fromNamespaceAndPath(name.getNamespace(), spriteLocation0), ResourceLocation.fromNamespaceAndPath(name.getNamespace(), spriteLocation1));
     }
 
     public static FireType getOrDefault(ResourceLocation name, FireType defaultType) {

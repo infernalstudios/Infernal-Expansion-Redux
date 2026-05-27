@@ -1,7 +1,6 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.block.ShroomlightTearBlock;
-import com.infernalstudios.infernalexp.compat.NetherExpCompat;
 import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import com.infernalstudios.infernalexp.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -31,9 +30,9 @@ public abstract class FeatureMixin {
             return;
         }
 
-        if (Services.PLATFORM.isModLoaded("netherexp") && NetherExpCompat.isNetherExpFungus(this)) {
+/*        if (Services.PLATFORM.isModLoaded("netherexp") && NetherExpCompat.isNetherExpFungus(this)) {
             infernalexp$tryPlaceTears(level, pos, state);
-        }
+        }*/
     }
 
     @Unique

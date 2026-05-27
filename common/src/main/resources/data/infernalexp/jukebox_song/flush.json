@@ -1,0 +1,8 @@
+{
+  "comparator_output": 14,
+  "description": {
+    "translate": "jukebox_song.infernalexp.flush"
+  },
+  "length_in_seconds": 122,
+  "sound_event": "infernalexp:record_flush"
+}

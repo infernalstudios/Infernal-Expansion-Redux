@@ -4,8 +4,10 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.items.*;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -198,8 +200,11 @@ public class ModItems {
             .withTranslation("Bottle of Glowsilk Moth")
     );
 
+
+    public static final ResourceKey<JukeboxSong> FLUSH_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, IECommon.makeID("flush"));
+
     public static final ItemDataHolder<?> MUSIC_DISC_FLUSH = register("music_disc_flush", ItemDataHolder.of(() ->
-                    new MusicDiscItem(14, ModSounds.RECORD_FLUSH.get(), new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 2440))
+                    new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(FLUSH_SONG)))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Music Disc")
             .withTags(ItemTags.MUSIC_DISCS)

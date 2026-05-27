@@ -1,0 +1,21 @@
+{
+  "description": {
+    "translate": "enchantment.infernalexp.illuminating"
+  },
+  "supported_items": "#infernalexp:enchantable/tongue_whip",
+  "primary_items": "#infernalexp:enchantable/tongue_whip",
+  "exclusive_set": "#infernalexp:exclusive_set/illuminating_conflict",
+  "weight": 5,
+  "max_level": 2,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 10
+  },
+  "max_cost": {
+    "base": 60,
+    "per_level_above_first": 10
+  },
+  "slots": [
+    "mainhand"
+  ]
+}

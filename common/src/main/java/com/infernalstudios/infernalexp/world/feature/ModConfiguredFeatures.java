@@ -9,7 +9,7 @@ import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureCo
 import com.infernalstudios.infernalexp.world.feature.custom.*;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -51,12 +51,12 @@ public class ModConfiguredFeatures {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, IECommon.makeID(name));
     }
 
-    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstapContext<ConfiguredFeature<?, ?>> context,
+    private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context,
                                                                                           ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
         context.register(key, new ConfiguredFeature<>(feature, config));
     }
 
-    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
         register(context, DULLTHORNS, DullthornsFeature.INSTANCE,
                 new DullthornsFeatureConfig(UniformInt.of(4, 7),
                         BlockStateProvider.simple(ModBlocks.DULLTHORNS.get()),

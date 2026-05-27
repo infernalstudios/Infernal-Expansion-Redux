@@ -252,7 +252,7 @@ public class BlockDataHolder<T extends Block> {
      */
     public BlockDataHolder<?> glass() {
         this.isGlass = true;
-        this.paneBlock = BlockDataHolder.of(() -> IronBarsBlockAccessor.createIronBarsBlock(BlockBehaviour.Properties.copy(this.get()))).cutout().withItem();
+        this.paneBlock = BlockDataHolder.of(() -> IronBarsBlockAccessor.createIronBarsBlock(BlockBehaviour.Properties.ofFullCopy(this.get()))).cutout().withItem();
         return this;
     }
 
@@ -263,7 +263,7 @@ public class BlockDataHolder<T extends Block> {
      */
     public BlockDataHolder<?> glass(DyeColor dye) {
         this.isGlass = true;
-        this.paneBlock = BlockDataHolder.of(() -> new StainedGlassPaneBlock(dye, BlockBehaviour.Properties.copy(this.get()))).cutout().withItem();
+        this.paneBlock = BlockDataHolder.of(() -> new StainedGlassPaneBlock(dye, BlockBehaviour.Properties.ofFullCopy(this.get()))).cutout().withItem();
         return this;
     }
 
@@ -346,7 +346,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withStairs() {
-        BlockDataHolder<?> stairs = BlockDataHolder.of(() -> StairBlockAccessor.createStairBlock(this.get().defaultBlockState(), BlockBehaviour.Properties.copy(this.get())))
+        BlockDataHolder<?> stairs = BlockDataHolder.of(() -> StairBlockAccessor.createStairBlock(this.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.STAIRS)
                 .withItem()
                 .withTags(BlockTags.STAIRS);
@@ -359,7 +359,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withSlab() {
-        BlockDataHolder<?> slab = BlockDataHolder.of(() -> new SlabBlock(BlockBehaviour.Properties.copy(this.get())))
+        BlockDataHolder<?> slab = BlockDataHolder.of(() -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.SLAB)
                 .withItem()
                 .withTags(BlockTags.SLABS);
@@ -372,7 +372,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withWall() {
-        BlockDataHolder<?> wall = BlockDataHolder.of(() -> new WallBlock(BlockBehaviour.Properties.copy(this.get())))
+        BlockDataHolder<?> wall = BlockDataHolder.of(() -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.WALL)
                 .withItem()
                 .withTags(BlockTags.WALLS);
@@ -385,7 +385,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withButton(BlockSetType type, int ticksPressed, boolean arrowCanPress) {
-        BlockDataHolder<?> button = BlockDataHolder.of(() -> ButtonBlockAccessor.createButtonBlock(BlockBehaviour.Properties.copy(this.get()), type, ticksPressed, arrowCanPress))
+        BlockDataHolder<?> button = BlockDataHolder.of(() -> ButtonBlockAccessor.createButtonBlock(BlockBehaviour.Properties.ofFullCopy(this.get()), type, ticksPressed, arrowCanPress))
                 .withModel(Model.BUTTON)
                 .withItem()
                 .withTags(BlockTags.BUTTONS);
@@ -397,8 +397,8 @@ public class BlockDataHolder<T extends Block> {
         return this.BLOCKSETS.get(Model.BUTTON);
     }
 
-    public BlockDataHolder<?> withPressurePlate(PressurePlateBlock.Sensitivity sensitivity, BlockSetType type) {
-        BlockDataHolder<?> pressurePlate = BlockDataHolder.of(() -> PressurePlateBlockAccessor.createPressurePlateBlock(sensitivity, BlockBehaviour.Properties.copy(this.get()), type))
+    public BlockDataHolder<?> withPressurePlate(BlockSetType type) {
+        BlockDataHolder<?> pressurePlate = BlockDataHolder.of(() -> PressurePlateBlockAccessor.createPressurePlateBlock(type, BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.PRESSURE_PLATE)
                 .withItem()
                 .withTags(BlockTags.PRESSURE_PLATES);
@@ -411,7 +411,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withFence() {
-        BlockDataHolder<?> fence = BlockDataHolder.of(() -> new FenceBlock(BlockBehaviour.Properties.copy(this.get())))
+        BlockDataHolder<?> fence = BlockDataHolder.of(() -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.FENCE)
                 .withItem()
                 .withTags(BlockTags.FENCES);
@@ -424,7 +424,7 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withFenceGate(WoodType woodType) {
-        BlockDataHolder<?> fenceGate = BlockDataHolder.of(() -> new FenceGateBlock(BlockBehaviour.Properties.copy(this.get()), woodType))
+        BlockDataHolder<?> fenceGate = BlockDataHolder.of(() -> new FenceGateBlock(woodType, BlockBehaviour.Properties.ofFullCopy(this.get())))
                 .withModel(Model.FENCE_GATE)
                 .withItem()
                 .withTags(BlockTags.FENCE_GATES);

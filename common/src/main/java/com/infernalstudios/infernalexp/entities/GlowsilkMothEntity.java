@@ -1,7 +1,7 @@
 package com.infernalstudios.infernalexp.entities;
 
-import com.infernalstudios.infernalexp.entities.ai.glowsilkmoth.GlowsilkMothMoveControl;
 import com.infernalstudios.infernalexp.entities.ai.LookAroundGoal;
+import com.infernalstudios.infernalexp.entities.ai.glowsilkmoth.GlowsilkMothMoveControl;
 import com.infernalstudios.infernalexp.entities.ai.glowsilkmoth.MothHoverGoal;
 import com.infernalstudios.infernalexp.entities.ai.glowsilkmoth.MothRandomFlyGoal;
 import com.infernalstudios.infernalexp.module.ModItems;
@@ -26,13 +26,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal, GeoEntity {
@@ -164,11 +163,6 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
     }
 
     @Override
-    public @NotNull MobType getMobType() {
-        return MobType.ARTHROPOD;
-    }
-
-    @Override
     public boolean causeFallDamage(float distance, float damageMultiplier, @NotNull DamageSource source) {
         return false;
     }
@@ -189,6 +183,6 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
 
     @Override
     protected float getStandingEyeHeight(@NotNull Pose poseIn, EntityDimensions sizeIn) {
-        return sizeIn.height * 0.5F;
+        return sizeIn.height() * 0.5F;
     }
 }

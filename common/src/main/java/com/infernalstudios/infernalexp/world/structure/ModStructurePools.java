@@ -5,7 +5,7 @@ import com.infernalstudios.infernalexp.IECommon;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 public class ModStructurePools {
     public static final ResourceKey<StructureTemplatePool> HEAVEN_PORTAL_POOL = ResourceKey.create(Registries.TEMPLATE_POOL, IECommon.makeID("heaven_portal"));
 
-    public static void bootstrap(BootstapContext<StructureTemplatePool> context) {
+    public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
         Holder<StructureProcessorList> processor = context.lookup(Registries.PROCESSOR_LIST).getOrThrow(ModProcessorLists.HEAVEN_PORTAL_PROCESSOR);
 
         context.register(HEAVEN_PORTAL_POOL, new StructureTemplatePool(

@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class NetherPlantBlock extends BushBlock {
     public NetherPlantBlock(Properties properties) {
@@ -12,7 +13,7 @@ public class NetherPlantBlock extends BushBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState floor, @NotNull BlockGetter world, @NotNull BlockPos pos) {
         return floor.isFaceSturdy(world, pos, Direction.UP);
     }
 }

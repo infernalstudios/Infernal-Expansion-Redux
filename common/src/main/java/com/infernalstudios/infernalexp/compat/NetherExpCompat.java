@@ -1,3 +1,4 @@
+/*
 package com.infernalstudios.infernalexp.compat;
 
 import com.infernalstudios.infernalexp.platform.Services;
@@ -18,4 +19,4 @@ public class NetherExpCompat {
             return feature instanceof WarpedFungusFeature;
         }
     }
-}
+}*/

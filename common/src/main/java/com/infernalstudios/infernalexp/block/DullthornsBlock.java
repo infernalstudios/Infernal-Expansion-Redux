@@ -50,7 +50,7 @@ public class DullthornsBlock extends NetherPlantBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
+    public boolean mayPlaceOn(BlockState floor, @NotNull BlockGetter world, @NotNull BlockPos pos) {
         return super.mayPlaceOn(floor, world, pos) || floor.is(this);
     }
 

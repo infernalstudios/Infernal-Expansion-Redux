@@ -5,7 +5,7 @@ import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.world.carver.custom.GlowstoneRavineCarver;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.TrapezoidFloat;
@@ -20,12 +20,12 @@ public class ModConfiguredCarvers {
         return ResourceKey.create(Registries.CONFIGURED_CARVER, IECommon.makeID(name));
     }
 
-    private static <CC extends CarverConfiguration, C extends WorldCarver<CC>> void register(BootstapContext<ConfiguredWorldCarver<?>> context,
+    private static <CC extends CarverConfiguration, C extends WorldCarver<CC>> void register(BootstrapContext<ConfiguredWorldCarver<?>> context,
                                                                                              ResourceKey<ConfiguredWorldCarver<?>> key, C carver, CC config) {
         context.register(key, new ConfiguredWorldCarver<>(carver, config));
     }
 
-    public static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
+    public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
         register(context, GLOWSTONE_RAVINE, GlowstoneRavineCarver.INSTANCE,
                 new CanyonCarverConfiguration(0.1f, UniformHeight.of(VerticalAnchor.absolute(0), VerticalAnchor.belowTop(1)),
                         ConstantFloat.of(2.0F), VerticalAnchor.aboveBottom(10),

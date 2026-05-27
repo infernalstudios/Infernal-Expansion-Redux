@@ -28,7 +28,7 @@ sourceSets {
 dependencies {
     // Dependencies
     compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    compileOnly "software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}"
+    compileOnly "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}"
 
     // Terrablender

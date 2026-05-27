@@ -11,17 +11,14 @@ import com.infernalstudios.infernalexp.neoforge.compat.cavernsandchasms.CavernsA
 import com.infernalstudios.infernalexp.neoforge.compat.environmental.EnvironmentalCompat;
 import com.infernalstudios.infernalexp.platform.Services;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @Mod(IEConstants.MOD_ID)
 public class InfernalExpansionNeoForge {
@@ -31,7 +28,7 @@ public class InfernalExpansionNeoForge {
         IECommon.init();
 
         modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.addListener(this::onCommandRegister);
+        NeoForge.EVENT_BUS.addListener(this::onCommandRegister);
 
         if (Services.PLATFORM.isModLoaded("cloth_config")) {
             ModLoadingContext.get().registerExtensionPoint(
@@ -62,7 +59,7 @@ public class InfernalExpansionNeoForge {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            if (Services.PLATFORM.isModLoaded("terrablender")) {
+            if (ModList.get().isLoaded("terrablender")) {
                 TerraBlenderCompat.register();
             }
 

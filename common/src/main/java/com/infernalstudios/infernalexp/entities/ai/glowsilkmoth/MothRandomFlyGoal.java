@@ -4,7 +4,7 @@ import com.infernalstudios.infernalexp.entities.GlowsilkMothEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
@@ -40,8 +40,8 @@ public class MothRandomFlyGoal extends Goal {
             );
 
             if (this.moth.level().isEmptyBlock(potentialPos)) {
-                BlockPathTypes nodeType = WalkNodeEvaluator.getBlockPathTypeStatic(this.moth.level(), potentialPos.mutable());
-                if (nodeType != BlockPathTypes.LAVA && nodeType != BlockPathTypes.DAMAGE_FIRE) {
+                PathType nodeType = WalkNodeEvaluator.getPathTypeStatic(this.moth, potentialPos.mutable());
+                if (nodeType != PathType.LAVA && nodeType != PathType.DAMAGE_FIRE) {
                     randomPos = potentialPos;
                     break;
                 }

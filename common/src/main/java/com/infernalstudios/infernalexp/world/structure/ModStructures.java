@@ -5,7 +5,7 @@ import com.infernalstudios.infernalexp.module.ModBiomes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -23,7 +23,7 @@ public class ModStructures {
     public static final ResourceKey<Structure> HEAVEN_PORTAL = ResourceKey.create(Registries.STRUCTURE, IECommon.makeID("heaven_portal"));
     public static final ResourceKey<StructureSet> HEAVEN_PORTALS = ResourceKey.create(Registries.STRUCTURE_SET, IECommon.makeID("heaven_portals"));
 
-    public static void bootstrapStructures(BootstapContext<Structure> context) {
+    public static void bootstrapStructures(BootstrapContext<Structure> context) {
         HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 
         context.register(HEAVEN_PORTAL, new HeavenPortalStructure(
@@ -40,7 +40,7 @@ public class ModStructures {
         ));
     }
 
-    public static void bootstrapSets(BootstapContext<StructureSet> context) {
+    public static void bootstrapSets(BootstrapContext<StructureSet> context) {
         context.register(HEAVEN_PORTALS, new StructureSet(
                 context.lookup(Registries.STRUCTURE).getOrThrow(HEAVEN_PORTAL),
                 new RandomSpreadStructurePlacement(
