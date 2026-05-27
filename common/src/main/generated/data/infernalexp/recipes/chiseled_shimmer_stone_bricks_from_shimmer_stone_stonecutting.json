@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "infernalexp:shimmer_stone"
-  },
-  "result": "infernalexp:chiseled_shimmer_stone_bricks"
-}

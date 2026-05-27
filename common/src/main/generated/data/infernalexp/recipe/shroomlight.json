@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "shroomlight",
+  "ingredients": [
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    },
+    {
+      "item": "infernalexp:shroomlight_tear"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:shroomlight"
+  }
+}

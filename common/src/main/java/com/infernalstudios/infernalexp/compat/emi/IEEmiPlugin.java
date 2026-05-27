@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.compat.emi;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.module.ModItems;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
@@ -15,7 +16,8 @@ public class IEEmiPlugin implements EmiPlugin {
 
         registry.addRecipe(new EmiAnvilRecipe(
                 EmiStack.of(ModItems.BLINDSIGHT_TONGUE_WHIP.get()),
-                EmiStack.of(ModItems.BLINDSIGHT_TONGUE.get())
+                EmiStack.of(ModItems.BLINDSIGHT_TONGUE.get()),
+                IECommon.makeID("tongue_whip_repair")
         ));
     }
 }

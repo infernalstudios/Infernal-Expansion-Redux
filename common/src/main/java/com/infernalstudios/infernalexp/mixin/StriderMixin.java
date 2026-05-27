@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.entities.IBucketable;
 import com.infernalstudios.infernalexp.module.ModItems;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,9 +20,9 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Strider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,8 +41,8 @@ public abstract class StriderMixin extends Animal implements IBucketable {
     }
 
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void IE_defineSynchedData(CallbackInfo ci) {
-        this.entityData.define(infernalexp$FROM_BUCKET, false);
+    private void IE_defineSynchedData(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(infernalexp$FROM_BUCKET, false);
     }
 
     @Override
@@ -72,19 +73,20 @@ public abstract class StriderMixin extends Animal implements IBucketable {
     }
 
     @Inject(method = "finalizeSpawn", at = @At("HEAD"), cancellable = true)
-    private void IE_finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
-        if (reason == MobSpawnType.BUCKET) {
-            spawnData = new AgeableMob.AgeableMobGroupData(true);
+    private void IE_finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
+        if (spawnType == MobSpawnType.BUCKET) {
+            spawnGroupData = new AgeableMob.AgeableMobGroupData(true);
             this.setAge(-24000);
-            cir.setReturnValue(spawnData);
+            cir.setReturnValue(spawnGroupData);
         }
     }
 
     @Override
     public void infernalexp$copyToStack(ItemStack stack) {
         IBucketable.copyDataToStack(this, stack);
-        CompoundTag compound = stack.getOrCreateTag();
-        compound.putInt("Age", this.getAge());
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag -> {
+            tag.putInt("Age", this.getAge());
+        });
     }
 
     @Override

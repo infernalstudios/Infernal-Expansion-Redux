@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "glowsilk_string",
+  "ingredients": [
+    {
+      "item": "infernalexp:glowsilk_cocoon"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "infernalexp:glowsilk_string"
+  }
+}

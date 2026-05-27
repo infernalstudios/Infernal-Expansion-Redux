@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dullthorns_block",
+  "key": {
+    "#": {
+      "item": "infernalexp:dullthorns"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:dullthorns_block"
+  }
+}

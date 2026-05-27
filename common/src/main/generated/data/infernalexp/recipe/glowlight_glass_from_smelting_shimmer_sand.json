@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "glowlight_glass",
+  "ingredient": {
+    "item": "infernalexp:shimmer_sand"
+  },
+  "result": {
+    "id": "infernalexp:glowlight_glass"
+  }
+}

@@ -43,7 +43,6 @@ public class IECommon {
         ModSurfaceRuleConditions.load();
         ModParticleTypes.load();
         ModSounds.load();
-        ModPaintingVariants.load();
     }
 
     public static void commonSetup() {
@@ -65,7 +64,7 @@ public class IECommon {
     }
 
     public static ResourceLocation makeID(String name) {
-        return new ResourceLocation(IEConstants.MOD_ID, name);
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, name);
     }
 
     private static boolean isClothConfigLoaded() {

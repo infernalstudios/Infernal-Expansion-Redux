@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "luminous_fungus_cap",
+  "ingredients": [
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    },
+    {
+      "item": "infernalexp:luminous_fungus"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:luminous_fungus_cap"
+  }
+}

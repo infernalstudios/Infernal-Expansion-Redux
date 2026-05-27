@@ -2,12 +2,13 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Attackable;
@@ -32,20 +33,18 @@ public abstract class LivingEntityMixin extends Entity implements Attackable {
     }
 
     @Shadow
-    public abstract RandomSource getRandom();
-
-    @Shadow
     public abstract boolean randomTeleport(double $$0, double $$1, double $$2, boolean $$3);
 
     @Shadow
-    public abstract boolean hasEffect(MobEffect $$0);
+    public abstract boolean hasEffect(Holder<MobEffect> effect);
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void infernalexp$tick(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
 
-        if (!entity.level().isClientSide && entity.hasEffect(ModEffects.LUMINOUS.get())) {
-            var effectInstance = entity.getEffect(ModEffects.LUMINOUS.get());
+        if (!entity.level().isClientSide && entity.hasEffect(luminousHolder)) {
+            var effectInstance = entity.getEffect(luminousHolder);
 
             if (effectInstance != null) {
                 if ((effectInstance.getDuration() % 10) == 0 && effectInstance.isVisible()) {
@@ -68,7 +67,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable {
 
     @Inject(method = "hurt", at = @At("TAIL"))
     public void teleportWarped(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue() || !this.hasEffect(ModEffects.WARPED.get())) return;
+        if (!cir.getReturnValue() || !this.hasEffect((BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.WARPED.get()))))
+            return;
         if (this.level().isClientSide()) return;
 
         for (int i = 0; i < 16; i++) {

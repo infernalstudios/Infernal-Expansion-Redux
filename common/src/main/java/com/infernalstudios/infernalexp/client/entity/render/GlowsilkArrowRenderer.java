@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class GlowsilkArrowRenderer extends ArrowRenderer<GlowsilkArrowEntity> {
-    public static final ResourceLocation NORMAL_ARROW_LOCATION = new ResourceLocation("textures/entity/projectiles/arrow.png");
-    public static final ResourceLocation TIPPED_ARROW_LOCATION = new ResourceLocation("textures/entity/projectiles/tipped_arrow.png");
+    public static final ResourceLocation NORMAL_ARROW_LOCATION = ResourceLocation.parse("textures/entity/projectiles/arrow.png");
+    public static final ResourceLocation TIPPED_ARROW_LOCATION = ResourceLocation.parse("textures/entity/projectiles/tipped_arrow.png");
 
     public GlowsilkArrowRenderer(EntityRendererProvider.Context context) {
         super(context);

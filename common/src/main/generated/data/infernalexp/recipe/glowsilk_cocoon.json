@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "glowsilk_cocoon",
+  "key": {
+    "#": {
+      "item": "infernalexp:glowsilk_string"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:glowsilk_cocoon"
+  }
+}

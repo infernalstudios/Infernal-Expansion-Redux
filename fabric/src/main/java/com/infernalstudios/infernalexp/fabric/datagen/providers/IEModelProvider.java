@@ -57,7 +57,7 @@ public class IEModelProvider extends FabricModelProvider {
                         case FLOWER_POT -> {
                             Block potted = blockDataHolder.get();
                             if (potted instanceof FlowerPotBlock pot) {
-                                TextureMapping textureMapping = TextureMapping.plant(pot.getContent());
+                                TextureMapping textureMapping = TextureMapping.plant(pot.getPotted());
                                 ResourceLocation modelLocation = ModelTemplates.FLOWER_POT_CROSS.create(potted, textureMapping, generator.modelOutput);
                                 generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(potted, modelLocation));
                             }

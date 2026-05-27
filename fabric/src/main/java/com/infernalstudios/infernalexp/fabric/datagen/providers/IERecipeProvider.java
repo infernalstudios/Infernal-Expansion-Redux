@@ -1,47 +1,43 @@
 package com.infernalstudios.infernalexp.fabric.datagen.providers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModItems;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public class IERecipeProvider extends FabricRecipeProvider {
-    public IERecipeProvider(FabricDataOutput output) {
-        super(output);
+    public IERecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     private static String getName(ItemLike item) {
         return BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
     }
 
-    private static void offerStonecutting(Consumer<FinishedRecipe> exporter, ItemLike input, ItemLike output) {
+    private static void offerStonecutting(RecipeOutput exporter, ItemLike input, ItemLike output) {
         offerStonecutting(exporter, input, output, 1);
     }
 
-    private static void offerStonecutting(Consumer<FinishedRecipe> exporter, ItemLike input, ItemLike output, int count) {
+    private static void offerStonecutting(RecipeOutput exporter, ItemLike input, ItemLike output, int count) {
         SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, count)
                 .unlockedBy(getHasName(input), has(input))
                 .save(exporter, IECommon.makeID(getName(output) + "_from_" + getName(input) + "_stonecutting"));
     }
 
-    private static void offerTilesRecipe(Consumer<FinishedRecipe> exporter, ItemLike result, int count,
+    private static void offerTilesRecipe(RecipeOutput exporter, ItemLike result, int count,
                                          ItemLike a, ItemLike b) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, count)
                 .pattern("AB")
@@ -54,7 +50,7 @@ public class IERecipeProvider extends FabricRecipeProvider {
                 .save(exporter, IECommon.makeID(getName(result)));
     }
 
-    private static void offer2x2Recipe(Consumer<FinishedRecipe> exporter, ItemLike to, int count,
+    private static void offer2x2Recipe(RecipeOutput exporter, ItemLike to, int count,
                                        ItemLike from) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, to, count)
                 .pattern("##")
@@ -65,7 +61,7 @@ public class IERecipeProvider extends FabricRecipeProvider {
                 .save(exporter, IECommon.makeID(getName(to)));
     }
 
-    private static void offer3x3Recipe(Consumer<FinishedRecipe> exporter, ItemLike to, int count,
+    private static void offer3x3Recipe(RecipeOutput exporter, ItemLike to, int count,
                                        ItemLike from) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, to, count)
                 .requires(from, 9)
@@ -74,7 +70,7 @@ public class IERecipeProvider extends FabricRecipeProvider {
                 .save(exporter, IECommon.makeID(getName(to)));
     }
 
-    private static void offerUnpackRecipe(Consumer<FinishedRecipe> exporter, ItemLike to, int count, ItemLike from) {
+    private static void offerUnpackRecipe(RecipeOutput exporter, ItemLike to, int count, ItemLike from) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, to, count)
                 .requires(from)
                 .unlockedBy(getHasName(from), has(from))
@@ -82,69 +78,8 @@ public class IERecipeProvider extends FabricRecipeProvider {
                 .save(exporter, IECommon.makeID(getName(to)));
     }
 
-    /**
-     * Wraps a recipe exporter to append mod-loaded conditions for all 3 loaders.
-     */
-    private Consumer<FinishedRecipe> withConditions(Consumer<FinishedRecipe> exporter, String modId) {
-        return recipe -> {
-            JsonObject json = new JsonObject();
-            recipe.serializeRecipeData(json);
-
-            JsonObject forgeCondition = new JsonObject();
-            forgeCondition.addProperty("type", "forge:mod_loaded");
-            forgeCondition.addProperty("modid", modId);
-
-            JsonObject neoforgeCondition = new JsonObject();
-            neoforgeCondition.addProperty("type", "neoforge:mod_loaded");
-            neoforgeCondition.addProperty("modid", modId);
-
-            JsonObject fabricCondition = new JsonObject();
-            fabricCondition.addProperty("condition", "fabric:all_mods_loaded");
-            JsonArray values = new JsonArray();
-            values.add(modId);
-            fabricCondition.add("values", values);
-
-            JsonArray forgeConditions = new JsonArray();
-            forgeConditions.add(forgeCondition);
-            JsonArray neoforgeConditions = new JsonArray();
-            neoforgeConditions.add(neoforgeCondition);
-            JsonArray fabricConditions = new JsonArray();
-            fabricConditions.add(fabricCondition);
-
-            exporter.accept(new FinishedRecipe() {
-                @Override
-                public void serializeRecipeData(@NotNull JsonObject json) {
-                    recipe.serializeRecipeData(json);
-                    json.add("forge:conditions", forgeConditions);
-                    json.add("neoforge:conditions", neoforgeConditions);
-                    json.add("fabric:load_conditions", fabricConditions);
-                }
-
-                @Override
-                public @NotNull ResourceLocation getId() {
-                    return recipe.getId();
-                }
-
-                @Override
-                public @NotNull RecipeSerializer<?> getType() {
-                    return recipe.getType();
-                }
-
-                @Override
-                public JsonObject serializeAdvancement() {
-                    return recipe.serializeAdvancement();
-                }
-
-                @Override
-                public ResourceLocation getAdvancementId() {
-                    return recipe.getAdvancementId();
-                }
-            });
-        };
-    }
-
     @Override
-    public void buildRecipes(Consumer<FinishedRecipe> exporter) {
+    public void buildRecipes(RecipeOutput exporter) {
         for (BlockDataHolder<?> block : ModBlocks.getBlockRegistry().values()) {
             if (block.getStairs() != null) {
                 stairBuilder(block.getStairs().get(), Ingredient.of(block.get()))

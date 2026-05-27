@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_glowsilk_cocoon": {
+      "conditions": {
+        "items": [
+          {
+            "items": "infernalexp:glowsilk_cocoon"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:glowsilk_string"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_glowsilk_cocoon"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:glowsilk_string"
+    ]
+  }
+}

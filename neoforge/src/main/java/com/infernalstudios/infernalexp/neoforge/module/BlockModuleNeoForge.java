@@ -1,12 +1,14 @@
 package com.infernalstudios.infernalexp.neoforge.module;
 
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModBlocks;
 import net.minecraft.core.registries.Registries;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
-@Mod.EventBusSubscriber(modid = "infernalexp", bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class BlockModuleNeoForge {
     @SubscribeEvent
     public static void registerBlocks(RegisterEvent event) {

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "polished_glowstone",
+  "key": {
+    "#": {
+      "item": "minecraft:glowstone"
+    }
+  },
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 4,
+    "id": "infernalexp:polished_glowstone"
+  }
+}

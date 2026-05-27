@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.items;
 
 import com.infernalstudios.infernalexp.entities.IBucketable;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -70,7 +72,9 @@ public class EntityBucketItem extends BucketItem {
         var entity = this.entityTypeSupplier.get().spawn(world, stack, null, pos, MobSpawnType.BUCKET, true, false);
         if (entity instanceof IBucketable bucketable) {
             bucketable.infernalexp$setFromBucket(true);
-            bucketable.infernalexp$copyFromAdditional(stack.getOrCreateTag());
+
+            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            bucketable.infernalexp$copyFromAdditional(customData.copyTag());
         }
     }
 }

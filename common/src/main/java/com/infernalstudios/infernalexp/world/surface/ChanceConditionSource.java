@@ -35,7 +35,7 @@ public record ChanceConditionSource(String name, float percentageChance) impleme
             protected ChanceCondition(SurfaceRules.Context context) {
                 super(context);
                 this.randomFactory = ((SurfaceRulesContextAccessor) (Object) context).infernalexp$getRandomState()
-                        .getOrCreateRandomFactory(new ResourceLocation(IEConstants.MOD_ID, name()));
+                        .getOrCreateRandomFactory(ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, name()));
             }
 
             @Override

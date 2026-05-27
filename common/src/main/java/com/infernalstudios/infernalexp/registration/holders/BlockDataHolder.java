@@ -385,7 +385,11 @@ public class BlockDataHolder<T extends Block> {
     }
 
     public BlockDataHolder<?> withButton(BlockSetType type, int ticksPressed, boolean arrowCanPress) {
-        BlockDataHolder<?> button = BlockDataHolder.of(() -> ButtonBlockAccessor.createButtonBlock(BlockBehaviour.Properties.ofFullCopy(this.get()), type, ticksPressed, arrowCanPress))
+        BlockDataHolder<?> button = BlockDataHolder.of(() -> ButtonBlockAccessor.createButtonBlock(
+                        type,
+                        ticksPressed,
+                        BlockBehaviour.Properties.ofFullCopy(this.get())
+                ))
                 .withModel(Model.BUTTON)
                 .withItem()
                 .withTags(BlockTags.BUTTONS);

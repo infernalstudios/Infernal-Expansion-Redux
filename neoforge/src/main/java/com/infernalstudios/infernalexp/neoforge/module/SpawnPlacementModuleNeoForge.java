@@ -8,7 +8,7 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = "infernalexp", bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = IEConstants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SpawnPlacementModuleNeoForge {
 
     @SubscribeEvent

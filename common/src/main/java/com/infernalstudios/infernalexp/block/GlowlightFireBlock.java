@@ -1,6 +1,9 @@
 package com.infernalstudios.infernalexp.block;
 
 import com.infernalstudios.infernalexp.module.ModTags;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
@@ -11,8 +14,27 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class GlowlightFireBlock extends BaseFireBlock {
+    public static final MapCodec<GlowlightFireBlock> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    propertiesCodec(),
+                    Codec.FLOAT.fieldOf("fire_damage").forGetter(block -> block.glowlightFireDamage)
+            ).apply(instance, GlowlightFireBlock::new)
+    );
+
+    public final float glowlightFireDamage;
+
     public GlowlightFireBlock(Properties properties, float damage) {
         super(properties, damage);
+        this.glowlightFireDamage = damage;
+    }
+
+    public static boolean canSurviveOnBlock(BlockState state) {
+        return state.is(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseFireBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -28,9 +50,5 @@ public class GlowlightFireBlock extends BaseFireBlock {
     @Override
     public boolean canSurvive(@NotNull BlockState state, LevelReader world, BlockPos pos) {
         return canSurviveOnBlock(world.getBlockState(pos.below()));
-    }
-
-    public static boolean canSurviveOnBlock(BlockState state) {
-        return state.is(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS);
     }
 }

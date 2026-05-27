@@ -1,3 +1,4 @@
+/*
 package com.infernalstudios.infernalexp.neoforge.compat.cavernsandchasms;
 
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -76,4 +77,4 @@ public class CavernsAndChasmsCompat {
             event.setCancellationResult(InteractionResult.SUCCESS);
         }
     }
-}
+}*/

@@ -2,7 +2,10 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.entities.WarpbeetleEntity;
 import com.infernalstudios.infernalexp.module.ModEffects;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.HoglinSpecificSensor;
@@ -19,8 +22,9 @@ public class HoglinSpecificSensorMixin {
 
     @Inject(method = "doTick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;)V", at = @At("TAIL"))
     public void avoidWarped(ServerLevel world, LivingEntity hoglin, CallbackInfo ci) {
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
         Player player = world.getNearestPlayer(hoglin.getX(), hoglin.getY(), hoglin.getZ(), 10,
-                p -> p instanceof LivingEntity l && l.hasEffect(ModEffects.WARPED.get()));
+                p -> p instanceof LivingEntity l && l.hasEffect(luminousHolder));
 
         if (player != null) {
             hoglin.getBrain().setMemory(MemoryModuleType.NEAREST_REPELLENT, player.blockPosition());

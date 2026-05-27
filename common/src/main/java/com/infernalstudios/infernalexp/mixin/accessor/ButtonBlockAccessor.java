@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ButtonBlock.class)
 public interface ButtonBlockAccessor {
     @Invoker("<init>")
-    static ButtonBlock createButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksStayPressed, boolean arrowCanPress) {
+    static ButtonBlock createButtonBlock(BlockSetType type, int ticksToStayPressed, BlockBehaviour.Properties properties) {
         throw new UnsupportedOperationException();
     }
 }

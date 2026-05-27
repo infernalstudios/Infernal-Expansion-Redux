@@ -3,7 +3,8 @@ package com.infernalstudios.infernalexp.block;
 import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.block.entity.VolatileGeyserBlockEntity;
 import com.infernalstudios.infernalexp.module.ModBlockEntityTypes;
-import net.minecraft.advancements.Advancement;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,7 +36,7 @@ import java.util.Map;
 public class VolatileGeyserBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-
+    public static final MapCodec<VolatileGeyserBlock> CODEC = simpleCodec(VolatileGeyserBlock::new);
     private static final Map<Direction, VoxelShape> SHAPES = new HashMap<>();
 
     static {
@@ -52,6 +53,11 @@ public class VolatileGeyserBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.UP)
                 .setValue(POWERED, false));
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -83,8 +89,9 @@ public class VolatileGeyserBlock extends BaseEntityBlock {
                     Player nearestPlayer = serverLevel.getNearestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 10.0D, false);
 
                     if (nearestPlayer instanceof ServerPlayer serverPlayer) {
-                        ResourceLocation advId = new ResourceLocation(IEConstants.MOD_ID, "nether/pressure_cooker");
-                        Advancement advancement = serverLevel.getServer().getAdvancements().getAdvancement(advId);
+                        ResourceLocation advId = ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "nether/pressure_cooker");
+
+                        AdvancementHolder advancement = serverLevel.getServer().getAdvancements().get(advId);
 
                         if (advancement != null) {
                             serverPlayer.getAdvancements().award(advancement, "activate_geyser");

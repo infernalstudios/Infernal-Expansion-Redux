@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.world.structure;
 
 import com.infernalstudios.infernalexp.module.ModStructureTypes;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -15,8 +16,11 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,16 +29,15 @@ import java.util.Optional;
 
 public class HeavenPortalStructure extends Structure {
 
-    public static final Codec<HeavenPortalStructure> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(
-                    settingsCodec(instance),
-                    StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
-                    Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.maxDepth),
-                    HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
-                    Codec.BOOL.fieldOf("use_expansion_hack").forGetter(structure -> structure.useExpansionHack),
-                    Heightmap.Types.CODEC.optionalFieldOf("project_start_to_height_map").forGetter(structure -> structure.projectStartToHeightmap),
-                    Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
-            ).apply(instance, HeavenPortalStructure::new));
+    public static final MapCodec<HeavenPortalStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            settingsCodec(instance),
+            StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
+            Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.maxDepth),
+            HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
+            Codec.BOOL.fieldOf("use_expansion_hack").forGetter(structure -> structure.useExpansionHack),
+            Heightmap.Types.CODEC.optionalFieldOf("project_start_to_height_map").forGetter(structure -> structure.projectStartToHeightmap),
+            Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter)
+    ).apply(instance, HeavenPortalStructure::new));
 
     private final Holder<StructureTemplatePool> startPool;
     private final int maxDepth;
@@ -106,7 +109,10 @@ public class HeavenPortalStructure extends Structure {
                 blockPos,
                 this.useExpansionHack,
                 this.projectStartToHeightmap,
-                this.maxDistanceFromCenter
+                this.maxDistanceFromCenter,
+                PoolAliasLookup.EMPTY,
+                DimensionPadding.ZERO,
+                LiquidSettings.IGNORE_WATERLOGGING
         );
     }
 

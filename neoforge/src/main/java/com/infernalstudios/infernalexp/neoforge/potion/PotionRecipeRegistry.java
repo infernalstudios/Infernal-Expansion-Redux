@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.neoforge.potion;
 
 import com.infernalstudios.infernalexp.IECommon;
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.mixin.PotionBrewingInvoker;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
@@ -9,13 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = "infernalexp", bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class PotionRecipeRegistry {
     @SubscribeEvent
     public static void registerEffects(FMLLoadCompleteEvent event) {

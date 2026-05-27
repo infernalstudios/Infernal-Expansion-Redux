@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.entities;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -11,50 +12,35 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
 public interface IBucketable {
-    boolean infernalexp$isFromBucket();
-
-    void infernalexp$setFromBucket(boolean isFromBucket);
-
-    void infernalexp$copyToStack(ItemStack stack);
-
-    void infernalexp$copyFromAdditional(CompoundTag compound);
-
-    ItemStack infernalexp$getBucketItem();
-
-    SoundEvent infernalexp$getBucketedSound();
-
     static void copyDataToStack(Mob entity, ItemStack stack) {
-        CompoundTag compound = stack.getOrCreateTag();
         if (entity.hasCustomName()) {
-            stack.setHoverName(entity.getCustomName());
+            stack.set(DataComponents.CUSTOM_NAME, entity.getCustomName());
         }
 
-        if (entity.isNoAi()) {
-            compound.putBoolean("NoAI", entity.isNoAi());
-        }
-
-        if (entity.isSilent()) {
-            compound.putBoolean("Silent", entity.isSilent());
-        }
-
-        if (entity.isNoGravity()) {
-            compound.putBoolean("NoGravity", entity.isNoGravity());
-        }
-
-        if (entity.isCurrentlyGlowing()) {
-            compound.putBoolean("Glowing", entity.isCurrentlyGlowing());
-        }
-
-        if (entity.isInvulnerable()) {
-            compound.putBoolean("Invulnerable", entity.isInvulnerable());
-        }
-
-        compound.putFloat("Health", entity.getHealth());
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, compound -> {
+            if (entity.isNoAi()) {
+                compound.putBoolean("NoAI", entity.isNoAi());
+            }
+            if (entity.isSilent()) {
+                compound.putBoolean("Silent", entity.isSilent());
+            }
+            if (entity.isNoGravity()) {
+                compound.putBoolean("NoGravity", entity.isNoGravity());
+            }
+            if (entity.isCurrentlyGlowing()) {
+                compound.putBoolean("Glowing", entity.isCurrentlyGlowing());
+            }
+            if (entity.isInvulnerable()) {
+                compound.putBoolean("Invulnerable", entity.isInvulnerable());
+            }
+            compound.putFloat("Health", entity.getHealth());
+        });
     }
 
     static void copyDataFromAdditional(Mob entity, CompoundTag compound) {
@@ -106,6 +92,18 @@ public interface IBucketable {
             return Optional.empty();
         }
     }
+
+    boolean infernalexp$isFromBucket();
+
+    void infernalexp$setFromBucket(boolean isFromBucket);
+
+    void infernalexp$copyToStack(ItemStack stack);
+
+    void infernalexp$copyFromAdditional(CompoundTag compound);
+
+    ItemStack infernalexp$getBucketItem();
+
+    SoundEvent infernalexp$getBucketedSound();
 
     class ItemUtils {
         public static ItemStack createFilledResult(ItemStack emptyStack, Player player, ItemStack filledStack, boolean preventCreativeDupes) {

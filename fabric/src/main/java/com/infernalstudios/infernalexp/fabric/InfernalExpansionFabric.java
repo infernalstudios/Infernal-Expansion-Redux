@@ -19,7 +19,6 @@ public class InfernalExpansionFabric implements ModInitializer {
         FeatureModuleFabric.registerFeatures();
         CarverModuleFabric.registerCarvers();
         SpawnPlacementModuleFabric.registerSpawnPlacements();
-        EnchantmentModuleFabric.registerEnchantments();
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             NtpCommand.register(dispatcher);

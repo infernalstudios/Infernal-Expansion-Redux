@@ -15,8 +15,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,14 +103,14 @@ public class ShroomlightCompatRegistry {
 
         public void loadBlocks() {
             tearBlockHolder = ModBlocks.register(tearId, BlockDataHolder.of(() ->
-                            new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(), growableTag))
+                            new ShroomlightTearBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHROOMLIGHT).instabreak().noCollission(), growableTag))
                     .withItem().cutout().dropsSelf()
                     .withTranslation(tearTranslation)
             );
 
             hollowBlockHolder = ModBlocks.register(hollowId, BlockDataHolder.of(() ->
-                            new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT),
-                                    () -> BuiltInRegistries.BLOCK.get(new ResourceLocation(modId, baseBlockPath))))
+                            new HollowlightBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHROOMLIGHT),
+                                    () -> BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(modId, baseBlockPath))))
                     .withItem().withModel(BlockDataHolder.Model.CUBE).dropsSelf()
                     .withTags(BlockTags.MINEABLE_WITH_HOE)
                     .withTranslation(hollowTranslation)
@@ -120,7 +120,7 @@ public class ShroomlightCompatRegistry {
         public void registerInteractions() {
             if (!Services.PLATFORM.isModLoaded(modId)) return;
 
-            ResourceLocation targetId = new ResourceLocation(modId, baseBlockPath);
+            ResourceLocation targetId = ResourceLocation.fromNamespaceAndPath(modId, baseBlockPath);
             Block targetBlock = BuiltInRegistries.BLOCK.get(targetId);
 
             if (targetBlock != Blocks.AIR) {

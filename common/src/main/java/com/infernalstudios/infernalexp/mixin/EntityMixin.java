@@ -4,14 +4,16 @@ import com.infernalstudios.infernalexp.api.FireType;
 import com.infernalstudios.infernalexp.api.FireTypeAccess;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModFireTypes;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
@@ -20,6 +22,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -38,9 +41,10 @@ public abstract class EntityMixin implements FireTypeAccess {
     @Shadow
     public abstract Level level();
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void init(EntityType<?> entityTypeIn, Level worldIn, CallbackInfo ci) {
-        this.entityData.define(FIRE_TYPE, ModFireTypes.FIRE.getName().toString());
+    @ModifyVariable(method = "<init>", at = @At("STORE"), ordinal = 0)
+    private SynchedEntityData.Builder infernalexp$addFireTypeData(SynchedEntityData.Builder builder) {
+        builder.define(FIRE_TYPE, ModFireTypes.FIRE.getName().toString());
+        return builder;
     }
 
     @Inject(method = "saveWithoutId", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;putShort(Ljava/lang/String;S)V", ordinal = 0, shift = At.Shift.AFTER))
@@ -50,11 +54,11 @@ public abstract class EntityMixin implements FireTypeAccess {
 
     @Inject(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/CompoundTag;getShort(Ljava/lang/String;)S", ordinal = 0, shift = At.Shift.AFTER))
     private void readCustomFires(CompoundTag tag, CallbackInfo ci) {
-        this.infernalexp$setFireType(FireType.getOrDefault(new ResourceLocation(tag.getString("fireType")), ModFireTypes.FIRE));
+        this.infernalexp$setFireType(FireType.getOrDefault(ResourceLocation.parse(tag.getString("fireType")), ModFireTypes.FIRE));
     }
 
-    @Inject(method = "setSecondsOnFire", at = @At("HEAD"))
-    private void setToDefaultFireType(int seconds, CallbackInfo ci) {
+    @Inject(method = "igniteForSeconds", at = @At("HEAD"))
+    private void setToDefaultFireType(float seconds, CallbackInfo ci) {
         this.infernalexp$setFireType(ModFireTypes.FIRE);
     }
 
@@ -64,7 +68,8 @@ public abstract class EntityMixin implements FireTypeAccess {
             if (this.isOnFire()) {
                 if (this.infernalexp$getFireType() == ModFireTypes.GLOW_FIRE) {
                     if ((Object) this instanceof LivingEntity livingEntity) {
-                        livingEntity.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100));
+                        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+                        livingEntity.addEffect(new MobEffectInstance(luminousHolder, 100));
                     }
                 }
             } else if (this.infernalexp$getFireType() != ModFireTypes.FIRE) {
@@ -75,7 +80,7 @@ public abstract class EntityMixin implements FireTypeAccess {
 
     @Override
     public FireType infernalexp$getFireType() {
-        return FireType.getOrDefault(new ResourceLocation(this.entityData.get(FIRE_TYPE)), ModFireTypes.FIRE);
+        return FireType.getOrDefault(ResourceLocation.parse(this.entityData.get(FIRE_TYPE)), ModFireTypes.FIRE);
     }
 
     @Override

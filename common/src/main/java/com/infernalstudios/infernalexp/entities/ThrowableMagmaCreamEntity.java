@@ -34,11 +34,6 @@ public class ThrowableMagmaCreamEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
-    }
-
-    @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();

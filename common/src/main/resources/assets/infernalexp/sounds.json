@@ -384,19 +384,19 @@
         "weight": 8
       },
       {
-        "name": "music/game/nether/nether1",
+        "name": "minecraft:music/game/nether/concrete_halls",
         "stream": true
       },
       {
-        "name": "music/game/nether/nether2",
+        "name": "minecraft:music/game/nether/dead_voxel",
         "stream": true
       },
       {
-        "name": "music/game/nether/nether3",
+        "name": "minecraft:music/game/nether/warmth",
         "stream": true
       },
       {
-        "name": "music/game/nether/nether4",
+        "name": "minecraft:music/game/nether/ballad_of_the_cats",
         "stream": true
       }
     ]
@@ -421,7 +421,8 @@
       "infernalexp:block/dullstone/step3"
     ]
   },
-  "record.flush": {
+  "record_flush": {
+    "subtitle": "subtitles.record.flush",
     "sounds": [
       {
         "name": "infernalexp:record/flush",

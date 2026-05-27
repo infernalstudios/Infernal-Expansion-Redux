@@ -12,16 +12,17 @@ public class LuminousEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.isInvertedHealAndHarm() && !entity.fireImmune()) {
-            entity.setSecondsOnFire(3);
+            entity.igniteForSeconds(3.0F);
             ((FireTypeAccess) entity).infernalexp$setFireType(ModFireTypes.GLOW_FIRE);
             entity.hurt(entity.damageSources().onFire(), 1.0F);
         }
+        return true;
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) { // Replaces isDurationEffectTick
         return duration % 20 == 0;
     }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "dimstone",
+  "key": {
+    "A": {
+      "item": "infernalexp:dullrocks"
+    },
+    "B": {
+      "item": "minecraft:glowstone_dust"
+    }
+  },
+  "pattern": [
+    "AB",
+    "BA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:dimstone"
+  }
+}

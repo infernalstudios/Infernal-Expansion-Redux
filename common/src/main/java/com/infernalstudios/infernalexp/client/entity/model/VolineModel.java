@@ -9,18 +9,18 @@ public class VolineModel extends GeoModel<VolineEntity> {
 
     @Override
     public ResourceLocation getModelResource(VolineEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "geo/" + (entity.isGrown() ? "voline_big.geo.json" : "voline.geo.json"));
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "geo/" + (entity.isGrown() ? "voline_big.geo.json" : "voline.geo.json"));
     }
 
     @Override
     public ResourceLocation getTextureResource(VolineEntity entity) {
         String base = entity.isGrown() ? "voline_big" : "voline";
         String suffix = entity.isSleeping() ? "_sleeping" : "";
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/" + base + suffix + ".png");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/" + base + suffix + ".png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(VolineEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "animations/" + (entity.isGrown() ? "voline_big.animation.json" : "voline.animation.json"));
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "animations/" + (entity.isGrown() ? "voline_big.animation.json" : "voline.animation.json"));
     }
 }

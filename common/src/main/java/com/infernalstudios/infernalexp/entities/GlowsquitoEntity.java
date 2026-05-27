@@ -9,6 +9,8 @@ import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import com.infernalstudios.infernalexp.module.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,6 +20,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -86,18 +89,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true) {
-            @Override
-            protected double getAttackReachSqr(@NotNull LivingEntity attackTarget) {
-                double standardReach = super.getAttackReachSqr(attackTarget);
-
-                if (attackTarget instanceof Player) {
-                    return standardReach * 0.5D;
-                }
-
-                return standardReach;
-            }
-        });
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(1, new AvoidCampfiresGoal(this, 8.0D, 1.2D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.8d));
         this.goalSelector.addGoal(3, new SuckGlowstoneGoal(this));
@@ -106,8 +98,9 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         this.goalSelector.addGoal(8, new LookAroundGoal(this));
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true,
-                (entity) -> entity.hasEffect(ModEffects.LUMINOUS.get()) && !(entity instanceof GlowsquitoEntity)));
+                (entity) -> entity.hasEffect(luminousHolder) && !(entity instanceof GlowsquitoEntity)));
     }
 
     @Override
@@ -168,10 +161,10 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(EATING, false);
-        this.entityData.define(VARIANT, "");
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(EATING, false);
+        builder.define(VARIANT, "");
     }
 
     public boolean isEating() {
@@ -208,7 +201,8 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
 
     @Override
     public void ate() {
-        this.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 1200));
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+        this.addEffect(new MobEffectInstance(luminousHolder, 1200));
     }
 
     @Override

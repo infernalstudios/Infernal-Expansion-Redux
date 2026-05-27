@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.neoforge.module;
 
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModEntityTypes;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import net.minecraft.core.registries.Registries;
@@ -7,14 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = "infernalexp", bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class EntityTypeModuleNeoForge {
 
     @SubscribeEvent

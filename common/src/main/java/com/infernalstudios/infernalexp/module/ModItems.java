@@ -1,9 +1,13 @@
 package com.infernalstudios.infernalexp.module;
 
 import com.infernalstudios.infernalexp.IECommon;
-import com.infernalstudios.infernalexp.items.*;
+import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
+import com.infernalstudios.infernalexp.items.EntityBucketItem;
+import com.infernalstudios.infernalexp.items.GlowsilkBowItem;
+import com.infernalstudios.infernalexp.items.GlowsilkMothBottleItem;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -25,7 +29,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ModItems {
-    public static final ModelTemplate SPAWN_EGG = new ModelTemplate(Optional.of(new ResourceLocation("minecraft", "item/template_spawn_egg")), Optional.empty());
+    public static final ModelTemplate SPAWN_EGG = new ModelTemplate(Optional.of(ResourceLocation.withDefaultNamespace("item/template_spawn_egg")), Optional.empty());
+    public static final ResourceKey<JukeboxSong> FLUSH_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, IECommon.makeID("flush"));
+
+
     /**
      * Map of all Item Resource Locations to their ItemDataHolders.
      */
@@ -145,7 +152,7 @@ public class ModItems {
                     new Item(new Item.Properties()
                             .food(new FoodProperties.Builder()
                                     .nutrition(3)
-                                    .saturationMod(0.5F)
+                                    .saturationModifier(0.5F)
                                     .effect(new MobEffectInstance(MobEffects.JUMP, 100, 1), 1.0F)
                                     .build())) {
                         @Override
@@ -163,10 +170,11 @@ public class ModItems {
     );
 
     public static final ItemDataHolder<?> BLINDSIGHT_TONGUE_STEW = register("blindsight_tongue_stew", ItemDataHolder.of(() ->
-                    new BowlFoodItem(new Item.Properties().stacksTo(1)
+                    new Item(new Item.Properties().stacksTo(1)
                             .food(new FoodProperties.Builder()
+                                    .usingConvertsTo(Items.BOWL)
                                     .nutrition(6)
-                                    .saturationMod(0.9F)
+                                    .saturationModifier(0.9F)
                                     .effect(new MobEffectInstance(MobEffects.JUMP, 1200, 1), 1.0F)
                                     .build())) {
                         @Override
@@ -200,14 +208,10 @@ public class ModItems {
             .withTranslation("Bottle of Glowsilk Moth")
     );
 
-
-    public static final ResourceKey<JukeboxSong> FLUSH_SONG = ResourceKey.create(Registries.JUKEBOX_SONG, IECommon.makeID("flush"));
-
     public static final ItemDataHolder<?> MUSIC_DISC_FLUSH = register("music_disc_flush", ItemDataHolder.of(() ->
                     new Item(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(FLUSH_SONG)))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Music Disc")
-            .withTags(ItemTags.MUSIC_DISCS)
     );
 
     public static final ItemDataHolder<?> GLOWCOKE = register("glowcoke", ItemDataHolder.of(() ->
@@ -230,8 +234,8 @@ public class ModItems {
     public static final ItemDataHolder<?> WARPED_SHELL = register("warped_shell", ItemDataHolder.of(() ->
                     new Item(new Item.Properties().food(new FoodProperties.Builder()
                             .nutrition(2)
-                            .saturationMod(0.4F)
-                            .effect(new MobEffectInstance(ModEffects.WARPED.get(), 600, 0), 1.0F)
+                            .saturationModifier(0.4F)
+                            .effect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get()), 600, 0), 1.0F)
                             .build())))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Warped Shell")

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "warped_fungus",
+  "ingredients": [
+    {
+      "item": "infernalexp:warped_fungus_cap"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "minecraft:warped_fungus"
+  }
+}

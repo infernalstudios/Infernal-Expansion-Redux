@@ -1,6 +1,5 @@
 package com.infernalstudios.infernalexp.world.feature;
 
-import com.infernalstudios.infernalexp.mixin.accessor.WorldGenRegionAccessor;
 import com.infernalstudios.infernalexp.world.feature.config.SingleBlockFeatureConfig;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -9,6 +8,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -25,16 +25,19 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
     private static boolean ensureCanWrite(WorldGenLevel level, BlockPos pos) {
         if (!(level instanceof WorldGenRegion world)) return true;
 
-        WorldGenRegionAccessor self = (WorldGenRegionAccessor) world;
-
         int x = SectionPos.blockToSectionCoord(pos.getX());
         int z = SectionPos.blockToSectionCoord(pos.getZ());
         ChunkPos chunkPos = world.getCenter();
+
         int sx = Math.abs(chunkPos.x - x);
         int sz = Math.abs(chunkPos.z - z);
-        if (sx <= self.getWriteRadiusCutoff() && sz <= self.getWriteRadiusCutoff()) {
-            if (self.getCenter().isUpgrading())
+
+        if (sx <= 1 && sz <= 1) {
+            ChunkAccess centerChunk = world.getChunk(chunkPos.x, chunkPos.z);
+
+            if (centerChunk.isUpgrading()) {
                 return pos.getY() >= world.getMinBuildHeight() && pos.getY() < world.getMaxBuildHeight();
+            }
             return true;
         }
         return false;
@@ -52,7 +55,7 @@ public abstract class NetherFeature<F extends FeatureConfiguration> extends Feat
         }
         if (positions.isEmpty()) return false;
         Collections.shuffle(positions);
-        pos = positions.get(0);
+        pos = positions.getFirst();
 
         boolean success = this.generate(pos, context);
         if (Math.random() < 0.85 && context.config() instanceof SingleBlockFeatureConfig single && single.spread()) {

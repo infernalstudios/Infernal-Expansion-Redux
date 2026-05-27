@@ -182,7 +182,7 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
     }
 
     @Override
-    protected float getStandingEyeHeight(@NotNull Pose poseIn, EntityDimensions sizeIn) {
-        return sizeIn.height() * 0.5F;
+    public @NotNull EntityDimensions getDefaultDimensions(@NotNull Pose pose) {
+        return super.getDefaultDimensions(pose).withEyeHeight(this.getBbHeight() * 0.5F);
     }
 }

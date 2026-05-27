@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "infernalexp:glowcoke"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SAS",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:glowlight_campfire"
+  }
+}

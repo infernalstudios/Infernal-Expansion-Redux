@@ -48,7 +48,7 @@ public class SupportedBlock extends Block {
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(@NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull BlockState state) {
+    public @NotNull ItemStack getCloneItemStack(@NotNull LevelReader world, @NotNull BlockPos pos, @NotNull BlockState state) {
         return new ItemStack(this.pickItem.get());
     }
 

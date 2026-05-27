@@ -88,9 +88,9 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FLYING, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FLYING, false);
     }
 
     @Override

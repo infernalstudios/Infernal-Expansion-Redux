@@ -11,6 +11,7 @@ import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -33,7 +34,7 @@ public class ModBlocks {
     public static final WoodType LUMINOUS_WOOD_TYPE = WoodTypeAccessor.infernalexp$register(new WoodType("infernalexp:luminous", luminousSet));
     private static final Map<ResourceLocation, BlockDataHolder<?>> BLOCK_REGISTRY = new LinkedHashMap<>();
     public static final BlockDataHolder<?> SHIMMER_SAND = register("shimmer_sand", BlockDataHolder.of(() ->
-                    new SandBlock(0xffffaa, ModBlockProperties.SHIMMER_SAND))
+                    new ColoredFallingBlock(new ColorRGBA(0xffffaa), ModBlockProperties.SHIMMER_SAND))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
             .withTags(
                     BlockTags.MINEABLE_WITH_SHOVEL,
@@ -54,7 +55,8 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_GLASS = register("glowlight_glass", BlockDataHolder.of(() ->
-                    new GlassBlock(ModBlockProperties.GLOWLIGHT_GLASS))
+                    new TransparentBlock(ModBlockProperties.GLOWLIGHT_GLASS) {
+                    })
             .glass().cutout().withItem()
             .withTranslation("Glowlight Glass")
     );
@@ -125,15 +127,17 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> DULLSTONE_BUTTON = register("dullstone_button", BlockDataHolder.of(() ->
-                    ButtonBlockAccessor.createButtonBlock(ModBlockProperties.DULLSTONE_BUTTON(),
-                            dullstoneSet, 20, false))
+                    ButtonBlockAccessor.createButtonBlock(
+                            dullstoneSet,
+                            20,
+                            ModBlockProperties.DULLSTONE_BUTTON()
+                    ))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Dullstone Button")
     );
 
     public static final BlockDataHolder<?> DULLSTONE_PRESSURE_PLATE = register("dullstone_pressure_plate", BlockDataHolder.of(() ->
-                    PressurePlateBlockAccessor.createPressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, ModBlockProperties.DULLSTONE_PLATE(),
-                            dullstoneSet))
+                    PressurePlateBlockAccessor.createPressurePlateBlock(dullstoneSet, ModBlockProperties.DULLSTONE_PLATE()))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Dullstone Pressure Plate")
     );
@@ -146,7 +150,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> LUMINOUS_FUNGUS = register("luminous_fungus", BlockDataHolder.of(() ->
-                    new LuminousFungusBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_FUNGUS).mapColor(DyeColor.YELLOW)
+                    new LuminousFungusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_FUNGUS).mapColor(DyeColor.YELLOW)
                             .lightLevel(a -> a.getValue(LuminousFungusBlock.LIT) ? 15 : 0).randomTicks()))
             .cutout().withItem().dropsSelf()
             .withCompost(0.65f)
@@ -154,19 +158,19 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> LUMINOUS_FUNGUS_CAP = register("luminous_fungus_cap", BlockDataHolder.of(() ->
-                    new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK).mapColor(DyeColor.YELLOW)))
+                    new FungusCapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_WART_BLOCK).mapColor(DyeColor.YELLOW)))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Luminous Fungus Cap")
     );
 
     public static final BlockDataHolder<?> CRIMSON_FUNGUS_CAP = register("crimson_fungus_cap", BlockDataHolder.of(() ->
-                    new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.NETHER_WART_BLOCK)))
+                    new FungusCapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_WART_BLOCK)))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Crimson Fungus Cap")
     );
 
     public static final BlockDataHolder<?> WARPED_FUNGUS_CAP = register("warped_fungus_cap", BlockDataHolder.of(() ->
-                    new FungusCapBlock(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
+                    new FungusCapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_WART_BLOCK)))
             .withItem().dropsSelf().withTags(BlockTags.MINEABLE_WITH_HOE, BlockTags.PIGLIN_REPELLENTS)
             .withTranslation("Warped Fungus Cap")
     );
@@ -193,25 +197,31 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_FIRE = register("glowlight_fire", BlockDataHolder.of(() ->
-                    new GlowlightFireBlock(BlockBehaviour.Properties.copy(Blocks.FIRE), 1))
+                    new GlowlightFireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FIRE), 1))
             .cutout()
             .withTags(BlockTags.FIRE)
             .withTranslation("Glowlight Fire")
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_TORCH = register("glowlight_torch", BlockDataHolder.of(() ->
-                    TorchBlockAccessor.createTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH), ModParticleTypes.GLOWSTONE_SPARKLE))
+                    TorchBlockAccessor.createTorchBlock(
+                            ModParticleTypes.GLOWSTONE_SPARKLE,
+                            BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH)
+                    ))
             .cutout()
             .withTranslation("Glowlight Torch")
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_WALL_TORCH = register("glowlight_wall_torch", BlockDataHolder.of(() ->
-                    WallTorchBlockAccessor.createWallTorchBlock(BlockBehaviour.Properties.copy(Blocks.TORCH), ModParticleTypes.GLOWSTONE_SPARKLE))
+                    WallTorchBlockAccessor.createWallTorchBlock(
+                            ModParticleTypes.GLOWSTONE_SPARKLE,
+                            BlockBehaviour.Properties.ofFullCopy(Blocks.TORCH)
+                    ))
             .cutout()
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_CAMPFIRE = register("glowlight_campfire", BlockDataHolder.of(() ->
-                    new CampfireBlock(false, 1, BlockBehaviour.Properties.copy(Blocks.CAMPFIRE)))
+                    new CampfireBlock(false, 1, BlockBehaviour.Properties.ofFullCopy(Blocks.CAMPFIRE)))
             .cutout()
             .withItem()
             .withTags(BlockTags.CAMPFIRES, BlockTags.MINEABLE_WITH_AXE)
@@ -219,75 +229,76 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> GLOWLIGHT_LANTERN = register("glowlight_lantern", BlockDataHolder.of(() ->
-                    new LanternBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN)))
+                    new LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN)))
             .cutout().withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withItem()
             .withTranslation("Glowlight Lantern")
     );
 
     public static final BlockDataHolder<?> BASALT_IRON_ORE = register("basalt_iron_ore", BlockDataHolder.of(() ->
-                    new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT).strength(1.6f, 4.4f)))
+                    new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT).strength(1.6f, 4.4f)))
             .withItem().withModel(BlockDataHolder.Model.PILLAR)
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.IRON_ORES, BlockTags.NEEDS_STONE_TOOL)
             .withTranslation("Basalt Iron Ore")
     );
 
     public static final BlockDataHolder<?> SHROOMLIGHT_TEAR = register("shroomlight_tear", BlockDataHolder.of(() ->
-                    new ShroomlightTearBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
+                    new ShroomlightTearBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHROOMLIGHT).instabreak().noCollission(),
                             ModTags.Blocks.SHROOMLIGHT_TEARS_GROWABLE))
             .withItem().cutout().dropsSelf()
             .withTranslation("Shroomlight Tear")
     );
 
     public static final BlockDataHolder<?> HOLLOWLIGHT = register("hollowlight", BlockDataHolder.of(() ->
-                    new HollowlightBlock(BlockBehaviour.Properties.copy(Blocks.SHROOMLIGHT), () -> Blocks.SHROOMLIGHT))
+                    new HollowlightBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHROOMLIGHT), () -> Blocks.SHROOMLIGHT))
             .withItem().withModel(BlockDataHolder.Model.CUBE).dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_HOE)
             .withTranslation("Hollowlight")
     );
 
     public static final BlockDataHolder<?> PLANTED_QUARTZ = register("planted_quartz", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_ROOTS).sound(SoundType.STONE).instabreak().noCollission(), () -> Items.QUARTZ))
+                    new SupportedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_ROOTS).sound(SoundType.STONE).instabreak().noCollission(), () -> Items.QUARTZ))
             .cutout().dropsOther(() -> Items.QUARTZ)
             .withTranslation("Planted Quartz")
     );
 
     public static final BlockDataHolder<?> BURIED_BONE = register("buried_bone", BlockDataHolder.of(() ->
-                    new SupportedBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_ROOTS).sound(SoundType.BONE_BLOCK).instabreak().noCollission(), () -> Items.BONE))
+                    new SupportedBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_ROOTS).sound(SoundType.BONE_BLOCK).instabreak().noCollission(), () -> Items.BONE))
             .cutout().dropsOther(() -> Items.BONE)
             .withTranslation("Buried Bone")
     );
 
     public static final BlockDataHolder<?> QUARTZ_GLASS = register("quartz_glass", BlockDataHolder.of(() ->
-                    new GlassBlock(BlockBehaviour.Properties.copy(Blocks.GLASS).explosionResistance(6).noOcclusion()))
+                    new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).explosionResistance(6).noOcclusion()) {
+                    })
             .glass().cutout().withItem()
             .withTranslation("Quartz Glass")
     );
 
     public static final BlockDataHolder<?> BASALT_STAIRS = register("basalt_stairs", BlockDataHolder.of(() ->
-            StairBlockAccessor.createStairBlock(Blocks.BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BASALT))))
+            StairBlockAccessor.createStairBlock(Blocks.BASALT.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT))))
             .withItem().dropsSelf().withModel(BlockDataHolder.Model.STAIRS).withTags(BlockTags.STAIRS)
             .withTranslation("Basalt Stairs");
 
     public static final BlockDataHolder<?> BASALT_SLAB = register("basalt_slab", BlockDataHolder.of(() ->
-            new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
+            new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT))))
             .withItem().dropsSelf().withModel(BlockDataHolder.Model.SLAB).withTags(BlockTags.SLABS)
             .withTranslation("Basalt Slab");
 
     public static final BlockDataHolder<?> BASALT_WALL = register("basalt_wall", BlockDataHolder.of(() ->
-            new WallBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
+            new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT))))
             .withItem().dropsSelf().withModel(BlockDataHolder.Model.WALL).withTags(BlockTags.WALLS)
             .withTranslation("Basalt Wall");
 
     public static final BlockDataHolder<?> BASALT_SAND = register("basalt_sand", BlockDataHolder.of(() ->
-                    new SandBlock(0x222222, ModBlockProperties.BASALT_SAND))
+                    new ColoredFallingBlock(new ColorRGBA(0x222222), ModBlockProperties.BASALT_SAND))
             .withModel(BlockDataHolder.Model.ROTATABLE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.SMELTS_TO_GLASS)
             .withTranslation("Basalt Sand")
     );
 
     public static final BlockDataHolder<?> POLISHED_BASALT_BRICKS = register("polished_basalt_bricks", BlockDataHolder.of(() ->
-                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+                    new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT)))
             .withModel(BlockDataHolder.Model.CUBE)
             .withItem().dropsSelf()
             .withStairs().withSlab().withWall()
@@ -296,7 +307,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> CRACKED_POLISHED_BASALT_BRICKS = register("cracked_polished_basalt_bricks", BlockDataHolder.of(() ->
-                    new Block(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+                    new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT)))
             .withModel(BlockDataHolder.Model.CUBE)
             .withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
@@ -304,7 +315,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> POLISHED_BASALT_SLAB = register("polished_basalt_slab", BlockDataHolder.of(() ->
-                    new SlabBlock(BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT)))
+                    new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BASALT)))
             .withItem()
             .dropsSelf()
             .withModel(BlockDataHolder.Model.SLAB)
@@ -313,7 +324,7 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> POLISHED_BASALT_STAIRS = register("polished_basalt_stairs", BlockDataHolder.of(() ->
-            StairBlockAccessor.createStairBlock(Blocks.POLISHED_BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT))))
+            StairBlockAccessor.createStairBlock(Blocks.POLISHED_BASALT.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BASALT))))
             .withItem()
             .dropsSelf()
             .withModel(BlockDataHolder.Model.STAIRS)
@@ -321,7 +332,7 @@ public class ModBlocks {
             .withTranslation("Polished Basalt Stairs");
 
     public static final BlockDataHolder<?> POLISHED_BASALT_WALL = register("polished_basalt_wall", BlockDataHolder.of(() ->
-            new WallBlock(BlockBehaviour.Properties.copy(Blocks.POLISHED_BASALT))))
+            new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BASALT))))
             .withItem()
             .dropsSelf()
             .withModel(BlockDataHolder.Model.WALL)
@@ -329,14 +340,14 @@ public class ModBlocks {
             .withTranslation("Polished Basalt Wall");
 
     public static final BlockDataHolder<?> CHISELED_POLISHED_BASALT = register("chiseled_polished_basalt", BlockDataHolder.of(() ->
-                    new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.BASALT)))
+                    new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BASALT)))
             .withModel(BlockDataHolder.Model.PILLAR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Chiseled Polished Basalt")
     );
 
     public static final BlockDataHolder<?> VOLATILE_GEYSER = register("volatile_geyser", BlockDataHolder.of(() ->
-            new VolatileGeyserBlock(BlockBehaviour.Properties.copy(Blocks.STONE))))
+            new VolatileGeyserBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE))))
             .withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Volatile Geyser");
@@ -376,7 +387,7 @@ public class ModBlocks {
             .withStairs().withSlab()
             .withFence().withFenceGate(LUMINOUS_WOOD_TYPE)
             .withButton(luminousSet, 30, true)
-            .withPressurePlate(PressurePlateBlock.Sensitivity.EVERYTHING, luminousSet)
+            .withPressurePlate(luminousSet)
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)
             .withTranslation("Luminous Planks")
@@ -384,27 +395,30 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> LUMINOUS_TRAPDOOR = register("luminous_trapdoor", BlockDataHolder.of(() ->
             TrapDoorBlockAccessor.createTrapDoorBlock(
-                    BlockBehaviour.Properties.copy(LUMINOUS_PLANKS.get()).noOcclusion(),
-                    luminousSet
+                    luminousSet,
+                    BlockBehaviour.Properties.ofFullCopy(LUMINOUS_PLANKS.get()).noOcclusion()
             )))
             .cutout().withModel(BlockDataHolder.Model.TRAPDOOR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.TRAPDOORS)
             .withTranslation("Luminous Trapdoor");
 
     public static final BlockDataHolder<?> LUMINOUS_DOOR = register("luminous_door", BlockDataHolder.of(() ->
-            DoorBlockAccessor.createDoorBlock(BlockBehaviour.Properties.copy(LUMINOUS_PLANKS.get()).noOcclusion(), luminousSet)))
+            DoorBlockAccessor.createDoorBlock(
+                    luminousSet,
+                    BlockBehaviour.Properties.ofFullCopy(LUMINOUS_PLANKS.get()).noOcclusion()
+            )))
             .cutout().withModel(BlockDataHolder.Model.DOOR).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.DOORS)
             .withTranslation("Luminous Door");
 
     public static final BlockDataHolder<?> LUMINOUS_WALL_SIGN = register("luminous_wall_sign", BlockDataHolder.of(() ->
-                    new WallSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_WALL_SIGN), LUMINOUS_WOOD_TYPE))
+                    new WallSignBlock(LUMINOUS_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_WALL_SIGN)))
             .cutout()
             .dropsOther(ModItems.LUMINOUS_SIGN::get)
     );
 
     public static final BlockDataHolder<?> LUMINOUS_SIGN = register("luminous_sign", BlockDataHolder.of(() ->
-                    new StandingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_SIGN), LUMINOUS_WOOD_TYPE))
+                    new StandingSignBlock(LUMINOUS_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_SIGN)))
             .cutout()
             .withSign(
                     () -> ModBlocks.LUMINOUS_WALL_SIGN.get(),
@@ -415,13 +429,13 @@ public class ModBlocks {
     );
 
     public static final BlockDataHolder<?> LUMINOUS_WALL_HANGING_SIGN = register("luminous_wall_hanging_sign", BlockDataHolder.of(() ->
-                    new WallHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_WALL_HANGING_SIGN), LUMINOUS_WOOD_TYPE))
+                    new WallHangingSignBlock(LUMINOUS_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_WALL_HANGING_SIGN)))
             .cutout()
             .dropsOther(ModItems.LUMINOUS_HANGING_SIGN::get)
     );
 
     public static final BlockDataHolder<?> LUMINOUS_HANGING_SIGN = register("luminous_hanging_sign", BlockDataHolder.of(() ->
-                    new CeilingHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.CRIMSON_HANGING_SIGN), LUMINOUS_WOOD_TYPE))
+                    new CeilingHangingSignBlock(LUMINOUS_WOOD_TYPE, BlockBehaviour.Properties.ofFullCopy(Blocks.CRIMSON_HANGING_SIGN)))
             .cutout()
             .withHangingSign(
                     ModBlocks.LUMINOUS_WALL_HANGING_SIGN::get,
@@ -431,7 +445,7 @@ public class ModBlocks {
             .withTranslation("Luminous Hanging Sign")
     );
     public static final BlockDataHolder<?> LUMINOUS_WART_BLOCK = register("luminous_wart_block", BlockDataHolder.of(() ->
-                    new Block(BlockBehaviour.Properties.copy(Blocks.WARPED_WART_BLOCK)))
+                    new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.WARPED_WART_BLOCK)))
             .withModel(BlockDataHolder.Model.CUBE).withItem().dropsSelf()
             .withTags(BlockTags.MINEABLE_WITH_HOE, BlockTags.WART_BLOCKS)
             .withTranslation("Luminous Wart Block")
@@ -469,14 +483,14 @@ public class ModBlocks {
 
             // Register Pane (if glass)
             if (holder.isGlass()) {
-                ResourceLocation paneId = new ResourceLocation(id.getNamespace(), id.getPath() + "_pane");
+                ResourceLocation paneId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "_pane");
                 blockRegister.accept(paneId, holder.getPaneBlock().get());
                 itemRegister.accept(paneId, holder.getPaneBlock().getBlockItem().get());
             }
 
             // Register Blocksets (Stairs, Slabs, Walls, etc.)
             for (Map.Entry<BlockDataHolder.Model, BlockDataHolder<?>> setEntry : holder.getBlocksets().entrySet()) {
-                ResourceLocation setId = new ResourceLocation(id.getNamespace(), id.getPath() + "_" + setEntry.getKey().suffix());
+                ResourceLocation setId = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "_" + setEntry.getKey().suffix());
                 blockRegister.accept(setId, setEntry.getValue().get());
 
                 if (holder.hasItem()) {

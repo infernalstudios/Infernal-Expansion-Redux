@@ -67,7 +67,7 @@ public class FeatureModuleFabric {
                 1
         );
 
-        BiomeModifications.create(new ResourceLocation(IEConstants.MOD_ID, "glowsilk_moth_spawn_cost"))
+        BiomeModifications.create(ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "glowsilk_moth_spawn_cost"))
                 .add(ModificationPhase.ADDITIONS,
                         BiomeSelectors.includeByKey(Biomes.BASALT_DELTAS),
                         context -> context.getSpawnSettings().setSpawnCost(ModEntityTypes.GLOWSILK_MOTH.get(), 0.4D, 1.0D));

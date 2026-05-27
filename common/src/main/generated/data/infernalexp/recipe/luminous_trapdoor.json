@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "luminous_trapdoor",
+  "key": {
+    "#": {
+      "item": "infernalexp:luminous_planks"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "id": "infernalexp:luminous_trapdoor"
+  }
+}

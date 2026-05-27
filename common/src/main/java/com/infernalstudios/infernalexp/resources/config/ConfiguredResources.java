@@ -1,16 +1,20 @@
 package com.infernalstudios.infernalexp.resources.config;
 
 import com.infernalstudios.infernalexp.IEConstants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.IoSupplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Set;
 
 public class ConfiguredResources implements PackResources {
@@ -28,7 +32,6 @@ public class ConfiguredResources implements PackResources {
 
     @Override
     public void listResources(@NotNull PackType type, @NotNull String namespace, @NotNull String prefix, @NotNull ResourceOutput consumer) {
-
     }
 
     @Override
@@ -49,5 +52,15 @@ public class ConfiguredResources implements PackResources {
     @Override
     public void close() {
 
+    }
+
+    @Override
+    public @NotNull PackLocationInfo location() {
+        return new PackLocationInfo(
+                packId(),
+                Component.literal("Configured Data"),
+                PackSource.BUILT_IN,
+                Optional.empty()
+        );
     }
 }

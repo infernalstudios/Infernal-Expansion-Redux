@@ -26,7 +26,7 @@ public abstract class LuminousEffectSyncMixin extends Entity {
         if (this.level().isClientSide) return;
 
         if (effectInstance.getEffect() == ModEffects.LUMINOUS.get()) {
-            Packet<?> packet = new ClientboundUpdateMobEffectPacket(this.getId(), effectInstance);
+            Packet<?> packet = new ClientboundUpdateMobEffectPacket(this.getId(), effectInstance, false);
             ((ServerLevel) this.level()).getChunkSource().broadcast(this, packet);
         }
     }
@@ -36,7 +36,7 @@ public abstract class LuminousEffectSyncMixin extends Entity {
         if (this.level().isClientSide) return;
 
         if (effectInstance.getEffect() == ModEffects.LUMINOUS.get()) {
-            Packet<?> packet = new ClientboundUpdateMobEffectPacket(this.getId(), effectInstance);
+            Packet<?> packet = new ClientboundUpdateMobEffectPacket(this.getId(), effectInstance, false);
             ((ServerLevel) this.level()).getChunkSource().broadcast(this, packet);
         }
     }

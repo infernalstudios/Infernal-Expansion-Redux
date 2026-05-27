@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 @Mixin(MultiPackResourceManager.class)
 public class MultiPackResourceManagerMixin {
     @Unique
-    private static Resource readAndApply(Optional<Resource> resource, ConfiguredData data) {
+    private static Resource infernalexp$readAndApply(Optional<Resource> resource, ConfiguredData data) {
         IECommon.log("Applying configured data: " + data.target, 0);
 
         if (resource.isEmpty()) {
@@ -46,20 +46,18 @@ public class MultiPackResourceManagerMixin {
     }
 
     @Unique
-    private static Resource readAndApply(Resource resource, ConfiguredData data) {
+    private static Resource infernalexp$readAndApply(Resource resource, ConfiguredData data) {
         if (resource.source() instanceof ConfiguredResources) return resource;
-        return readAndApply(Optional.of(resource), data);
+        return infernalexp$readAndApply(Optional.of(resource), data);
     }
 
-    // thank you remapping, very cool
-    // todo: this fucking sucks
-    @ModifyReturnValue(method = {"getResource", "method_14486", "m_213713_"}, remap = false, at = @At("RETURN"))
+    @ModifyReturnValue(method = "getResource", at = @At("RETURN"))
     public Optional<Resource> getConfiguredResource(Optional<Resource> original, ResourceLocation id) {
         ConfiguredData data = ConfiguredData.get(id);
         if (data == null || !data.enabled.get() || (original.isPresent() && original.get().source() instanceof ConfiguredResources))
             return original;
 
-        return Optional.of(readAndApply(original, data));
+        return Optional.of(infernalexp$readAndApply(original, data));
     }
 
     @ModifyReturnValue(method = "getResourceStack", at = @At("RETURN"))
@@ -68,7 +66,7 @@ public class MultiPackResourceManagerMixin {
         if (data == null || !data.enabled.get()) return original;
 
         return original.stream()
-                .map(resource -> readAndApply(resource, data)).toList();
+                .map(resource -> infernalexp$readAndApply(resource, data)).toList();
     }
 
     @ModifyReturnValue(method = "listResources", at = @At("RETURN"))
@@ -78,7 +76,7 @@ public class MultiPackResourceManagerMixin {
         for (ConfiguredData data : ConfiguredData.INSTANCES) {
             if (data.enabled.get() && data.target.getPath().startsWith(startingPath + "/") && allowedPathPredicate.test(data.target)) {
                 if (!original.containsKey(data.target)) {
-                    original.put(data.target, readAndApply(Optional.empty(), data));
+                    original.put(data.target, infernalexp$readAndApply(Optional.empty(), data));
                 }
             }
         }
@@ -88,7 +86,7 @@ public class MultiPackResourceManagerMixin {
             ConfiguredData data = ConfiguredData.get(id);
             if (data == null || !data.enabled.get()) continue;
 
-            original.replace(id, readAndApply(original.get(id), data));
+            original.replace(id, infernalexp$readAndApply(original.get(id), data));
         }
         return original;
     }
@@ -100,7 +98,7 @@ public class MultiPackResourceManagerMixin {
         for (ConfiguredData data : ConfiguredData.INSTANCES) {
             if (data.enabled.get() && data.target.getPath().startsWith(startingPath) && allowedPathPredicate.test(data.target)) {
                 if (!original.containsKey(data.target)) {
-                    original.put(data.target, List.of(readAndApply(Optional.empty(), data)));
+                    original.put(data.target, List.of(infernalexp$readAndApply(Optional.empty(), data)));
                 }
             }
         }
@@ -111,7 +109,7 @@ public class MultiPackResourceManagerMixin {
             if (data == null || !data.enabled.get()) continue;
 
             original.replace(id, original.get(id).stream()
-                    .map(resource -> readAndApply(resource, data)).toList());
+                    .map(resource -> infernalexp$readAndApply(resource, data)).toList());
         }
         return original;
     }

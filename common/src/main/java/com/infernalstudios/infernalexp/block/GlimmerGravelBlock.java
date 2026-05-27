@@ -1,6 +1,7 @@
 package com.infernalstudios.infernalexp.block;
 
 import com.infernalstudios.infernalexp.module.ModTags;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -17,8 +18,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class GlimmerGravelBlock extends FallingBlock {
+    public static final MapCodec<GlimmerGravelBlock> CODEC = simpleCodec(GlimmerGravelBlock::new);
+
     public GlimmerGravelBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends FallingBlock> codec() {
+        return CODEC;
     }
 
     @Override

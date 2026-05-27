@@ -4,14 +4,16 @@ import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.FlowerPotBlock;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 public class IEBlockLootTableProvider extends FabricBlockLootTableProvider {
-    public IEBlockLootTableProvider(FabricDataOutput dataOutput) {
-        super(dataOutput);
+    public IEBlockLootTableProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override
@@ -39,7 +41,7 @@ public class IEBlockLootTableProvider extends FabricBlockLootTableProvider {
                         continue;
                     }
                     case FLOWER_POT -> {
-                        add(blockDataHolder.get(), createPotFlowerItemTable(((FlowerPotBlock) blockDataHolder.get()).getContent()));
+                        add(blockDataHolder.get(), createPotFlowerItemTable(((FlowerPotBlock) blockDataHolder.get()).getPotted()));
                         continue;
                     }
                 }

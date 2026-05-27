@@ -1,17 +1,18 @@
 package com.infernalstudios.infernalexp.neoforge.module;
 
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.module.ModItems;
 import com.infernalstudios.infernalexp.registration.FuelRegistry;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegisterEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = "infernalexp", bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ItemModuleNeoForge {
     @SubscribeEvent
     public static void registerItems(RegisterEvent event) {

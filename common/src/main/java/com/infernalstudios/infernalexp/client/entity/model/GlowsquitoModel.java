@@ -11,7 +11,7 @@ public class GlowsquitoModel extends GeoModel<GlowsquitoEntity> {
 
     @Override
     public ResourceLocation getModelResource(GlowsquitoEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "geo/glowsquito.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "geo/glowsquito.geo.json");
     }
 
     @Override
@@ -25,11 +25,11 @@ public class GlowsquitoModel extends GeoModel<GlowsquitoEntity> {
             texture = "glowsquito_" + variant + ".png";
         }
 
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/glowsquito/" + texture);
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/glowsquito/" + texture);
     }
 
     @Override
     public ResourceLocation getAnimationResource(GlowsquitoEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "animations/glowsquito.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "animations/glowsquito.animation.json");
     }
 }

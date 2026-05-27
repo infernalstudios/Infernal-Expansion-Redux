@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crimson_fungus_cap": {
+      "conditions": {
+        "items": [
+          {
+            "items": "infernalexp:crimson_fungus_cap"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "infernalexp:crimson_fungus"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_crimson_fungus_cap"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "infernalexp:crimson_fungus"
+    ]
+  }
+}

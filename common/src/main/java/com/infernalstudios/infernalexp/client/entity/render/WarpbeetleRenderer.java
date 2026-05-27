@@ -8,7 +8,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -71,14 +70,13 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
             long instanceId = this.getInstanceId(dummyBeetle);
             AnimationState<WarpbeetleEntity> animationState =
                     new AnimationState<>(dummyBeetle, 0, 0, partialTick, false);
-            this.getGeoModel().handleAnimations(dummyBeetle, instanceId, animationState);
-
+            this.getGeoModel().handleAnimations(dummyBeetle, instanceId, animationState, partialTick);
             if (entity.isFlying()) {
                 poseStack.pushPose();
                 poseStack.mulPose(Axis.XP.rotationDegrees(45.0F));
             }
 
-            ResourceLocation texture = ((EntityRenderer<WarpbeetleEntity>) this).getTextureLocation(entity);
+            ResourceLocation texture = this.getTextureLocation(entity);
             RenderType renderType = this.getRenderType(dummyBeetle, texture, bufferSource, partialTick);
 
             this.actuallyRender(
@@ -92,7 +90,7 @@ public class WarpbeetleRenderer extends GeoEntityRenderer<WarpbeetleEntity> {
                     partialTick,
                     packedLight,
                     OverlayTexture.NO_OVERLAY,
-                    1.0f, 1.0f, 1.0f, 1.0f
+                    0xFFFFFFFF
             );
 
             if (entity.isFlying()) {

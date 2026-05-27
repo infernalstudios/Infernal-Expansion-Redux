@@ -2,10 +2,13 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.api.AbstractArrowEntityAccess;
 import com.infernalstudios.infernalexp.module.ModEffects;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -25,10 +28,9 @@ public abstract class AbstractArrowMixin implements AbstractArrowEntityAccess {
     private static final EntityDataAccessor<Boolean> infernalexp$LUMINOUS = SynchedEntityData.defineId(AbstractArrow.class, EntityDataSerializers.BOOLEAN);
 
     @Inject(at = @At("RETURN"), method = "defineSynchedData")
-    private void infernalexp$registerData(CallbackInfo ci) {
-        AbstractArrow arrow = (AbstractArrow) (Object) this;
-        arrow.getEntityData().define(infernalexp$LUMINOUS, false);
-        arrow.getEntityData().define(infernalexp$GLOW, false);
+    private void infernalexp$registerData(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(infernalexp$LUMINOUS, false);
+        builder.define(infernalexp$GLOW, false);
     }
 
     @Inject(at = @At("RETURN"), method = "addAdditionalSaveData")
@@ -48,7 +50,8 @@ public abstract class AbstractArrowMixin implements AbstractArrowEntityAccess {
     private void infernalexp$onHitEntity(EntityHitResult result, CallbackInfo ci) {
         if (result.getEntity() instanceof LivingEntity livingEntity) {
             if (this.infernalexp$getLuminous() || this.infernalexp$getGlow()) {
-                livingEntity.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600));
+                Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+                livingEntity.addEffect(new MobEffectInstance(luminousHolder, 600));
             }
         }
     }

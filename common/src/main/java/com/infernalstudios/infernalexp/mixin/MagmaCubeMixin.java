@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.entities.IBucketable;
 import com.infernalstudios.infernalexp.module.ModItems;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -35,9 +37,9 @@ public abstract class MagmaCubeMixin extends Slime implements IBucketable {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(infernalexp$FROM_BUCKET, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(infernalexp$FROM_BUCKET, false);
     }
 
     @Override
@@ -73,20 +75,21 @@ public abstract class MagmaCubeMixin extends Slime implements IBucketable {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
         if (reason == MobSpawnType.BUCKET) {
             return spawnData;
         } else {
             this.setSize(0, false);
-            return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+            return super.finalizeSpawn(level, difficulty, reason, spawnData);
         }
     }
 
     @Override
     public void infernalexp$copyToStack(ItemStack stack) {
-        CompoundTag compound = stack.getOrCreateTag();
         IBucketable.copyDataToStack(this, stack);
-        compound.putInt("Size", this.getSize());
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag -> {
+            tag.putInt("Size", this.getSize());
+        });
     }
 
     @Override

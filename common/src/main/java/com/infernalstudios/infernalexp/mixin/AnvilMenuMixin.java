@@ -1,7 +1,7 @@
 package com.infernalstudios.infernalexp.mixin;
 
 import com.infernalstudios.infernalexp.module.ModItems;
-import net.minecraft.Util;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.*;
@@ -16,11 +16,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AnvilMenu.class)
 public abstract class AnvilMenuMixin extends ItemCombinerMenu {
-    @Shadow @Final private DataSlot cost;
+    @Shadow
+    @Final
+    private DataSlot cost;
 
-    @Shadow private int repairItemCountCost;
+    @Shadow
+    private int repairItemCountCost;
 
-    @Shadow private String itemName;
+    @Shadow
+    private String itemName;
 
     public AnvilMenuMixin(@Nullable MenuType<?> $$0, int $$1, Inventory $$2, ContainerLevelAccess $$3) {
         super($$0, $$1, $$2, $$3);
@@ -32,18 +36,18 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu {
         if (!stack.isEmpty() && stack.getDamageValue() > 0 && this.inputSlots.getItem(1).is(ModItems.GLOWSILK_STRING.get())) {
             int dura = Math.min((stack.getDamageValue() + 199) / 200, this.inputSlots.getItem(1).getCount());
             ItemStack output = stack.copy();
-            output.setDamageValue(output.getDamageValue() - 200*dura);
+            output.setDamageValue(output.getDamageValue() - 200 * dura);
 
             this.repairItemCountCost = dura;
 
-            if (this.itemName != null && !Util.isBlank(this.itemName)) {
+            if (this.itemName != null && !this.itemName.isBlank()) {
                 if (!this.itemName.equals(stack.getHoverName().getString())) {
                     dura += 1;
-                    output.setHoverName(Component.literal(this.itemName));
+                    output.set(DataComponents.CUSTOM_NAME, Component.literal(this.itemName));
                 }
-            } else if (stack.hasCustomHoverName()) {
+            } else if (stack.has(DataComponents.CUSTOM_NAME)) {
                 dura += 1;
-                output.resetHoverName();
+                output.remove(DataComponents.CUSTOM_NAME);
             }
 
             this.cost.set(dura * 5);

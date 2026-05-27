@@ -9,16 +9,16 @@ public class WarpbeetleModel extends GeoModel<WarpbeetleEntity> {
 
     @Override
     public ResourceLocation getModelResource(WarpbeetleEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "geo/warpbeetle.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "geo/warpbeetle.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(WarpbeetleEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/warpbeetle.png");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/warpbeetle.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(WarpbeetleEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "animations/warpbeetle.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "animations/warpbeetle.animation.json");
     }
 }

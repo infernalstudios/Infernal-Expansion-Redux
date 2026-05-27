@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "dullstone_pressure_plate",
+  "key": {
+    "#": {
+      "item": "infernalexp:polished_dullstone"
+    }
+  },
+  "pattern": [
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "infernalexp:dullstone_pressure_plate"
+  }
+}

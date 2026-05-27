@@ -3,17 +3,13 @@
   "config": {
     "radius": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 3,
-        "min_inclusive": 2
-      }
+      "max_inclusive": 3,
+      "min_inclusive": 2
     },
     "size": {
       "type": "minecraft:uniform",
-      "value": {
-        "max_inclusive": 30,
-        "min_inclusive": 12
-      }
+      "max_inclusive": 30,
+      "min_inclusive": 12
     },
     "stem": {
       "type": "minecraft:simple_state_provider",

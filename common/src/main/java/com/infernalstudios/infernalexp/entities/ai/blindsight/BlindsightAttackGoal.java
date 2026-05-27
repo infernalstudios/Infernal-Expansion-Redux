@@ -84,7 +84,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
             }
         }
 
-        if (this.blindsight.distanceToSqr(target) < this.getAttackReachSqr(target) && this.blindsight.attackCooldown <= 0 && this.blindsight.onGround()) {
+        if (this.blindsight.isWithinMeleeAttackRange(target) && this.blindsight.attackCooldown <= 0 && this.blindsight.onGround()) {
             this.blindsight.swing(InteractionHand.MAIN_HAND);
             this.blindsight.triggerAnim("attackController", "bite");
             this.blindsight.doHurtTarget(target);

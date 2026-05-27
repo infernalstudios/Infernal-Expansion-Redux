@@ -38,13 +38,13 @@ public class IEBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.SHROOMLIGHT);
 
         getOrCreateTagBuilder(ModTags.Blocks.SHROOMNIGHT_TEARS_GROWABLE)
-                .addOptional(new ResourceLocation("netherexp", "shroomnight"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroomnight"));
 
         getOrCreateTagBuilder(ModTags.Blocks.SHROOMBLIGHT_TEARS_GROWABLE)
-                .addOptional(new ResourceLocation("netherexp", "shroomblight"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroomblight"));
 
         getOrCreateTagBuilder(ModTags.Blocks.SHROOMBRIGHT_TEARS_GROWABLE)
-                .addOptional(new ResourceLocation("netherexp", "shroombright"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroombright"));
 
         getOrCreateTagBuilder(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS)
                 .add(Blocks.GLOWSTONE);
@@ -53,14 +53,11 @@ public class IEBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.GLOWSTONE)
                 .add(ModBlocks.DIMSTONE.get())
                 .add(Blocks.SHROOMLIGHT)
-                .addOptional(new ResourceLocation("netherexp", "shroomnight"))
-                .addOptional(new ResourceLocation("netherexp", "shroomblight"))
-                .addOptional(new ResourceLocation("netherexp", "shroombright"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroomnight"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroomblight"))
+                .addOptional(ResourceLocation.fromNamespaceAndPath("netherexp", "shroombright"));
 
-        getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "ores")))
-                .add(ModBlocks.BASALT_IRON_ORE.get());
-
-        getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "iron_ores")))
+        getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ores/iron")))
                 .add(ModBlocks.BASALT_IRON_ORE.get());
     }
 }

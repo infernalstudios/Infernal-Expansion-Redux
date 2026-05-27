@@ -8,7 +8,7 @@ import terrablender.api.SurfaceRuleManager;
 
 public class TerraBlenderCompat {
     public static void register() {
-        Regions.register(new TerraBlenderRegion(new ResourceLocation(IEConstants.MOD_ID, "nether"), 4));
+        Regions.register(new TerraBlenderRegion(ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "nether"), 4));
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, IEConstants.MOD_ID, ModSurfaceRules.addNetherSurfaceRulesWithBedrock());
     }
 }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "crimson_fungus",
+  "ingredients": [
+    {
+      "item": "infernalexp:crimson_fungus_cap"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "minecraft:crimson_fungus"
+  }
+}

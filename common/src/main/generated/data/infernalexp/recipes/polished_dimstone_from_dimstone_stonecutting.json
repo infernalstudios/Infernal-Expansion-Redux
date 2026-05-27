@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "infernalexp:dimstone"
-  },
-  "result": "infernalexp:polished_dimstone"
-}

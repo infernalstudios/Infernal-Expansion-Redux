@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.Block;
 import java.util.function.Supplier;
 
 public class EntityTypeDataHolder<T extends Entity> {
-    private EntityType<T> cachedEntry;
     private final Supplier<EntityType<T>> entrySupplier;
+    private EntityType<T> cachedEntry;
     private String defaultTranslation;
 
     private Supplier<AttributeSupplier.Builder> attributesBuilderSupplier;
@@ -43,6 +43,7 @@ public class EntityTypeDataHolder<T extends Entity> {
 
     /**
      * Retrieves the cached entry if it exists, otherwise calls the supplier to create a new entry.
+     *
      * @return The cached entry, or a new entry if the cached entry does not exist.
      */
     public EntityType<T> get() {
@@ -78,6 +79,7 @@ public class EntityTypeDataHolder<T extends Entity> {
         private boolean serialize = true;
         private boolean summon = true;
         private boolean fireImmune;
+        private float spawnDimensionsScale = 1.0F;
         private boolean canSpawnFarFromPlayer;
         private int clientTrackingRange = 5;
         private int updateInterval = 3;
@@ -140,7 +142,7 @@ public class EntityTypeDataHolder<T extends Entity> {
         }
 
         public EntityType<T> build() {
-            return new EntityType<>(this.factory, this.category, this.serialize, this.summon, this.fireImmune, this.canSpawnFarFromPlayer, this.immuneTo, this.dimensions, this.clientTrackingRange, this.updateInterval, this.requiredFeatures);
+            return new EntityType<>(this.factory, this.category, this.serialize, this.summon, this.fireImmune, this.canSpawnFarFromPlayer, this.immuneTo, this.dimensions, this.spawnDimensionsScale, this.clientTrackingRange, this.updateInterval, this.requiredFeatures);
         }
     }
 }

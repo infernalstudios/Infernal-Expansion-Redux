@@ -8,6 +8,7 @@ import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.MobEffectDataHolder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,17 +16,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static com.infernalstudios.infernalexp.IEConstants.MOD_ID;
 
 public class IELangProvider extends FabricLanguageProvider {
-    public IELangProvider(FabricDataOutput dataOutput) {
-        super(dataOutput);
+    public IELangProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override
-    public void generateTranslations(TranslationBuilder builder) {
-        // Put manually added entries here
+    public void generateTranslations(HolderLookup.Provider registryLookup, TranslationBuilder builder) {
         builder.add(ModCreativeTabs.INFERNAL_EXPANSION_TAB.getResourceKey(), "Infernal Expansion");
         generateConfigTranslations(builder);
 

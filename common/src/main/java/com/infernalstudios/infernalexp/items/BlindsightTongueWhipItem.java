@@ -1,25 +1,30 @@
 package com.infernalstudios.infernalexp.items;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.infernalstudios.infernalexp.module.*;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -35,41 +40,35 @@ public class BlindsightTongueWhipItem extends Item {
     public static final int CHARGE_CAP_TICKS = 15;
     public static final int ATTACK_DURATION_TICKS = 10;
     public static final Map<Integer, Long> CLIENT_ATTACK_TIMES = new HashMap<>();
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public BlindsightTongueWhipItem(Properties properties) {
         super(properties);
-
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 3.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -2.4D, AttributeModifier.Operation.ADDITION));
-
-        this.defaultModifiers = builder.build();
     }
 
     public static void setAttacking(ItemStack stack, boolean attacking) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putBoolean("Attacking", attacking);
+        CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putBoolean("Attacking", attacking));
     }
 
     public static boolean isAttacking(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        return tag != null && tag.getBoolean("Attacking");
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        return data != null && data.copyTag().getBoolean("Attacking");
     }
 
     public static void setAttackStartTick(ItemStack stack, long tick) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putLong("AttackStartTick", tick);
+        CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.putLong("AttackStartTick", tick));
     }
 
     public static long getAttackStartTick(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        return tag != null ? tag.getLong("AttackStartTick") : 0L;
+        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+        return data != null ? data.copyTag().getLong("AttackStartTick") : 0L;
     }
 
     @Override
-    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot slot) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
+    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 3.0D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4D, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 
     @Override
@@ -83,7 +82,7 @@ public class BlindsightTongueWhipItem extends Item {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
         return 72000;
     }
 
@@ -103,8 +102,7 @@ public class BlindsightTongueWhipItem extends Item {
     @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof Player player) {
-            int useTime = this.getUseDuration(stack) - timeLeft;
-
+            int useTime = this.getUseDuration(stack, player) - timeLeft;
             if (useTime < CHARGE_CAP_TICKS) {
                 setAttacking(stack, false);
                 return;
@@ -123,11 +121,10 @@ public class BlindsightTongueWhipItem extends Item {
                 Vec3 particlePos = player.getEyePosition().add(lookVec.scale(4.0D));
                 level.addParticle(ModParticleTypes.TONGUE_WHIP_SLASH, particlePos.x, particlePos.y, particlePos.z, 0, 0, 0);
             } else {
-                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
-
+                stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 boolean hitEnemy = performWhipAttack(level, player, stack);
 
-                int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LEAPING.get(), stack);
+                int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ModEnchantments.LEAPING), stack);
                 if (leapingLevel > 0) {
                     Vec3 lookVec = player.getLookAngle();
 
@@ -177,12 +174,13 @@ public class BlindsightTongueWhipItem extends Item {
         AABB attackBox = new AABB(playerPos, targetPos).inflate(width, width, width);
         List<LivingEntity> potentialTargets = level.getEntitiesOfClass(LivingEntity.class, attackBox);
 
-        int knockbackLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.KNOCKBACK, stack);
-        int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LEAPING.get(), stack);
-        int fireAspectLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);
-        int illuminatingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ILLUMINATING.get(), stack);
-        int disarmingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.DISARMING.get(), stack);
-        int lashingLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.LASHING.get(), stack);
+        var enchants = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        int knockbackLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(Enchantments.KNOCKBACK), stack);
+        int leapingLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(ModEnchantments.LEAPING), stack);
+        int fireAspectLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(Enchantments.FIRE_ASPECT), stack);
+        int illuminatingLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(ModEnchantments.ILLUMINATING), stack);
+        int disarmingLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(ModEnchantments.DISARMING), stack);
+        int lashingLevel = EnchantmentHelper.getItemEnchantmentLevel(enchants.getOrThrow(ModEnchantments.LASHING), stack);
 
         float knockbackStrength = (leapingLevel > 0) ? 0.0F : 2.0F + (float) knockbackLevel * 0.5F;
         float baseDamage = 4.0F;
@@ -200,7 +198,11 @@ public class BlindsightTongueWhipItem extends Item {
                 if (lookVec.dot(dirToTarget) > 0.5) {
                     hitAny = true;
 
-                    float damageBonus = EnchantmentHelper.getDamageBonus(stack, target.getMobType());
+                    float damageBonus = 0.0F;
+                    if (level instanceof ServerLevel serverLevel) {
+                        float totalDamage = EnchantmentHelper.modifyDamage(serverLevel, stack, target, level.damageSources().playerAttack(player), baseDamage);
+                        damageBonus = totalDamage - baseDamage;
+                    }
                     target.hurt(level.damageSources().playerAttack(player), baseDamage + damageBonus);
 
                     if (knockbackStrength > 0) {
@@ -208,12 +210,13 @@ public class BlindsightTongueWhipItem extends Item {
                     }
 
                     if (fireAspectLevel > 0) {
-                        target.setSecondsOnFire(4 * fireAspectLevel);
+                        target.igniteForSeconds(4 * fireAspectLevel);
                     }
 
                     if (illuminatingLevel > 0) {
                         int duration = 160 * illuminatingLevel;
-                        target.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), duration));
+                        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+                        target.addEffect(new MobEffectInstance(luminousHolder, duration));
                     }
 
                     if (disarmingLevel > 0) {

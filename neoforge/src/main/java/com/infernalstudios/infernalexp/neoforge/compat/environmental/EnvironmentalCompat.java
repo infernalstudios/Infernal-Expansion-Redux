@@ -14,9 +14,9 @@ public class EnvironmentalCompat {
 
     public static void register() {
         DWARF_SPRUCE_GLOWLIGHT_TORCH = ModBlocks.register("dwarf_spruce_glowlight_torch", BlockDataHolder.of(() ->
-                new DwarfSpruceHeadBlock(BlockBehaviour.Properties.copy(Blocks.SPRUCE_LEAVES).lightLevel((state) -> 15), ModItems.GLOWLIGHT_TORCH::get)).cutout());
+                new DwarfSpruceHeadBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LEAVES).lightLevel((state) -> 15), ModItems.GLOWLIGHT_TORCH::get)).cutout());
 
         DWARF_SPRUCE_PLANT_GLOWLIGHT_TORCH = ModBlocks.register("dwarf_spruce_plant_glowlight_torch", BlockDataHolder.of(() ->
-                new DwarfSprucePlantBlock(BlockBehaviour.Properties.copy(Blocks.SPRUCE_LEAVES).lightLevel((state) -> 15), ModItems.GLOWLIGHT_TORCH::get, (DwarfSpruceHeadBlock) DWARF_SPRUCE_GLOWLIGHT_TORCH.get()))).cutout();
+                new DwarfSprucePlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LEAVES).lightLevel((state) -> 15), ModItems.GLOWLIGHT_TORCH::get, (DwarfSpruceHeadBlock) DWARF_SPRUCE_GLOWLIGHT_TORCH.get()))).cutout();
     }
 }

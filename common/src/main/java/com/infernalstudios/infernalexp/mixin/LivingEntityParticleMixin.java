@@ -3,7 +3,10 @@ package com.infernalstudios.infernalexp.mixin;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,8 +21,8 @@ public class LivingEntityParticleMixin {
     )
     private void infernalexp$hideLuminousSwirls(Level level, ParticleOptions particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, Operation<Void> original) {
         LivingEntity entity = (LivingEntity) (Object) this;
-
-        if (entity.hasEffect(ModEffects.LUMINOUS.get())) {
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+        if (entity.hasEffect(luminousHolder)) {
             if (entity.getActiveEffects().size() == 1) {
                 return;
             }

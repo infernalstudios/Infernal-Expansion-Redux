@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.module;
 
+import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.items.BlindsightTongueWhipItem;
 import com.infernalstudios.infernalexp.mixin.accessor.ItemPropertiesAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -13,27 +14,27 @@ public class ModItemProperties {
     }
 
     private static void makeBow(Item item) {
-        ItemPropertiesAccessor.register(item, new ResourceLocation("pull"), (stack, level, entity, seed) -> {
+        ItemPropertiesAccessor.register(item, ResourceLocation.parse("pull"), (stack, level, entity, seed) -> {
             if (entity == null) {
                 return 0.0F;
             } else {
-                return entity.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks()) / 20.0F;
+                return entity.getUseItem() != stack ? 0.0F : (float) (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
             }
         });
 
-        ItemPropertiesAccessor.register(item, new ResourceLocation("pulling"), (stack, level, entity, seed) -> {
+        ItemPropertiesAccessor.register(item, ResourceLocation.parse("pulling"), (stack, level, entity, seed) -> {
             return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
         });
     }
 
     private static void makeWhip(Item item) {
-        ItemPropertiesAccessor.register(item, new ResourceLocation("infernalexp", "whip_progress"), (stack, level, entity, seed) -> {
+        ItemPropertiesAccessor.register(item, ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "whip_progress"), (stack, level, entity, seed) -> {
             if (entity == null || !(entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)) {
                 return 0.0F;
             }
 
             if (entity.isUsingItem() && entity.getUseItem() == stack) {
-                float useTime = (float) (stack.getUseDuration() - entity.getUseItemRemainingTicks());
+                float useTime = (float) (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks());
                 float progress = Math.min(1.0F, useTime / BlindsightTongueWhipItem.CHARGE_CAP_TICKS);
                 return progress * 0.5F;
             }

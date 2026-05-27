@@ -46,9 +46,9 @@ public class InfernalExpansionNeoForge {
             EnvironmentalCompat.register();
         }
 
-        if (ModList.get().isLoaded("caverns_and_chasms")) {
+/*        if (ModList.get().isLoaded("caverns_and_chasms")) {
             CavernsAndChasmsCompat.register(modEventBus);
-        }
+        }*/
 
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> InfernalExpansionNeoForgeClient::init);
     }

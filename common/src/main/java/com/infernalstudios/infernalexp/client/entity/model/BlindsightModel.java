@@ -9,19 +9,19 @@ public class BlindsightModel extends GeoModel<BlindsightEntity> {
 
     @Override
     public ResourceLocation getModelResource(BlindsightEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "geo/blindsight.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "geo/blindsight.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(BlindsightEntity entity) {
         if (entity.isWatchingLuminous()) {
-            return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/blindsight_open.png");
+            return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/blindsight_open.png");
         }
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/blindsight.png");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/blindsight.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(BlindsightEntity entity) {
-        return new ResourceLocation(IEConstants.MOD_ID, "animations/blindsight.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "animations/blindsight.animation.json");
     }
 }

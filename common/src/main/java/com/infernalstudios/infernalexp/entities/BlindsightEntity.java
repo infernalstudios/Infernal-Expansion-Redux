@@ -6,13 +6,17 @@ import com.infernalstudios.infernalexp.entities.ai.blindsight.*;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import com.infernalstudios.infernalexp.module.ModSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -38,13 +42,10 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.UUID;
-
 public class BlindsightEntity extends Monster implements GeoEntity {
-
-    public static final UUID SPEED_MODIFIER_ATTACK_UUID = UUID.fromString("4F23F2F2-822D-4E38-9226-538222954848");
-    public static final UUID ATTACK_DAMAGE_MODIFIER_UUID = UUID.fromString("23423423-822D-4E38-9226-538222954848");
-    public static final UUID FOLLOW_RANGE_MODIFIER_UUID = UUID.fromString("71479901-5231-4835-8968-072619894352");
+    public static final ResourceLocation SPEED_MODIFIER_ATTACK_RL = IECommon.makeID("blindsight_speed");
+    public static final ResourceLocation ATTACK_DAMAGE_MODIFIER_RL = IECommon.makeID("blindsight_damage");
+    public static final ResourceLocation FOLLOW_RANGE_MODIFIER_RL = IECommon.makeID("blindsight_range");
 
     private static final EntityDataAccessor<Boolean> IS_JUMPING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
@@ -60,10 +61,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     private static final RawAnimation TONGUE_ATTACK_IMMEDIATE = RawAnimation.begin().thenPlay("tongue_attack_immediate");
     private static final RawAnimation ALERT = RawAnimation.begin().thenPlay("luminous_player_alert");
     private static final RawAnimation LAND = RawAnimation.begin().thenPlay("land");
-
-    public int ticksOnGround = 0;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    public int ticksOnGround = 0;
     public float targetSquish;
     public float squish;
     public float oSquish;
@@ -103,17 +102,18 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(IS_JUMPING, false);
-        this.entityData.define(IS_ATTACKING, false);
-        this.entityData.define(IS_RESTING, false);
-        this.entityData.define(IS_WATCHING_LUMINOUS, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(IS_JUMPING, false);
+        builder.define(IS_ATTACKING, false);
+        builder.define(IS_RESTING, false);
+        builder.define(IS_WATCHING_LUMINOUS, false);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
         this.goalSelector.addGoal(0, new BlindsightFloatGoal(this));
         this.goalSelector.addGoal(1, new BlindsightAttackGoal(this, 1.2D, true));
         this.goalSelector.addGoal(2, new ExtinguishFireGoal(this));
@@ -124,7 +124,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true,
-                entity -> entity.hasEffect(ModEffects.LUMINOUS.get()) && !(entity instanceof BlindsightEntity)));
+                entity -> entity.hasEffect(luminousHolder) && !(entity instanceof BlindsightEntity)));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowsquitoEntity.class, true) {
             @Override
             protected @NotNull AABB getTargetSearchArea(double targetDistance) {
@@ -213,7 +213,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
 
     private void handleLuminousTargetLogic() {
         LivingEntity target = this.getTarget();
-        boolean isLuminous = target != null && target.hasEffect(ModEffects.LUMINOUS.get());
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+        boolean isLuminous = target != null && target.hasEffect(luminousHolder);
 
         this.entityData.set(IS_WATCHING_LUMINOUS, isLuminous);
 
@@ -233,29 +234,30 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         }
 
         if (isLuminous) {
-            if (speed != null && speed.getModifier(SPEED_MODIFIER_ATTACK_UUID) == null)
-                speed.addTransientModifier(new AttributeModifier(SPEED_MODIFIER_ATTACK_UUID, "Luminous speed", 0.25D, AttributeModifier.Operation.ADDITION));
-            if (damage != null && damage.getModifier(ATTACK_DAMAGE_MODIFIER_UUID) == null)
-                damage.addTransientModifier(new AttributeModifier(ATTACK_DAMAGE_MODIFIER_UUID, "Luminous dmg", 4.0D, AttributeModifier.Operation.ADDITION));
-            if (range != null && range.getModifier(FOLLOW_RANGE_MODIFIER_UUID) == null)
-                range.addTransientModifier(new AttributeModifier(FOLLOW_RANGE_MODIFIER_UUID, "Luminous range", 36.0D, AttributeModifier.Operation.ADDITION));
+            if (speed != null && !speed.hasModifier(SPEED_MODIFIER_ATTACK_RL))
+                speed.addTransientModifier(new AttributeModifier(SPEED_MODIFIER_ATTACK_RL, 0.25D, AttributeModifier.Operation.ADD_VALUE));
+            if (damage != null && !damage.hasModifier(ATTACK_DAMAGE_MODIFIER_RL))
+                damage.addTransientModifier(new AttributeModifier(ATTACK_DAMAGE_MODIFIER_RL, 4.0D, AttributeModifier.Operation.ADD_VALUE));
+            if (range != null && !range.hasModifier(FOLLOW_RANGE_MODIFIER_RL))
+                range.addTransientModifier(new AttributeModifier(FOLLOW_RANGE_MODIFIER_RL, 36.0D, AttributeModifier.Operation.ADD_VALUE));
 
-            if (!this.hasPlayedWarning && this.ticksOnGround > 2 && target instanceof Player && this.alertTimer == 0 && !this.wantsToTongueAttack && this.attackAnimationTimer == 0) {                this.triggerAnim("attackController", "alert");
+            if (!this.hasPlayedWarning && this.ticksOnGround > 2 && target instanceof Player && this.alertTimer == 0 && !this.wantsToTongueAttack && this.attackAnimationTimer == 0) {
+                this.triggerAnim("attackController", "alert");
                 this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
                 this.alertTimer = 30;
                 this.hasPlayedWarning = true;
                 ((BlindsightMoveControl) this.getMoveControl()).setSpeed(0.0D);
             }
         } else {
-            if (speed != null) speed.removeModifier(SPEED_MODIFIER_ATTACK_UUID);
-            if (damage != null) damage.removeModifier(ATTACK_DAMAGE_MODIFIER_UUID);
-            if (range != null) range.removeModifier(FOLLOW_RANGE_MODIFIER_UUID);
+            if (speed != null) speed.removeModifier(SPEED_MODIFIER_ATTACK_RL);
+            if (damage != null) damage.removeModifier(ATTACK_DAMAGE_MODIFIER_RL);
+            if (range != null) range.removeModifier(FOLLOW_RANGE_MODIFIER_RL);
             this.hasPlayedWarning = false;
         }
     }
 
     @Override
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         if (this.wantsToTongueAttack) {
             return;
         }
@@ -329,7 +331,8 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         } else if (this.doHurtTarget(target)) {
             float knockbackStrength = 2.5F;
             target.knockback(knockbackStrength, Mth.sin(this.getYRot() * ((float) Math.PI / 180F)), -Mth.cos(this.getYRot() * ((float) Math.PI / 180F)));
-            target.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 600));
+            Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+            target.addEffect(new MobEffectInstance(luminousHolder, 600));
         }
     }
 

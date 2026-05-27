@@ -8,16 +8,16 @@ import software.bernie.geckolib.model.GeoModel;
 public class GlowsilkMothModel extends GeoModel<GlowsilkMothEntity> {
     @Override
     public ResourceLocation getModelResource(GlowsilkMothEntity object) {
-        return new ResourceLocation(IEConstants.MOD_ID, "geo/glowsilk_moth.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "geo/glowsilk_moth.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(GlowsilkMothEntity object) {
-        return new ResourceLocation(IEConstants.MOD_ID, "textures/entity/glowsilk_moth.png");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "textures/entity/glowsilk_moth.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(GlowsilkMothEntity animatable) {
-        return new ResourceLocation(IEConstants.MOD_ID, "animations/glowsilk_moth.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "animations/glowsilk_moth.animation.json");
     }
 }

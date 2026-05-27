@@ -6,8 +6,10 @@ import com.infernalstudios.infernalexp.entities.ai.EatItemsGoal;
 import com.infernalstudios.infernalexp.entities.ai.FindShelterGoal;
 import com.infernalstudios.infernalexp.module.*;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -38,6 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -50,8 +53,8 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
@@ -97,14 +100,14 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(MAGMA_CREAM_EATEN, 0);
-        this.entityData.define(IS_SLEEPING, false);
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(SLEEP_TIMER, 0);
-        this.entityData.define(IS_SEEKING_SHELTER, false);
-        this.entityData.define(IS_GROWN, false);
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MAGMA_CREAM_EATEN, 0);
+        builder.define(IS_SLEEPING, false);
+        builder.define(FROM_BUCKET, false);
+        builder.define(SLEEP_TIMER, 0);
+        builder.define(IS_SEEKING_SHELTER, false);
+        builder.define(IS_GROWN, false);
     }
 
     public int getMagmaCreamEaten() {
@@ -360,7 +363,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     @Override
-    protected void jumpFromGround() {
+    public void jumpFromGround() {
         if (!this.isSleeping()) {
             super.jumpFromGround();
         }
@@ -389,7 +392,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
                         ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + 0.5D, this.getZ(), 10, 0.5D, 0.5D, 0.5D, 1.0D);
 
                         if (source instanceof ServerPlayer player) {
-                            Advancement advancement = Objects.requireNonNull(this.level().getServer()).getAdvancements().getAdvancement(new ResourceLocation(IEConstants.MOD_ID, "husbandry/magma_mia"));
+                            AdvancementHolder advancement = Objects.requireNonNull(this.level().getServer()).getAdvancements().get(ResourceLocation.fromNamespaceAndPath(IEConstants.MOD_ID, "husbandry/magma_mia"));
                             if (advancement != null) {
                                 player.getAdvancements().award(advancement, "magma_mia");
                             }
@@ -439,10 +442,12 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     @Override
     public void infernalexp$copyToStack(ItemStack stack) {
         IBucketable.copyDataToStack(this, stack);
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
-        tag.putFloat("Size", this.getSizeFactor());
-        tag.putBoolean(TAG_IS_GROWN, this.isGrown());
+
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, stack, tag -> {
+            tag.putInt(TAG_MAGMA_CREAM_EATEN, this.getMagmaCreamEaten());
+            tag.putFloat("Size", this.getSizeFactor());
+            tag.putBoolean(TAG_IS_GROWN, this.isGrown());
+        });
     }
 
     @Override

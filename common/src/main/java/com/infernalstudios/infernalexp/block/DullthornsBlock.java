@@ -4,8 +4,11 @@ import com.infernalstudios.infernalexp.block.parent.NetherPlantBlock;
 import com.infernalstudios.infernalexp.module.ModEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,9 +27,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class DullthornsBlock extends NetherPlantBlock {
+
     public static void applyEffect(Entity entity) {
-        if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.LUMINOUS.get())) {
-            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 200));
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
+
+        if (entity instanceof LivingEntity living && !living.hasEffect(luminousHolder)) {
+            living.addEffect(new MobEffectInstance(luminousHolder, 200));
 
             if (!entity.level().isClientSide) {
                 entity.level().playSound(null, entity.blockPosition(),

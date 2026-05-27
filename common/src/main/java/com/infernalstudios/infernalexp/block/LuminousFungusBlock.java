@@ -9,11 +9,14 @@ import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.world.feature.ModConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,6 +51,12 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
         this.registerDefaultState(this.defaultBlockState().setValue(LIT, false).setValue(FLOOR, true));
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> correctType, BlockEntityTicker<? super E> ticker) {
+        return type == correctType ? (BlockEntityTicker<A>) ticker : null;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LIT).add(FLOOR);
@@ -75,8 +84,7 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
         if (down && up) {
             if (context.getNearestLookingVerticalDirection() == Direction.UP)
                 return this.defaultBlockState().setValue(FLOOR, false);
-        }
-        else if (up)
+        } else if (up)
             return this.defaultBlockState().setValue(FLOOR, false);
         return this.defaultBlockState();
     }
@@ -84,9 +92,10 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, world, pos, entity);
+        Holder<MobEffect> luminousHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get());
         if (entity instanceof LivingEntity living) {
-            boolean hadEffect = living.hasEffect(ModEffects.LUMINOUS.get());
-            living.addEffect(new MobEffectInstance(ModEffects.LUMINOUS.get(), 100));
+            boolean hadEffect = living.hasEffect(luminousHolder);
+            living.addEffect(new MobEffectInstance(luminousHolder, 100));
 
             if (!hadEffect && !world.isClientSide) {
                 world.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_CHIME,
@@ -110,14 +119,8 @@ public class LuminousFungusBlock extends NetherPlantBlock implements EntityBlock
         return null;
     }
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> type, BlockEntityType<E> correctType, BlockEntityTicker<? super E> ticker) {
-        return type == correctType ? (BlockEntityTicker<A>) ticker : null;
-    }
-
     @Override
-    public boolean isValidBonemealTarget(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state) {
         BlockState groundState = level.getBlockState(pos.below());
         return groundState.is(ModBlocks.SHIMMER_SAND.get()) || groundState.is(ModTags.Blocks.GLOW_FIRE_BASE_BLOCKS);
     }
