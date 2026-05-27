@@ -1,4 +1,3 @@
-/*
 package com.infernalstudios.infernalexp.neoforge.compat.cavernsandchasms;
 
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -6,6 +5,7 @@ import com.infernalstudios.infernalexp.module.ModCreativeTabs;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.teamabnormals.caverns_and_chasms.common.block.BrazierBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -15,11 +15,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 public class CavernsAndChasmsCompat {
     public static BlockDataHolder<?> GLOWLIGHT_BRAZIER;
@@ -37,7 +36,7 @@ public class CavernsAndChasmsCompat {
                 .withTranslation("Glowlight Brazier"));
 
         eventBus.addListener(CavernsAndChasmsCompat::addCreative);
-        MinecraftForge.EVENT_BUS.addListener(CavernsAndChasmsCompat::onRightClickBlock);
+        NeoForge.EVENT_BUS.addListener(CavernsAndChasmsCompat::onRightClickBlock);
     }
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -53,9 +52,9 @@ public class CavernsAndChasmsCompat {
         BlockState state = level.getBlockState(pos);
 
         if (itemStack.is(ModBlocks.GLOWLIGHT_TORCH.get().asItem())) {
-            ResourceLocation id = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 
-            if (id != null && "caverns_and_chasms".equals(id.getNamespace()) && "brazier".equals(id.getPath())) {
+            if ("caverns_and_chasms".equals(id.getNamespace()) && "brazier".equals(id.getPath())) {
                 BlockState newState = GLOWLIGHT_BRAZIER.get().defaultBlockState()
                         .setValue(BrazierBlock.LIT, state.getValue(BrazierBlock.LIT))
                         .setValue(BrazierBlock.HANGING, state.getValue(BrazierBlock.HANGING))
@@ -77,4 +76,4 @@ public class CavernsAndChasmsCompat {
             event.setCancellationResult(InteractionResult.SUCCESS);
         }
     }
-}*/
+}

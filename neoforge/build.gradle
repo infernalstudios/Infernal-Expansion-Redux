@@ -52,10 +52,10 @@ dependencies {
     compileOnly "maven.modrinth:kkmrDlKT:6e8GCrLb"
 
     // Abnormals
-    compileOnly "maven.modrinth:autumnity:${autumnity_version}"
-    compileOnly "maven.modrinth:environmental:${environmental_version}"
-    // compileOnly "maven.modrinth:caverns-and-chasms:${caverns_and_chasms_version}"
-    compileOnly "maven.modrinth:blueprint:${blueprint_version}"
+    implementation "maven.modrinth:autumnity:${autumnity_version}"
+    implementation "maven.modrinth:environmental:${environmental_version}"
+    implementation "maven.modrinth:caverns-and-chasms:${caverns_and_chasms_version}"
+    implementation "maven.modrinth:blueprint:${blueprint_version}"
 
     // JNE
     compileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}"

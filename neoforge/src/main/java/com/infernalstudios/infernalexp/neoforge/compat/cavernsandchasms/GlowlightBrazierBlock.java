@@ -1,4 +1,3 @@
-/*
 package com.infernalstudios.infernalexp.neoforge.compat.cavernsandchasms;
 
 import com.teamabnormals.caverns_and_chasms.common.block.BrazierBlock;
@@ -8,4 +7,4 @@ public class GlowlightBrazierBlock extends BrazierBlock {
     public GlowlightBrazierBlock(float fireDamage, BlockBehaviour.Properties properties) {
         super(fireDamage, properties);
     }
-}*/
+}

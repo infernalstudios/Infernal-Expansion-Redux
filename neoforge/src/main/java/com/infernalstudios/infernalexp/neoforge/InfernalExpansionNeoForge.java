@@ -6,6 +6,7 @@ import com.infernalstudios.infernalexp.command.NtpCommand;
 import com.infernalstudios.infernalexp.compat.TerraBlenderCompat;
 import com.infernalstudios.infernalexp.neoforge.client.InfernalExpansionNeoForgeClient;
 import com.infernalstudios.infernalexp.neoforge.compat.autumnity.AutumnityCompat;
+import com.infernalstudios.infernalexp.neoforge.compat.cavernsandchasms.CavernsAndChasmsCompat;
 import com.infernalstudios.infernalexp.neoforge.compat.environmental.EnvironmentalCompat;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -32,9 +33,9 @@ public class InfernalExpansionNeoForge {
             EnvironmentalCompat.register();
         }
 
-/*        if (ModList.get().isLoaded("caverns_and_chasms")) {
+        if (ModList.get().isLoaded("caverns_and_chasms")) {
             CavernsAndChasmsCompat.register(modEventBus);
-        }*/
+        }
 
         if (FMLEnvironment.dist.isClient()) {
             InfernalExpansionNeoForgeClient.init(modEventBus, modContainer);
