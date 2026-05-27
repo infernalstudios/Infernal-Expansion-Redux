@@ -36,6 +36,7 @@ body:
       description: The Minecraft version you were using to run Infernal Expansion Redux
       options:
         - "1.20.1"
+        - "1.21.1"
     validations:
       required: true
   - type: dropdown
@@ -65,6 +66,7 @@ body:
       options:
         - "Forge"
         - "Fabric"
+        - "NeoForge"
     validations:
       required: true
   - type: input
