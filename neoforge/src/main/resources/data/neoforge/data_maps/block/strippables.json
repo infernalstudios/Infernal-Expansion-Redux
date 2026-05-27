@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": {
+    "infernalexp:luminous_stem": {
+      "stripped_block": "infernalexp:stripped_luminous_stem"
+    },
+    "infernalexp:luminous_hyphae": {
+      "stripped_block": "infernalexp:stripped_luminous_hyphae"
+    }
+  }
+}

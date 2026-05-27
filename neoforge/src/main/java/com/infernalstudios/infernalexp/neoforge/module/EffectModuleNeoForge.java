@@ -26,18 +26,24 @@ import java.util.Map;
 public class EffectModuleNeoForge {
     @SubscribeEvent
     public static void registerEffects(RegisterEvent event) {
-        for (Map.Entry<ResourceLocation, MobEffectDataHolder<?>> entry : ModEffects.getEffectRegistry().entrySet()) {
-            Registry.register(BuiltInRegistries.MOB_EFFECT, entry.getKey(), entry.getValue().get());
+        if (event.getRegistryKey().equals(Registries.MOB_EFFECT)) {
+            for (Map.Entry<ResourceLocation, MobEffectDataHolder<?>> entry : ModEffects.getEffectRegistry().entrySet()) {
+                Registry.register(BuiltInRegistries.MOB_EFFECT, entry.getKey(), entry.getValue().get());
+            }
+        }
 
-            if (entry.getValue().hasPotion()) {
-                String id = entry.getKey().getPath();
+        if (event.getRegistryKey().equals(Registries.POTION)) {
+            for (Map.Entry<ResourceLocation, MobEffectDataHolder<?>> entry : ModEffects.getEffectRegistry().entrySet()) {
+                if (entry.getValue().hasPotion()) {
+                    String id = entry.getKey().getPath();
 
-                Potion base = Registry.register(BuiltInRegistries.POTION, entry.getKey(),
-                        new Potion(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 3600)));
-                Potion long_ = Registry.register(BuiltInRegistries.POTION, IECommon.makeID("long_" + id),
-                        new Potion(id, new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 9600)));
-                Potion strong = Registry.register(BuiltInRegistries.POTION, IECommon.makeID("strong_" + id),
-                        new Potion(id, new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 1800, 1)));
+                    Registry.register(BuiltInRegistries.POTION, entry.getKey(),
+                            new Potion(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 3600)));
+                    Registry.register(BuiltInRegistries.POTION, IECommon.makeID("long_" + id),
+                            new Potion(id, new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 9600)));
+                    Registry.register(BuiltInRegistries.POTION, IECommon.makeID("strong_" + id),
+                            new Potion(id, new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(entry.getValue().get()), 1800, 1)));
+                }
             }
         }
     }

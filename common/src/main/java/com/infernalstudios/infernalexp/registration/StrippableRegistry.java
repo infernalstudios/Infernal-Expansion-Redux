@@ -23,6 +23,10 @@ public class StrippableRegistry {
         }
     }
 
+    public static Map<Block, Block> getRegistry() {
+        return REGISTRY;
+    }
+
     public static Block get(Block input) {
         return REGISTRY.get(input);
     }

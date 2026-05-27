@@ -1,8 +1,8 @@
 package com.infernalstudios.infernalexp.fabric.module;
 
 import com.infernalstudios.infernalexp.module.ModItems;
-import com.infernalstudios.infernalexp.registration.FuelRegistry;
 import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,8 +17,12 @@ public class ItemModuleFabric {
 
             // Register Fuel
             if (entry.getValue().isFuel()) {
-                FuelRegistry.register(entry.getValue().get(), entry.getValue().getFuelDuration());
+                com.infernalstudios.infernalexp.registration.FuelRegistry.register(entry.getValue().get(), entry.getValue().getFuelDuration());
             }
+        }
+
+        for (var entry : com.infernalstudios.infernalexp.registration.FuelRegistry.getRegistry().object2IntEntrySet()) {
+            FuelRegistry.INSTANCE.add(entry.getKey(), entry.getIntValue());
         }
     }
 }

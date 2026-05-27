@@ -16,7 +16,6 @@
     "FeatureMixin",
     "GlowstoneFeatureMixin",
     "HoglinSpecificSensorMixin",
-    "HoneycombItemMixin",
     "ItemMixin",
     "LavaFluidMixin",
     "LiquidBlockMixin",
@@ -40,8 +39,6 @@
     "accessor.TrapDoorBlockAccessor",
     "accessor.WallTorchBlockAccessor",
     "accessor.WoodTypeAccessor",
-    "registry.AbstractFurnaceBlockEntityMixin",
-    "registry.AxeItemMixin",
     "registry.FireBlockMixin"
   ],
   "client": [

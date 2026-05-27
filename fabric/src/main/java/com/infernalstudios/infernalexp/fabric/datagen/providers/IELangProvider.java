@@ -36,26 +36,31 @@ public class IELangProvider extends FabricLanguageProvider {
         builder.add("tag.item.infernalexp.enchantable.tongue_whip", "Tongue Whip Enchantable");
 
         // Subtitles
-        builder.add("subtitles.infernalexp.entity.voline.ambient", "Voline grunts");
-        builder.add("subtitles.infernalexp.entity.voline.hurt", "Voline hurts");
+        builder.add("subtitles.entity.voline.ambient", "Voline grunts");
+        builder.add("subtitles.entity.voline.hurt", "Voline hurts");
 
-        builder.add("subtitles.infernalexp.entity.glowsquito.hurt", "Glowsquito hurts");
-        builder.add("subtitles.infernalexp.entity.glowsquito.death", "Glowsquito dies");
-        builder.add("subtitles.infernalexp.entity.glowsquito.loop", "Glowsquito buzzes");
-        builder.add("subtitles.infernalexp.entity.glowsquito.slurp", "Glowsquito slurps");
+        builder.add("subtitles.entity.warpbeetle.ambient", "Warpbeetle chirps");
+        builder.add("subtitles.entity.warpbeetle.hurt", "Warpbeetle hurts");
+        builder.add("subtitles.entity.warpbeetle.death", "Warpbeetle dies");
 
-        builder.add("subtitles.infernalexp.entity.glowsilk_moth.ambient", "Glowsilk Moth flutters");
-        builder.add("subtitles.infernalexp.entity.glowsilk_moth.hurt", "Glowsilk Moth hurts");
-        builder.add("subtitles.infernalexp.entity.glowsilk_moth.death", "Glowsilk Moth dies");
+        builder.add("subtitles.entity.glowsquito.hurt", "Glowsquito hurts");
+        builder.add("subtitles.entity.glowsquito.death", "Glowsquito dies");
+        builder.add("subtitles.entity.glowsquito.loop", "Glowsquito buzzes");
+        builder.add("subtitles.entity.glowsquito.slurp", "Glowsquito slurps");
 
-        builder.add("subtitles.infernalexp.entity.blindsight.ambient", "Blindsight croaks");
-        builder.add("subtitles.infernalexp.entity.blindsight.hurt", "Blindsight hurts");
-        builder.add("subtitles.infernalexp.entity.blindsight.death", "Blindsight dies");
-        builder.add("subtitles.infernalexp.entity.blindsight.leap", "Blindsight leaps");
-        builder.add("subtitles.infernalexp.entity.blindsight.alert", "Blindsight roars");
-        builder.add("subtitles.infernalexp.entity.blindsight.lick", "Blindsight licks");
+        builder.add("subtitles.entity.glowsilk_moth.ambient", "Glowsilk Moth flutters");
+        builder.add("subtitles.entity.glowsilk_moth.hurt", "Glowsilk Moth hurts");
+        builder.add("subtitles.entity.glowsilk_moth.death", "Glowsilk Moth dies");
 
-        builder.add("subtitles.infernalexp.item.whip.whip_crack", "Whip cracks");
+        builder.add("subtitles.entity.blindsight.ambient", "Blindsight croaks");
+        builder.add("subtitles.entity.blindsight.hurt", "Blindsight hurts");
+        builder.add("subtitles.entity.blindsight.death", "Blindsight dies");
+        builder.add("subtitles.entity.blindsight.leap", "Blindsight leaps");
+        builder.add("subtitles.entity.blindsight.alert", "Blindsight roars");
+        builder.add("subtitles.entity.blindsight.lick", "Blindsight licks");
+        builder.add("subtitles.record.flush", "Flush music disc plays");
+
+        builder.add("subtitles.item.whip.whip_crack", "Whip cracks");
 
         // Commands
         builder.add("commands.infernalexp.ntp.not_found", "The Nether dimension could not be found!");

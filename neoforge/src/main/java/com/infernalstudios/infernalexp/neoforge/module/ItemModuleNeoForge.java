@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Map;
@@ -25,6 +26,18 @@ public class ItemModuleNeoForge {
             // Register Fuel
             if (entry.getValue().isFuel()) {
                 FuelRegistry.register(entry.getValue().get(), entry.getValue().getFuelDuration());
+            }
+        }
+    }
+
+    @EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+    public static class FuelEventsNeoForge {
+        @SubscribeEvent
+        public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
+            int burnTime = FuelRegistry.getCookTime(event.getItemStack().getItem());
+
+            if (burnTime > 0) {
+                event.setBurnTime(burnTime);
             }
         }
     }
