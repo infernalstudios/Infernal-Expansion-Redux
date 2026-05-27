@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.infernalstudios.infernalexp.neoforge.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "registry.AxeItemNeoForgeMixin",
+    "registry.NeoForgeHooksMixin"
+  ],
+  "client": [
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

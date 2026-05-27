@@ -1,0 +1,66 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})"
+        }
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+            sourceSet project(":common").sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+dependencies {
+    // EMI
+    implementation "dev.emi:emi-neoforge:${emi_version}"
+
+    // Cloth Config
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+
+    // GeckoLib
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+
+    // TerraBlender
+    compileOnly "maven.modrinth:kkmrDlKT:6e8GCrLb"
+
+    // Abnormals
+    compileOnly "maven.modrinth:autumnity:${autumnity_version}"
+    compileOnly "maven.modrinth:environmental:${environmental_version}"
+    // compileOnly "maven.modrinth:caverns-and-chasms:${caverns_and_chasms_version}"
+    compileOnly "maven.modrinth:blueprint:${blueprint_version}"
+
+    // JNE
+    compileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}"
+}
+
+publishMods {
+    file = tasks.named("jar").flatMap { it.archiveFile }
+}
