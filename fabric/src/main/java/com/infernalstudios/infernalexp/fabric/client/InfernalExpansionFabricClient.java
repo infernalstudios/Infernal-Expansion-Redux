@@ -82,7 +82,6 @@ public class InfernalExpansionFabricClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ModParticleTypes.TONGUE_WHIP_SLASH, TongueWhipSlashParticle.Provider::new);
     }
 
-    // Helper methods to capture wildcard generics
     @SuppressWarnings("unchecked")
     private <T extends BlockEntity> void registerBlockEntityRendererHelper(RegistryObject<?> typeHolder, BlockEntityRendererProvider<?> provider) {
         BlockEntityRendererRegistry.register((BlockEntityType<T>) typeHolder.get(), (BlockEntityRendererProvider<T>) provider);

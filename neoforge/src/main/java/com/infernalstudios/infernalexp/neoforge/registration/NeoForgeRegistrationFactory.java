@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Collections;
@@ -52,29 +53,30 @@ public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory
         @Override
         @SuppressWarnings("unchecked")
         public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
-            final var obj = registry.<I>register(name, supplier);
-            final var ro = new RegistryObject<I>() {
+            final var deferredHolder = (DeferredHolder<T, I>) registry.register(name, supplier);
 
+            final var ro = new RegistryObject<I>() {
                 @Override
                 public ResourceKey<I> getResourceKey() {
-                    return obj.getKey();
+                    return (ResourceKey<I>) deferredHolder.getKey();
                 }
 
                 @Override
                 public ResourceLocation getId() {
-                    return obj.getId();
+                    return deferredHolder.getId();
                 }
 
                 @Override
                 public I get() {
-                    return obj.get();
+                    return deferredHolder.get();
                 }
 
                 @Override
                 public Holder<I> asHolder() {
-                    return obj.getHolder().orElseThrow();
+                    return (Holder<I>) deferredHolder;
                 }
             };
+
             entries.add((RegistryObject<T>) ro);
             return ro;
         }

@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "infernalexp:blindsight_tongue"
+      "id": "infernalexp:blindsight_tongue"
     },
     "title": {
       "translate": "advancements.infernalexp.deer_in_headlights.title",

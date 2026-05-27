@@ -4,6 +4,7 @@ import com.infernalstudios.infernalexp.module.ModBlocks;
 import com.infernalstudios.infernalexp.module.ModCreativeTabs;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
@@ -23,19 +25,19 @@ public class AutumnityCompat {
 
     public static void register(IEventBus eventBus) {
         GLOWLIGHT_JACK_O_LANTERN = ModBlocks.register("glowlight_jack_o_lantern", BlockDataHolder.of(() ->
-                        new GlowlightJackOLanternBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
+                        new GlowlightJackOLanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PUMPKIN)
                                 .lightLevel((state) -> 15)))
                 .withItem()
                 .withTranslation("Glowlight Jack o'Lantern"));
 
         LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE = ModBlocks.register("large_glowlight_jack_o_lantern_slice", BlockDataHolder.of(() ->
-                        new LargeGlowlightJackOLanternSliceBlock(BlockBehaviour.Properties.copy(Blocks.PUMPKIN)
+                        new LargeGlowlightJackOLanternSliceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PUMPKIN)
                                 .lightLevel((state) -> 15)))
                 .withItem()
                 .withTranslation("Large Glowlight Jack o'Lantern Slice"));
 
         eventBus.addListener(AutumnityCompat::addCreative);
-        MinecraftForge.EVENT_BUS.addListener(AutumnityCompat::onRightClickBlock);
+        NeoForge.EVENT_BUS.addListener(AutumnityCompat::onRightClickBlock);
     }
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -52,13 +54,13 @@ public class AutumnityCompat {
         BlockState state = level.getBlockState(pos);
 
         if (itemStack.is(ModBlocks.GLOWLIGHT_TORCH.get().asItem())) {
-            ResourceLocation id = ForgeRegistries.BLOCKS.getKey(state.getBlock());
+            ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 
             if (state.is(Blocks.CARVED_PUMPKIN)) {
                 level.setBlock(pos, GLOWLIGHT_JACK_O_LANTERN.get().defaultBlockState()
                         .setValue(GlowlightJackOLanternBlock.FACING, state.getValue(GlowlightJackOLanternBlock.FACING)), 3);
 
-            } else if (id != null && "autumnity".equals(id.getNamespace()) && "carved_large_pumpkin_slice".equals(id.getPath())) {
+            } else if ("autumnity".equals(id.getNamespace()) && "carved_large_pumpkin_slice".equals(id.getPath())) {
                 BlockState newState = LARGE_GLOWLIGHT_JACK_O_LANTERN_SLICE.get().defaultBlockState();
                 newState = newState.setValue(LargeGlowlightJackOLanternSliceBlock.FACING, state.getValue(LargeGlowlightJackOLanternSliceBlock.FACING));
                 newState = newState.setValue(LargeGlowlightJackOLanternSliceBlock.HALF, state.getValue(LargeGlowlightJackOLanternSliceBlock.HALF));

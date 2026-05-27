@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "infernalexp:volatile_geyser"
+      "id": "infernalexp:volatile_geyser"
     },
     "title": {
       "translate": "advancements.infernalexp.pressure_cooker.title",

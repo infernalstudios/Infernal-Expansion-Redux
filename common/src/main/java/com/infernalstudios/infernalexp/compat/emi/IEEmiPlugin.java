@@ -17,7 +17,7 @@ public class IEEmiPlugin implements EmiPlugin {
         registry.addRecipe(new EmiAnvilRecipe(
                 EmiStack.of(ModItems.BLINDSIGHT_TONGUE_WHIP.get()),
                 EmiStack.of(ModItems.BLINDSIGHT_TONGUE.get()),
-                IECommon.makeID("tongue_whip_repair")
+                IECommon.makeID("/tongue_whip_repair")
         ));
     }
 }

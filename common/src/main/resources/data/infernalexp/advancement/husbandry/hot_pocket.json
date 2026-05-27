@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "infernalexp:voline_bucket"
+      "id": "infernalexp:voline_bucket"
     },
     "title": {
       "translate": "advancements.infernalexp.hot_pocket.title",

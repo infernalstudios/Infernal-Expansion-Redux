@@ -6,13 +6,16 @@ import com.infernalstudios.infernalexp.client.layer.WarpbeetleBackpackLayer;
 import com.infernalstudios.infernalexp.client.particle.GlowsquitoWingParticle;
 import com.infernalstudios.infernalexp.client.particle.GlowstoneSparkleParticle;
 import com.infernalstudios.infernalexp.client.particle.TongueWhipSlashParticle;
+import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.module.ModBlockEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModEntityRenderers;
 import com.infernalstudios.infernalexp.module.ModModelLayers;
 import com.infernalstudios.infernalexp.module.ModParticleTypes;
+import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.registration.holders.BlockDataHolder;
 import com.infernalstudios.infernalexp.registration.holders.EntityTypeDataHolder;
 import com.infernalstudios.infernalexp.registration.util.RegistryObject;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -20,26 +23,33 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class InfernalExpansionNeoForgeClient {
-    public static void init() {
+    public static void init(IEventBus modEventBus, ModContainer container) {
         IECommonClient.init();
+        if (Services.PLATFORM.isModLoaded("cloth_config")) {
+            container.registerExtensionPoint(IConfigScreenFactory.class, (c, parent) -> AutoConfig.getConfigScreen(ClothConfigConstructor.class, parent).get());
+        }
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionNeoForgeClient::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionNeoForgeClient::registerEntityRenderers);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionNeoForgeClient::registerLayerDefinitions);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionNeoForgeClient::registerParticleProviders);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(InfernalExpansionNeoForgeClient::addEntityLayers);
+        modEventBus.addListener(InfernalExpansionNeoForgeClient::clientSetup);
+        modEventBus.addListener(InfernalExpansionNeoForgeClient::registerEntityRenderers);
+        modEventBus.addListener(InfernalExpansionNeoForgeClient::registerLayerDefinitions);
+        modEventBus.addListener(InfernalExpansionNeoForgeClient::registerParticleProviders);
+        modEventBus.addListener(InfernalExpansionNeoForgeClient::addEntityLayers);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -69,12 +79,12 @@ public class InfernalExpansionNeoForgeClient {
     public static void addEntityLayers(EntityRenderersEvent.AddLayers event) {
         WarpbeetleRenderer beetleRenderer = new WarpbeetleRenderer(event.getContext());
 
-        PlayerRenderer defaultPlayer = event.getSkin("default");
+        PlayerRenderer defaultPlayer = event.getSkin(PlayerSkin.Model.WIDE);
         if (defaultPlayer != null) {
             defaultPlayer.addLayer(new WarpbeetleBackpackLayer(defaultPlayer, beetleRenderer));
         }
 
-        PlayerRenderer slimPlayer = event.getSkin("slim");
+        PlayerRenderer slimPlayer = event.getSkin(PlayerSkin.Model.SLIM);
         if (slimPlayer != null) {
             slimPlayer.addLayer(new WarpbeetleBackpackLayer(slimPlayer, beetleRenderer));
         }

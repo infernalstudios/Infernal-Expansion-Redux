@@ -33,6 +33,7 @@ public class IELangProvider extends FabricLanguageProvider {
         // Tag Translations
         builder.add("tag.item.infernalexp.voline_food", "Voline Food");
         builder.add("tag.item.infernalexp.glowsquito_temptation_items", "Glowsquito Temptation Items");
+        builder.add("tag.item.infernalexp.enchantable.tongue_whip", "Tongue Whip Enchantable");
 
         // Subtitles
         builder.add("subtitles.infernalexp.entity.voline.ambient", "Voline grunts");
@@ -156,7 +157,7 @@ public class IELangProvider extends FabricLanguageProvider {
         builder.add("biome.infernalexp.delta_shores", "Delta Shores");
 
         // Music
-        builder.add("item.infernalexp.music_disc_flush.desc", "LudoCrypt - Flush");
+        builder.add("jukebox_song.infernalexp.flush", "LudoCrypt - Flush");
 
         // This handles all supplied block and item entries automatically
         for (BlockDataHolder<?> blockDataHolder : ModBlocks.getBlockRegistry().values()) {
