@@ -45,16 +45,16 @@ public class ConfiguredData {
         register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"),
                 Common::changeNetherBiomeSource);
 
-        register(ResourceLocation.tryBuild("minecraft", "loot_tables/entities/magma_cube.json"), () -> true,
+        register(ResourceLocation.tryBuild("minecraft", "loot_table/entities/magma_cube.json"), () -> true,
                 Common::addVolineMagmaCreamDrop);
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/glowlight_jack_o_lantern.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/glowlight_jack_o_lantern.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
                 json -> Common.dropSelf(json, "infernalexp:glowlight_jack_o_lantern"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/large_glowlight_jack_o_lantern_slice.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/large_glowlight_jack_o_lantern_slice.json"), () -> Services.PLATFORM.isModLoaded("autumnity"),
                 json -> Common.dropSelf(json, "infernalexp:large_glowlight_jack_o_lantern_slice"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_jack_o_lantern.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/glowlight_jack_o_lantern.json"),
                 () -> Services.PLATFORM.isModLoaded("autumnity"),
                 json -> Common.createShaped(
                         "infernalexp:glowlight_jack_o_lantern",
@@ -63,10 +63,19 @@ public class ConfiguredData {
                         Map.of("A", "minecraft:carved_pumpkin", "B", "infernalexp:glowlight_torch")
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/glowlight_brazier.json"), () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/large_glowlight_jack_o_lantern_slice.json"),
+                () -> Services.PLATFORM.isModLoaded("autumnity"),
+                json -> Common.createShaped(
+                        "infernalexp:large_glowlight_jack_o_lantern_slice",
+                        1,
+                        List.of("A", "B"),
+                        Map.of("A", "autumnity:carved_large_pumpkin_slice", "B", "infernalexp:glowlight_torch")
+                ));
+
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/glowlight_brazier.json"), () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
                 json -> Common.dropSelf(json, "infernalexp:glowlight_brazier"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/glowlight_brazier.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/glowlight_brazier.json"),
                 () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
                 json -> Common.createShaped(
                         "infernalexp:glowlight_brazier",
@@ -76,18 +85,18 @@ public class ConfiguredData {
                                 " S "
                         ),
                         Map.of(
-                                "S", "#forge:ingots/silver",
+                                "S", "#c:ingots/silver",
                                 "#", "infernalexp:glowcoke"
                         )
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/dwarf_spruce_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/dwarf_spruce_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
                 json -> Common.dropSelf(json, "environmental:dwarf_spruce"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/dwarf_spruce_plant_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/dwarf_spruce_plant_glowlight_torch.json"), () -> Services.PLATFORM.isModLoaded("environmental"),
                 json -> Common.dropSelf(json, "environmental:dwarf_spruce"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dimstone.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/crushing/dimstone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> {
                     if (json != null && !json.isJsonNull()) {
@@ -102,28 +111,28 @@ public class ConfiguredData {
                     );
                 });
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/dullstone.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/crushing/dullstone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> Common.createCrushing(150, "infernalexp:dullstone",
                         new Common.CrushOutput("infernalexp:dullrocks", 3, 1.0f),
                         new Common.CrushOutput("infernalexp:dullrocks", 1, 0.5f)
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/shimmer_stone.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/crushing/shimmer_stone.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> Common.createCrushing(150, "infernalexp:shimmer_stone",
                         new Common.CrushOutput("infernalexp:shimmer_sand", 2, 1.0f),
                         new Common.CrushOutput("infernalexp:shimmer_sand", 1, 0.25f)
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/shimmer_sand.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/crushing/shimmer_sand.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> Common.createCrushing(150, "infernalexp:shimmer_sand",
                         new Common.CrushOutput("minecraft:glowstone_dust", 2, 1.0f),
                         new Common.CrushOutput("minecraft:glowstone_dust", 1, 0.25f)
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/crushing/basalt_iron_ore.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/crushing/basalt_iron_ore.json"),
                 () -> Services.PLATFORM.isModLoaded("create"),
                 json -> Common.createCrushing(350, "infernalexp:basalt_iron_ore",
                         new Common.CrushOutput("create:crushed_raw_iron", 2, 1.0f),
@@ -132,43 +141,43 @@ public class ConfiguredData {
                         new Common.CrushOutput("minecraft:basalt", 1, 0.125f)
                 ));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroomnight_from_tears.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/shroomnight_from_tears.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
                 json -> Common.createPacking3x3("netherexp:shroomnight", "infernalexp:shroomnight_tear"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroomblight_from_tears.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/shroomblight_from_tears.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
                 json -> Common.createPacking3x3("netherexp:shroomblight", "infernalexp:shroomblight_tear"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "recipes/shroombright_from_tears.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "recipe/shroombright_from_tears.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
                 json -> Common.createPacking3x3("netherexp:shroombright", "infernalexp:shroombright_tear"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomlight_tear.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/shroomlight_tear.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
                 json -> Common.dropSporeOrSelf("infernalexp:shroomlight_tear", "netherexp:lightspores"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomnight_tear.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/shroomnight_tear.json"),
                 () -> Services.PLATFORM.isModLoaded("netherexp"),
                 json -> Common.dropSporeOrSelf("infernalexp:shroomnight_tear", "netherexp:nightspores"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroomblight_tear.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/shroomblight_tear.json"),
                 () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("gardens_of_the_dead")),
                 json -> Common.dropSporeOrSelf("infernalexp:shroomblight_tear", "netherexp:blightspores"));
 
-        register(ResourceLocation.tryBuild("infernalexp", "loot_tables/blocks/shroombright_tear.json"),
+        register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/shroombright_tear.json"),
                 () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("cinderscapes")),
                 json -> Common.dropSporeOrSelf("infernalexp:shroombright_tear", "netherexp:brightspores"));
 
-        register(ResourceLocation.tryBuild("minecraft", "tags/blocks/mineable/pickaxe.json"),
+        register(ResourceLocation.tryBuild("minecraft", "tags/block/mineable/pickaxe.json"),
                 () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
                 json -> Common.appendToTag(json, "infernalexp:glowlight_brazier"));
 
-        register(ResourceLocation.tryBuild("minecraft", "tags/blocks/mineable/hoe.json"),
+        register(ResourceLocation.tryBuild("minecraft", "tags/block/mineable/hoe.json"),
                 () -> Services.PLATFORM.isModLoaded("environmental"),
                 json -> Common.appendToTag(json, "infernalexp:dwarf_spruce_glowlight_torch", "infernalexp:dwarf_spruce_plant_glowlight_torch"));
 
-        register(ResourceLocation.tryBuild("caverns_and_chasms", "tags/blocks/braziers.json"),
+        register(ResourceLocation.tryBuild("caverns_and_chasms", "tags/block/braziers.json"),
                 () -> Services.PLATFORM.isModLoaded("caverns_and_chasms"),
                 json -> Common.appendToTag(json, "infernalexp:glowlight_brazier"));
     }
@@ -277,7 +286,7 @@ public class ConfiguredData {
                     JsonObject condition = new JsonObject();
                     condition.addProperty("condition", "minecraft:entity_properties");
 
-                    condition.add("entity", new JsonPrimitive("killer"));
+                    condition.add("entity", new JsonPrimitive("attacker"));
 
                     JsonObject predicate = new JsonObject();
                     predicate.addProperty("type", "infernalexp:voline");
@@ -361,7 +370,7 @@ public class ConfiguredData {
             JsonArray results = new JsonArray();
             for (CrushOutput output : outputs) {
                 JsonObject res = new JsonObject();
-                res.addProperty("item", output.item);
+                res.addProperty("id", output.item);
                 if (output.count > 1) res.addProperty("count", output.count);
                 if (output.chance < 1.0f) res.addProperty("chance", output.chance);
                 results.add(res);
@@ -399,7 +408,7 @@ public class ConfiguredData {
             json.add("key", keyObj);
 
             JsonObject resultObj = new JsonObject();
-            resultObj.addProperty("item", resultItem);
+            resultObj.addProperty("id", resultItem);
             if (count > 1) resultObj.addProperty("count", count);
             json.add("result", resultObj);
 
