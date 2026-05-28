@@ -35,6 +35,7 @@ body:
       label: Game Version
       description: The Minecraft version you were using to run Infernal Expansion Redux
       options:
+        - "1.21.1"
         - "1.20.1"
     validations:
       required: true
@@ -63,6 +64,7 @@ body:
       label: Mod Loader
       description: Which mod loader were you using?
       options:
+        - "NeoForge"
         - "Forge"
         - "Fabric"
     validations:
