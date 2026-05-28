@@ -1,1 +1,3 @@
-- Ported to 1.21.1.
+### Fixed
+
+- Fixed incompatibility with other mods that modify the `MultiPackResourceManager`.
