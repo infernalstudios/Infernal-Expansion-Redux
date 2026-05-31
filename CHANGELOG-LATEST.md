@@ -1,3 +1,3 @@
 ### Fixed
 
-- Fixed incompatibility with other mods that modify the `MultiPackResourceManager`.
+- Fixed block loot table issues.
