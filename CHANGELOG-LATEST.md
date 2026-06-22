@@ -1,3 +1,3 @@
 ### Fixed
 
-- Fixed block loot table issues.
+- Fixed Blindsight Tongue Whip not being enchantable with mending/unbreaking.
