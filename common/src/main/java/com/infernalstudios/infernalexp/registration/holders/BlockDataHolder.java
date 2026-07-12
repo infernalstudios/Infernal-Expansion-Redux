@@ -207,8 +207,10 @@ public class BlockDataHolder<T extends Block> {
         for (TagKey<Block> tag : tags) {
             BLOCK_TAGS.putIfAbsent(tag, new ArrayList<>());
             BLOCK_TAGS.get(tag).add(this);
-            for (BlockDataHolder<?> block : this.getBlocksets().values())
-                BLOCK_TAGS.get(tag).add(block);
+            if (tag != BlockTags.PLANKS) {
+                for (BlockDataHolder<?> block : this.getBlocksets().values())
+                    BLOCK_TAGS.get(tag).add(block);
+            }
         }
 
         return this;

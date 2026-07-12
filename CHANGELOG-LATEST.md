@@ -1,3 +1,7 @@
+### Added
+
+- Added missing item tags.
+
 ### Fixed
 
-- Fixed Blindsight Tongue Whip not being enchantable with mending/unbreaking.
+- Fixed crash when eating Warped Shell.

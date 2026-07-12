@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     "infernalexp:basalt_sand",
     "infernalexp:glimmer_gravel",
     "infernalexp:shimmer_sand"

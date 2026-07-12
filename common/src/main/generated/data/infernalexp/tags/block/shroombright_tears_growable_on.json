@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     {
       "id": "netherexp:shroombright",
       "required": false

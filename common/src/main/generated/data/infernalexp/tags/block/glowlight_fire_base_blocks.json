@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     "infernalexp:chiseled_shimmer_stone_bricks",
     "infernalexp:dimstone",
     "infernalexp:dullstone",

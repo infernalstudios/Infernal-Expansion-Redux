@@ -19,8 +19,8 @@ public class IEDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         pack.addProvider(IEWorldGenProvider::new);
-        pack.addProvider(IEBlockTagProvider::new);
-        pack.addProvider(IEItemTagProvider::new);
+        IEBlockTagProvider blockTagProvider = pack.addProvider(IEBlockTagProvider::new);
+        pack.addProvider((output, registriesFuture) -> new IEItemTagProvider(output, registriesFuture, blockTagProvider));
         pack.addProvider(IEEntityTypeTagProvider::new);
         pack.addProvider(IEBlockLootTableProvider::new);
         pack.addProvider(IEModelProvider::new);

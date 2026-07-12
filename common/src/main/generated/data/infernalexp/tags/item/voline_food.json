@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     "minecraft:magma_cream"
   ]
 }

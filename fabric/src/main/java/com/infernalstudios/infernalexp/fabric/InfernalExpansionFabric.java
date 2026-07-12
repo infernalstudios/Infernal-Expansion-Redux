@@ -12,10 +12,10 @@ public class InfernalExpansionFabric implements ModInitializer {
     public void onInitialize() {
         IECommon.init();
 
+        EffectModuleFabric.registerEffects();
         BlockModuleFabric.registerBlocks();
         ItemModuleFabric.registerItems();
         EntityTypeModuleFabric.registerEntities();
-        EffectModuleFabric.registerEffects();
         FeatureModuleFabric.registerFeatures();
         CarverModuleFabric.registerCarvers();
         SpawnPlacementModuleFabric.registerSpawnPlacements();

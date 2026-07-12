@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     "infernalexp:crimson_fungus_cap",
     "infernalexp:glowsilk_cocoon",
     "infernalexp:hollowblight",

@@ -1,5 +1,6 @@
 {
-  "values": [
+  "replace": false,
+"values": [
     "infernalexp:shroomlight_tear",
     "infernalexp:shroomnight_tear",
     "infernalexp:shroomblight_tear",

@@ -235,7 +235,7 @@ public class ModItems {
                     new Item(new Item.Properties().food(new FoodProperties.Builder()
                             .nutrition(2)
                             .saturationModifier(0.4F)
-                            .effect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(ModEffects.LUMINOUS.get()), 600, 0), 1.0F)
+                            .effect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.getHolderOrThrow(ResourceKey.create(Registries.MOB_EFFECT, IECommon.makeID("warped"))), 600, 0), 1.0F)
                             .build())))
             .withModel(ModelTemplates.FLAT_ITEM)
             .withTranslation("Warped Shell")
