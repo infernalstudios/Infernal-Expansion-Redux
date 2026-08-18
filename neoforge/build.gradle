@@ -57,6 +57,9 @@ dependencies {
     implementation "maven.modrinth:caverns-and-chasms:${caverns_and_chasms_version}"
     implementation "maven.modrinth:blueprint:${blueprint_version}"
 
+    // Lithostitched
+    implementation "maven.modrinth:lithostitched:${lithostitched_neoforge_version}"
+
     // JNE
     compileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}"
 }

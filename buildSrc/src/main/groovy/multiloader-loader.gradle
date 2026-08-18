@@ -47,6 +47,7 @@ publishMods {
         server = true
 
         requires("geckolib")
+        requires("lithostitched")
         optional("lambdynamiclights")
         optional("cloth-config")
         optional("afterimages")
@@ -58,6 +59,7 @@ publishMods {
         minecraftVersions.add("${minecraft_version}")
 
         requires("geckolib")
+        requires("lithostitched")
         optional("lambdynamiclights")
         optional("cloth-config")
         optional("afterimages")

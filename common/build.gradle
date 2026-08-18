@@ -43,6 +43,9 @@ dependencies {
     // JNE
     compileOnly "maven.modrinth:jadens-nether-expansion:${jne_version}"
 
+    // Lithostitched
+    compileOnly "maven.modrinth:lithostitched:${lithostitched_neoforge_version}"
+
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
     compileOnly group: 'org.ow2.asm', name: 'asm-tree', version: '9.6'
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'

@@ -1,8 +1,5 @@
 package com.infernalstudios.infernalexp.module;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.world.carver.ModConfiguredCarvers;
 import com.infernalstudios.infernalexp.world.feature.ModPlacedFeatures;
@@ -25,33 +22,9 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ModBiomes {
-    private static final Map<ResourceKey<Biome>, Climate.ParameterPoint> BIOME_REGISTRY = new HashMap<>();
-    public static final ResourceKey<Biome> GLOWSTONE_CANYON = register("glowstone_canyon",
-            Climate.parameters(0.7F, -0.2F, 0.0F, 0.0F, 0.0F, 0.0F, 0.175F)
-    );
+    public static final ResourceKey<Biome> GLOWSTONE_CANYON = ResourceKey.create(Registries.BIOME, IECommon.makeID("glowstone_canyon"));
     public static final ResourceKey<Biome> DELTA_SHORES = ResourceKey.create(Registries.BIOME, IECommon.makeID("delta_shores"));
-    /*
-    public static final ResourceKey<Biome> DELTA_SHORES = register("delta_shores",
-            Climate.parameters(-0.4F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.195F)
-    );
-    */
-
-    public static ResourceKey<Biome> register(String name, Climate.ParameterPoint parameterPoint) {
-        return register(ResourceKey.create(Registries.BIOME, IECommon.makeID(name)), parameterPoint);
-    }
-
-    public static ResourceKey<Biome> register(ResourceKey<Biome> id, Climate.ParameterPoint parameterPoint) {
-        BIOME_REGISTRY.put(id, parameterPoint);
-        return id;
-    }
-
-    public static Map<ResourceKey<Biome>, Climate.ParameterPoint> getBiomeRegistry() {
-        return BIOME_REGISTRY;
-    }
 
     public static void load() {
     }
@@ -161,16 +134,5 @@ public class ModBiomes {
                 .mobSpawnSettings(spawnSettings.build())
                 .generationSettings(generationSettings.build())
                 .build();
-    }
-
-    public static JsonElement toJson(Climate.Parameter value) {
-        double min = Climate.unquantizeCoord(value.min());
-        double max = Climate.unquantizeCoord(value.max());
-        if (min == max) return new JsonPrimitive(min);
-
-        JsonArray array = new JsonArray();
-        array.add(min);
-        array.add(max);
-        return array;
     }
 }

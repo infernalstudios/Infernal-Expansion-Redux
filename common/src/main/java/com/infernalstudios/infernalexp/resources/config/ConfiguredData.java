@@ -2,12 +2,8 @@ package com.infernalstudios.infernalexp.resources.config;
 
 import com.google.gson.*;
 import com.infernalstudios.infernalexp.IEConstants;
-import com.infernalstudios.infernalexp.module.ModBiomes;
 import com.infernalstudios.infernalexp.platform.Services;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Climate;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -42,9 +38,6 @@ public class ConfiguredData {
     }
 
     public static void register() {
-        register(ResourceLocation.tryBuild("minecraft", "dimension/the_nether.json"), () -> !Services.PLATFORM.isModLoaded("terrablender"),
-                Common::changeNetherBiomeSource);
-
         register(ResourceLocation.tryBuild("minecraft", "loot_table/entities/magma_cube.json"), () -> true,
                 Common::addVolineMagmaCreamDrop);
 
@@ -196,55 +189,6 @@ public class ConfiguredData {
     }
 
     private static class Common {
-        private static JsonElement getJson() {
-            return gson.fromJson("""
-                    { "type": "minecraft:the_nether", "generator": { "type": "minecraft:noise", "biome_source": { "biomes": [
-                      { "biome": "minecraft:nether_wastes", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                        "humidity": 0, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                      { "biome": "minecraft:soul_sand_valley", "parameters": { "continentalness": 0, "depth": 0,
-                        "erosion": 0, "humidity": -0.5, "offset": 0, "temperature": 0, "weirdness": 0 } },
-                      { "biome": "minecraft:crimson_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                        "humidity": 0, "offset": 0, "temperature": 0.4, "weirdness": 0 } },
-                      { "biome": "minecraft:warped_forest", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                        "humidity": 0.5, "offset": 0.375, "temperature": 0, "weirdness": 0 } },
-                      { "biome": "minecraft:basalt_deltas", "parameters": { "continentalness": 0, "depth": 0, "erosion": 0,
-                        "humidity": 0, "offset": 0.175, "temperature": -0.5, "weirdness": 0 } } ],
-                    "type": "minecraft:multi_noise" }, "settings": "minecraft:nether" } }""", JsonElement.class);
-        }
-
-        public static String changeNetherBiomeSource(JsonElement json) {
-            if (json == null)
-                json = getJson();
-
-            if (json.getAsJsonObject().get("generator")
-                    .getAsJsonObject().get("biome_source")
-                    .getAsJsonObject().get("type")
-                    .getAsString().equals("minecraft:multi_noise")) {
-
-                List<JsonElement> entries = json.getAsJsonObject().get("generator")
-                        .getAsJsonObject().get("biome_source").getAsJsonObject().get("biomes").getAsJsonArray().asList();
-
-                for (Map.Entry<ResourceKey<Biome>, Climate.ParameterPoint> entry : ModBiomes.getBiomeRegistry().entrySet()) {
-
-                    JsonObject biome = new JsonObject();
-                    biome.addProperty("biome", entry.getKey().location().toString());
-                    JsonObject parameters = new JsonObject();
-                    parameters.add("continentalness", ModBiomes.toJson(entry.getValue().continentalness()));
-                    parameters.add("depth", ModBiomes.toJson(entry.getValue().depth()));
-                    parameters.add("erosion", ModBiomes.toJson(entry.getValue().erosion()));
-                    parameters.add("humidity", ModBiomes.toJson(entry.getValue().humidity()));
-                    parameters.addProperty("offset", Climate.unquantizeCoord(entry.getValue().offset()));
-                    parameters.add("temperature", ModBiomes.toJson(entry.getValue().temperature()));
-                    parameters.add("weirdness", ModBiomes.toJson(entry.getValue().weirdness()));
-                    biome.add("parameters", parameters);
-
-                    entries.add(biome);
-                }
-            }
-
-            return json.toString();
-        }
-
         public static String appendToTag(JsonElement json, String... newValues) {
             JsonObject obj;
             if (json == null || !json.isJsonObject()) {

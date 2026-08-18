@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp;
 
+import com.infernalstudios.infernalexp.compat.LithostitchedCompat;
 import com.infernalstudios.infernalexp.compat.ShroomlightCompatRegistry;
 import com.infernalstudios.infernalexp.config.ClothConfigConstructor;
 import com.infernalstudios.infernalexp.config.IEConfig;
@@ -21,6 +22,7 @@ public class IECommon {
 
     public static void init() {
         ConfiguredData.register();
+        LithostitchedCompat.register();
 
         if (isClothConfigLoaded()) {
             registerConfig();
@@ -84,9 +86,6 @@ public class IECommon {
         });
     }
 
-    /**
-     * Updates the main config instance with values from the Cloth Config wrapper.
-     */
     private static void syncConfig(ClothConfigConstructor data) {
         CONFIG.common = data.common;
         CONFIG.client = data.client;
