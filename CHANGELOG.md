@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.14] - 2026-08-26
+
+### Changed
+
+- Reworked biome generation (again).
+    - Should fix issues with Jaden's Nether Expansion.
+- Increased blackstone blob radius.
+- Removed "Applying configured data" log message.
+
+### Fixed
+
+- Fixed various missing tags and loot tables.
+
 ## [0.3.13] - 2026-08-18
 
 ### Changed

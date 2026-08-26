@@ -26,6 +26,7 @@ public class ModTags {
 
     public static class Biomes {
         public static final TagKey<Biome> IS_GLOWSTONE_CANYON = create("is_glowstone_canyon");
+        public static final TagKey<Biome> GLOWSTONE_CANYON_REPLACEABLE = create("glowstone_canyon_replaceable");
 
         public static TagKey<Biome> create(String name) {
             return TagKey.create(Registries.BIOME, IECommon.makeID(name));

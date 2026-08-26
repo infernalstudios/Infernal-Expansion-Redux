@@ -99,7 +99,7 @@ public class ModConfiguredFeatures {
                 new OreConfiguration(new BlockMatchTest(Blocks.BASALT), ModBlocks.BASALT_IRON_ORE.get().defaultBlockState(), 10));
 
         register(context, GSC_BLACKSTONE_BLOBS, Feature.REPLACE_BLOBS,
-                new ReplaceSphereConfiguration(ModBlocks.DULLSTONE.get().defaultBlockState(), Blocks.BLACKSTONE.defaultBlockState(), UniformInt.of(2, 3)));
+                new ReplaceSphereConfiguration(ModBlocks.DULLSTONE.get().defaultBlockState(), Blocks.BLACKSTONE.defaultBlockState(), UniformInt.of(3, 5)));
 
         register(context, GSC_SPRING_OPEN, Feature.SPRING,
                 new SpringConfiguration(Fluids.LAVA.defaultFluidState(), false, 4, 1, HolderSet.direct(Block::builtInRegistryHolder, Blocks.NETHERRACK, ModBlocks.DULLSTONE.get(), ModBlocks.DIMSTONE.get())));

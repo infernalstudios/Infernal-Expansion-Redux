@@ -2,6 +2,7 @@ package com.infernalstudios.infernalexp.compat;
 
 import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.module.ModBiomes;
+import com.infernalstudios.infernalexp.module.ModTags;
 import com.infernalstudios.infernalexp.platform.Services;
 import com.infernalstudios.infernalexp.world.surface.ModSurfaceRules;
 import dev.worldgen.lithostitched.api.event.AddBiomeInjectorsEvent;
@@ -11,6 +12,7 @@ import dev.worldgen.lithostitched.api.worldgen.biomeinjector.BiomeInjector;
 import dev.worldgen.lithostitched.api.worldgen.biomeinjector.ParameterBuilder;
 import dev.worldgen.lithostitched.api.worldgen.modifier.WorldgenModifier;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -21,13 +23,17 @@ public class LithostitchedCompat {
     public static final ResourceKey<DensityFunction> GLOWSTONE_CANYON_SELECTOR =
             ResourceKey.create(Registries.DENSITY_FUNCTION, IECommon.makeID("glowstone_canyon_selector"));
 
+    private static final double GLOWSTONE_CANYON_THRESHOLD = 0.4D;
+
     public static void register() {
         AddBiomeInjectorsEvent.EVENT.register((registries, consumer) -> {
             Holder<DensityFunction> selector = registries.lookupOrThrow(Registries.DENSITY_FUNCTION).getOrThrow(GLOWSTONE_CANYON_SELECTOR);
             Holder<Biome> glowstoneCanyon = registries.lookupOrThrow(Registries.BIOME).getOrThrow(ModBiomes.GLOWSTONE_CANYON);
+            HolderSet<Biome> replaceable = registries.lookupOrThrow(Registries.BIOME).getOrThrow(ModTags.Biomes.GLOWSTONE_CANYON_REPLACEABLE);
 
             consumer.accept(IECommon.makeID("glowstone_canyon"), BiomeInjector.builder(Level.NETHER)
-                    .forcePlacement(glowstoneCanyon, ParameterBuilder.create().densityFunctionMin(selector, 0.35D)));
+                    .replacePartially(replaceable, glowstoneCanyon,
+                            ParameterBuilder.create().densityFunctionMin(selector, GLOWSTONE_CANYON_THRESHOLD)));
         });
 
         AddWorldgenModifiersEvent.EVENT.register((registries, consumer) -> {

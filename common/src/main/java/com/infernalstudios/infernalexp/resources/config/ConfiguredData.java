@@ -139,11 +139,11 @@ public class ConfiguredData {
                 json -> Common.createPacking3x3("netherexp:shroomnight", "infernalexp:shroomnight_tear"));
 
         register(ResourceLocation.tryBuild("infernalexp", "recipe/shroomblight_from_tears.json"),
-                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("gardens_of_the_dead")),
                 json -> Common.createPacking3x3("netherexp:shroomblight", "infernalexp:shroomblight_tear"));
 
         register(ResourceLocation.tryBuild("infernalexp", "recipe/shroombright_from_tears.json"),
-                () -> Services.PLATFORM.isModLoaded("netherexp"),
+                () -> (Services.PLATFORM.isModLoaded("netherexp") && Services.PLATFORM.isModLoaded("cinderscapes")),
                 json -> Common.createPacking3x3("netherexp:shroombright", "infernalexp:shroombright_tear"));
 
         register(ResourceLocation.tryBuild("infernalexp", "loot_table/blocks/shroomlight_tear.json"),

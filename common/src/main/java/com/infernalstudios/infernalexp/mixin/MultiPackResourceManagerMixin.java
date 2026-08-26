@@ -1,6 +1,5 @@
 package com.infernalstudios.infernalexp.mixin;
 
-import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredResources;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -26,8 +25,6 @@ import java.util.stream.Collectors;
 public class MultiPackResourceManagerMixin {
     @Unique
     private static Resource infernalexp$readAndApply(Optional<Resource> resource, ConfiguredData data) {
-        IECommon.log("Applying configured data: " + data.target, 0);
-
         if (resource.isEmpty()) {
             String result = data.apply(null);
             return new Resource(ConfiguredResources.INSTANCE,

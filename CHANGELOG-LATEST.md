@@ -1,8 +1,10 @@
 ### Changed
 
-- Reworked biome generation.
-- Lithostitched is now a required dependency.
+- Reworked biome generation (again).
+    - Should fix issues with Jaden's Nether Expansion.
+- Increased blackstone blob radius.
+- Removed "Applying configured data" log message.
 
 ### Fixed
 
-- Fixed Amplified Nether incompatibility.
+- Fixed various missing tags and loot tables.
