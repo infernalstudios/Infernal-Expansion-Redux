@@ -152,10 +152,16 @@ public class IELangProvider extends FabricLanguageProvider {
 
         // World Generation Tooltips
         builder.add("text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz.@Tooltip",
-                "Determines whether Planted Quartz will generate in the world and be placeable.");
+                "Determines whether Planted Quartz will generate in the world.");
 
         builder.add("text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone.@Tooltip",
-                "Determines whether Buried Bone will generate in the world and be placeable.");
+                "Determines whether Buried Bone will generate in the world.");
+
+        builder.add("text.autoconfig.infernalexp.option.common.worldGeneration.preventQuartzPlacement.@Tooltip",
+                "If enabled, prevents players from placing Planted Quartz using Quartz items.");
+
+        builder.add("text.autoconfig.infernalexp.option.common.worldGeneration.preventBonePlacement.@Tooltip",
+                "If enabled, prevents players from placing Buried Bone using Bone items.");
 
         // Biome Translations
         builder.add("biome.infernalexp.glowstone_canyon", "Glowstone Canyon");

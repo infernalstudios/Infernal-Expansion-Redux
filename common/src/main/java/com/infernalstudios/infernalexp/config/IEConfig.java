@@ -69,6 +69,12 @@ public class IEConfig {
 
             @ConfigEntry.Gui.Tooltip
             public boolean enableBuriedBone = true;
+
+            @ConfigEntry.Gui.Tooltip
+            public boolean preventQuartzPlacement = false;
+
+            @ConfigEntry.Gui.Tooltip
+            public boolean preventBonePlacement = false;
         }
     }
 }

@@ -11,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
-@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = IEConstants.MOD_ID, value = Dist.CLIENT)
 public class NeoForgeClientEvents {
 
     @SubscribeEvent

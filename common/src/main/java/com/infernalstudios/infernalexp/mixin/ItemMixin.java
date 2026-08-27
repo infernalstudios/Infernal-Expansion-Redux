@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.mixin;
 
+import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.entities.ThrowableFireChargeEntity;
 import com.infernalstudios.infernalexp.entities.ThrowableMagmaCreamEntity;
 import com.infernalstudios.infernalexp.module.ModBlocks;
@@ -95,7 +96,7 @@ public class ItemMixin {
 
         BlockPos relativePos = pos.relative(context.getClickedFace(), 1);
 
-        if ((Object) this == Items.QUARTZ) {
+        if ((Object) this == Items.QUARTZ && !IECommon.getConfig().common.worldGeneration.preventQuartzPlacement) {
             BlockState state = ModBlocks.PLANTED_QUARTZ.get().getStateForPlacement(new BlockPlaceContext(context));
             if (state != null && state.canSurvive(level, relativePos)) {
                 level.setBlock(relativePos, state, Block.UPDATE_ALL);
@@ -110,7 +111,7 @@ public class ItemMixin {
             }
         }
 
-        if ((Object) this == Items.BONE) {
+        if ((Object) this == Items.BONE && !IECommon.getConfig().common.worldGeneration.preventBonePlacement) {
             BlockState state = ModBlocks.BURIED_BONE.get().getStateForPlacement(new BlockPlaceContext(context));
             if (state != null && state.canSurvive(level, relativePos)) {
                 level.setBlock(relativePos, state, Block.UPDATE_ALL);

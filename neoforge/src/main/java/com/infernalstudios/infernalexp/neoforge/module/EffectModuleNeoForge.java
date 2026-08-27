@@ -22,7 +22,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Map;
 
-@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID)
 public class EffectModuleNeoForge {
     @SubscribeEvent
     public static void registerEffects(RegisterEvent event) {

@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Map;
 
-@EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = IEConstants.MOD_ID)
 public class ItemModuleNeoForge {
     @SubscribeEvent
     public static void registerItems(RegisterEvent event) {
@@ -30,7 +30,7 @@ public class ItemModuleNeoForge {
         }
     }
 
-    @EventBusSubscriber(modid = IEConstants.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
+    @EventBusSubscriber(modid = IEConstants.MOD_ID)
     public static class FuelEventsNeoForge {
         @SubscribeEvent
         public static void onFuelBurnTime(FurnaceFuelBurnTimeEvent event) {

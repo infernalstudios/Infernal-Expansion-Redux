@@ -199,8 +199,12 @@
   "text.autoconfig.infernalexp.option.common.voline.volineTurnIntoGeyser.@Tooltip": "If enabled, sleeping Volines will transform into Volatile Geysers when hit with a snowball.",
   "text.autoconfig.infernalexp.option.common.worldGeneration": "World Generation Content",
   "text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone": "Enable Buried Bone",
-  "text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone.@Tooltip": "Determines whether Buried Bone will generate in the world and be placeable.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enableBuriedBone.@Tooltip": "Determines whether Buried Bone will generate in the world.",
   "text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz": "Enable Planted Quartz",
-  "text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz.@Tooltip": "Determines whether Planted Quartz will generate in the world and be placeable.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.enablePlantedQuartz.@Tooltip": "Determines whether Planted Quartz will generate in the world.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.preventBonePlacement": "Prevent Bone Placement",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.preventBonePlacement.@Tooltip": "If enabled, prevents players from placing Buried Bone using Bone items.",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.preventQuartzPlacement": "Prevent Quartz Placement",
+  "text.autoconfig.infernalexp.option.common.worldGeneration.preventQuartzPlacement.@Tooltip": "If enabled, prevents players from placing Planted Quartz using Quartz items.",
   "text.autoconfig.infernalexp.title": "Infernal Expansion Config"
 }
