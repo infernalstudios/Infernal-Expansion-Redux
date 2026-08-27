@@ -44,10 +44,12 @@ publishMods {
         projectId = "1407992"
         minecraftVersions.add("${minecraft_version}")
 
-        requires { slug = "geckolib" }
-        optional { slug = "lambdynamiclights" }
-        optional { slug = "cloth-config" }
-        optional { slug = "afterimages" }
+        client = true
+        server = true
+        requires("geckolib")
+        optional("lambdynamiclights")
+        optional("cloth-config")
+        optional("afterimages")
     }
 
     modrinth {
@@ -55,9 +57,9 @@ publishMods {
         projectId = "wiPmcmNp"
         minecraftVersions.add("${minecraft_version}")
 
-        requires { slug = "geckolib" }
-        optional { slug = "lambdynamiclights" }
-        optional { slug = "cloth-config" }
-        optional { slug = "afterimages" }
+        requires("geckolib")
+        optional("lambdynamiclights")
+        optional("cloth-config")
+        optional("afterimages")
     }
 }
