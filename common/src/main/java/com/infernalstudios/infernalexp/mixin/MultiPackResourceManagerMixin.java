@@ -1,6 +1,5 @@
 package com.infernalstudios.infernalexp.mixin;
 
-import com.infernalstudios.infernalexp.IECommon;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredData;
 import com.infernalstudios.infernalexp.resources.config.ConfiguredResources;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -15,17 +14,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Mixin(MultiPackResourceManager.class)
 public class MultiPackResourceManagerMixin {
     @Unique
     private static Resource readAndApply(Optional<Resource> resource, ConfiguredData data) {
-        IECommon.log("Applying configured data: " + data.target, 0);
-
         if (resource.isEmpty()) {
             String result = data.apply(null);
             return new Resource(ConfiguredResources.INSTANCE,
@@ -68,7 +67,8 @@ public class MultiPackResourceManagerMixin {
         if (data == null || !data.enabled.get()) return original;
 
         return original.stream()
-                .map(resource -> readAndApply(resource, data)).toList();
+                .map(resource -> readAndApply(resource, data))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @ModifyReturnValue(method = "listResources", at = @At("RETURN"))
@@ -83,7 +83,7 @@ public class MultiPackResourceManagerMixin {
             }
         }
 
-        List<ResourceLocation> ids = original.keySet().stream().toList();
+        List<ResourceLocation> ids = new ArrayList<>(original.keySet());
         for (ResourceLocation id : ids) {
             ConfiguredData data = ConfiguredData.get(id);
             if (data == null || !data.enabled.get()) continue;
@@ -100,18 +100,21 @@ public class MultiPackResourceManagerMixin {
         for (ConfiguredData data : ConfiguredData.INSTANCES) {
             if (data.enabled.get() && data.target.getPath().startsWith(startingPath) && allowedPathPredicate.test(data.target)) {
                 if (!original.containsKey(data.target)) {
-                    original.put(data.target, List.of(readAndApply(Optional.empty(), data)));
+                    List<Resource> mutableList = new ArrayList<>();
+                    mutableList.add(readAndApply(Optional.empty(), data));
+                    original.put(data.target, mutableList);
                 }
             }
         }
 
-        List<ResourceLocation> ids = original.keySet().stream().toList();
+        List<ResourceLocation> ids = new ArrayList<>(original.keySet());
         for (ResourceLocation id : ids) {
             ConfiguredData data = ConfiguredData.get(id);
             if (data == null || !data.enabled.get()) continue;
 
             original.replace(id, original.get(id).stream()
-                    .map(resource -> readAndApply(resource, data)).toList());
+                    .map(resource -> readAndApply(resource, data))
+                    .collect(Collectors.toCollection(ArrayList::new)));
         }
         return original;
     }

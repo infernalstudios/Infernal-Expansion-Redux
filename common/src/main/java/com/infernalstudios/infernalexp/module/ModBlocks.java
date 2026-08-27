@@ -266,17 +266,17 @@ public class ModBlocks {
 
     public static final BlockDataHolder<?> BASALT_STAIRS = register("basalt_stairs", BlockDataHolder.of(() ->
             StairBlockAccessor.createStairBlock(Blocks.BASALT.defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BASALT))))
-            .withItem().dropsSelf().withModel(BlockDataHolder.Model.STAIRS).withTags(BlockTags.STAIRS)
+            .withItem().dropsSelf().withModel(BlockDataHolder.Model.STAIRS).withTags(BlockTags.STAIRS, BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Basalt Stairs");
 
     public static final BlockDataHolder<?> BASALT_SLAB = register("basalt_slab", BlockDataHolder.of(() ->
             new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
-            .withItem().dropsSelf().withModel(BlockDataHolder.Model.SLAB).withTags(BlockTags.SLABS)
+            .withItem().dropsSelf().withModel(BlockDataHolder.Model.SLAB).withTags(BlockTags.SLABS, BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Basalt Slab");
 
     public static final BlockDataHolder<?> BASALT_WALL = register("basalt_wall", BlockDataHolder.of(() ->
             new WallBlock(BlockBehaviour.Properties.copy(Blocks.BASALT))))
-            .withItem().dropsSelf().withModel(BlockDataHolder.Model.WALL).withTags(BlockTags.WALLS)
+            .withItem().dropsSelf().withModel(BlockDataHolder.Model.WALL).withTags(BlockTags.WALLS, BlockTags.MINEABLE_WITH_PICKAXE)
             .withTranslation("Basalt Wall");
 
     public static final BlockDataHolder<?> BASALT_SAND = register("basalt_sand", BlockDataHolder.of(() ->

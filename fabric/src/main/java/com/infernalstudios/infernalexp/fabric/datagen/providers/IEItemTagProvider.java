@@ -7,6 +7,8 @@ import com.infernalstudios.infernalexp.registration.holders.ItemDataHolder;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -37,5 +39,9 @@ public class IEItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
         getOrCreateTagBuilder(ModTags.Items.VOLINE_FOOD)
                 .add(Items.MAGMA_CREAM);
+
+        getOrCreateTagBuilder(TagKey.create(Registries.ITEM, new ResourceLocation("c", "glass_blocks")))
+                .add(ModBlocks.QUARTZ_GLASS.get().asItem())
+                .add(ModBlocks.GLOWLIGHT_GLASS.get().asItem());
     }
 }

@@ -62,5 +62,9 @@ public class IEBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "iron_ores")))
                 .add(ModBlocks.BASALT_IRON_ORE.get());
+
+        getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, new ResourceLocation("c", "glass_blocks")))
+                .add(ModBlocks.QUARTZ_GLASS.get())
+                .add(ModBlocks.GLOWLIGHT_GLASS.get());
     }
 }
