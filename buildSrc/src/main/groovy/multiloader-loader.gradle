@@ -46,7 +46,6 @@ publishMods {
         client = true
         server = true
 
-        requires("geckolib")
         requires("lithostitched")
         optional("lambdynamiclights")
         optional("cloth-config")
@@ -58,7 +57,6 @@ publishMods {
         projectId = "wiPmcmNp"
         minecraftVersions.add("${minecraft_version}")
 
-        requires("geckolib")
         requires("lithostitched")
         optional("lambdynamiclights")
         optional("cloth-config")

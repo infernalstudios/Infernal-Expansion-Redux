@@ -68,11 +68,6 @@ repositories {
         name = "ClothConfig"
         url = "https://maven.shedaniel.me/"
     }
-
-    maven {
-        name = 'GeckoLib Maven'
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
-    }
 }
 
 ['apiElements', 'runtimeElements'].each { variant ->

@@ -41,27 +41,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal {
+public class WarpbeetleEntity extends Animal implements FlyingAnimal {
 
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(WarpbeetleEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation DANCE = RawAnimation.begin().thenLoop("dance");
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public final AnimationState attackAnimationState = new AnimationState();
 
     @Nullable
     private BlockPos jukeboxPosition;
@@ -320,42 +307,12 @@ public class WarpbeetleEntity extends Animal implements GeoEntity, FlyingAnimal 
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
-            if (this.isPassenger()) {
-                if (this.isFlying()) {
-                    return event.setAndContinue(FLY);
-                }
-                return event.setAndContinue(IDLE);
-            }
-
-            if (this.isFlying() || (!this.onGround() && this.fallDistance > 0.15F)) return event.setAndContinue(FLY);
-            if (event.isMoving()) return event.setAndContinue(WALK);
-
-            return event.setAndContinue(IDLE);
-        }));
-
-        controllers.add(new AnimationController<>(this, "dance_controller", 0, event -> {
-            if (this.isDancing()) return event.setAndContinue(DANCE);
-            return PlayState.STOP;
-        }));
-
-        controllers.add(new AnimationController<>(this, "attack_controller", 0, event -> PlayState.STOP)
-                .triggerableAnim("attack", ATTACK));
-    }
-
-    @Override
     public void swing(@NotNull InteractionHand hand, boolean updateSelf) {
         super.swing(hand, updateSelf);
 
         if (this.level().isClientSide && hand == InteractionHand.MAIN_HAND) {
-            this.triggerAnim("attack_controller", "attack");
+            this.attackAnimationState.start(this.tickCount);
         }
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
     }
 
     @Override

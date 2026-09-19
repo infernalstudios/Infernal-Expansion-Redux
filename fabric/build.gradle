@@ -23,9 +23,6 @@ dependencies {
     // Lithostitched
     modImplementation "maven.modrinth:lithostitched:${lithostitched_fabric_version}"
 
-    // GeckoLib
-    modImplementation "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}"
-
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 }

@@ -5,7 +5,6 @@ import com.infernalstudios.infernalexp.IEConstants;
 import com.infernalstudios.infernalexp.entities.ai.EatItemsGoal;
 import com.infernalstudios.infernalexp.entities.ai.FindShelterGoal;
 import com.infernalstudios.infernalexp.module.*;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -49,26 +48,20 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
-public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntity {
+public class VolineEntity extends Animal implements Enemy, IBucketable {
 
     public static final EntityDataAccessor<Integer> MAGMA_CREAM_EATEN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
+    public static final int SLEEP_DURATION_TICKS = 1000;
+    public static final int ANIM_EAT = 1;
     private static final String TAG_MAGMA_CREAM_EATEN = "MagmaCreamEaten";
     private static final String TAG_IS_SLEEPING = "IsSleeping";
     private static final String TAG_FROM_BUCKET = "FromBucket";
     private static final String TAG_SLEEP_TIMER = "SleepTimer";
     private static final String TAG_IS_SEEKING_SHELTER = "IsSeekingShelter";
     private static final String TAG_IS_GROWN = "IsGrown";
-    private static final int SLEEP_DURATION_TICKS = 1000;
     private static final int SHELTER_SEEK_TIMEOUT_TICKS = 100;
     private static final double BASE_MOVEMENT_SPEED = 0.4D;
     private static final double GROWN_MOVEMENT_SPEED = 0.16D;
@@ -79,12 +72,8 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     private static final EntityDataAccessor<Integer> SLEEP_TIMER = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IS_SEEKING_SHELTER = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_GROWN = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation EAT = RawAnimation.begin().thenPlay("eat");
-    private static final RawAnimation FALLING_ASLEEP = RawAnimation.begin().thenPlay("falling_asleep");
-    private static final RawAnimation ASLEEP = RawAnimation.begin().thenLoop("asleep");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityDataAccessor<Integer> ANIMATION_TRIGGER = SynchedEntityData.defineId(VolineEntity.class, EntityDataSerializers.INT);
+    public final AnimationState eatAnimationState = new AnimationState();
     private int shelterSeekTime = 0;
 
     public VolineEntity(EntityType<? extends Animal> type, Level level) {
@@ -108,6 +97,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         builder.define(SLEEP_TIMER, 0);
         builder.define(IS_SEEKING_SHELTER, false);
         builder.define(IS_GROWN, false);
+        builder.define(ANIMATION_TRIGGER, AnimationTrigger.NONE);
     }
 
     public int getMagmaCreamEaten() {
@@ -234,26 +224,10 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> entity.getType().is(ModTags.EntityTypes.VOLINE_HOSTILE)));
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movementController", 5, event -> {
-            if (this.isGrown() && this.isSleeping()) {
-                if (this.getSleepTimer() > 960) {
-                    return event.setAndContinue(FALLING_ASLEEP);
-                }
-                return event.setAndContinue(ASLEEP);
-            }
-            if (event.isMoving()) {
-                return event.setAndContinue(WALK);
-            }
-            return event.setAndContinue(IDLE);
-        }));
-        controllers.add(new AnimationController<>(this, "actionController", 5, event -> PlayState.STOP).triggerableAnim("eat", EAT));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
+    public void triggerAnimation(int animation) {
+        if (!this.level().isClientSide) {
+            this.entityData.set(ANIMATION_TRIGGER, AnimationTrigger.pack(animation, this.level().getGameTime()));
+        }
     }
 
     @Override
@@ -278,6 +252,14 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
             this.refreshStats();
         }
         super.onSyncedDataUpdated(key);
+
+        if (ANIMATION_TRIGGER.equals(key) && this.level().isClientSide) {
+            int packed = this.entityData.get(ANIMATION_TRIGGER);
+
+            if (AnimationTrigger.animation(packed) == ANIM_EAT) {
+                this.eatAnimationState.start(this.tickCount - AnimationTrigger.elapsedTicks(packed, this.level().getGameTime()));
+            }
+        }
     }
 
     public void refreshStats() {
@@ -370,7 +352,7 @@ public class VolineEntity extends Animal implements Enemy, IBucketable, GeoEntit
     }
 
     public void playEatingAnimation() {
-        this.triggerAnim("actionController", "eat");
+        this.triggerAnimation(ANIM_EAT);
     }
 
     public void ate(ItemStack stack, @Nullable Entity source) {

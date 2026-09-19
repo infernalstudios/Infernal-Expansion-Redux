@@ -27,17 +27,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal, GeoEntity {
-    private static final RawAnimation WOBBLE = RawAnimation.begin().thenLoop("wobble");
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal {
 
     public GlowsilkMothEntity(EntityType<? extends GlowsilkMothEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -69,24 +60,8 @@ public class GlowsilkMothEntity extends AmbientCreature implements FlyingAnimal,
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "body_controller", 0, event ->
-                event.setAndContinue(WOBBLE)
-        ));
-
-        controllers.add(new AnimationController<>(this, "wing_controller", 0, event ->
-                event.setAndContinue(FLY)
-        ));
-    }
-
-    @Override
     public boolean fireImmune() {
         return true;
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
     }
 
     @Override

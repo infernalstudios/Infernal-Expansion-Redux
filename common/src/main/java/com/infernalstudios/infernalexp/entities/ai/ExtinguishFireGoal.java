@@ -91,7 +91,7 @@ public class ExtinguishFireGoal extends Goal {
                 serverLevel.sendParticles(ParticleTypes.SMOKE, targetCenter.x, targetCenter.y, targetCenter.z, 10, 0.2, 0.2, 0.2, 0.05);
             }
 
-            this.blindsight.triggerAnim("attackController", "land");
+            this.blindsight.triggerAnimation(BlindsightEntity.ANIM_LAND);
             this.blindsight.attackAnimationTimer = 10;
 
             this.targetPos = null;

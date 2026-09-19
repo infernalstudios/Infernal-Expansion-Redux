@@ -45,9 +45,6 @@ dependencies {
     // Cloth Config
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
 
-    // GeckoLib
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-
     // TerraBlender
     compileOnly "maven.modrinth:kkmrDlKT:6e8GCrLb"
 

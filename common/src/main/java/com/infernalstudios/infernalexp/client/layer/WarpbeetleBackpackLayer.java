@@ -40,7 +40,7 @@ public class WarpbeetleBackpackLayer extends RenderLayer<AbstractClientPlayer, P
                     poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
                     poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 
-                    beetleRenderer.renderBackpack(beetle, 0f, partialTick, poseStack, bufferSource, packedLight);
+                    beetleRenderer.renderBackpack(beetle, partialTick, poseStack, bufferSource, packedLight);
 
                     poseStack.popPose();
                 });

@@ -35,7 +35,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -45,26 +44,14 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity {
+public class GlowsquitoEntity extends Animal implements FlyingAnimal {
+    public static final int ANIM_DRINK = 1;
     private static final EntityDataAccessor<Boolean> EATING = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<String> VARIANT = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.STRING);
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(ModTags.Items.GLOWSQUITO_TEMPTATION_ITEMS);
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation PERCHING = RawAnimation.begin().thenLoop("perching");
-    private static final RawAnimation DRINKING = RawAnimation.begin().thenLoop("drinking");
-    private static final RawAnimation DRINKING_ONCE = RawAnimation.begin().thenPlay("drinking");
-    private static final RawAnimation FLYING_FLAPPING = RawAnimation.begin().thenLoop("flying_flapping");
-    private static final RawAnimation FLYING_WOBBLING = RawAnimation.begin().thenLoop("flying_wobbling");
-    private static final RawAnimation FLYING_TILTING = RawAnimation.begin().thenLoop("flying_tilting");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityDataAccessor<Integer> ANIMATION_TRIGGER = SynchedEntityData.defineId(GlowsquitoEntity.class, EntityDataSerializers.INT);
+    public final AnimationState drinkOnceAnimationState = new AnimationState();
 
     public GlowsquitoEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
@@ -103,40 +90,25 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
                 (entity) -> entity.hasEffect(luminousHolder) && !(entity instanceof GlowsquitoEntity)));
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "base_controller", 0, event -> {
-            if (!this.isEating()) {
-                return event.setAndContinue(FLYING_FLAPPING);
-            }
-            return event.setAndContinue(PERCHING);
-        }));
-
-        controllers.add(new AnimationController<>(this, "air_wobble_controller", 0, event -> {
-            if (!this.isEating()) {
-                return event.setAndContinue(FLYING_WOBBLING);
-            }
-            return PlayState.STOP;
-        }));
-
-        controllers.add(new AnimationController<>(this, "air_tilt_controller", 0, event -> {
-            if (!this.isEating()) {
-                return event.setAndContinue(FLYING_TILTING);
-            }
-            return PlayState.STOP;
-        }));
-
-        controllers.add(new AnimationController<>(this, "action_controller", 0, event -> {
-            if (this.isEating()) {
-                return event.setAndContinue(DRINKING);
-            }
-            return PlayState.STOP;
-        }).triggerableAnim("attack_drink", DRINKING_ONCE));
+    public void triggerAnimation(int animation) {
+        if (!this.level().isClientSide) {
+            this.entityData.set(ANIMATION_TRIGGER, AnimationTrigger.pack(animation, this.level().getGameTime()));
+        }
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+
+        if (!ANIMATION_TRIGGER.equals(key) || !this.level().isClientSide) {
+            return;
+        }
+
+        int packed = this.entityData.get(ANIMATION_TRIGGER);
+
+        if (AnimationTrigger.animation(packed) == ANIM_DRINK) {
+            this.drinkOnceAnimationState.start(this.tickCount - AnimationTrigger.elapsedTicks(packed, this.level().getGameTime()));
+        }
     }
 
     @Nullable
@@ -165,6 +137,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         super.defineSynchedData(builder);
         builder.define(EATING, false);
         builder.define(VARIANT, "");
+        builder.define(ANIMATION_TRIGGER, AnimationTrigger.NONE);
     }
 
     public boolean isEating() {
@@ -218,7 +191,7 @@ public class GlowsquitoEntity extends Animal implements FlyingAnimal, GeoEntity 
         } else {
             if (entityIn instanceof LivingEntity) {
                 this.heal(1.0f);
-                this.triggerAnim("action_controller", "attack_drink");
+                this.triggerAnimation(ANIM_DRINK);
             }
             return true;
         }

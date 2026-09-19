@@ -1,3 +1,3 @@
-### Added
+### Changed
 
-- Added options to prevent bone and quartz placements.
+- GeckoLib is no longer a dependency.

@@ -1,5 +1,6 @@
 package com.infernalstudios.infernalexp.module;
 
+import com.infernalstudios.infernalexp.client.entity.model.*;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 
@@ -19,5 +20,11 @@ public class ModModelLayers {
     }
 
     public static void load() {
+        register(BlindsightModel.LAYER_LOCATION, BlindsightModel::createBodyLayer);
+        register(GlowsilkMothModel.LAYER_LOCATION, GlowsilkMothModel::createBodyLayer);
+        register(GlowsquitoModel.LAYER_LOCATION, GlowsquitoModel::createBodyLayer);
+        register(VolineModel.LAYER_LOCATION, VolineModel::createBodyLayer);
+        register(VolineBigModel.LAYER_LOCATION, VolineBigModel::createBodyLayer);
+        register(WarpbeetleModel.LAYER_LOCATION, WarpbeetleModel::createBodyLayer);
     }
 }

@@ -34,34 +34,28 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BlindsightEntity extends Monster implements GeoEntity {
+public class BlindsightEntity extends Monster {
     public static final ResourceLocation SPEED_MODIFIER_ATTACK_RL = IECommon.makeID("blindsight_speed");
     public static final ResourceLocation ATTACK_DAMAGE_MODIFIER_RL = IECommon.makeID("blindsight_damage");
     public static final ResourceLocation FOLLOW_RANGE_MODIFIER_RL = IECommon.makeID("blindsight_range");
-
+    public static final int ANIM_BITE = 1;
+    public static final int ANIM_SWALLOW = 2;
+    public static final int ANIM_TONGUE_TELEGRAPHED = 3;
+    public static final int ANIM_TONGUE_IMMEDIATE = 4;
+    public static final int ANIM_ALERT = 5;
+    public static final int ANIM_LAND = 6;
     private static final EntityDataAccessor<Boolean> IS_JUMPING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_RESTING = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_WATCHING_LUMINOUS = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation IDLE_RARE = RawAnimation.begin().thenLoop("idle_rare");
-    private static final RawAnimation JUMP_LOOP = RawAnimation.begin().thenLoop("jump_loop");
-    private static final RawAnimation BITE = RawAnimation.begin().thenPlay("bite");
-    private static final RawAnimation SWALLOW = RawAnimation.begin().thenPlay("swallow");
-    private static final RawAnimation TONGUE_ATTACK_TELEGRAPHED = RawAnimation.begin().thenPlay("tongue_attack_telegraphed");
-    private static final RawAnimation TONGUE_ATTACK_IMMEDIATE = RawAnimation.begin().thenPlay("tongue_attack_immediate");
-    private static final RawAnimation ALERT = RawAnimation.begin().thenPlay("luminous_player_alert");
-    private static final RawAnimation LAND = RawAnimation.begin().thenPlay("land");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final EntityDataAccessor<Integer> ANIMATION_TRIGGER = SynchedEntityData.defineId(BlindsightEntity.class, EntityDataSerializers.INT);
+    public final AnimationState biteAnimationState = new AnimationState();
+    public final AnimationState swallowAnimationState = new AnimationState();
+    public final AnimationState tongueTelegraphedAnimationState = new AnimationState();
+    public final AnimationState tongueImmediateAnimationState = new AnimationState();
+    public final AnimationState alertAnimationState = new AnimationState();
+    public final AnimationState landAnimationState = new AnimationState();
     public int ticksOnGround = 0;
     public float targetSquish;
     public float squish;
@@ -76,9 +70,9 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     public int hopsUntilIdle;
     public int attackCooldown = 0;
     public int damageTriggerTick = 10;
+    public boolean playRareIdle = false;
     private boolean wasOnGround;
     private boolean hasPlayedWarning = false;
-    private boolean playRareIdle = false;
     private boolean wasResting = false;
     private int jumpsUntilBigJump = 0;
 
@@ -108,6 +102,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         builder.define(IS_ATTACKING, false);
         builder.define(IS_RESTING, false);
         builder.define(IS_WATCHING_LUMINOUS, false);
+        builder.define(ANIMATION_TRIGGER, AnimationTrigger.NONE);
     }
 
     @Override
@@ -143,11 +138,23 @@ public class BlindsightEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+
+        boolean onGround = this.onGround();
+        boolean justLanded = onGround && !this.wasOnGround;
+        boolean justLeftGround = !onGround && this.wasOnGround;
+        this.wasOnGround = onGround;
+
         if (this.level().isClientSide) {
-            this.handleSlimeSquish();
+            this.handleSlimeSquish(justLanded, justLeftGround);
+        } else if (justLanded) {
+            if (this.isBigJumping && this.alertTimer == 0 && this.attackAnimationTimer == 0) {
+                this.triggerAnimation(ANIM_LAND);
+            }
+
+            this.isBigJumping = false;
         }
 
-        if (this.onGround()) {
+        if (onGround) {
             this.ticksOnGround++;
         } else {
             this.ticksOnGround = 0;
@@ -161,7 +168,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
             this.handleLuminousTargetLogic();
 
             this.entityData.set(IS_ATTACKING, this.attackAnimationTimer > 0 || this.alertTimer > 0);
-            this.entityData.set(IS_JUMPING, !this.onGround());
+            this.entityData.set(IS_JUMPING, !onGround);
         } else {
             boolean isResting = this.isResting();
             if (isResting && !this.wasResting) {
@@ -171,21 +178,16 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         }
     }
 
-    private void handleSlimeSquish() {
+    private void handleSlimeSquish(boolean justLanded, boolean justLeftGround) {
         this.squish += (this.targetSquish - this.squish) * 0.5F;
         this.oSquish = this.squish;
 
-        if (this.onGround() && !this.wasOnGround) {
+        if (justLanded) {
             this.targetSquish = -0.5F;
-            if (this.isBigJumping && this.alertTimer == 0 && this.attackAnimationTimer == 0) {
-                this.triggerAnim("attackController", "land");
-            }
-            this.isBigJumping = false;
-        } else if (!this.onGround() && this.wasOnGround) {
+        } else if (justLeftGround) {
             this.targetSquish = 1.0F;
         }
 
-        this.wasOnGround = this.onGround();
         this.targetSquish *= 0.6F;
     }
 
@@ -196,12 +198,12 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
 
         if (immediate) {
-            this.triggerAnim("attackController", "tongue_attack_immediate");
+            this.triggerAnimation(ANIM_TONGUE_IMMEDIATE);
             this.attackAnimationTimer = 17;
             this.damageTriggerTick = 9;
             this.attackCooldown = 25;
         } else {
-            this.triggerAnim("attackController", "tongue_attack_telegraphed");
+            this.triggerAnimation(ANIM_TONGUE_TELEGRAPHED);
             this.attackAnimationTimer = 27;
             this.damageTriggerTick = 9;
             this.attackCooldown = 35;
@@ -242,7 +244,7 @@ public class BlindsightEntity extends Monster implements GeoEntity {
                 range.addTransientModifier(new AttributeModifier(FOLLOW_RANGE_MODIFIER_RL, 36.0D, AttributeModifier.Operation.ADD_VALUE));
 
             if (!this.hasPlayedWarning && this.ticksOnGround > 2 && target instanceof Player && this.alertTimer == 0 && !this.wantsToTongueAttack && this.attackAnimationTimer == 0) {
-                this.triggerAnim("attackController", "alert");
+                this.triggerAnimation(ANIM_ALERT);
                 this.playSound(ModSounds.BLINDSIGHT_ALERT.get(), 1.0F, 1.0F);
                 this.alertTimer = 30;
                 this.hasPlayedWarning = true;
@@ -384,34 +386,39 @@ public class BlindsightEntity extends Monster implements GeoEntity {
         return ModSounds.BLINDSIGHT_LEAP.get();
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 5, event -> {
-            if (this.entityData.get(IS_ATTACKING)) return PlayState.STOP;
-            if (this.entityData.get(IS_JUMPING)) return event.setAndContinue(JUMP_LOOP);
-            if (this.entityData.get(IS_RESTING)) {
-                return event.setAndContinue(this.playRareIdle ? IDLE_RARE : IDLE);
-            }
-            return event.setAndContinue(IDLE);
-        }));
+    public void triggerAnimation(int animation) {
+        if (!this.level().isClientSide) {
+            this.entityData.set(ANIMATION_TRIGGER, AnimationTrigger.pack(animation, this.level().getGameTime()));
+        }
+    }
 
-        controllers.add(new AnimationController<>(this, "attackController", 0, event -> PlayState.STOP)
-                .triggerableAnim("bite", BITE)
-                .triggerableAnim("swallow", SWALLOW)
-                .triggerableAnim("tongue_attack_telegraphed", TONGUE_ATTACK_TELEGRAPHED)
-                .triggerableAnim("tongue_attack_immediate", TONGUE_ATTACK_IMMEDIATE)
-                .triggerableAnim("alert", ALERT)
-                .triggerableAnim("land", LAND));
+    @Override
+    public void onSyncedDataUpdated(@NotNull EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+
+        if (!ANIMATION_TRIGGER.equals(key) || !this.level().isClientSide) {
+            return;
+        }
+
+        int packed = this.entityData.get(ANIMATION_TRIGGER);
+        AnimationState state = switch (AnimationTrigger.animation(packed)) {
+            case ANIM_BITE -> this.biteAnimationState;
+            case ANIM_SWALLOW -> this.swallowAnimationState;
+            case ANIM_TONGUE_TELEGRAPHED -> this.tongueTelegraphedAnimationState;
+            case ANIM_TONGUE_IMMEDIATE -> this.tongueImmediateAnimationState;
+            case ANIM_ALERT -> this.alertAnimationState;
+            case ANIM_LAND -> this.landAnimationState;
+            default -> null;
+        };
+
+        if (state != null) {
+            state.start(this.tickCount - AnimationTrigger.elapsedTicks(packed, this.level().getGameTime()));
+        }
     }
 
     @Override
     public boolean fireImmune() {
         return true;
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return this.cache;
     }
 
 }

@@ -45,7 +45,6 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}",
     "java": ">=17",
-    "geckolib": ">=4.4.7",
     "lithostitched": "*"
   },
   "suggests": {

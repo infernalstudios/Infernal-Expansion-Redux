@@ -86,7 +86,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
 
         if (this.blindsight.isWithinMeleeAttackRange(target) && this.blindsight.attackCooldown <= 0 && this.blindsight.onGround()) {
             this.blindsight.swing(InteractionHand.MAIN_HAND);
-            this.blindsight.triggerAnim("attackController", "bite");
+            this.blindsight.triggerAnimation(BlindsightEntity.ANIM_BITE);
             this.blindsight.doHurtTarget(target);
             this.blindsight.attackAnimationTimer = 10;
             this.blindsight.attackCooldown = 20;
@@ -149,7 +149,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
 
         if (canEat && this.blindsight.attackCooldown <= 0) {
             this.blindsight.attackCooldown = 20;
-            this.blindsight.triggerAnim("attackController", "bite");
+            this.blindsight.triggerAnimation(BlindsightEntity.ANIM_BITE);
             this.blindsight.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
 
             if (this.blindsight.level() instanceof ServerLevel serverLevel) {
@@ -189,7 +189,7 @@ public class BlindsightAttackGoal extends MeleeAttackGoal {
 
             target.discard();
             this.blindsight.heal(4.0F);
-            this.blindsight.triggerAnim("attackController", "swallow");
+            this.blindsight.triggerAnimation(BlindsightEntity.ANIM_SWALLOW);
             this.blindsight.attackAnimationTimer = 20;
         }
     }

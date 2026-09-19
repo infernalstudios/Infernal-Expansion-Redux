@@ -33,13 +33,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
-modId = "geckolib"
-type = "required"
-versionRange = "[4.4.7,5)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.${mod_id}]]
 modId = "lithostitched"
 type = "required"
 ordering = "NONE"
