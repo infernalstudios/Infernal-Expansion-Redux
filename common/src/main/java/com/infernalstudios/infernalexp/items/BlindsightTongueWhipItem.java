@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -63,6 +64,10 @@ public class BlindsightTongueWhipItem extends Item {
         return data != null ? data.copyTag().getLong("AttackStartTick") : 0L;
     }
 
+    public static boolean isExtraEnchantment(Holder<Enchantment> enchantment) {
+        return enchantment.is(ModTags.Enchantments.TONGUE_WHIP_EXTRAS);
+    }
+
     @Override
     public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
         return ItemAttributeModifiers.builder()
@@ -97,6 +102,14 @@ public class BlindsightTongueWhipItem extends Item {
     @Override
     public int getEnchantmentValue() {
         return 14;
+    }
+
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return isExtraEnchantment(enchantment) || enchantment.value().isSupportedItem(stack);
+    }
+
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+        return isExtraEnchantment(enchantment) || enchantment.value().isPrimaryItem(stack);
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
@@ -39,6 +40,14 @@ public class ModTags {
 
         public static TagKey<Item> create(String name) {
             return TagKey.create(Registries.ITEM, IECommon.makeID(name));
+        }
+    }
+
+    public static class Enchantments {
+        public static final TagKey<Enchantment> TONGUE_WHIP_EXTRAS = create("tongue_whip_extras");
+
+        public static TagKey<Enchantment> create(String name) {
+            return TagKey.create(Registries.ENCHANTMENT, IECommon.makeID(name));
         }
     }
 
