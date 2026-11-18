@@ -1,3 +1,3 @@
 ### Fixed
 
-- Adjusted Glowstone Canyon generation.
+- Glowlight Campfire now drops items when broken.
