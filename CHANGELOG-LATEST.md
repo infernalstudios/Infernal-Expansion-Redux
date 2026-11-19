@@ -1,3 +1,3 @@
 ### Fixed
 
-- Glowlight Campfire now drops items when broken.
+- Fixed planted bone and quartz voiding.

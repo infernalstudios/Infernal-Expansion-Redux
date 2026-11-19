@@ -66,6 +66,11 @@ public class SupportedBlock extends Block {
         return this.canSurvive(state, world, pos) ? result : Blocks.AIR.defaultBlockState();
     }
 
+    @Override
+    protected boolean canBeReplaced(@NotNull BlockState state, @NotNull BlockPlaceContext context) {
+        return false;
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
